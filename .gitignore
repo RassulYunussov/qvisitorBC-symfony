@@ -1,3 +1,7 @@
+#eclipse project files
+.buildpath
+.project
+.settings
 /app/config/parameters.yml
 /build/
 /phpunit.xml
