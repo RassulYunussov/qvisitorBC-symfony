@@ -58,7 +58,7 @@ class qvVisitor
      *   @ORM\JoinColumn(name="genderid", referencedColumnName="id")
      * })
      */
-    private $genderid;
+    private $gender;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -73,7 +73,7 @@ class qvVisitor
      *   }
      * )
      */
-    private $orderid;
+    private $orders;
 
     /**
      * Constructor
@@ -191,60 +191,60 @@ class qvVisitor
     }
 
     /**
-     * Set genderid
+     * Set gender
      *
-     * @param \AppBundle\Entity\Qvgender $genderid
+     * @param \AppBundle\Entity\Qvgender $gender
      *
      * @return qvVisitor
      */
-    public function setGenderid(\AppBundle\Entity\Qvgender $genderid = null)
+    public function setGender(\AppBundle\Entity\Qvgender $gender = null)
     {
-        $this->genderid = $genderid;
+        $this->gender = $gender;
 
         return $this;
     }
 
     /**
-     * Get genderid
+     * Get gender
      *
      * @return \AppBundle\Entity\Qvgender
      */
-    public function getGenderid()
+    public function getGender()
     {
-        return $this->genderid;
+        return $this->gender;
     }
 
     /**
-     * Add orderid
+     * Add order
      *
-     * @param \AppBundle\Entity\qvOrder $orderid
+     * @param \AppBundle\Entity\qvOrder $order
      *
      * @return qvVisitor
      */
-    public function addOrderid(\AppBundle\Entity\qvOrder $orderid)
+    public function addOrder(\AppBundle\Entity\qvOrd $orderid)
     {
-        $this->orderid[] = $orderid;
+        $this->orders[] = $order;
 
         return $this;
     }
 
     /**
-     * Remove orderid
+     * Remove order
      *
-     * @param \AppBundle\Entity\qvOrder $orderid
+     * @param \AppBundle\Entity\qvOrder $order
      */
-    public function removeOrderid(\AppBundle\Entity\qvOrder $orderid)
+    public function removeOrder(\AppBundle\Entity\qvOrder $order)
     {
-        $this->orderid->removeElement($orderid);
+        $this->orders->removeElement($order);
     }
 
     /**
-     * Get orderid
+     * Get orders
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getOrderid()
+    public function getOrders()
     {
-        return $this->orderid;
+        return $this->orders;
     }
 }

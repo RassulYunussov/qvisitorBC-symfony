@@ -51,7 +51,7 @@ class qvUser
      *   @ORM\JoinColumn(name="leaserid", referencedColumnName="id")
      * })
      */
-    private $leaserid;
+    private $leaser;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -66,14 +66,14 @@ class qvUser
      *   }
      * )
      */
-    private $roleid;
+    private $roles;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->roleid = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -160,60 +160,60 @@ class qvUser
     }
 
     /**
-     * Set leaserid
+     * Set leaser
      *
-     * @param \AppBundle\Entity\qvLeaser $leaserid
+     * @param \AppBundle\Entity\qvLeaser $leaser
      *
      * @return qvUser
      */
-    public function setLeaserid(\AppBundle\Entity\qvLeaser $leaserid = null)
+    public function setLeaser(\AppBundle\Entity\qvLeaser $leaser = null)
     {
-        $this->leaserid = $leaserid;
+        $this->leaser = $leaser;
 
         return $this;
     }
 
     /**
-     * Get leaserid
+     * Get leaser
      *
      * @return \AppBundle\Entity\qvLeaser
      */
-    public function getLeaserid()
+    public function getLeaser()
     {
-        return $this->leaserid;
+        return $this->leaser;
     }
 
     /**
-     * Add roleid
+     * Add role
      *
-     * @param \AppBundle\Entity\qvRole $roleid
+     * @param \AppBundle\Entity\qvRole $role
      *
      * @return qvUser
      */
-    public function addRoleid(\AppBundle\Entity\qvRole $roleid)
+    public function addRole(\AppBundle\Entity\qvRole $role)
     {
-        $this->roleid[] = $roleid;
+        $this->roles[] = $role;
 
         return $this;
     }
 
     /**
-     * Remove roleid
+     * Remove role
      *
-     * @param \AppBundle\Entity\qvRole $roleid
+     * @param \AppBundle\Entity\qvRole $role
      */
-    public function removeRoleid(\AppBundle\Entity\qvRole $roleid)
+    public function removeRole(\AppBundle\Entity\qvRole $role)
     {
-        $this->roleid->removeElement($roleid);
+        $this->roles->removeElement($role);
     }
 
     /**
-     * Get roleid
+     * Get roles
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getRoleid()
+    public function getRoles()
     {
-        return $this->roleid;
+        return $this->roles;
     }
 }

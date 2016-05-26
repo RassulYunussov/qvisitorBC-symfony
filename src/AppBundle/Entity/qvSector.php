@@ -37,21 +37,21 @@ class qvSector
      *   @ORM\JoinColumn(name="floorid", referencedColumnName="id")
      * })
      */
-    private $floorid;
+    private $floor;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvContract", mappedBy="sectorid")
      */
-    private $contractid;
+    private $contracts;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->contractid = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->contracts = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -90,60 +90,60 @@ class qvSector
     }
 
     /**
-     * Set floorid
+     * Set floor
      *
-     * @param \AppBundle\Entity\qvFloor $floorid
+     * @param \AppBundle\Entity\qvFloor $floor
      *
      * @return qvSector
      */
-    public function setFloorid(\AppBundle\Entity\qvFloor $floorid = null)
+    public function setFloor(\AppBundle\Entity\qvFloor $floor = null)
     {
-        $this->floorid = $floorid;
+        $this->floor = $floor;
 
         return $this;
     }
 
     /**
-     * Get floorid
+     * Get floor
      *
      * @return \AppBundle\Entity\qvFloor
      */
-    public function getFloorid()
+    public function getFloor()
     {
-        return $this->floorid;
+        return $this->floor;
     }
 
     /**
-     * Add contractid
+     * Add contract
      *
-     * @param \AppBundle\Entity\qvContract $contractid
+     * @param \AppBundle\Entity\qvContract $contract
      *
      * @return qvSector
      */
-    public function addContractid(\AppBundle\Entity\qvContract $contractid)
+    public function addContractid(\AppBundle\Entity\qvContract $contract)
     {
-        $this->contractid[] = $contractid;
+        $this->contracts[] = $contract;
 
         return $this;
     }
 
     /**
-     * Remove contractid
+     * Remove contract
      *
-     * @param \AppBundle\Entity\qvContract $contractid
+     * @param \AppBundle\Entity\qvContract $contract
      */
-    public function removeContractid(\AppBundle\Entity\qvContract $contractid)
+    public function removeContract(\AppBundle\Entity\qvContract $contract)
     {
-        $this->contractid->removeElement($contractid);
+        $this->contracts->removeElement($contract);
     }
 
     /**
-     * Get contractid
+     * Get contracts
      *
      * @return \Doctrine\Common\Collections\Collection
      */
     public function getContractid()
     {
-        return $this->contractid;
+        return $this->contracts;
     }
 }

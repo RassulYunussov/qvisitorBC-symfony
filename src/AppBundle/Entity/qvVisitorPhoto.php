@@ -45,7 +45,7 @@ class qvVisitorPhoto
      *   @ORM\JoinColumn(name="visitorid", referencedColumnName="id")
      * })
      */
-    private $visitorid;
+    private $visitor;
 
 
 
@@ -108,26 +108,26 @@ class qvVisitorPhoto
     }
 
     /**
-     * Set visitorid
+     * Set visitor
      *
-     * @param \AppBundle\Entity\qvVisitor $visitorid
+     * @param \AppBundle\Entity\qvVisitor $visitor
      *
      * @return qvVisitorPhoto
      */
-    public function setVisitorid(\AppBundle\Entity\qvVisitor $visitorid = null)
+    public function setVisitor(\AppBundle\Entity\qvVisitor $visitor = null)
     {
-        $this->visitorid = $visitorid;
+        $this->visitor = $visitor;
 
         return $this;
     }
 
     /**
-     * Get visitorid
+     * Get visitor
      *
      * @return \AppBundle\Entity\qvVisitor
      */
-    public function getVisitorid()
+    public function getVisitor()
     {
-        return $this->visitorid;
+        return $this->visitor;
     }
 }
