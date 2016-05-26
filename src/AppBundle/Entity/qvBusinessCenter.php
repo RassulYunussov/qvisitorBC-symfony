@@ -70,4 +70,30 @@ class qvBusinessCenter
     {
         return $this->name;
     }
+    
+    /**
+     * Set owner
+     *
+     * @param string $owner
+     *
+     * @return qvBusinessCenter
+     */
+    public function setOwner($owner)
+    {
+    	$this->owner = $owner;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get owner
+     *
+     * @return string
+     */
+    public function getOwner()
+    {
+    	return $this->owner;
+    }
+    
+    
 }

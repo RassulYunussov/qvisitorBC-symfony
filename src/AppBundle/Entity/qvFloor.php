@@ -38,7 +38,7 @@ class qvFloor
      *   @ORM\JoinColumn(name="buildingid", referencedColumnName="id")
      * })
      */
-    private $buildingid;
+    private $building;
 
 
 
@@ -79,13 +79,13 @@ class qvFloor
     /**
      * Set buildingid
      *
-     * @param \AppBundle\Entity\qvBuilding $buildingid
+     * @param \AppBundle\Entity\qvBuilding $building
      *
      * @return qvFloor
      */
-    public function setBuildingid(\AppBundle\Entity\qvBuilding $buildingid = null)
+    public function setBuilding(\AppBundle\Entity\qvBuilding $building = null)
     {
-        $this->buildingid = $buildingid;
+        $this->building = $building;
 
         return $this;
     }
@@ -95,8 +95,8 @@ class qvFloor
      *
      * @return \AppBundle\Entity\qvBuilding
      */
-    public function getBuildingid()
+    public function getBuilding()
     {
-        return $this->buildingid;
+        return $this->building;
     }
 }
