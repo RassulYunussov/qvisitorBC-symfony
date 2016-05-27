@@ -42,7 +42,7 @@ class qvSector
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvContract", mappedBy="sectorid")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvContract", mappedBy="sectors")
      */
     private $contracts;
 
@@ -142,7 +142,7 @@ class qvSector
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getContractid()
+    public function getContracts()
     {
         return $this->contracts;
     }

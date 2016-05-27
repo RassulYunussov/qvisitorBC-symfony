@@ -51,9 +51,9 @@ class qvVisitor
     private $birthdate;
 
     /**
-     * @var \AppBundle\Entity\Qvgender
+     * @var \AppBundle\Entity\qvGender
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Qvgender")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\qvGender")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="genderid", referencedColumnName="id")
      * })
@@ -63,7 +63,7 @@ class qvVisitor
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvOrder", inversedBy="visitorid")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvOrder", inversedBy="visitors")
      * @ORM\JoinTable(name="rf_visitor_order",
      *   joinColumns={
      *     @ORM\JoinColumn(name="visitorid", referencedColumnName="id")

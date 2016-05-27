@@ -32,7 +32,7 @@ class qvRole
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvUser", mappedBy="roleid")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvUser", mappedBy="roles")
      */
     private $users;
 

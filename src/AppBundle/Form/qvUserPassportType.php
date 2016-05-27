@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 
 class qvUserPassportType extends AbstractType
 {
@@ -18,7 +19,11 @@ class qvUserPassportType extends AbstractType
             ->add('firstname')
             ->add('lastname')
             ->add('patronimic')
-            ->add('birthdate', 'datetime')
+            ->add('birthdate', BirthdayType::class, array(
+    'placeholder' => array(
+        'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+    )
+))
             ->add('gender')
             ->add('user')
         ;

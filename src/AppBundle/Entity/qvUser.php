@@ -56,7 +56,7 @@ class qvUser
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvRole", inversedBy="userid")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvRole", inversedBy="users")
      * @ORM\JoinTable(name="rf_user_role",
      *   joinColumns={
      *     @ORM\JoinColumn(name="userid", referencedColumnName="id")
