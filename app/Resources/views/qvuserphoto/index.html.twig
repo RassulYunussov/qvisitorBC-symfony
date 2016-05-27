@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>qvUserPhoto list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Photo</th>
+                <th>Photodate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for qvUserPhoto in qvUserPhotos %}
+            <tr>
+                <td><a href="{{ path('userphoto_show', { 'id': qvUserPhoto.id }) }}">{{ qvUserPhoto.id }}</a></td>
+                <td>{{ qvUserPhoto.photo }}</td>
+                <td>{% if qvUserPhoto.photodate %}{{ qvUserPhoto.photodate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('userphoto_show', { 'id': qvUserPhoto.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('userphoto_edit', { 'id': qvUserPhoto.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('userphoto_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}
