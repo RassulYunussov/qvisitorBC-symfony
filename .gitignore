@@ -1,3 +1,5 @@
+#visual studio code files
+.vscode/*
 #eclipse project files
 .buildpath
 .project
