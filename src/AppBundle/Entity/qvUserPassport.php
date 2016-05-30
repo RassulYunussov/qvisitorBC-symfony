@@ -58,7 +58,7 @@ class qvUserPassport
      *   @ORM\JoinColumn(name="genderid", referencedColumnName="id")
      * })
      */
-    private $genderid;
+    private $gender;
 
     /**
      * @var \AppBundle\Entity\qvUser
@@ -68,7 +68,7 @@ class qvUserPassport
      *   @ORM\JoinColumn(name="userid", referencedColumnName="id")
      * })
      */
-    private $userid;
+    private $user;
 
 
 
@@ -179,50 +179,50 @@ class qvUserPassport
     }
 
     /**
-     * Set genderid
+     * Set gender
      *
-     * @param \AppBundle\Entity\qvGender $genderid
+     * @param \AppBundle\Entity\qvGender $gender
      *
      * @return qvUserPassport
      */
-    public function setGenderid(\AppBundle\Entity\qvGender $genderid = null)
+    public function setGender(\AppBundle\Entity\qvGender $gender = null)
     {
-        $this->genderid = $genderid;
+        $this->gender = $gender;
 
         return $this;
     }
 
     /**
-     * Get genderid
+     * Get gender
      *
      * @return \AppBundle\Entity\qvGender
      */
-    public function getGenderid()
+    public function getGender()
     {
-        return $this->genderid;
+        return $this->gender;
     }
 
     /**
-     * Set userid
+     * Set user
      *
-     * @param \AppBundle\Entity\qvUser $userid
+     * @param \AppBundle\Entity\qvUser $user
      *
      * @return qvUserPassport
      */
-    public function setUserid(\AppBundle\Entity\qvUser $userid = null)
+    public function setUser(\AppBundle\Entity\qvUser $user = null)
     {
-        $this->userid = $userid;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get userid
+     * Get user
      *
      * @return \AppBundle\Entity\qvUser
      */
-    public function getUserid()
+    public function getUser()
     {
-        return $this->userid;
+        return $this->user;
     }
 }

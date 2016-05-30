@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>qvUserPhoto</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ qvUserPhoto.id }}</td>
+            </tr>
+            <tr>
+                <th>Photo</th>
+                <td>{{ qvUserPhoto.photo }}</td>
+            </tr>
+            <tr>
+                <th>Photodate</th>
+                <td>{% if qvUserPhoto.photodate %}{{ qvUserPhoto.photodate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('userphoto_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('userphoto_edit', { 'id': qvUserPhoto.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

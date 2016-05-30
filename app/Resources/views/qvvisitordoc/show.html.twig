@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>qvVisitorDoc</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ qvVisitorDoc.id }}</td>
+            </tr>
+            <tr>
+                <th>Number</th>
+                <td>{{ qvVisitorDoc.number }}</td>
+            </tr>
+            <tr>
+                <th>Firstname</th>
+                <td>{{ qvVisitorDoc.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{ qvVisitorDoc.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Issuedate</th>
+                <td>{% if qvVisitorDoc.issuedate %}{{ qvVisitorDoc.issuedate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Expiredate</th>
+                <td>{% if qvVisitorDoc.expiredate %}{{ qvVisitorDoc.expiredate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('visitordoc_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('visitordoc_edit', { 'id': qvVisitorDoc.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

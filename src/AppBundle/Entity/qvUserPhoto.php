@@ -44,7 +44,7 @@ class qvUserPhoto
      *   @ORM\JoinColumn(name="userid", referencedColumnName="id")
      * })
      */
-    private $userid;
+    private $user;
 
 
 
@@ -107,26 +107,26 @@ class qvUserPhoto
     }
 
     /**
-     * Set userid
+     * Set user
      *
-     * @param \AppBundle\Entity\qvUser $userid
+     * @param \AppBundle\Entity\qvUser $user
      *
      * @return qvUserPhoto
      */
-    public function setUserid(\AppBundle\Entity\qvUser $userid = null)
+    public function setUser(\AppBundle\Entity\qvUser $user = null)
     {
-        $this->userid = $userid;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get userid
+     * Get user
      *
      * @return \AppBundle\Entity\qvUser
      */
-    public function getUserid()
+    public function getUser()
     {
-        return $this->userid;
+        return $this->user;
     }
 }

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>qvUserPassport list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Patronimic</th>
+                <th>Birthdate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for qvUserPassport in qvUserPassports %}
+            <tr>
+                <td><a href="{{ path('userpassport_show', { 'id': qvUserPassport.id }) }}">{{ qvUserPassport.id }}</a></td>
+                <td>{{ qvUserPassport.firstname }}</td>
+                <td>{{ qvUserPassport.lastname }}</td>
+                <td>{{ qvUserPassport.patronimic }}</td>
+                <td>{% if qvUserPassport.birthdate %}{{ qvUserPassport.birthdate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('userpassport_show', { 'id': qvUserPassport.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('userpassport_edit', { 'id': qvUserPassport.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('userpassport_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}
