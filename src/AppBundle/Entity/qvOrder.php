@@ -105,7 +105,7 @@ class qvOrder
      */
     public function setSdate($sdate)
     {
-        $this->sdate = DateTimeType::DATETIME($sdate);
+        $this->sdate = $sdate;
 
         return $this;
     }
@@ -117,7 +117,7 @@ class qvOrder
      */
     public function getSdate()
     {
-        return $this->DateTimeType(sdate);
+        return $this->sdate;
     }
 
     /**
@@ -129,7 +129,7 @@ class qvOrder
      */
     public function setEdate($edate)
     {
-        $this->edate = DateTimeType::DATETIME($edate);
+        $this->edate = $edate;
 
         return $this;
     }
@@ -141,7 +141,7 @@ class qvOrder
      */
     public function getEdate()
     {
-        return $this->DateTimeType(edate);
+        return $this->edate;
     }
 
     /**
@@ -153,7 +153,7 @@ class qvOrder
      */
     public function setOpentime($opentime)
     {
-        $this->opentime = DateTimeType::DATETIME($opentime);
+        $this->opentime = $opentime;
 
         return $this;
     }
@@ -165,7 +165,7 @@ class qvOrder
      */
     public function getOpentime()
     {
-        return $this->DateTimeType(opentime);
+        return $this->opentime;
     }
 
     /**
@@ -177,7 +177,7 @@ class qvOrder
      */
     public function setClosetime($closetime)
     {
-        $this->closetime = DateTimeType::DATETIME ($closetime);
+        $this->closetime = $closetime;
 
         return $this;
     }
@@ -189,7 +189,7 @@ class qvOrder
      */
     public function getClosetime()
     {
-        return $this->DateTimeType(closetime);
+        return $this->closetime;
     }
 
     /**
