@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class qvUserPhotoType extends AbstractType
 {
@@ -16,7 +17,12 @@ class qvUserPhotoType extends AbstractType
     {
         $builder
             ->add('photo')
-            ->add('photodate', 'datetime')
+            ->add('photodate', DateTimeType::class, array(
+    'placeholder' => array(
+        'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+        'hour' => 'Hour', 'minute' => 'Minute', 'second' => 'Second',
+    )
+))
             ->add('user')
         ;
     }
