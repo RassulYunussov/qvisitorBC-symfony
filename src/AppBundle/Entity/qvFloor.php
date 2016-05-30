@@ -41,6 +41,10 @@ class qvFloor
     private $building;
 
 
+    public function __toString()
+    {
+    	return $this->name;
+    }
 
     /**
      * Get id
