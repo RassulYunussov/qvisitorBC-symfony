@@ -5,10 +5,8 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-<<<<<<< Updated upstream
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
-=======
->>>>>>> Stashed changes
+
 
 class qvUserPassportType extends AbstractType
 {
@@ -22,15 +20,11 @@ class qvUserPassportType extends AbstractType
             ->add('firstname')
             ->add('lastname')
             ->add('patronimic')
-<<<<<<< Updated upstream
             ->add('birthdate', BirthdayType::class, array(
     'placeholder' => array(
         'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
     )
 ))
-=======
-            ->add('birthdate', 'datetime')
->>>>>>> Stashed changes
             ->add('gender')
             ->add('user')
         ;

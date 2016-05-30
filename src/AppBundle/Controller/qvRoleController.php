@@ -83,11 +83,6 @@ class qvRoleController extends Controller
      */
     public function editAction(Request $request, qvRole $qvRole)
     {
-<<<<<<< Updated upstream
-    	
-    	
-=======
->>>>>>> Stashed changes
         $deleteForm = $this->createDeleteForm($qvRole);
         $editForm = $this->createForm('AppBundle\Form\qvRoleType', $qvRole);
         $editForm->handleRequest($request);
