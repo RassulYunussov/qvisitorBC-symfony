@@ -32,16 +32,16 @@ class qvRole
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvUser", mappedBy="roleid")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvUser", mappedBy="roles")
      */
-    private $userid;
+    private $users;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->userid = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -80,36 +80,36 @@ class qvRole
     }
 
     /**
-     * Add userid
+     * Add user
      *
-     * @param \AppBundle\Entity\qvUser $userid
+     * @param \AppBundle\Entity\qvUser $user
      *
      * @return qvRole
      */
-    public function addUserid(\AppBundle\Entity\qvUser $userid)
+    public function addUser(\AppBundle\Entity\qvUser $user)
     {
-        $this->userid[] = $userid;
+        $this->users[] = $user;
 
         return $this;
     }
 
     /**
-     * Remove userid
+     * Remove user
      *
-     * @param \AppBundle\Entity\qvUser $userid
+     * @param \AppBundle\Entity\qvUser $user
      */
-    public function removeUserid(\AppBundle\Entity\qvUser $userid)
+    public function removeUser(\AppBundle\Entity\qvUser $user)
     {
-        $this->userid->removeElement($userid);
+        $this->users->removeElement($user);
     }
 
     /**
-     * Get userid
+     * Get users
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getUserid()
+    public function getUsers()
     {
-        return $this->userid;
+        return $this->users;
     }
 }

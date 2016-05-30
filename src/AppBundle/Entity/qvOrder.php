@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 /**
  * qvOrder
  *
@@ -58,7 +58,7 @@ class qvOrder
      *   @ORM\JoinColumn(name="ordertypeid", referencedColumnName="id")
      * })
      */
-    private $ordertypeid;
+    private $ordertype;
 
     /**
      * @var \AppBundle\Entity\qvUser
@@ -68,21 +68,21 @@ class qvOrder
      *   @ORM\JoinColumn(name="userid", referencedColumnName="id")
      * })
      */
-    private $userid;
+    private $user;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvVisitor", mappedBy="orderid")
      */
-    private $visitorid;
+    private $visitors;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->visitorid = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->visitors = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -105,7 +105,7 @@ class qvOrder
      */
     public function setSdate($sdate)
     {
-        $this->sdate = $sdate;
+        $this->sdate = DateTimeType::DATETIME($sdate);
 
         return $this;
     }
@@ -117,7 +117,7 @@ class qvOrder
      */
     public function getSdate()
     {
-        return $this->sdate;
+        return $this->DateTimeType(sdate);
     }
 
     /**
@@ -129,7 +129,7 @@ class qvOrder
      */
     public function setEdate($edate)
     {
-        $this->edate = $edate;
+        $this->edate = DateTimeType::DATETIME($edate);
 
         return $this;
     }
@@ -141,7 +141,7 @@ class qvOrder
      */
     public function getEdate()
     {
-        return $this->edate;
+        return $this->DateTimeType(edate);
     }
 
     /**
@@ -153,7 +153,7 @@ class qvOrder
      */
     public function setOpentime($opentime)
     {
-        $this->opentime = $opentime;
+        $this->opentime = DateTimeType::DATETIME($opentime);
 
         return $this;
     }
@@ -165,7 +165,7 @@ class qvOrder
      */
     public function getOpentime()
     {
-        return $this->opentime;
+        return $this->DateTimeType(opentime);
     }
 
     /**
@@ -177,7 +177,7 @@ class qvOrder
      */
     public function setClosetime($closetime)
     {
-        $this->closetime = $closetime;
+        $this->closetime = DateTimeType::DATETIME ($closetime);
 
         return $this;
     }
@@ -189,88 +189,88 @@ class qvOrder
      */
     public function getClosetime()
     {
-        return $this->closetime;
+        return $this->DateTimeType(closetime);
     }
 
     /**
-     * Set ordertypeid
+     * Set ordertype
      *
-     * @param \AppBundle\Entity\qvOrderType $ordertypeid
+     * @param \AppBundle\Entity\qvOrderType $ordertype
      *
      * @return qvOrder
      */
-    public function setOrdertypeid(\AppBundle\Entity\qvOrderType $ordertypeid = null)
+    public function setOrdertype(\AppBundle\Entity\qvOrderType $ordertype = null)
     {
-        $this->ordertypeid = $ordertypeid;
+        $this->ordertype = $ordertype;
 
         return $this;
     }
 
     /**
-     * Get ordertypeid
+     * Get ordertype
      *
      * @return \AppBundle\Entity\qvOrderType
      */
-    public function getOrdertypeid()
+    public function getOrdertype()
     {
-        return $this->ordertypeid;
+        return $this->ordertype;
     }
 
     /**
-     * Set userid
+     * Set user
      *
-     * @param \AppBundle\Entity\qvUser $userid
+     * @param \AppBundle\Entity\qvUser $user
      *
      * @return qvOrder
      */
-    public function setUserid(\AppBundle\Entity\qvUser $userid = null)
+    public function setUser(\AppBundle\Entity\qvUser $user = null)
     {
-        $this->userid = $userid;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get userid
+     * Get user
      *
      * @return \AppBundle\Entity\qvUser
      */
-    public function getUserid()
+    public function getUser()
     {
-        return $this->userid;
+        return $this->user;
     }
 
     /**
-     * Add visitorid
+     * Add visitor
      *
-     * @param \AppBundle\Entity\qvVisitor $visitorid
+     * @param \AppBundle\Entity\qvVisitor $visitor
      *
      * @return qvOrder
      */
-    public function addVisitorid(\AppBundle\Entity\qvVisitor $visitorid)
+    public function addVisitors(\AppBundle\Entity\qvVisitor $visitors)
     {
-        $this->visitorid[] = $visitorid;
+        $this->visitors[] = $visitors;
 
         return $this;
     }
 
     /**
-     * Remove visitorid
+     * Remove visitors
      *
-     * @param \AppBundle\Entity\qvVisitor $visitorid
+     * @param \AppBundle\Entity\qvVisitor $visitors
      */
-    public function removeVisitorid(\AppBundle\Entity\qvVisitor $visitorid)
+    public function removeVisitors(\AppBundle\Entity\qvVisitor $visitors)
     {
-        $this->visitorid->removeElement($visitorid);
+        $this->visitors->removeElement($visitors);
     }
 
     /**
-     * Get visitorid
+     * Get visitors
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getVisitorid()
+    public function getVisitors()
     {
-        return $this->visitorid;
+        return $this->visitors;
     }
 }

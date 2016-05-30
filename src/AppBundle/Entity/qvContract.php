@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * qvContract
  *
@@ -52,7 +51,7 @@ class qvContract
      *   @ORM\JoinColumn(name="leaserid", referencedColumnName="id")
      * })
      */
-    private $leaserid;
+    private $leaser;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -67,14 +66,14 @@ class qvContract
      *   }
      * )
      */
-    private $sectorid;
+    private $sectors;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->sectorid = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->sectors = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -133,7 +132,7 @@ class qvContract
      */
     public function getStartdate()
     {
-        return $this->startdate;
+        return $this-> startdate;
     }
 
     /**
@@ -157,64 +156,64 @@ class qvContract
      */
     public function getEnddate()
     {
-        return $this->enddate;
+        return $this-> enddate;
     }
 
     /**
-     * Set leaserid
+     * Set leaser
      *
-     * @param \AppBundle\Entity\qvLeaser $leaserid
+     * @param \AppBundle\Entity\qvLeaser $leaser
      *
      * @return qvContract
      */
-    public function setLeaserid(\AppBundle\Entity\qvLeaser $leaserid = null)
+    public function setLeaser(\AppBundle\Entity\qvLeaser $leaser = null)
     {
-        $this->leaserid = $leaserid;
+        $this->leaser = $leaser;
 
         return $this;
     }
 
     /**
-     * Get leaserid
+     * Get leaser
      *
      * @return \AppBundle\Entity\qvLeaser
      */
-    public function getLeaserid()
+    public function getLeaser()
     {
-        return $this->leaserid;
+        return $this->leaser;
     }
 
     /**
-     * Add sectorid
+     * Add sectors
      *
-     * @param \AppBundle\Entity\qvSector $sectorid
+     * @param \AppBundle\Entity\qvSector $sectors
      *
      * @return qvContract
      */
-    public function addSectorid(\AppBundle\Entity\qvSector $sectorid)
+    public function addSectors(\AppBundle\Entity\qvSector $sectors)
     {
-        $this->sectorid[] = $sectorid;
+        $this->sectors[] = $sectors;
 
         return $this;
     }
 
     /**
-     * Remove sectorid
+     * Remove sectors
      *
-     * @param \AppBundle\Entity\qvSector $sectorid
+     * @param \AppBundle\Entity\qvSector $sectors
      */
-    public function removeSectorid(\AppBundle\Entity\qvSector $sectorid)
+    public function removeSectors(\AppBundle\Entity\qvSector $sectors)
     {
-        $this->sectorid->removeElement($sectorid);
+        $this->sectors->removeElement($sectors);
     }
 
     /**
-     * Get sectorid
+     * Get sectors
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getSectorid()
+    public function getSectors()
     {
-        return $this->sectorid;
+        return $this->sectors;
     }
 }

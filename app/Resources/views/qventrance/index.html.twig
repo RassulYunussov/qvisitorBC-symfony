@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>qvEntrance list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Entrancedate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for qvEntrance in qvEntrances %}
+            <tr>
+                <td><a href="{{ path('entrance_show', { 'id': qvEntrance.id }) }}">{{ qvEntrance.id }}</a></td>
+                <td>{% if qvEntrance.entrancedate %}{{ qvEntrance.entrancedate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('entrance_show', { 'id': qvEntrance.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('entrance_edit', { 'id': qvEntrance.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('entrance_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

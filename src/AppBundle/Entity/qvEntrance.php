@@ -38,7 +38,7 @@ class qvEntrance
      *   @ORM\JoinColumn(name="checkpointid", referencedColumnName="id")
      * })
      */
-    private $checkpointid;
+    private $checkpoint;
 
     /**
      * @var \AppBundle\Entity\qvOrder
@@ -48,7 +48,7 @@ class qvEntrance
      *   @ORM\JoinColumn(name="orderid", referencedColumnName="id")
      * })
      */
-    private $orderid;
+    private $order;
 
     /**
      * @var \AppBundle\Entity\qvUser
@@ -58,7 +58,7 @@ class qvEntrance
      *   @ORM\JoinColumn(name="userid", referencedColumnName="id")
      * })
      */
-    private $userid;
+    private $user;
 
     /**
      * @var \AppBundle\Entity\qvVisitor
@@ -68,10 +68,24 @@ class qvEntrance
      *   @ORM\JoinColumn(name="visitorid", referencedColumnName="id")
      * })
      */
-    private $visitorid;
-
-
-
+    private $visitor;
+   /**
+    * @var string
+    * 
+    * 
+    *  
+    */
+    
+    /**
+     * toString name
+     * 
+     * return string
+     */
+    public function __toString() 
+	{
+    	return  $this->visitor;
+    }
+  
     /**
      * Get id
      *
@@ -106,99 +120,101 @@ class qvEntrance
         return $this->entrancedate;
     }
 
+      
     /**
-     * Set checkpointid
+     * Set checkpoint
      *
-     * @param \AppBundle\Entity\qvCheckpoint $checkpointid
+     * @param \AppBundle\Entity\qvCheckpoint $checkpoint
      *
      * @return qvEntrance
      */
-    public function setCheckpointid(\AppBundle\Entity\qvCheckpoint $checkpointid = null)
+    public function setCheckpoint(\AppBundle\Entity\qvCheckpoint $checkpoint = null)
     {
-        $this->checkpointid = $checkpointid;
+        $this->checkpoint = $checkpoint;
 
         return $this;
     }
 
     /**
-     * Get checkpointid
+     * Get checkpoint
      *
      * @return \AppBundle\Entity\qvCheckpoint
      */
-    public function getCheckpointid()
+    public function getCheckpoint()
     {
-        return $this->checkpointid;
+        return $this->checkpoint;
     }
-
+    
     /**
-     * Set orderid
+     * Set order
      *
-     * @param \AppBundle\Entity\qvOrder $orderid
+     * @param \AppBundle\Entity\qvOrder $order
      *
      * @return qvEntrance
      */
-    public function setOrderid(\AppBundle\Entity\qvOrder $orderid = null)
+    public function setOrder(\AppBundle\Entity\qvOrder $order = null)
     {
-        $this->orderid = $orderid;
+        $this->order = $order;
 
         return $this;
     }
 
     /**
-     * Get orderid
+     * Get order
      *
      * @return \AppBundle\Entity\qvOrder
      */
-    public function getOrderid()
+    public function getOrder()
     {
-        return $this->orderid;
+        return $this->order;
     }
 
     /**
-     * Set userid
+     * Set user
      *
-     * @param \AppBundle\Entity\qvUser $userid
+     * @param \AppBundle\Entity\qvUser $user
      *
      * @return qvEntrance
      */
-    public function setUserid(\AppBundle\Entity\qvUser $userid = null)
+    public function setUser(\AppBundle\Entity\qvUser $user = null)
     {
-        $this->userid = $userid;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get userid
+     * Get user
      *
      * @return \AppBundle\Entity\qvUser
      */
-    public function getUserid()
+    public function getUser()
     {
-        return $this->userid;
+        return $this->user;
     }
 
     /**
-     * Set visitorid
+     * Set visitor
      *
-     * @param \AppBundle\Entity\qvVisitor $visitorid
+     * @param \AppBundle\Entity\qvVisitor $visitor
      *
      * @return qvEntrance
      */
-    public function setVisitorid(\AppBundle\Entity\qvVisitor $visitorid = null)
+    public function setVisitor(\AppBundle\Entity\qvVisitor $visitor = null)
     {
-        $this->visitorid = $visitorid;
+        $this->visitor = $visitor;
 
         return $this;
     }
 
+    
     /**
-     * Get visitorid
+     * Get visitor
      *
      * @return \AppBundle\Entity\qvVisitor
      */
-    public function getVisitorid()
+    public function getVisitor()
     {
-        return $this->visitorid;
+        return $this->visitor;
     }
 }

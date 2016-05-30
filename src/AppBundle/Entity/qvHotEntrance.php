@@ -86,7 +86,7 @@ class qvHotEntrance
      *   @ORM\JoinColumn(name="checkpointid", referencedColumnName="id")
      * })
      */
-    private $checkpointid;
+    private $checkpoint;
 
     /**
      * @var \AppBundle\Entity\qvLeaser
@@ -96,7 +96,7 @@ class qvHotEntrance
      *   @ORM\JoinColumn(name="leaserid", referencedColumnName="id")
      * })
      */
-    private $leaserid;
+    private $leaser;
 
     /**
      * @var \AppBundle\Entity\qvUser
@@ -106,9 +106,10 @@ class qvHotEntrance
      *   @ORM\JoinColumn(name="userid", referencedColumnName="id")
      * })
      */
-    private $userid;
+    private $user;
 
 
+  
 
     /**
      * Get id
@@ -142,6 +143,11 @@ class qvHotEntrance
     public function getFirstname()
     {
         return $this->firstname;
+    }
+    
+  public function __toString()
+    {
+    	return $this->firstname;
     }
 
     /**
@@ -313,74 +319,74 @@ class qvHotEntrance
     }
 
     /**
-     * Set checkpointid
+     * Set checkpoint
      *
-     * @param \AppBundle\Entity\qvCheckpoint $checkpointid
+     * @param \AppBundle\Entity\qvCheckpoint $checkpoint
      *
      * @return qvHotEntrance
      */
-    public function setCheckpointid(\AppBundle\Entity\qvCheckpoint $checkpointid = null)
+    public function setCheckpoint(\AppBundle\Entity\qvCheckpoint $checkpoint = null)
     {
-        $this->checkpointid = $checkpointid;
+        $this->checkpoint = $checkpoint;
 
         return $this;
     }
 
     /**
-     * Get checkpointid
+     * Get checkpoint
      *
      * @return \AppBundle\Entity\qvCheckpoint
      */
-    public function getCheckpointid()
+    public function getCheckpoint()
     {
-        return $this->checkpointid;
+        return $this->checkpoint;
     }
 
     /**
-     * Set leaserid
+     * Set leaser
      *
-     * @param \AppBundle\Entity\qvLeaser $leaserid
+     * @param \AppBundle\Entity\qvLeaser $leaser
      *
      * @return qvHotEntrance
      */
-    public function setLeaserid(\AppBundle\Entity\qvLeaser $leaserid = null)
+    public function setLeaser(\AppBundle\Entity\qvLeaser $leaser = null)
     {
-        $this->leaserid = $leaserid;
+        $this->leaser = $leaser;
 
         return $this;
     }
 
     /**
-     * Get leaserid
+     * Get leaser
      *
      * @return \AppBundle\Entity\qvLeaser
      */
-    public function getLeaserid()
+    public function getLeaser()
     {
-        return $this->leaserid;
+        return $this->leaser;
     }
 
     /**
-     * Set userid
+     * Set user
      *
-     * @param \AppBundle\Entity\qvUser $userid
+     * @param \AppBundle\Entity\qvUser $user
      *
      * @return qvHotEntrance
      */
-    public function setUserid(\AppBundle\Entity\qvUser $userid = null)
+    public function setUser(\AppBundle\Entity\qvUser $user = null)
     {
-        $this->userid = $userid;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get userid
+     * Get user
      *
      * @return \AppBundle\Entity\qvUser
      */
-    public function getUserid()
+    public function getUser()
     {
-        return $this->userid;
+        return $this->user;
     }
 }

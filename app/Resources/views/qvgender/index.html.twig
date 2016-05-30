@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>qvGender list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for qvGender in qvGenders %}
+            <tr>
+                <td><a href="{{ path('gender_show', { 'id': qvGender.id }) }}">{{ qvGender.id }}</a></td>
+                <td>{{ qvGender.name }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('gender_show', { 'id': qvGender.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('gender_edit', { 'id': qvGender.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('gender_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>qvFloor list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for qvFloor in qvFloors %}
+            <tr>
+                <td><a href="{{ path('floor_show', { 'id': qvFloor.id }) }}">{{ qvFloor.id }}</a></td>
+                <td>{{ qvFloor.name }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('floor_show', { 'id': qvFloor.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('floor_edit', { 'id': qvFloor.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('floor_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}
