@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>qvVisitorDoc list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Number</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Issuedate</th>
+                <th>Expiredate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for qvVisitorDoc in qvVisitorDocs %}
+            <tr>
+                <td><a href="{{ path('visitordoc_show', { 'id': qvVisitorDoc.id }) }}">{{ qvVisitorDoc.id }}</a></td>
+                <td>{{ qvVisitorDoc.number }}</td>
+                <td>{{ qvVisitorDoc.firstname }}</td>
+                <td>{{ qvVisitorDoc.lastname }}</td>
+                <td>{% if qvVisitorDoc.issuedate %}{{ qvVisitorDoc.issuedate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if qvVisitorDoc.expiredate %}{{ qvVisitorDoc.expiredate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('visitordoc_show', { 'id': qvVisitorDoc.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('visitordoc_edit', { 'id': qvVisitorDoc.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('visitordoc_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}
