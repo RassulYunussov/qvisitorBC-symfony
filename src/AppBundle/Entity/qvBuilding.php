@@ -38,7 +38,7 @@ class qvBuilding
      *   @ORM\JoinColumn(name="businesscenterid", referencedColumnName="id")
      * })
      */
-    private $businesscenterid;
+    private $businesscenter;
 
 
 
@@ -51,8 +51,8 @@ class qvBuilding
     {
         return $this->id;
     }
-
-    /**
+  
+      /**
      * Set name
      *
      * @param string $name
@@ -76,27 +76,39 @@ class qvBuilding
         return $this->name;
     }
 
+/**
+     * toString name
+     * 
+     * @return string
+     */
+    public function __toString() 
+	{
+    	return  $this->name;
+    }
+    
     /**
-     * Set businesscenterid
+     * Set businesscenter
      *
-     * @param \AppBundle\Entity\qvBusinessCenter $businesscenterid
+     * @param \AppBundle\Entity\qvBusinessCenter $businesscenter
      *
      * @return qvBuilding
      */
-    public function setBusinesscenterid(\AppBundle\Entity\qvBusinessCenter $businesscenterid = null)
+    public function setBusinesscenter(\AppBundle\Entity\qvBusinessCenter $businesscenter = null)
     {
-        $this->businesscenterid = $businesscenterid;
+        $this->businesscenter = $businesscenter;
 
         return $this;
     }
 
     /**
-     * Get businesscenterid
+     * Get businesscenter
      *
      * @return \AppBundle\Entity\qvBusinessCenter
      */
-    public function getBusinesscenterid()
+    public function getBusinesscenter()
     {
-        return $this->businesscenterid;
+        return $this->businesscenter;
     }
+    
+ 
 }

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>qvContract list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Startdate</th>
+                <th>Enddate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for qvContract in qvContracts %}
+            <tr>
+                <td><a href="{{ path('contract_show', { 'id': qvContract.id }) }}">{{ qvContract.id }}</a></td>
+                <td>{{ qvContract.name }}</td>
+                <td>{% if qvContract.startdate %}{{ qvContract.startdate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if qvContract.enddate %}{{ qvContract.enddate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('contract_show', { 'id': qvContract.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('contract_edit', { 'id': qvContract.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('contract_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

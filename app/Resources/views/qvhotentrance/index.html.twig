@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>qvHotEntrance list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Patronimic</th>
+                <th>Documentnumber</th>
+                <th>Organization</th>
+                <th>Attendant</th>
+                <th>Comment</th>
+                <th>Entrancedate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for qvHotEntrance in qvHotEntrances %}
+            <tr>
+                <td><a href="{{ path('hotentrance_show', { 'id': qvHotEntrance.id }) }}">{{ qvHotEntrance.id }}</a></td>
+                <td>{{ qvHotEntrance.firstname }}</td>
+                <td>{{ qvHotEntrance.lastname }}</td>
+                <td>{{ qvHotEntrance.patronimic }}</td>
+                <td>{{ qvHotEntrance.documentnumber }}</td>
+                <td>{{ qvHotEntrance.organization }}</td>
+                <td>{{ qvHotEntrance.attendant }}</td>
+                <td>{{ qvHotEntrance.comment }}</td>
+                <td>{% if qvHotEntrance.entrancedate %}{{ qvHotEntrance.entrancedate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('hotentrance_show', { 'id': qvHotEntrance.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('hotentrance_edit', { 'id': qvHotEntrance.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('hotentrance_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

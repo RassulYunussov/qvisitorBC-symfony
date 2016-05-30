@@ -38,7 +38,7 @@ class qvCheckpoint
      *   @ORM\JoinColumn(name="buildingid", referencedColumnName="id")
      * })
      */
-    private $buildingid;
+    private $building;
 
 
 
@@ -77,26 +77,32 @@ class qvCheckpoint
     }
 
     /**
-     * Set buildingid
+     * Set building
      *
-     * @param \AppBundle\Entity\qvBuilding $buildingid
+     * @param \AppBundle\Entity\qvBuilding $building
      *
      * @return qvCheckpoint
      */
-    public function setBuildingid(\AppBundle\Entity\qvBuilding $buildingid = null)
+    public function setBuilding(\AppBundle\Entity\qvBuilding $building = null)
     {
-        $this->buildingid = $buildingid;
+        $this->building = $building;
 
         return $this;
     }
 
     /**
-     * Get buildingid
+     * Get building
      *
      * @return \AppBundle\Entity\qvBuilding
      */
-    public function getBuildingid()
+    public function getBuilding()
     {
-        return $this->buildingid;
+        return $this->building;
     }
+   
+    public function __toString()
+    {
+    	return $this->name;
+    }
+    
 }

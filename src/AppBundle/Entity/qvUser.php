@@ -112,6 +112,17 @@ class qvUser
     }
 
     /**
+     * toString login
+     * 
+     * @return string
+     */
+    public function __toString() 
+	{
+    	return  $this->login;
+    }
+    
+    
+    /**
      * Set password
      *
      * @param string $password
@@ -135,6 +146,7 @@ class qvUser
         return $this->password;
     }
 
+       
     /**
      * Set disabled
      *
