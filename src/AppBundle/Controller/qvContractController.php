@@ -28,7 +28,7 @@ class qvContractController extends Controller
 
         $qvContracts = $em->getRepository('AppBundle:qvContract')->findAll();
 
-        return $this->render('qvcontract/index.html.twig', array(
+        return $this->render('AppBundle:qvcontract:index.html.twig', array(
             'qvContracts' => $qvContracts,
         ));
     }
@@ -53,7 +53,7 @@ class qvContractController extends Controller
             return $this->redirectToRoute('contract_show', array('id' => $qvContract->getId()));
         }
 
-        return $this->render('qvcontract/new.html.twig', array(
+        return $this->render('AppBundle:qvcontract:new.html.twig', array(
             'qvContract' => $qvContract,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvContractController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvContract);
 
-        return $this->render('qvcontract/show.html.twig', array(
+        return $this->render('AppBundle:qvcontract:show.html.twig', array(
             'qvContract' => $qvContract,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvContractController extends Controller
             return $this->redirectToRoute('contract_edit', array('id' => $qvContract->getId()));
         }
 
-        return $this->render('qvcontract/edit.html.twig', array(
+        return $this->render('AppBundle:qvcontract:edit.html.twig', array(
             'qvContract' => $qvContract,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

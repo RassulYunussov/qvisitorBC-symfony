@@ -28,7 +28,7 @@ class qvSectorController extends Controller
 
         $qvSectors = $em->getRepository('AppBundle:qvSector')->findAll();
 
-        return $this->render('qvsector/index.html.twig', array(
+        return $this->render('AppBundle:qvsector:index.html.twig', array(
             'qvSectors' => $qvSectors,
         ));
     }
@@ -53,7 +53,7 @@ class qvSectorController extends Controller
             return $this->redirectToRoute('sector_show', array('id' => $qvSector->getId()));
         }
 
-        return $this->render('qvsector/new.html.twig', array(
+        return $this->render('AppBundle:qvsector:new.html.twig', array(
             'qvSector' => $qvSector,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvSectorController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvSector);
 
-        return $this->render('qvsector/show.html.twig', array(
+        return $this->render('AppBundle:qvsector:show.html.twig', array(
             'qvSector' => $qvSector,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvSectorController extends Controller
             return $this->redirectToRoute('sector_edit', array('id' => $qvSector->getId()));
         }
 
-        return $this->render('qvsector/edit.html.twig', array(
+        return $this->render('AppBundle:qvsector:edit.html.twig', array(
             'qvSector' => $qvSector,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

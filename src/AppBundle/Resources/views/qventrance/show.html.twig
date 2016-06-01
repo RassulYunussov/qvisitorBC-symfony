@@ -1,0 +1,32 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>qvEntrance</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ qvEntrance.id }}</td>
+            </tr>
+            <tr>
+                <th>Entrancedate</th>
+                <td>{% if qvEntrance.entrancedate %}{{ qvEntrance.entrancedate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('entrance_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('entrance_edit', { 'id': qvEntrance.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

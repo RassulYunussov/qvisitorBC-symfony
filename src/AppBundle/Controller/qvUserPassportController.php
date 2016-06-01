@@ -28,7 +28,7 @@ class qvUserPassportController extends Controller
 
         $qvUserPassports = $em->getRepository('AppBundle:qvUserPassport')->findAll();
 
-        return $this->render('qvuserpassport/index.html.twig', array(
+        return $this->render('AppBundle:qvuserpassport:index.html.twig', array(
             'qvUserPassports' => $qvUserPassports,
         ));
     }
@@ -53,7 +53,7 @@ class qvUserPassportController extends Controller
             return $this->redirectToRoute('userpassport_show', array('id' => $qvUserPassport->getId()));
         }
 
-        return $this->render('qvuserpassport/new.html.twig', array(
+        return $this->render('AppBundle:qvuserpassport:new.html.twig', array(
             'qvUserPassport' => $qvUserPassport,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvUserPassportController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvUserPassport);
 
-        return $this->render('qvuserpassport/show.html.twig', array(
+        return $this->render('AppBundle:qvuserpassport:show.html.twig', array(
             'qvUserPassport' => $qvUserPassport,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvUserPassportController extends Controller
             return $this->redirectToRoute('userpassport_edit', array('id' => $qvUserPassport->getId()));
         }
 
-        return $this->render('qvuserpassport/edit.html.twig', array(
+        return $this->render('AppBundle:qvuserpassport:edit.html.twig', array(
             'qvUserPassport' => $qvUserPassport,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

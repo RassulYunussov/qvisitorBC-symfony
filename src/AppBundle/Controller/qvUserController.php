@@ -28,7 +28,7 @@ class qvUserController extends Controller
 
         $qvUsers = $em->getRepository('AppBundle:qvUser')->findAll();
 
-        return $this->render('qvuser/index.html.twig', array(
+        return $this->render('AppBundle:qvuser:index.html.twig', array(
             'qvUsers' => $qvUsers,
         ));
     }
@@ -53,7 +53,7 @@ class qvUserController extends Controller
             return $this->redirectToRoute('user_show', array('id' => $qvUser->getId()));
         }
 
-        return $this->render('qvuser/new.html.twig', array(
+        return $this->render('AppBundle:qvuser:new.html.twig', array(
             'qvUser' => $qvUser,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvUserController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvUser);
 
-        return $this->render('qvuser/show.html.twig', array(
+        return $this->render('AppBundle:qvuser:show.html.twig', array(
             'qvUser' => $qvUser,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvUserController extends Controller
             return $this->redirectToRoute('user_edit', array('id' => $qvUser->getId()));
         }
 
-        return $this->render('qvuser/edit.html.twig', array(
+        return $this->render('AppBundle:qvuser:edit.html.twig', array(
             'qvUser' => $qvUser,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

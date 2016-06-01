@@ -28,7 +28,7 @@ class qvFloorController extends Controller
 
         $qvFloors = $em->getRepository('AppBundle:qvFloor')->findAll();
 
-        return $this->render('qvfloor/index.html.twig', array(
+        return $this->render('AppBundle:qvfloor:index.html.twig', array(
             'qvFloors' => $qvFloors,
         ));
     }
@@ -53,7 +53,7 @@ class qvFloorController extends Controller
             return $this->redirectToRoute('floor_show', array('id' => $qvFloor->getId()));
         }
 
-        return $this->render('qvfloor/new.html.twig', array(
+        return $this->render('AppBundle:qvfloor:new.html.twig', array(
             'qvFloor' => $qvFloor,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvFloorController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvFloor);
 
-        return $this->render('qvfloor/show.html.twig', array(
+        return $this->render('AppBundle:qvfloor:show.html.twig', array(
             'qvFloor' => $qvFloor,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvFloorController extends Controller
             return $this->redirectToRoute('floor_edit', array('id' => $qvFloor->getId()));
         }
 
-        return $this->render('qvfloor/edit.html.twig', array(
+        return $this->render('AppBundle:qvfloor:edit.html.twig', array(
             'qvFloor' => $qvFloor,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

@@ -28,7 +28,7 @@ class qvGenderController extends Controller
 
         $qvGenders = $em->getRepository('AppBundle:qvGender')->findAll();
 
-        return $this->render('qvgender/index.html.twig', array(
+        return $this->render('AppBundle:qvgender:index.html.twig', array(
             'qvGenders' => $qvGenders,
         ));
     }
@@ -53,7 +53,7 @@ class qvGenderController extends Controller
             return $this->redirectToRoute('gender_show', array('id' => $qvGender->getId()));
         }
 
-        return $this->render('qvgender/new.html.twig', array(
+        return $this->render('AppBundle:qvgender:new.html.twig', array(
             'qvGender' => $qvGender,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvGenderController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvGender);
 
-        return $this->render('qvgender/show.html.twig', array(
+        return $this->render('AppBundle:qvgender:show.html.twig', array(
             'qvGender' => $qvGender,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvGenderController extends Controller
             return $this->redirectToRoute('gender_edit', array('id' => $qvGender->getId()));
         }
 
-        return $this->render('qvgender/edit.html.twig', array(
+        return $this->render('AppBundle:qvgender:edit.html.twig', array(
             'qvGender' => $qvGender,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

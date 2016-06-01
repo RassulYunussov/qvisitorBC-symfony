@@ -28,7 +28,7 @@ class qvLeaserController extends Controller
 
         $qvLeasers = $em->getRepository('AppBundle:qvLeaser')->findAll();
 
-        return $this->render('qvleaser/index.html.twig', array(
+        return $this->render('AppBundle:qvleaser:index.html.twig', array(
             'qvLeasers' => $qvLeasers,
         ));
     }
@@ -53,7 +53,7 @@ class qvLeaserController extends Controller
             return $this->redirectToRoute('leaser_show', array('id' => $qvLeaser->getId()));
         }
 
-        return $this->render('qvleaser/new.html.twig', array(
+        return $this->render('AppBundle:qvleaser:new.html.twig', array(
             'qvLeaser' => $qvLeaser,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvLeaserController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvLeaser);
 
-        return $this->render('qvleaser/show.html.twig', array(
+        return $this->render('AppBundle:qvleaser:show.html.twig', array(
             'qvLeaser' => $qvLeaser,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvLeaserController extends Controller
             return $this->redirectToRoute('leaser_edit', array('id' => $qvLeaser->getId()));
         }
 
-        return $this->render('qvleaser/edit.html.twig', array(
+        return $this->render('AppBundle:qvleaser:edit.html.twig', array(
             'qvLeaser' => $qvLeaser,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

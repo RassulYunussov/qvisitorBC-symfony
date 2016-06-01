@@ -1,0 +1,43 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>qvUser list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Login</th>
+                <th>Password</th>
+                <th>Disabled</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for qvUser in qvUsers %}
+            <tr>
+                <td><a href="{{ path('user_show', { 'id': qvUser.id }) }}">{{ qvUser.id }}</a></td>
+                <td>{{ qvUser.login }}</td>
+                <td>{{ qvUser.password }}</td>
+                <td>{{ qvUser.disabled }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('user_show', { 'id': qvUser.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('user_edit', { 'id': qvUser.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('user_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

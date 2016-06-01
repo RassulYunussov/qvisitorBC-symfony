@@ -1,0 +1,44 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>qvUserPassport</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ qvUserPassport.id }}</td>
+            </tr>
+            <tr>
+                <th>Firstname</th>
+                <td>{{ qvUserPassport.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{ qvUserPassport.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Patronimic</th>
+                <td>{{ qvUserPassport.patronimic }}</td>
+            </tr>
+            <tr>
+                <th>Birthdate</th>
+                <td>{% if qvUserPassport.birthdate %}{{ qvUserPassport.birthdate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('userpassport_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('userpassport_edit', { 'id': qvUserPassport.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

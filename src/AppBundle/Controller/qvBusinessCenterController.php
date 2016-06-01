@@ -28,7 +28,7 @@ class qvBusinessCenterController extends Controller
 
         $qvBusinessCenters = $em->getRepository('AppBundle:qvBusinessCenter')->findAll();
 
-        return $this->render('qvbusinesscenter/index.html.twig', array(
+        return $this->render('AppBundle:qvbusinesscenter:index.html.twig', array(
             'qvBusinessCenters' => $qvBusinessCenters,
         ));
     }
@@ -53,8 +53,8 @@ class qvBusinessCenterController extends Controller
             return $this->redirectToRoute('bc_show', array('id' => $qvBusinessCenter->getId()));
         }
 
-        return $this->render('qvbusinesscenter/new.html.twig', array(
-            'qvBusinessCenter' => $qvBusinessCenter,
+        return $this->render('AppBundle:qvbusinesscenter:new.html.twig', array(
+            'AppBundle:qvBusinessCenter' => $qvBusinessCenter,
             'form' => $form->createView(),
         ));
     }
@@ -69,7 +69,7 @@ class qvBusinessCenterController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvBusinessCenter);
 
-        return $this->render('qvbusinesscenter/show.html.twig', array(
+        return $this->render('AppBundle:qvbusinesscenter:show.html.twig', array(
             'qvBusinessCenter' => $qvBusinessCenter,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvBusinessCenterController extends Controller
             return $this->redirectToRoute('bc_edit', array('id' => $qvBusinessCenter->getId()));
         }
 
-        return $this->render('qvbusinesscenter/edit.html.twig', array(
+        return $this->render('AppBundle:qvbusinesscenter:edit.html.twig', array(
             'qvBusinessCenter' => $qvBusinessCenter,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

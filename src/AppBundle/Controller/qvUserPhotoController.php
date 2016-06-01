@@ -28,7 +28,7 @@ class qvUserPhotoController extends Controller
 
         $qvUserPhotos = $em->getRepository('AppBundle:qvUserPhoto')->findAll();
 
-        return $this->render('qvuserphoto/index.html.twig', array(
+        return $this->render('AppBundle:qvuserphoto:index.html.twig', array(
             'qvUserPhotos' => $qvUserPhotos,
         ));
     }
@@ -53,7 +53,7 @@ class qvUserPhotoController extends Controller
             return $this->redirectToRoute('userphoto_show', array('id' => $qvUserPhoto->getId()));
         }
 
-        return $this->render('qvuserphoto/new.html.twig', array(
+        return $this->render('AppBundle:qvuserphoto:new.html.twig', array(
             'qvUserPhoto' => $qvUserPhoto,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvUserPhotoController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvUserPhoto);
 
-        return $this->render('qvuserphoto/show.html.twig', array(
+        return $this->render('AppBundle:qvuserphoto:show.html.twig', array(
             'qvUserPhoto' => $qvUserPhoto,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvUserPhotoController extends Controller
             return $this->redirectToRoute('userphoto_edit', array('id' => $qvUserPhoto->getId()));
         }
 
-        return $this->render('qvuserphoto/edit.html.twig', array(
+        return $this->render('AppBundle:qvuserphoto:edit.html.twig', array(
             'qvUserPhoto' => $qvUserPhoto,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

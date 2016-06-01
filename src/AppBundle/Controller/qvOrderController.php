@@ -28,7 +28,7 @@ class qvOrderController extends Controller
 
         $qvOrders = $em->getRepository('AppBundle:qvOrder')->findAll();
 
-        return $this->render('qvorder/index.html.twig', array(
+        return $this->render('AppBundle:qvorder:index.html.twig', array(
             'qvOrders' => $qvOrders,
         ));
     }
@@ -53,7 +53,7 @@ class qvOrderController extends Controller
             return $this->redirectToRoute('order_show', array('id' => $qvOrder->getId()));
         }
 
-        return $this->render('qvorder/new.html.twig', array(
+        return $this->render('AppBundle:qvorder:new.html.twig', array(
             'qvOrder' => $qvOrder,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvOrderController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvOrder);
 
-        return $this->render('qvorder/show.html.twig', array(
+        return $this->render('AppBundle:qvorder:show.html.twig', array(
             'qvOrder' => $qvOrder,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvOrderController extends Controller
             return $this->redirectToRoute('order_edit', array('id' => $qvOrder->getId()));
         }
 
-        return $this->render('qvorder/edit.html.twig', array(
+        return $this->render('AppBundle:qvbusinesscenter:edit.html.twig', array(
             'qvOrder' => $qvOrder,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
