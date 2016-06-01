@@ -105,6 +105,10 @@ class qvUserPassport
     {
         return $this->firstname;
     }
+    public function __toString()
+    {
+    	return $this->firstname;
+    }
 
     /**
      * Set lastname
@@ -116,7 +120,6 @@ class qvUserPassport
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
-
         return $this;
     }
 
