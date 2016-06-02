@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+         <!-- Bootstrap Core CSS -->
+    <link href="{{ asset('bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('bootstrap/css/sb-admin.css')}}" rel="stylesheet">
+    <link href="{{ asset('bootstrap/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        {% block javascripts %}
+    <script src="{{asset('bootstrap/js/jquery.js')}}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{asset('bootstrap/js/bootstrap.min.js')}}"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <script src="{{asset('bootstrap/js/plugins/morris/raphael.min.js')}}"></script>
+   
+        
+        {% endblock %}
+    </body>
+</html>
