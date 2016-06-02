@@ -1,0 +1,44 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>qvVisitor</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ qvVisitor.id }}</td>
+            </tr>
+            <tr>
+                <th>Firstname</th>
+                <td>{{ qvVisitor.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{ qvVisitor.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Patronimic</th>
+                <td>{{ qvVisitor.patronimic }}</td>
+            </tr>
+            <tr>
+                <th>Birthdate</th>
+                <td>{% if qvVisitor.birthdate %}{{ qvVisitor.birthdate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('visitor_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('visitor_edit', { 'id': qvVisitor.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

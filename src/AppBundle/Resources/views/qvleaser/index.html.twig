@@ -1,0 +1,41 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>qvLeaser list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Bin</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for qvLeaser in qvLeasers %}
+            <tr>
+                <td><a href="{{ path('leaser_show', { 'id': qvLeaser.id }) }}">{{ qvLeaser.id }}</a></td>
+                <td>{{ qvLeaser.name }}</td>
+                <td>{{ qvLeaser.bin }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('leaser_show', { 'id': qvLeaser.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('leaser_edit', { 'id': qvLeaser.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('leaser_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

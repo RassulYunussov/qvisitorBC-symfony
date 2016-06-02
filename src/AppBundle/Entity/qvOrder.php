@@ -73,9 +73,17 @@ class qvOrder
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvVisitor", mappedBy="orderid")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvVisitor", mappedBy="orders")
      */
     private $visitors;
+    
+    /**
+     * @var \string
+     *
+     * 
+     */
+    private $str;
+    
 
     /**
      * Constructor
@@ -85,6 +93,15 @@ class qvOrder
         $this->visitors = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    /**
+     * Get str
+     * 
+     * @return string
+     */
+    public function __toString()
+    {
+    	return $this->str;
+    }
 
     /**
      * Get id
@@ -241,9 +258,9 @@ class qvOrder
     }
 
     /**
-     * Add visitor
+     * Add visitors
      *
-     * @param \AppBundle\Entity\qvVisitor $visitor
+     * @param \AppBundle\Entity\qvVisitor $visitors
      *
      * @return qvOrder
      */

@@ -1,0 +1,45 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>qvOrder list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Sdate</th>
+                <th>Edate</th>
+                <th>Opentime</th>
+                <th>Closetime</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for qvOrder in qvOrders %}
+            <tr>
+                <td><a href="{{ path('order_show', { 'id': qvOrder.id }) }}">{{ qvOrder.id }}</a></td>
+                <td>{% if qvOrder.sdate %}{{ qvOrder.sdate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if qvOrder.edate %}{{ qvOrder.edate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if qvOrder.opentime %}{{ qvOrder.opentime|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if qvOrder.closetime %}{{ qvOrder.closetime|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('order_show', { 'id': qvOrder.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('order_edit', { 'id': qvOrder.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('order_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

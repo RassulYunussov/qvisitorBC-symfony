@@ -12,7 +12,7 @@ use AppBundle\Form\qvOrderTypeType;
 /**
  * qvOrderType controller.
  *
- * @Route("/qvordertype")
+ * @Route("/ordertype")
  */
 class qvOrderTypeController extends Controller
 {
@@ -28,7 +28,7 @@ class qvOrderTypeController extends Controller
 
         $qvOrderTypes = $em->getRepository('AppBundle:qvOrderType')->findAll();
 
-        return $this->render('qvordertype/index.html.twig', array(
+        return $this->render('AppBundle:qvordertype:index.html.twig', array(
             'qvOrderTypes' => $qvOrderTypes,
         ));
     }
@@ -53,7 +53,7 @@ class qvOrderTypeController extends Controller
             return $this->redirectToRoute('qvordertype_show', array('id' => $qvOrderType->getId()));
         }
 
-        return $this->render('qvordertype/new.html.twig', array(
+        return $this->render('AppBundle:qvordertype:new.html.twig', array(
             'qvOrderType' => $qvOrderType,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvOrderTypeController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvOrderType);
 
-        return $this->render('qvordertype/show.html.twig', array(
+        return $this->render('AppBundle:qvordertype:show.html.twig', array(
             'qvOrderType' => $qvOrderType,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvOrderTypeController extends Controller
             return $this->redirectToRoute('qvordertype_edit', array('id' => $qvOrderType->getId()));
         }
 
-        return $this->render('qvordertype/edit.html.twig', array(
+        return $this->render('AppBundle:qvordertype:edit.html.twig', array(
             'qvOrderType' => $qvOrderType,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

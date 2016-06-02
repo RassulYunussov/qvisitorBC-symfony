@@ -28,7 +28,7 @@ class qvRoleController extends Controller
 
         $qvRoles = $em->getRepository('AppBundle:qvRole')->findAll();
 
-        return $this->render('qvrole/index.html.twig', array(
+        return $this->render('AppBundle:qvrole:index.html.twig', array(
             'qvRoles' => $qvRoles,
         ));
     }
@@ -53,7 +53,7 @@ class qvRoleController extends Controller
             return $this->redirectToRoute('role_show', array('id' => $qvRole->getId()));
         }
 
-        return $this->render('qvrole/new.html.twig', array(
+        return $this->render('AppBundle:qvrole:new.html.twig', array(
             'qvRole' => $qvRole,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvRoleController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvRole);
 
-        return $this->render('qvrole/show.html.twig', array(
+        return $this->render('AppBundle:qvrole:show.html.twig', array(
             'qvRole' => $qvRole,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvRoleController extends Controller
             return $this->redirectToRoute('role_edit', array('id' => $qvRole->getId()));
         }
 
-        return $this->render('qvrole/edit.html.twig', array(
+        return $this->render('AppBundle:qvrole:edit.html.twig', array(
             'qvRole' => $qvRole,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

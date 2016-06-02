@@ -1,0 +1,44 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>qvOrder</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ qvOrder.id }}</td>
+            </tr>
+            <tr>
+                <th>Sdate</th>
+                <td>{% if qvOrder.sdate %}{{ qvOrder.sdate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Edate</th>
+                <td>{% if qvOrder.edate %}{{ qvOrder.edate|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Opentime</th>
+                <td>{% if qvOrder.opentime %}{{ qvOrder.opentime|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Closetime</th>
+                <td>{% if qvOrder.closetime %}{{ qvOrder.closetime|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('order_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('order_edit', { 'id': qvOrder.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

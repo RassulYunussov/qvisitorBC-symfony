@@ -28,7 +28,7 @@ class qvCheckpointController extends Controller
 
         $qvCheckpoints = $em->getRepository('AppBundle:qvCheckpoint')->findAll();
 
-        return $this->render('qvcheckpoint/index.html.twig', array(
+        return $this->render('AppBundle:qvcheckpoint:index.html.twig', array(
             'qvCheckpoints' => $qvCheckpoints,
         ));
     }
@@ -53,7 +53,7 @@ class qvCheckpointController extends Controller
             return $this->redirectToRoute('checkpoint_show', array('id' => $qvCheckpoint->getId()));
         }
 
-        return $this->render('qvcheckpoint/new.html.twig', array(
+        return $this->render('AppBundle:qvcheckpoint:new.html.twig', array(
             'qvCheckpoint' => $qvCheckpoint,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvCheckpointController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvCheckpoint);
 
-        return $this->render('qvcheckpoint/show.html.twig', array(
+        return $this->render('AppBundle:qvcheckpoint:show.html.twig', array(
             'qvCheckpoint' => $qvCheckpoint,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvCheckpointController extends Controller
             return $this->redirectToRoute('checkpoint_edit', array('id' => $qvCheckpoint->getId()));
         }
 
-        return $this->render('qvcheckpoint/edit.html.twig', array(
+        return $this->render('AppBundle:qvcheckpoint:edit.html.twig', array(
             'qvCheckpoint' => $qvCheckpoint,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

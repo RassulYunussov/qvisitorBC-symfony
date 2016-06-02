@@ -28,7 +28,7 @@ class qvVisitorController extends Controller
 
         $qvVisitors = $em->getRepository('AppBundle:qvVisitor')->findAll();
 
-        return $this->render('qvvisitor/index.html.twig', array(
+        return $this->render('AppBundle:qvvisitor:index.html.twig', array(
             'qvVisitors' => $qvVisitors,
         ));
     }
@@ -53,7 +53,7 @@ class qvVisitorController extends Controller
             return $this->redirectToRoute('visitor_show', array('id' => $qvVisitor->getId()));
         }
 
-        return $this->render('qvvisitor/new.html.twig', array(
+        return $this->render('AppBundle:qvvisitor:new.html.twig', array(
             'qvVisitor' => $qvVisitor,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvVisitorController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvVisitor);
 
-        return $this->render('qvvisitor/show.html.twig', array(
+        return $this->render('AppBundle:qvvisitor:show.html.twig', array(
             'qvVisitor' => $qvVisitor,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvVisitorController extends Controller
             return $this->redirectToRoute('visitor_edit', array('id' => $qvVisitor->getId()));
         }
 
-        return $this->render('qvvisitor/edit.html.twig', array(
+        return $this->render('AppBundle:qvvisitor:edit.html.twig', array(
             'qvVisitor' => $qvVisitor,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

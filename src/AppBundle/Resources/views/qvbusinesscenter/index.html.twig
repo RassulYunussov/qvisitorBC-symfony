@@ -1,0 +1,41 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>qvBusinessCenter list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Owner</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for qvBusinessCenter in qvBusinessCenters %}
+            <tr>
+                <td><a href="{{ path('bc_show', { 'id': qvBusinessCenter.id }) }}">{{ qvBusinessCenter.id }}</a></td>
+                <td>{{ qvBusinessCenter.name }}</td>
+                <td>{{ qvBusinessCenter.owner }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('bc_show', { 'id': qvBusinessCenter.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('bc_edit', { 'id': qvBusinessCenter.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('bc_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

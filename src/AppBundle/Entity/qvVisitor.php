@@ -80,10 +80,14 @@ class qvVisitor
      */
     public function __construct()
     {
-        $this->orderid = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->orders = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-
+public function __toString()
+{
+	return $this->firstname;
+}
+    
     /**
      * Get id
      *
@@ -197,7 +201,7 @@ class qvVisitor
      *
      * @return qvVisitor
      */
-    public function setGender(\AppBundle\Entity\Qvgender $gender = null)
+    public function setGender(\AppBundle\Entity\qvgender $gender = null)
     {
         $this->gender = $gender;
 
@@ -207,7 +211,7 @@ class qvVisitor
     /**
      * Get gender
      *
-     * @return \AppBundle\Entity\Qvgender
+     * @return \AppBundle\Entity\qvgender
      */
     public function getGender()
     {
@@ -215,27 +219,27 @@ class qvVisitor
     }
 
     /**
-     * Add order
+     * Add orders
      *
-     * @param \AppBundle\Entity\qvOrder $order
+     * @param \AppBundle\Entity\qvOrder $orders
      *
      * @return qvVisitor
      */
-    public function addOrder(\AppBundle\Entity\qvOrd $orderid)
+    public function addOrders(\AppBundle\Entity\qvOrd $orders)
     {
-        $this->orders[] = $order;
+        $this->orders[] = $orders;
 
         return $this;
     }
 
     /**
-     * Remove order
+     * Remove orders
      *
-     * @param \AppBundle\Entity\qvOrder $order
+     * @param \AppBundle\Entity\qvOrder $orders
      */
-    public function removeOrder(\AppBundle\Entity\qvOrder $order)
+    public function removeOrders(\AppBundle\Entity\qvOrder $orders)
     {
-        $this->orders->removeElement($order);
+        $this->orders->removeElement($orders);
     }
 
     /**

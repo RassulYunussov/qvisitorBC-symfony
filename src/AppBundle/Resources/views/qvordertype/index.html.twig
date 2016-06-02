@@ -1,0 +1,39 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>qvOrderType list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for qvOrderType in qvOrderTypes %}
+            <tr>
+                <td><a href="{{ path('qvordertype_show', { 'id': qvOrderType.id }) }}">{{ qvOrderType.id }}</a></td>
+                <td>{{ qvOrderType.name }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('qvordertype_show', { 'id': qvOrderType.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('qvordertype_edit', { 'id': qvOrderType.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('qvordertype_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -28,7 +28,7 @@ class qvVisitorPhotoController extends Controller
 
         $qvVisitorPhotos = $em->getRepository('AppBundle:qvVisitorPhoto')->findAll();
 
-        return $this->render('qvvisitorphoto/index.html.twig', array(
+        return $this->render('AppBundle:qvvisitorphoto:index.html.twig', array(
             'qvVisitorPhotos' => $qvVisitorPhotos,
         ));
     }
@@ -53,7 +53,7 @@ class qvVisitorPhotoController extends Controller
             return $this->redirectToRoute('visitorphoto_show', array('id' => $qvVisitorPhoto->getId()));
         }
 
-        return $this->render('qvvisitorphoto/new.html.twig', array(
+        return $this->render('AppBundle:qvvisitorphoto:new.html.twig', array(
             'qvVisitorPhoto' => $qvVisitorPhoto,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvVisitorPhotoController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvVisitorPhoto);
 
-        return $this->render('qvvisitorphoto/show.html.twig', array(
+        return $this->render('AppBundle:qvvisitorphoto:show.html.twig', array(
             'qvVisitorPhoto' => $qvVisitorPhoto,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvVisitorPhotoController extends Controller
             return $this->redirectToRoute('visitorphoto_edit', array('id' => $qvVisitorPhoto->getId()));
         }
 
-        return $this->render('qvvisitorphoto/edit.html.twig', array(
+        return $this->render('AppBundle:qvvisitorphoto:edit.html.twig', array(
             'qvVisitorPhoto' => $qvVisitorPhoto,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

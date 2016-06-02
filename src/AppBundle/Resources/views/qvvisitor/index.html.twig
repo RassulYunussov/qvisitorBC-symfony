@@ -1,0 +1,45 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>qvVisitor list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Patronimic</th>
+                <th>Birthdate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for qvVisitor in qvVisitors %}
+            <tr>
+                <td><a href="{{ path('visitor_show', { 'id': qvVisitor.id }) }}">{{ qvVisitor.id }}</a></td>
+                <td>{{ qvVisitor.firstname }}</td>
+                <td>{{ qvVisitor.lastname }}</td>
+                <td>{{ qvVisitor.patronimic }}</td>
+                <td>{% if qvVisitor.birthdate %}{{ qvVisitor.birthdate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('visitor_show', { 'id': qvVisitor.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('visitor_edit', { 'id': qvVisitor.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('visitor_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

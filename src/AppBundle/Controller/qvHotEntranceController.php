@@ -28,7 +28,7 @@ class qvHotEntranceController extends Controller
 
         $qvHotEntrances = $em->getRepository('AppBundle:qvHotEntrance')->findAll();
 
-        return $this->render('qvhotentrance/index.html.twig', array(
+        return $this->render('AppBundle:qvhotentrance:index.html.twig', array(
             'qvHotEntrances' => $qvHotEntrances,
         ));
     }
@@ -53,7 +53,7 @@ class qvHotEntranceController extends Controller
             return $this->redirectToRoute('hotentrance_show', array('id' => $qvHotEntrance->getId()));
         }
 
-        return $this->render('qvhotentrance/new.html.twig', array(
+        return $this->render('AppBundle:qvhotentrance:new.html.twig', array(
             'qvHotEntrance' => $qvHotEntrance,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvHotEntranceController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvHotEntrance);
 
-        return $this->render('qvhotentrance/show.html.twig', array(
+        return $this->render('AppBundle:qvhotentrance:show.html.twig', array(
             'qvHotEntrance' => $qvHotEntrance,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvHotEntranceController extends Controller
             return $this->redirectToRoute('hotentrance_edit', array('id' => $qvHotEntrance->getId()));
         }
 
-        return $this->render('qvhotentrance/edit.html.twig', array(
+        return $this->render('AppBundle:qvhotentrance:edit.html.twig', array(
             'qvHotEntrance' => $qvHotEntrance,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

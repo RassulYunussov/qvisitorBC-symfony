@@ -1,7 +1,109 @@
-{% extends "::base.html.twig" %}
+{% extends 'AppBundle::base.html.twig' %}
 
-{% block title %}AppBundle:Checkpoint:index{% endblock %}
+{% block title %}Checkpoint{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Checkpoint:index page</h1>
+    <div id="wrapper">
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">QVisitor</a>
+            </div>
+               <ul class="nav navbar-right top-nav">
+                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+             <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li>
+                    <li class="active">
+                        <a href= "index">Посетители</a>
+                    </li>
+                    <li>
+                        <a href="">Добавить посетителя без заявки</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+         <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Посетители
+                        </h1>
+                        <div class="col-lg-11">
+                        <div class="form-group input-group">
+                                <input type="text" class="form-control" placeholder="Найти">
+                                <span class="input-group-btn"><button class="btn btn-default" type="button"><i class="fa fa-search"></i></button></span>
+                            </div></div>
+                            <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="active">
+                                 Количество посетителей за сегодня: 
+                            </li>
+                        </ol>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="row">
+                    <div class="col-lg-10">
+                        <h2><small>Список посетителей за сегодня</small></h2>
+                        </div>
+                        <div class="col-lg-1 text-right">
+                        <h2><small> <a class="btn btn-sm btn-info" href="index">Добавить</a></small></h2>
+                        </div>
+                        </div>
+                        <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Время</th>
+                                        <th>ФИО</th>
+                                        <th>Пропуск</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>12:00:00</td>
+                                        <td>Иванов Иван</td>
+                                        <td></td>
+                                        <td><a class="btn btn-sm btn-default" href="index">Просмотр</a></td>
+                                 </tr>
+                                 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 {% endblock %}

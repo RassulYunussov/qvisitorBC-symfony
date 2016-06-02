@@ -1,0 +1,39 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>qvRole list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for qvRole in qvRoles %}
+            <tr>
+                <td><a href="{{ path('role_show', { 'id': qvRole.id }) }}">{{ qvRole.id }}</a></td>
+                <td>{{ qvRole.name }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('role_show', { 'id': qvRole.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('role_edit', { 'id': qvRole.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('role_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

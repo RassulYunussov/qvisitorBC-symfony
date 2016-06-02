@@ -28,7 +28,7 @@ class qvVisitorDocController extends Controller
 
         $qvVisitorDocs = $em->getRepository('AppBundle:qvVisitorDoc')->findAll();
 
-        return $this->render('qvvisitordoc/index.html.twig', array(
+        return $this->render('AppBundle:qvvisitordoc:index.html.twig', array(
             'qvVisitorDocs' => $qvVisitorDocs,
         ));
     }
@@ -53,7 +53,7 @@ class qvVisitorDocController extends Controller
             return $this->redirectToRoute('visitordoc_show', array('id' => $qvVisitorDoc->getId()));
         }
 
-        return $this->render('qvvisitordoc/new.html.twig', array(
+        return $this->render('AppBundle:qvvisitordoc:new.html.twig', array(
             'qvVisitorDoc' => $qvVisitorDoc,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvVisitorDocController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvVisitorDoc);
 
-        return $this->render('qvvisitordoc/show.html.twig', array(
+        return $this->render('AppBundle:qvvisitordoc:show.html.twig', array(
             'qvVisitorDoc' => $qvVisitorDoc,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvVisitorDocController extends Controller
             return $this->redirectToRoute('visitordoc_edit', array('id' => $qvVisitorDoc->getId()));
         }
 
-        return $this->render('qvvisitordoc/edit.html.twig', array(
+        return $this->render('AppBundle:qvvisitordoc:edit.html.twig', array(
             'qvVisitorDoc' => $qvVisitorDoc,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),

@@ -28,7 +28,7 @@ class qvBuildingController extends Controller
 
         $qvBuildings = $em->getRepository('AppBundle:qvBuilding')->findAll();
 
-        return $this->render('qvbuilding/index.html.twig', array(
+        return $this->render('AppBundle:qvbuilding:index.html.twig', array(
             'qvBuildings' => $qvBuildings,
         ));
     }
@@ -53,7 +53,7 @@ class qvBuildingController extends Controller
             return $this->redirectToRoute('building_show', array('id' => $qvBuilding->getId()));
         }
 
-        return $this->render('qvbuilding/new.html.twig', array(
+        return $this->render('AppBundle:qvbuilding:new.html.twig', array(
             'qvBuilding' => $qvBuilding,
             'form' => $form->createView(),
         ));
@@ -69,7 +69,7 @@ class qvBuildingController extends Controller
     {
         $deleteForm = $this->createDeleteForm($qvBuilding);
 
-        return $this->render('qvbuilding/show.html.twig', array(
+        return $this->render('AppBundle:qvbuilding:show.html.twig', array(
             'qvBuilding' => $qvBuilding,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -95,7 +95,7 @@ class qvBuildingController extends Controller
             return $this->redirectToRoute('building_edit', array('id' => $qvBuilding->getId()));
         }
 
-        return $this->render('qvbuilding/edit.html.twig', array(
+        return $this->render('AppBundle:qvbuilding:edit.html.twig', array(
             'qvBuilding' => $qvBuilding,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
