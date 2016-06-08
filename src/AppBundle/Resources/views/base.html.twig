@@ -5,91 +5,79 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
          <!-- Bootstrap Core CSS -->
-    <link href="{{ asset('bootstrap1/dist/css/bootstrap.css')}}" rel="stylesheet">
-    <link href="{{ asset('bootstrap1/css/bootstrapcustom.css')}}" rel="stylesheet">
+   
 	<link href="{{ asset('bootstrap1/dist/css/sb-admin-2.css')}}" rel="stylesheet">
-    <link href="{{ asset('bootstrap1/font-awesome/css/font-awesome.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{ asset('bootstrap1/dist/css/timeline.css')}}" rel="stylesheet" type="text/css">
-
 	<link href="{{ asset('bootstrap1/bower_components/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{ asset('bootstrap1/bower_components/metisMenu/dist/metisMenu.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{ asset('bootstrap1/bower_components/morrisjs/morris.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{ asset('bootstrap1/bower_components/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
-	
-	
 	{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
 	    {% block head%} {% endblock%}
-		<div id="wrapper">
-			{% block navbar%}
-			<nav class="navbar navbar-default navbar-static-top" role="navigation">
-				  <div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+		
+	<div id="wrapper">
+		{% block navbar%}
+			
+			<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+			
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 						<span class="sr-only">Toggle navigation</span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="index.html">QVisitor</a>
+					<a class="navbar-brand" href="index">QVisitor</a>
 				</div>
-				   <ul class="nav navbar-right top-nav">
-					 <li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li>
-								<a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+				
+				<ul class="nav navbar-top-links navbar-right">
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+							<i class="fa fa-user fa-fw"></i>John Smith <i class="fa fa-caret-down"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-user">
+							<li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
 							</li>
-							<li>
-								<a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-							</li>
-							<li>
-								<a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+							<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
 							</li>
 							<li class="divider"></li>
-							<li>
-								<a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+							<li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
 							</li>
 						</ul>
-					 </li>
-					</ul>
+						<!-- /.dropdown-user -->
+					</li>
+					<!-- /.dropdown -->
+				</ul>
 					
-				 <div class="sidebar-nav navbar-collapse">
-					<ul class="nav in">
-						<li>
-						<li class="active">
-							<a href= "index">Посетители</a>
-						</li>
-						<li>
-							<a href="">Добавить посетителя без заявки</a>
-						</li>
-						{%block pagemenu%} {%endblock%}
-					</ul>
+				<div class="navbar-default sidebar" role="navigation">
+					<div class="sidebar-nav navbar-collapse">
+						<ul class="nav" id="side-menu">
+							{% block pagemenu %} {% endblock %}
+						</ul>
+					</div>
 				</div>
-				<!-- /.navbar-collapse -->
 			</nav>
-			{%endblock%}
-			{% block body %}{% endblock %}
+		{%endblock%}
+			
+			{% block body %}
+				{% block breadcrumb %}{% endblock %}
+			{% endblock %}
 			{% block foot%} {% endblock %}
-		</div>
+	</div>
+	
+	
         {% block javascripts %}
-    <script src="{{asset('bootstrap1/js/flot-data.js')}}"></script>
-	<script src="{{asset('bootstrap1/js/morris-data.js')}}"></script>
-	<script src="{{asset('bootstrap1/dist/js/sb-admin-2.js')}}"></script>
+		
 
 		<script src="{{asset('bootstrap1/bower_components/jquery/dist/jquery.min.js')}}"></script>
 		<script src="{{asset('bootstrap1/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 		<script src="{{asset('bootstrap1/bower_components/metisMenu/dist/metisMenu.min.js')}}"></script>
 		<script src="{{asset('bootstrap1/bower_components/raphael/raphael-min.js')}}"></script>
 		<script src="{{asset('bootstrap1/bower_components/morrisjs/morris.min.js')}}"></script>
-			
-    <!-- Bootstrap Core JavaScript -->
-    <!--<script src="{{asset('bootstrap/js/bootstrap.min.js')}}"></script>-->
-
-    <!-- Morris Charts JavaScript -->
-    <!--<script src="{{asset('bootstrap/js/plugins/morris/raphael.min.js')}}"></script> -->
-        
+		<script src="{{asset('bootstrap1/dist/js/sb-admin-2.js')}}"></script>
         {% endblock %}
     </body>
 </html>

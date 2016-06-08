@@ -6,11 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
+/**
+ * @Route("/checkpoint")
+ */
 
 class CheckpointController extends Controller
 {
     /**
-     * @Route("/index")
+     * @Route("/visitors")
      * @Method("GET")
      */
     public function indexAction()
@@ -21,4 +24,17 @@ class CheckpointController extends Controller
         ));
     }
 
+    /**
+     * @Route("/hotentrance")
+     * @Method("GET")
+     */
+    public function hotentranceAction()
+    {
+    	 
+    	return $this->render('AppBundle:Checkpoint:hotentrance.html.twig', array(
+    
+    	));
+    }
+    
+    
 }

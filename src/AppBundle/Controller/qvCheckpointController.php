@@ -12,7 +12,7 @@ use AppBundle\Form\qvCheckpointType;
 /**
  * qvCheckpoint controller.
  *
- * @Route("/checkpoint")
+ * @Route("/check")
  */
 class qvCheckpointController extends Controller
 {
