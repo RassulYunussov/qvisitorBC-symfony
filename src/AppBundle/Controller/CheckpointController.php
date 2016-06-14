@@ -12,11 +12,27 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class CheckpointController extends Controller
 {
+	
+
+	/**
+	 * @Route("/index")
+	 * @Method("GET")
+	 */
+	public function indexAction()
+	{
+	
+		return $this->render('AppBundle:Checkpoint:home.html.twig', array(
+	
+		));
+	}
+	
+	
+	
     /**
      * @Route("/entrance")
      * @Method("GET")
      */
-    public function indexAction()
+    public function entranceAction()
     {
     	
         return $this->render('AppBundle:Checkpoint:entrance.html.twig', array(
@@ -42,11 +58,33 @@ class CheckpointController extends Controller
      */
     public function hotentranceAction()
     {
-    	 
+    	$em = $this->getDoctrine()->getManager();
+    	
+    	$qvHotEntrances = $em->getRepository('AppBundle:qvHotEntrance')->findAll();
+    	
     	return $this->render('AppBundle:Checkpoint:hotentrance.html.twig', array(
-    
+    			'qvHotEntrances' => $qvHotEntrances,
     	));
+    	
     }
+    
+    /**
+     * @Route("/hotentrance/{id}", name="hotentrance")
+     * @Method("GET")
+     */
+    public function hotentranceDetailsAction($id)
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	
+    	$qvHotEntrance = $em->getRepository('AppBundle:qvHotEntrance')->findOneBy(array('id'=>$id));
+    	 
+    	return $this->render('AppBundle:Checkpoint:hotentrancedetails.html.twig', array(
+    			'qvHotEntrance' => $qvHotEntrance,
+    	));
+    	 
+    }
+    
+    
     
     /**
      * @Route("/hot-entrance-registration")
@@ -60,4 +98,5 @@ class CheckpointController extends Controller
     	));
     }
     
+   
 }
