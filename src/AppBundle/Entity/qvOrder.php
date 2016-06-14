@@ -76,14 +76,6 @@ class qvOrder
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvVisitor", mappedBy="orders")
      */
     private $visitors;
-    
-    /**
-     * @var \string
-     *
-     * 
-     */
-    private $str;
-    
 
     /**
      * Constructor
@@ -95,12 +87,12 @@ class qvOrder
 
     /**
      * Get str
-     * 
+     *
      * @return string
      */
     public function __toString()
     {
-    	return $this->str;
+        return (string) $this->id;
     }
 
     /**

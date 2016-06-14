@@ -1,0 +1,112 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}Список посетителей{% endblock %}
+
+{% block pagemenu %}
+		<li>
+			<a href="leaserpage" class = "active">Заявки</a>
+        </li>
+		<li>
+			<a href="visitorlist"  class="active">Посетители</a>
+        </li>
+{% endblock %}
+
+
+
+{% block body %}
+
+        <div id="page-wrapper">
+            <!-- Page Heading -->
+			<div class="row">
+				<div class="col-lg-12">
+					{% block breadcrumb %}
+							<div id="breadcrumbs">
+						<br>
+						<ul class="breadcrumb">
+						<li><a href="leaserpage">Заявки</a></li>
+						<li><a href="visitorlist">Список посетителей</a></li>
+						</ul>
+					</div>
+					{% endblock %}
+				</div>
+			</div>
+			<div class="row">
+			</div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Ваши посетители</h1>
+				</div>
+			</div>
+			
+				
+			
+			<div class="row">
+                <div class="col-lg-12">
+						<div class="form-group input-group">
+                            <input type="text" class="form-control" placeholder="Найти">
+                            <span class="input-group-btn"><button class="btn btn-default" type="button"><i class="fa fa-search"></i></button></span>
+                        </div>
+				</div>
+            </div>
+                <!-- /.row -->
+           
+			<div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>Список посетителей за сегодня</h4>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row">
+								<div class="col-lg-8">
+									
+								</div>
+								<div class="col-lg-4 text-right">
+									<a href="leaserpage" class="btn btn-info"><i class="fa fa-plus"></i> Создать новую заявку</a>
+							</div>
+							</div>
+							<div class="dataTable_wrapper">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>Дата</th>
+                                            <th>Время</th>
+                                            <th>ФИО</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+										<tr>
+                                        <td>01.01.1976</td>
+                                        <td>00:00:00</td>
+										<td> User1 </td>
+                                        <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        Просмотреть
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right" role="menu">
+                                        <li><a href="#">Посмотеть заявку</a>
+                                        </li>
+                                        <li><a href="#">Изменить заявку</a>
+                                        </li>
+                                        <li><a href="#">Удалить заявку</a>
+                                        </li>
+                                        </ul>
+                                </div>
+                            </div></td>
+										</tr>
+                                    </tbody>
+                                </table>
+                            </div>
+						</div>	
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+		</div>
+{% endblock %}
