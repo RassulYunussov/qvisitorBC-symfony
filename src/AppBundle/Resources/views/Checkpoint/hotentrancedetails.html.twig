@@ -1,71 +1,68 @@
-
-
-
-													<div class="modal-content">
-														<div class="modal-header">
-															<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-															<h4 class="modal-title" id="myModalLabel">Информация по посетителю</h4>
-														</div>
-														<div class="modal-body">
-															<div class="panel-body">
-																<div class="col-lg-12">
-																	<div class="table-responsive">
-																		<table class="table table-hover">
-																			<thead>
-																				<tr>
-																					<th>{{ qvHotEntrance.lastname }} {{ qvHotEntrance.firstname }} {{ qvHotEntrance.patronimic }}</th>
-																				</tr>
-																			</thead>
-																			<tbody>
-																				<tr>
-																					<td>Номер удостоверения</td>
-																					<td>{{ qvHotEntrance.documentnumber }}</td>
-																				</tr>
-																				<tr>
-																					<td>Организация</td>
-																					<td>{{ qvHotEntrance.organization }}</td>
-																				</tr>
-																				<tr>
-																					<td>Встречающий</td>
-																					<td>{{ qvHotEntrance.attendant }}</td>
-																				</tr>
-																				<tr>
-																					<td>Заметка</td>
-																					<td>{{ qvHotEntrance.comment }}</td>
-																				</tr>
-																			</tbody>
-																		</table>
-																	</div>
-																	<div class="table-responsive">
-																		<table class="table table-hover">
-																			<thead>
-																				<tr>
-																					<th>Объект визита</th>
-																				</tr>
-																			</thead>
-																			<tbody>
-																				<tr>
-																					<td>Фамилия</td>
-																					<td>Темирханова</td>
-																				</tr>
-																				<tr>
-																					<td>Имя</td>
-																					<td>Сара</td>
-																				</tr>
-																				<tr>
-																					<td>Отчетсво</td>
-																					<td></td>
-																				</tr>
-																			</tbody>
-																		</table>
-																	</div>
-																</div>
-																<!-- /.table-responsive -->
-															</div>
-															<!-- /.panel-body -->
-														</div>
-														<div class="modal-footer">
-															<button type="button" class="btn btn-default" data-dismiss="modal">Готово</button>
-														</div>
-													</div>
+<div class="modal-content">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h4 class="modal-title" id="myModalLabel">Информация по посетителю</h4>
+	</div>
+	<div class="modal-body">
+		<div class="panel-body">
+			<div class="col-lg-12">
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>{{ qvHotEntrance.lastname }} {{ qvHotEntrance.firstname }} {{ qvHotEntrance.patronimic }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Номер удостоверения</td>
+								<td>{{ qvHotEntrance.documentnumber }}</td>
+							</tr>
+							<tr>
+								<td>Организация</td>
+								<td>{{ qvHotEntrance.organization }}</td>
+							</tr>
+							<tr>
+								<td>Встречающий</td>
+								<td>{{ qvHotEntrance.attendant }}</td>
+							</tr>
+							<tr>
+								<td>Заметка</td>
+								<td>{{ qvHotEntrance.comment }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>Объект визита</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Фамилия</td>
+								<td>Темирханова</td>
+							</tr>
+							<tr>
+								<td>Имя</td>
+								<td>Сара</td>
+							</tr>
+							<tr>
+								<td>Отчетсво</td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- /.table-responsive -->
+		</div>
+		<!-- /.panel-body -->
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Готово</button>
+	</div>
+</div>
 
