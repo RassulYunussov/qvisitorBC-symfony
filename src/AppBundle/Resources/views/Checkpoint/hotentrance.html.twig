@@ -74,18 +74,16 @@
                                         <td>{{ qvHotEntrance.lastname }} {{ qvHotEntrance.firstname }} {{ qvHotEntrance.patronimic }}</td>
                                         <td>{{ qvHotEntrance.documentnumber }}</td>
 										<td>
-											<button class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal_{{qvHotEntrance.id}}">Просмотр</button>
-											<div class="modal fade" id="myModal_{{qvHotEntrance.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-											{{ render(controller(
-												'AppBundle:Checkpoint:hotentranceDetails',
-												{ 'id': qvHotEntrance.id }
-											)) }}
-											</div>
+												<button onclick="$('#myModal .modal-dialog').load('hotentrance/{{ qvHotEntrance.id }}');" class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal">Просмотр</button>
 										</td>
                                         </tr>
 										{% endfor %}
                                     </tbody>
                                 </table>
+                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+									<div class="modal-dialog"></div>
+								</div>
+								</div>
                             </div>
 						</div>	
                         <!-- /.panel-body -->

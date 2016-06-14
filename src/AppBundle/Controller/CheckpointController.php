@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/checkpoint")
@@ -72,15 +73,18 @@ class CheckpointController extends Controller
      * @Route("/hotentrance/{id}", name="hotentrance")
      * @Method("GET")
      */
-    public function hotentranceDetailsAction($id)
+    public function hotentranceDetailsAction(Request $request,$id)
     {
-    	$em = $this->getDoctrine()->getManager();
+    	if($request->isXmlHttpRequest()) {
+    		$em = $this->getDoctrine()->getManager();
+    		 
+    		$qvHotEntrance = $em->getRepository('AppBundle:qvHotEntrance')->findOneBy(array('id'=>$id));
+    		
+    		return $this->render('AppBundle:Checkpoint:hotentrancedetails.html.twig', array(
+    				'qvHotEntrance' => $qvHotEntrance,
+    		));
+    	}
     	
-    	$qvHotEntrance = $em->getRepository('AppBundle:qvHotEntrance')->findOneBy(array('id'=>$id));
-    	 
-    	return $this->render('AppBundle:Checkpoint:hotentrancedetails.html.twig', array(
-    			'qvHotEntrance' => $qvHotEntrance,
-    	));
     	 
     }
     
