@@ -10,4 +10,7 @@ namespace AppBundle\Repository;
  */
 class qvHotEntranceRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function findAll(){
+		return $this->findBy(array(), array('entrancedate' => 'desc'));
+	}
 }

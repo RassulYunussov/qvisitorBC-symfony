@@ -3,12 +3,7 @@
 {% block title %}Посетители{% endblock %}
 
 {% block pagemenu %}
-		<li>
-			<a href="entrance">Посетители</a>
-        </li>
-		<li>
-			<a href="hotentrance"  class="active">Посетители без заявок</a>
-        </li>
+	{{ include('AppBundle:Checkpoint:pagemenu.html.twig') }}
 {% endblock %}
 
 
@@ -73,12 +68,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+									{% for qvHotEntrance in qvHotEntrances %}
 										<tr>
-                                        <td>12:00:00</td>
-                                        <td>Иванов Иван</td>
-                                        <td>784512659</td>
-                                        <td><a class="btn btn-sm btn-default" href="index">Просмотр</a></td>
+                                        <td>{{qvHotEntrance.entrancedate|date('Y-m-d H:i:s') }}</td>
+                                        <td>{{ qvHotEntrance.lastname }} {{ qvHotEntrance.firstname }} {{ qvHotEntrance.patronimic }}</td>
+                                        <td>{{ qvHotEntrance.documentnumber }}</td>
+										<td>
+											<button class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal_{{qvHotEntrance.id}}">Просмотр</button>
+											<div class="modal fade" id="myModal_{{qvHotEntrance.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+											{{ render(controller(
+												'AppBundle:Checkpoint:hotentranceDetails',
+												{ 'id': qvHotEntrance.id }
+											)) }}
+											</div>
+										</td>
                                         </tr>
+										{% endfor %}
                                     </tbody>
                                 </table>
                             </div>

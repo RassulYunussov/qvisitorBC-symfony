@@ -3,12 +3,7 @@
 {% block title %}Посетители{% endblock %}
 
 {% block pagemenu %}
-		<li>
-			<a href="entrance" class="active">Посетители</a>
-        </li>
-		<li>
-			<a href="hotentrance">Регистрация посетителя без заявки</a>
-        </li>
+	{{ include('AppBundle:Checkpoint:pagemenu.html.twig') }}
 {% endblock %}
 
 
@@ -73,14 +68,13 @@
 										<tr>
                                         <td>125</td>
                                         <td>Иванов Иван</td>
-                                        <td><a class="btn btn-sm btn-info" href="index">Зарегистрировать</a></td>
+                                        <td><a class="btn btn-sm btn-info" href="#">Зарегистрировать</a></td>
                                         </tr>
 										<tr>
                                         <td>126</td>
                                         <td>Петров Семен</td>
-                                        <td><a class="btn btn-sm btn-info" href="index">Зарегистрировать</a></td>
+                                        <td><a class="btn btn-sm btn-info" href="#">Зарегистрировать</a></td>
                                         </tr>
-										
                                     </tbody>
                                 </table>
                             </div>

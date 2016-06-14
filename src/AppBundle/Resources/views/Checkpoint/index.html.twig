@@ -1,0 +1,56 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}Выбор рабочего места{% endblock %}
+{% block navbar %} {% endblock %}
+
+
+{% block body %}
+<div class="container">
+			<div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Выбор рабочего места</h1>
+				</div>
+			</div>	
+        <div class="row">
+			<div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Пожалуйста выберите рабочее место</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form">
+                            <fieldset>
+								<div class="col-lg-6">
+									<div class="form-group">
+												<label>Здание</label>
+												<select class="form-control">
+													<option>А1</option>
+													<option>А2</option>
+													<option>B1</option>
+													<option>B2</option>
+												</select>
+									</div>
+								</div>	
+								<div class="col-lg-6">
+									<div class="form-group">
+												<label>КПП</label>
+												<select class="form-control">
+													<option>КПП 1</option>
+													<option>КПП 2</option>
+													<option>КПП 3</option>
+												</select>
+									</div>
+								</div>	
+                                	
+								<div class="col-lg-12 text-right">
+									<!-- Change this to a button or input when using this as a form -->
+									<a href="checkpoint/entrance" class="btn btn-primary btn-lg">Подтвердить</a>
+								</div>
+                            </fieldset>
+                        </form>
+					 </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}
