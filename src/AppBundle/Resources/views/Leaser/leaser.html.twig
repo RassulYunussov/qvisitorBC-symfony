@@ -67,7 +67,7 @@
                 
                     <div class="panel panel-default">
                     <div class="panel-heading">
-                           <i class="fa fa-linkedin"></i> Создание заявки для посетителя
+                           <i class="glyphicon glyphicon-pencil"></i> Создание заявки для посетителя
                         </div>
                       <div class="panel-body">
                             <div class="row">
@@ -90,15 +90,26 @@
                                         </div>
                                         <br/><br/>
                                         <br><br><br><br><br><br><br>
-                                          <div class="form-group" id = 'order_type'>
+                                          
+											<div class="form-group" id = 'order_type'>
+                                            <label></label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="optionsRadios" id="optionsRadiosInline3" value="option1" checked>Для одного посетителя
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="optionsRadios" id="optionsRadiosInline4" value="option2" >Для нескольких посетителей
+                                            </label>
+                                        </div>   										
+										  
+										  <div class="form-group" id = 'order_type'>
                                             <label>Тип заявки:</label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1" checked>Одноразовая заявка
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1" checked>Однократное посещение
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2" >Многоразовая заявка
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2" >Многократное посещение
                                             </label>
-                                        </div>                                    
+                                        </div>  
                                     </form>
                                 </div>
                                 

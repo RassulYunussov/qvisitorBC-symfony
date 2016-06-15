@@ -1,17 +1,15 @@
 {% extends 'AppBundle::base.html.twig' %}
 
-{% block title %}Личный кабинет пользователя{% endblock %}
 
-{% block pagemenu %}
-		<li>
-			<a href="leaserpage" class="active">Заявки</a>
-        </li>
-		<li>
-			<a href="visitorlist" class ="active">Посетители</a>
-        </li>
-{% endblock %}
+{% block title %}Личный кабинет администратора{% endblock %}
 
-
+	{% block header %} 
+		<a class="navbar-brand" href="adminbc">QVisitor</a>
+			{% endblock %}
+			
+	{%block pagemenu%}
+		{{ include('AppBundle:Adminbc:pagemenu.html.twig') }}
+			{%endblock%}
 
 {% block body %}
 		
@@ -40,7 +38,6 @@
     -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
-    }
 </style>
         
 	 <div id="page-wrapper">
@@ -50,67 +47,51 @@
 					<div id="breadcrumbs">
 						<br>
 						<ul class="breadcrumb">
-						<li><a href="leaserpage">Заявки</a></li>
-						<li><a href="leaserpage">Создать заявку</a></li>
+						<li><a href="leaserpage">Главная</a></li>
+						<li><a href="leaserpage">Управление checkpoint(ами)</a></li>
+						<li><a href="leaserpage">Создать Checkpoint</a></li>
 						</ul>
 					</div>
 					{% endblock %}
 				
-               <h1 class="page-header">Личный кабинет пользователя</h1>
+               <h1 class="page-header">Новый Checkpoint</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            
-            <div class="row">
+            <div class="row" align="justify">
                 <div class="col-lg-8">
-                
                     <div class="panel panel-default">
-                    <div class="panel-heading">
-                           <i class="glyphicon glyphicon-pencil"></i> Создание заявки для посетителя
-                        </div>
                       <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-8">
                                     <form role="form">
                                         <div class="form-group" id = 'visit_date'>
-                                           <label>Дата входа</label><br>
-                                           <label> C </label>     <input type="date" class="type_date-inline" required>
-                                           <label> По </label>     <input type="date" class="type_date-inline" required>
+                                           <label>Id</label><br>
+                                             <input type="number" class="type_date-inline" >
                                         </div>
                                         
                                         <div class="form-group" id = 'visit_time'>
-                                            <input type="checkbox" id = 'cb1'/>
-                                            <label>Время входа</label>
+                                            
+                                            <label>Название</label>
+											<input type="text" class="type_date-inline" >
                                         </div>
-                                            <div id = 'cat1' >
-                                                <label> C </label>     <input type="time" class="type_date-inline">
-                                                <label> По </label>     <input type="time" class="type_date-inline">
-                                            </div>
+                                        <div class="form-group" id = 'visit_time'>
+                                            <label>Здание</label>
+											<input type="text" class="type_date-inline" >
                                         </div>
+								   </div>
                                         <br/><br/>
                                         <br><br><br><br><br><br><br>
                                           <div class="form-group" id = 'order_type'>
                                             <label>Тип заявки:</label>
-
-											<div class="form-group" id = 'order_type'>
-                                            <label></label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="optionsRadios" id="optionsRadiosInline3" value="option1" checked>Для одного посетителя
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1" checked>Одноразовая заявка
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="optionsRadios" id="optionsRadiosInline4" value="option2" >Для нескольких посетителей
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2" >Многоразовая заявка
                                             </label>
-                                        </div>   										
-										
-                                            <label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1" checked>Однократное посещение
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2" >Многократное посещение
-                                            </label>
-                                        </div>  
-
+                                        </div>                                    
                                     </form>
                                 </div>
                                 
@@ -118,18 +99,18 @@
                                     <form role="form">
                                         <div class="form-group has-success">
                                             <label class="control-label" for="inputSuccess">Фамилия посетителя</label>
-                                            <input type="text" class="form-control" id="inputSuccess" name="first_name" required>
+                                            <input type="text" class="form-control" name="first_name" >
                                         </div>
                                         <div class="form-group has-warning">
                                             <label class="control-label" for="inputWarning">Имя посетителя</label>
-                                            <input type="text" class="form-control" id="inputWarning" name = "last_name" required>
+                                            <input type="text" class="form-control" name = "last_name">
                                         </div>
                                         <div class="form-group has-error">
                                             <label class="control-label" for="inputError">Отчество посетителя</label>
-                                            <input type="text" class="form-control" id="inputError" name="patronymic">
+                                            <input type="text" class="form-control" name="patronymic">
                                         </div>
-                                           <button type="submit" class="btn btn-default">Создать заявку</button>                                                                                            
-                                           <button type="reset" class="btn btn-default">Очистить форму</button>
+                                           <button type="submit" class="btn btn-default">Изменить заявку</button>                                                                              
+                                           <button type="reset" class="btn btn-default">Отменить</button>
                                     </form>
                                    
                                 </div>

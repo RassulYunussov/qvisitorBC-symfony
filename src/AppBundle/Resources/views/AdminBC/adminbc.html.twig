@@ -4,23 +4,13 @@
 
 {% block title %}Личный кабинет администратора{% endblock %}
 
-{% block pagemenu %}
-		<li>
-		 <a href="leasers_control"><i class="fa fa-dashboard fa-fw"></i>Управление арендаторами</a>
-        </li>
-		<li>
-			 <a href="checkpoints_control"><i class="fa fa-dashboard fa-fw"></i>Управление checkpoint(ами)</a>
-        </li>
-		
-		<li>
-			<a href="sectors_control"><i class="fa fa-dashboard fa-fw"></i>Управление секторами</a>
-        </li>
-		
-		<li>
-			<a href="contracts_control"><i class="fa fa-dashboard fa-fw"></i>Управление контрактами</a>
-        </li>
-{% endblock %}
+{% block header %} 
+<a class="navbar-brand" href="adminbc">QVisitor</a>
 
+{% endblock %}
+{%block pagemenu%}
+		{{ include('AppBundle:Adminbc:pagemenu.html.twig') }}
+			{%endblock%}
 
 
 {% block body %}

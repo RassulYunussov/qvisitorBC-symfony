@@ -4,24 +4,48 @@
 
 {% block title %}Личный кабинет администратора{% endblock %}
 
+{% block header %} 
+<a class="navbar-brand" href="adminbc">QVisitor</a>
+
+{% endblock %}
 {% block pagemenu %}
 		<li>
-		 <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Управление арендаторами</a>
-        </li>
-		<li>
-			 <a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Управление checkpoint(ами)</a>
+		 <a href="leasers_control"><i class="fa fa-dashboard fa-fw"></i>Управление арендаторами<span class="fa arrow"></span></a>
+        
+                    <ul class="nav nav-second-level collapse in">
+                        <li>
+                          <a href="leasers_control"><i class="fa fa-dashboard fa-fw"></i>Управление учетными записями арендаторов</a>
+                        </li>
+                        <li>
+                             <a href="contracts_control"><i class="fa fa-dashboard fa-fw"></i>Управление контрактами</a>
+                        </li>
+                        <li>
+                            <a href="create_leaser">Добавление нового арендатора</a>
+                        </li>
+                        <li>
+                         
+                    </ul>
+                    <!-- /.nav-second-level -->
         </li>
 		
 		<li>
-			<a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Управление секторами</a>
+		 <a href="buildings_control"><i class="fa fa-dashboard fa-fw"></i>Управление зданиями<span class="fa arrow"></span></a>
+			<ul class="nav nav-second-level collapse in">
+				<li>
+					<a href="floors_control"><i class="fa fa-dashboard fa-fw"></i>Управление этажами</a>
+                        </li>
+                        <li>
+                             <a href="sectors_control"><i class="fa fa-dashboard fa-fw"></i>Управление секторами</a>
+                        </li>
+                        <li>
+                            <a href="checkpoints_control">Управление КПП</a>
+                        </li>
+                        <li>
+                         
+                    </ul>
+                    <!-- /.nav-second-level -->
         </li>
-		
-		<li>
-			<a href="index.html"><i class="fa fa-dashboard fa-fw"></i>Управление контрактами</a>
-        </li>
-{% endblock %}
-
-
+		{%endblock%}
 
 {% block body %}
 		

@@ -1,0 +1,40 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+
+{% block title %}Личный кабинет администратора{% endblock %}
+
+{% block header %} 
+<a class="navbar-brand" href="adminbc">QVisitor</a>
+{% endblock %}
+
+	{%block pagemenu%}
+		{{ include('AppBundle:Adminbc:pagemenu.html.twig') }}
+			{%endblock%}
+
+{% block body %}
+		
+	 <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                		    {% block breadcrumb %}
+					    <div id="breadcrumbs">
+						<br>
+						<ul class="breadcrumb">
+						<li><a href="adminbc">Главная</a></li>
+						<li><a href="buildings_control">Управление зданиями</a></li>
+						<li><a href="floors_control">Управление этажами</a></li>
+						<li><a href="edit_floor">Изменение информации об этаже</a></li>
+						</ul>
+					</div>
+					{% endblock %}
+											
+               <h1 class="page-header">Личный кабинет администратора</h1>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+			        </div>
+	</div>
+        <!-- /#page-wrapper -->
+
+    
+            {% endblock %}

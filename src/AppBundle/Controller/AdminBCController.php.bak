@@ -28,7 +28,7 @@ class AdminBCController extends Controller
     public function leasers_controlAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:leaserscontrol.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers_control/leasers_control/leaserscontrol.html.twig', array(
         		
         ));
     }
@@ -40,7 +40,7 @@ class AdminBCController extends Controller
     public function show_leaserAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:showleaser.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers_control/leasers_control/showleaser.html.twig', array(
         		
         ));
     }
@@ -52,7 +52,7 @@ class AdminBCController extends Controller
     public function edit_leaserAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:editleaser.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers_control/leasers_control/editleaser.html.twig', array(
         		
         ));
     }
@@ -64,7 +64,7 @@ class AdminBCController extends Controller
     public function create_leaserAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:createleaser.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers_control/leasers_control/createleaser.html.twig', array(
         		
         ));
     }
@@ -77,7 +77,7 @@ class AdminBCController extends Controller
     public function contracts_controlAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:contractscontrol.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers_control/contractscontrol.html.twig', array(
         		
         ));
     }
@@ -89,7 +89,7 @@ class AdminBCController extends Controller
     public function show_contractAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:showcontract.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers_control/showcontract.html.twig', array(
         		
         ));
     }	
@@ -101,7 +101,7 @@ class AdminBCController extends Controller
     public function edit_contractAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:editcontract.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers_control/editcontract.html.twig', array(
         		
         ));
     }
@@ -112,7 +112,7 @@ class AdminBCController extends Controller
     public function createcontractAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:createcontract.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers_control/createcontract.html.twig', array(
         		
         ));
     }
@@ -124,7 +124,7 @@ class AdminBCController extends Controller
     public function checkpoints_controlAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:checkpointscontrol.html.twig', array(
+        return $this->render('AppBundle:Adminbc:buildings_control/checkpoints_control/checkpointscontrol.html.twig', array(
         		
         ));
     }
@@ -136,7 +136,7 @@ class AdminBCController extends Controller
     public function show_checkpointAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:showcheckpoint.html.twig', array(
+        return $this->render('AppBundle:Adminbc:buildings_control/checkpoints_control/showcheckpoint.html.twig', array(
         		
         ));
     }
@@ -148,7 +148,7 @@ class AdminBCController extends Controller
     public function edit_checkpointAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:editcheckpoint.html.twig', array(
+        return $this->render('AppBundle:Adminbc:buildings_control/checkpoints_control/editcheckpoint.html.twig', array(
         		
         ));
     }
@@ -161,7 +161,7 @@ class AdminBCController extends Controller
     public function create_checkpointAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:createcheckpoint.html.twig', array(
+        return $this->render('AppBundle:Adminbc:buildings_control/checkpoints_control/createcheckpoint.html.twig', array(
         		
         ));
     }
@@ -174,7 +174,7 @@ class AdminBCController extends Controller
     public function sectors_controlAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:sectorscontrol.html.twig', array(
+        return $this->render('AppBundle:Adminbc:buildings_control/sectors_control/sectorscontrol.html.twig', array(
         		
         ));
     }
@@ -186,7 +186,7 @@ class AdminBCController extends Controller
     public function show_sectorAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:showsector.html.twig', array(
+        return $this->render('AppBundle:buildings_control/sectors_control/Adminbc:showsector.html.twig', array(
         		
         ));
     }
@@ -198,7 +198,7 @@ class AdminBCController extends Controller
     public function edit_sectorAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:editsector.html.twig', array(
+        return $this->render('AppBundle:Adminbc:buildings_control/sectors_control/editsector.html.twig', array(
         		
         ));
     }
@@ -210,9 +210,67 @@ class AdminBCController extends Controller
     public function create_sectorAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:Createsector.html.twig', array(
+        return $this->render('AppBundle:Adminbc:buildings_control/sectors_control/Createsector.html.twig', array(
         		
         ));
     }
 	
+		 /**
+     * @Route("/buildings_control")
+     * @Method("GET")
+     */
+    public function buildings_controlAction()
+    {
+    	
+        return $this->render('AppBundle:Adminbc:buildings_control/buildingscontrol.html.twig', array(
+        		
+        ));
+    }
+	 /**
+     * @Route("/floors_control")
+     * @Method("GET")
+     */
+    public function floors_controlAction()
+    {
+    	
+        return $this->render('AppBundle:Adminbc:buildings_control/floors_control/floorscontrol.html.twig', array(
+        		
+        ));
+    }		
+	
+		 /**
+     * @Route("/edit_floor")
+     * @Method("GET")
+     */
+    public function edit_floorAction()
+    {
+    	
+        return $this->render('AppBundle:Adminbc:buildings_control/floors_control/editfloor.html.twig', array(
+        		
+        ));
+    }
+	
+		 /**
+     * @Route("/show_floor")
+     * @Method("GET")
+     */
+    public function show_floorAction()
+    {
+    	
+        return $this->render('AppBundle:Adminbc:buildings_control/floors_control/showfloor.html.twig', array(
+        		
+        ));
+    }
+	
+		/**
+     * @Route("/create_floor")
+     * @Method("GET")
+     */
+    public function create_floorAction()
+    {
+    	
+        return $this->render('AppBundle:Adminbc:buildings_control/floors_control/createfloor.html.twig', array(
+        		
+        ));
+    }
 }
