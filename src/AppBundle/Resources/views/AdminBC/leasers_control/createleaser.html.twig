@@ -23,9 +23,11 @@
                 	{% block breadcrumb %}
 					<div id="breadcrumbs">
 						<br>
-						<ul class="breadcrumb">
-						<li><a href="leaserpage">Главная</a></li>
-						<li><a href="leaserpage">Просмотр контракта</a></li>
+						<ul>
+						<li><a href="adminbc">Главная</a></li>
+						<li><a href="leasers_control">Управление арендаторами</a></li>
+						<li><a href="create_leaser">Создание учетной записи арендатора</a></li>
+						
 						</ul>
 					</div>
 					{% endblock %}
@@ -33,6 +35,33 @@
                <h1 class="page-header">Личный кабинет администратора</h1>
                 <!-- /.col-lg-12 -->
             </div>
+			<div class="col-lg-4" >
+			<div class="form-group has-success">
+                                            <label>Фамилия </label>
+                                            <input type="text" class="form-control" placeholder="Введите текст">
+                                        </div>
+										<div class="form-group has-success">
+                                            <label>Имя</label>
+                                            <input type="text" class="form-control" placeholder="Введите текст">
+                                        </div>
+										<div class="form-group has-success">
+                                            <label>Отчество</label>
+                                            <input type="text" class="form-control" placeholder="Введите текст">
+                                        </div>
+			<div class="form-group has-success">
+                                            <label>Название компании</label>
+                                            <input type="text" class="form-control" placeholder="Введите текст">
+                                        </div>
+										<div class="form-group has-success">
+                                            <label>BIN</label>
+                                            <input type="number" class="form-control" placeholder="Введите текст">
+                                </div>     
+<br>								
+								<div  align="right">
+								<button type="submit" class="btn btn-success">Добавить арендатора</button>
+								<button type="reset" class="btn btn-danger" >Очистить форму</button>
+	<br><br>							<br><br><br>
+			</div>					</div>
             <!-- /.row -->
 			        </div>
 	</div>

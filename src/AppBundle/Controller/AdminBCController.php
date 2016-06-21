@@ -40,7 +40,7 @@ class AdminBCController extends Controller
     public function show_leaserAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:leasers_control/leasers_control/showleaser.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers_control/showleaser.html.twig', array(
         		
         ));
     }
@@ -52,7 +52,7 @@ class AdminBCController extends Controller
     public function edit_leaserAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:leasers_control/leasers_control/editleaser.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers_control/editleaser.html.twig', array(
         		
         ));
     }
@@ -64,7 +64,7 @@ class AdminBCController extends Controller
     public function create_leaserAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:leasers_control/leasers_control/createleaser.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers_control/createleaser.html.twig', array(
         		
         ));
     }
@@ -186,7 +186,7 @@ class AdminBCController extends Controller
     public function show_sectorAction()
     {
     	
-        return $this->render('AppBundle:buildings_control/sectors_control/Adminbc:showsector.html.twig', array(
+        return $this->render('AppBundle:Adminbc:buildings_control/sectors_control/showsector.html.twig', array(
         		
         ));
     }
@@ -226,6 +226,43 @@ class AdminBCController extends Controller
         		
         ));
     }
+
+    /**
+     * @Route("/show_building")
+     * @Method("GET")
+     */
+    public function show_buildingAction()
+    {
+
+        return $this->render('AppBundle:Adminbc:buildings_control/show_building.html.twig', array(
+
+        ));
+    }
+
+    /**
+     * @Route("/edit_building")
+     * @Method("GET")
+     */
+    public function edit_buildingAction()
+    {
+
+        return $this->render('AppBundle:Adminbc:buildings_control/edit_building.html.twig', array(
+
+        ));
+    }
+
+    /**
+     * @Route("/create_building")
+     * @Method("GET")
+     */
+    public function create_buildingsAction()
+    {
+
+        return $this->render('AppBundle:Adminbc:buildings_control/create_building.html.twig', array(
+
+        ));
+    }
+
 	 /**
      * @Route("/floors_control")
      * @Method("GET")
