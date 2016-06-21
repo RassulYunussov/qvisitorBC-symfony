@@ -1,5 +1,6 @@
-{% block pagemenu %}
-		<li>
+
+	{% if role == "checkpoint" %}
+          <li>
 			<a href="index">Главная</a>
         </li>
 		<li>
@@ -8,4 +9,5 @@
 		<li>
 			<a href="hotentrance">Посетители без заявок</a>
         </li>
-{% endblock %}
+    {% endif %}
+		

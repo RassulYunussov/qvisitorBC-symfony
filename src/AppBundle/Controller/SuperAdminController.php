@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/control")
@@ -13,6 +15,7 @@ class SuperAdminController extends Controller
 {
     /**
      * @Route("/analytics")
+     * @Method("GET")
      */
     public function indexAction()
     {
@@ -23,17 +26,30 @@ class SuperAdminController extends Controller
     
     
     /**
-     * @Route("/business-center")
+     * @Route("/admin-creation")
+     * @Method("GET")
      */
-    public function bcAction()
+    public function regAdminAction()
     {
-    	return $this->render('AppBundle:SuperAdmin:bc.html.twig', array(
+    	return $this->render('AppBundle:SuperAdmin:adminreg.html.twig', array(
+    			// ...
+    	));
+    }
+    
+    /**
+     * @Route("/admin-editing")
+     * @Method("GET")
+     */
+    public function editAdminAction()
+    {
+    	return $this->render('AppBundle:SuperAdmin:adminedit.html.twig', array(
     			// ...
     	));
     }
     
     /**
      * @Route("/admin-bc")
+     * @Method("GET")
      */
     public function adminAction()
     {
@@ -41,5 +57,19 @@ class SuperAdminController extends Controller
     			// ...
     	));
     }
+    
+    /**
+     * @Route("/admin-bc/{id}", name="status")
+     * @Method("GET")
+     */
+    public function hotentranceDetailsAction(Request $request)
+    {
+    		return $this->render('AppBundle:SuperAdmin:status.html.twig', array(
+    		));
+    	 
+    
+    }
+    
+    
 
 }
