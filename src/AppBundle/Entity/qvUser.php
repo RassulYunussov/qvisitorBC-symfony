@@ -53,27 +53,22 @@ class qvUser
      */
     private $leaser;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
+     /**
+     * @var \AppBundle\Entity\qvRole
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvRole", inversedBy="users")
-     * @ORM\JoinTable(name="rf_user_role",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="userid", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="roleid", referencedColumnName="id")
-     *   }
-     * )
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\qvRole")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="roleid", referencedColumnName="id")
+     * })
      */
-    private $roles;
+    private $role;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
+      
     }
 
 
@@ -196,36 +191,26 @@ class qvUser
     }
 
     /**
-     * Add role
+     * Set role
      *
      * @param \AppBundle\Entity\qvRole $role
      *
      * @return qvUser
      */
-    public function addRole(\AppBundle\Entity\qvRole $role)
+    public function setRole(\AppBundle\Entity\qvRole $role)
     {
-        $this->roles[] = $role;
+        $this->role = $role;
 
         return $this;
     }
 
     /**
-     * Remove role
+     * Get role
      *
-     * @param \AppBundle\Entity\qvRole $role
+     * @return \AppBundle\Entity\qvRole
      */
-    public function removeRole(\AppBundle\Entity\qvRole $role)
+    public function getRole()
     {
-        $this->roles->removeElement($role);
-    }
-
-    /**
-     * Get roles
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getRoles()
-    {
-        return $this->roles;
+        return $this->role;
     }
 }
