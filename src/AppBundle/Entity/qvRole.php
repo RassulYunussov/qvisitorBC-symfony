@@ -29,21 +29,6 @@ class qvRole
      */
     private $name;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvUser", mappedBy="roles")
-     */
-    private $users;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
 
     /**
      * Get id
@@ -83,37 +68,5 @@ class qvRole
     	return $this->name;
     }
 
-    /**
-     * Add user
-     *
-     * @param \AppBundle\Entity\qvUser $user
-     *
-     * @return qvRole
-     */
-    public function addUser(\AppBundle\Entity\qvUser $user)
-    {
-        $this->users[] = $user;
-
-        return $this;
-    }
-
-    /**
-     * Remove user
-     *
-     * @param \AppBundle\Entity\qvUser $user
-     */
-    public function removeUser(\AppBundle\Entity\qvUser $user)
-    {
-        $this->users->removeElement($user);
-    }
-
-    /**
-     * Get users
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
+  
 }
