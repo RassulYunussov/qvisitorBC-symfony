@@ -1,44 +1,48 @@
 {% extends 'AppBundle::base.html.twig' %}
 
 
-
 {% block title %}Личный кабинет администратора{% endblock %}
 
-{% block header %} 
-<a class="navbar-brand" href="adminbc">QVisitor</a>
+{% block header %}
+    <a class="navbar-brand" href="adminbc">QVisitor</a>
 {% endblock %}
-{%block pagemenu%}
-		{{ include('AppBundle:Adminbc:pagemenu.html.twig') }}
-			{%endblock%}
+
+	{%block pagemenu%}
+        {{ include('AppBundle:Adminbc:pagemenu.html.twig') }}
+    {%endblock%}
 
 {% block body %}
-		
-		<div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                	{% block breadcrumb %}
-<div id="breadcrumbs">
- <ul>
- <li><a href="#1">One</a></li>
- <li><a href="#2">Two</a></li>
- <li><a href="#3">Three</a></li>
- <li><a href="#4">Four</a></li>
- <li><a href="#5">Five</a></li>
- </ul>
-</div>
+
+
+
+
+    <div id="page-wrapper">
+		<div class="row">
+			<div class="col-lg-12">
+				{% block breadcrumb %}
+					<div id="breadcrumbs"><br>
+						<ul>
+							<li><a href="adminbc">Главная</a></li>
+							<li><a href="buildings_control">Управление зданиями</a></li>
+							<li><a href="buildings_control">Этажи</a></li>
+							<li><a href="show_sector">Информация об этаже</a></li>
+						</ul>
+					</div>
+				{% endblock %}
+
+				<h1 class="page-header">Личный кабинет администратора</h1>
+				<!-- /.col-lg-12 -->
+				</div>
+   
+			<div class="col-lg-12">
+				<div class="panel panel-default">
 					
-					
-					{% endblock %}
-											
-               <h1 class="page-header">Личный кабинет администратора</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-			<div class="col-lg-6">
-                   			<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Информация о КПП
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Информация о секторе
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -48,40 +52,17 @@
                                     
                                     <tbody>
                                         <tr class="success">
-                                            <td>ID</td>
-											<td>001</td>
+                                          	<tr class="success">
+												<td>Номер этажа</td>
+												<td>Этаж 1</td>
 											</tr>
 											<tr class="success">
-                                            <td>Security</td>
-											<td>Иванов И.И.</td>
-											</tr>
-											<tr class="success">
-                                            <td>Владелец</td>
-											<td>Tim Cook</td>
-											</tr>
-											<tr class="success">
-                                            <td>Этаж(и)</td>
-											<td>15,16,17</td>
-											</tr>
-											<tr class="success">
-											<td>Офис(ы)</td>
-											<td>150-179</td>
-											</tr>
-											<tr class="success">
-											<td>Статус договора</td>
-											<td>Активен</td>
-											</tr>
-											<tr class="success">
-											<td>Подписан</td>
-											<td>01.01.2014</td>
-											</tr>
-											<tr class="success">
-											<td>Срок окончания действия</td>
-											<td>01.12.2017</td>
+												<td>Название здания</td>
+												<td><a href="show_building">Main Building</a></td>
 											</tr>
 											<tr>
 											<td></td>
-											<td align="right"><br><button type="button" formaction="editcontract" class="btn btn-default">Редактировать</button></td>
+											<td align="right"><br><a href="edit_floor" class="btn btn-warning">Редактировать</a></td>
 											</tr>
                                     </tbody>
                                 </table>
@@ -90,8 +71,21 @@
 					</div>	
                         <!-- /.panel-body -->
                     </div>
+							</div>
+							<!-- /.col-lg-6 (nested) -->
+						</div>
+						<!-- /.row (nested) -->
+					</div>
+					<!-- /.panel-body -->
+				</div>
+				<!-- /.panel -->
+			</div>
+   
+        <!-- /.row -->
+        </div>
+    <!-- /#page-wrapper -->
 	</div>
-        <!-- /#page-wrapper -->
-
     
-            {% endblock %}
+
+
+{% endblock %}
