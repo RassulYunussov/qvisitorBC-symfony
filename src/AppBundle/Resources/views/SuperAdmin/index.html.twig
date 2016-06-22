@@ -2,16 +2,246 @@
 
 {% block title %}Супер-админ{% endblock %}
 {% block pagemenu %}
-		<li>
-			<a href="analytics" class="active">Аналитика</a>
-        </li>
-		<li>
-			<a href="business-center">Управление бизнес-центрами</a>
-        </li>
-		<li>
-			<a href="admin-bc">Управление админами БЦ</a>
-        </li>
+	{{ include('AppBundle:SuperAdmin:pagemenu.html.twig') }}
 {% endblock %}
 
 {% block body %}
+
+<div id="page-wrapper">
+
+    <div class="row">
+            {% block breadcrumb %}
+				<div id="breadcrumbs">
+					<br>
+					<ul>
+					<li><a href="analytics">Главная</a></li>
+					</ul>
+				</div>
+			{% endblock %}		
+            <h1 class="page-header">Главная</h1>
+    </div>
+
+	
+	
+	<div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Аналитика
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#home" data-toggle="tab">Использование системы</a>
+                                </li>
+                                <li><a href="#profile" data-toggle="tab">Активность арендаторов</a>
+                                </li>
+                                <li><a href="#messages" data-toggle="tab">Посещения без заявок</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="home">
+                                    <h4>Использование системы</h4>
+									<div id="system" style="height: 400px"></div>
+                                </div>
+                                <div class="tab-pane fade" id="profile">
+                                    <h4>Активность арендаторов</h4>
+									<div id="activity" style="min-width: 70%; height: 70%; margin: 0 auto"></div>
+                                </div>
+                                <div class="tab-pane fade" id="messages">
+                                    <h4>Посещения без заявок</h4>
+									<div id="hotentrance" style="min-width: 70%; height: 70%; margin: 0 auto"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="row">
+
+</div></div>
+
+{% endblock %}
+
+{% block javascripts %}
+{{parent()}}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<script>
+$(function () {
+    $('#activity').highcharts({
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Monthly Average Temperature'
+        },
+        subtitle: {
+            text: 'Source: WorldClimate.com'
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        yAxis: {
+            title: {
+                text: 'Temperature (°C)'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: 'Tokyo',
+            data: [7.0, 6.9, 9.5, 14.5, 18.4, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+        }, {
+            name: 'London',
+            data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+        }]
+    });
+});
+</script>
+<script>
+$(function () {
+    $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=usdeur.json&callback=?', function (data) {
+
+        $('#hotentrance').highcharts({
+            chart: {
+                zoomType: 'x'
+            },
+            title: {
+                text: 'USD to EUR exchange rate over time'
+            },
+            subtitle: {
+                text: document.ontouchstart === undefined ?
+                        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+            },
+            xAxis: {
+                type: 'datetime'
+            },
+            yAxis: {
+                title: {
+                    text: 'Exchange rate'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+
+            series: [{
+                type: 'area',
+                name: 'USD to EUR',
+                data: data
+            }]
+        });
+    });
+});
+</script>
+<script>
+$(function () {
+    $('#system').highcharts({
+        chart: {
+            type: 'column',
+            options3d: {
+                enabled: true,
+                alpha: 15,
+                beta: 15,
+                viewDistance: 25,
+                depth: 40
+            }
+        },
+
+        title: {
+            text: 'Total fruit consumption, grouped by gender'
+        },
+
+        xAxis: {
+            categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+        },
+
+        yAxis: {
+            allowDecimals: false,
+            min: 0,
+            title: {
+                text: 'Number of fruits'
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<b>{point.key}</b><br>',
+            pointFormat: '<span style="color:{series.color}">\u25CF</span> {series.name}: {point.y} / {point.stackTotal}'
+        },
+
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                depth: 40
+            }
+        },
+
+        series: [{
+            name: 'John',
+            data: [5, 3, 4, 7, 2],
+            stack: 'male'
+        }, {
+            name: 'Joe',
+            data: [3, 4, 4, 2, 5],
+            stack: 'male'
+        }, {
+            name: 'Jane',
+            data: [2, 5, 6, 2, 1],
+            stack: 'female'
+        }, {
+            name: 'Janet',
+            data: [3, 0, 4, 4, 3],
+            stack: 'female'
+        }]
+    });
+});
+</script>
 {% endblock %}

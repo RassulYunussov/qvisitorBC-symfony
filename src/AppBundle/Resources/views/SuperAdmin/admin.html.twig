@@ -2,16 +2,149 @@
 
 {% block title %}Супер-админ{% endblock %}
 {% block pagemenu %}
-		<li>
-			<a href="analytics">Аналитика</a>
-        </li>
-		<li>
-			<a href="business-center">Управление бизнес-центрами</a>
-        </li>
-		<li>
-			<a href="admin-bc" class="active">Управление админами БЦ</a>
-        </li>
+	{{ include('AppBundle:SuperAdmin:pagemenu.html.twig') }}
 {% endblock %}
 
 {% block body %}
+
+<div id="page-wrapper">
+
+    <div class="row">
+            {% block breadcrumb %}
+				<div id="breadcrumbs">
+					<br>
+					<ul>
+					<li><a href="analytics">Главная</a></li>
+					<li><a href="admin-bc">Управление администраторами</a></li>
+					</ul>
+				</div>
+			{% endblock %}		
+            <h1 class="page-header">Управление администраторами</h1>
+    </div>
+
+<div class="row">
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+            <div class="panel-heading">
+                Администраторы БЦ
+            </div>
+                        <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+					<div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="dataTables_length" id="dataTables-example_length">
+									<label>Show 
+										<select name="dataTables-example_length" aria-controls="dataTables-example" class="form-control input-sm">
+										<option value="10">10</option><option value="25">25</option><option value="50">50</option>
+										<option value="100">100</option></select> entries
+									</label>
+								</div>
+							</div>
+							<div class="col-sm-6 text-right">
+								<div id="dataTables-example_filter" class="dataTables_filter">
+									<label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="dataTables-example"></label>
+									<a href="admin-creation" class="btn btn-info">Создать</a>
+								</div>	
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info">
+									<thead>
+										<tr role="row">
+											<th class="sorting_asc" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 130px;">Фамилия</th>
+											<th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 120px;">Имя</th>
+											<th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 90px;">Отчеcтво</th>
+											<th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 60px;">Статус</th>
+											<th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 40px;">Действие</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr class="gradeA odd" role="row">
+											<td class="sorting_1">Иванов</td>
+											<td>Иван</td>
+											<td>Петрович</td>
+											<td class="center">Включен 
+												<button type="button" class="btn btn btn-info btn-xs" data-toggle="modal" data-target="#myModal"><i class="fa fa-gear fa-fw"></i>
+												</button>
+												<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+																<div class="modal-dialog">
+																	<div class="modal-content">
+																		<div class="modal-header">
+																			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+																			<h4 class="modal-title" id="myModalLabel">Выбрать статус</h4>
+																		</div>
+																		<div class="modal-body">
+																		<div class="form-group">
+																			<div class="radio">
+																				<label>
+																					<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">Включен
+																				</label>
+																			</div>
+																			<div class="radio">
+																				<label>
+																					<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">Выключен
+																				</label>
+																			</div>
+																		</div>
+																		</div>
+																		<div class="modal-footer">
+																			<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+																			<button type="button" class="btn btn-primary" data-dismiss="modal">Сохранить</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+											</td>
+											<td class="center">
+												<div class="btn-group">
+													<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+														Выберите действие
+														<span class="caret"></span>
+													</button>
+													<ul class="dropdown-menu pull-right" role="menu">
+														<li><a href="admin-editing">Редактировать</a>
+														</li>
+														<li><a href="#">Удалить</a>
+														</li>
+													</ul>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Показанные записи: 1 </div>
+							</div>
+							<div class="col-sm-6 text-right">
+								<div class="dataTables_paginate paging_simple_numbers" id="dataTables-example_paginate">
+									<ul class="pagination">
+										<li class="paginate_button previous disabled" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_previous">
+											<a href="#">Previous</a>
+										</li>
+										<li class="paginate_button active" aria-controls="dataTables-example" tabindex="0">
+											<a href="#">1</a>
+										<li class="paginate_button next disabled" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_next">
+											<a href="#">Next</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	
+</div>
+
+
+
 {% endblock %}
