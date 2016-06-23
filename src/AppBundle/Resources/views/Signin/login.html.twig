@@ -10,21 +10,26 @@
                         <h3 class="panel-title">Пожалуйста войдите в систему</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form">
+                        <form role="form" action="{{ path('login') }}" method="post">
                             <fieldset>
+                            <input type="hidden" name="_csrf_token"
+        						value="{{ csrf_token('authenticate') }}">
+                            
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                {% if error %}
+								    <div class="error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+								{% endif %}
+                                    <input class="form-control" placeholder="E-mail" id="username" name="_username" value="{{ last_username }}" type="email" autofocus>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    <input class="form-control" placeholder="Password" id="password" name="_password" type="password" value="">
                                 </div>
                                 <div class="checkbox">
                                     <label>
                                         <input name="remember" type="checkbox" value="Remember Me">Запомнить
                                     </label>
                                 </div>
-                                <!-- Change this to a button or input when using this as a form -->
-                                <a href="checkpoint" class="btn btn-lg btn-primary btn-block">Login</a>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>                          
                             </fieldset>
                         </form>
                     </div>
@@ -32,4 +37,5 @@
             </div>
         </div>
 </div>
+
 {% endblock %}
