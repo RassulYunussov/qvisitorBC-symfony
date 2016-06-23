@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * qvUser
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * uniqueConstraints={@ORM\UniqueConstraint(name="id_User_UNIQUE", columns={"id"}), @ORM\UniqueConstraint(name="login_UNIQUE", columns={"login"})}, indexes={@ORM\Index(name="fk_leaser_user_idx", columns={"leaserid"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\qvUserRepository")
  */
-class qvUser
+class qvUser implements UserInterface, \Serializable
 {
     /**
      * @var integer
@@ -32,9 +33,10 @@ class qvUser
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=45, nullable=false)
+     * @ORM\Column(name="password", type="string", length=60, nullable=false)
      */
     private $password;
+    
 
     /**
      * @var integer
@@ -68,7 +70,9 @@ class qvUser
      */
     public function __construct()
     {
-      
+    	$this->disabled = false;
+    	// may not be needed, see section on salt below
+    	$this->salt = md5(uniqid(null, true));
     }
 
 
@@ -212,5 +216,49 @@ class qvUser
     public function getRole()
     {
         return $this->role;
+    }
+    
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+    	return serialize(array(
+    			$this->id,
+    			$this->login,
+    			$this->password,
+    			// see section on salt below
+    		    //$this->salt,
+    	));
+    }
+    
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+    	list (
+    			$this->id,
+    			$this->login,
+    			$this->password,
+    			// see section on salt below
+    			//$this->salt
+    			) = unserialize($serialized);
+    }
+    
+    public function getRoles()
+    {
+    	return array($this->role->getCode());
+    }
+    
+    public function eraseCredentials()
+    {
+    }
+    public function getUsername()
+    {
+    	return $this->login;
+    }
+    
+    public function getSalt()
+    {
+    	// you *may* need a real salt depending on your encoder
+    	// see section on salt below
+    	return null;
     }
 }

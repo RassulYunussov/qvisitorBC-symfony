@@ -3,6 +3,10 @@
 security:
 # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
+        in_db:
+            entity:
+                class: AppBundle:qvUser
+                property: login
         in_memory:
             memory:
              users:
@@ -20,6 +24,7 @@ security:
                roles: 'ROLE_SA'
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
+        Symfony\Component\Security\Core\User\UserInterface: bcrypt
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
@@ -37,7 +42,7 @@ security:
                 login_path: login
                 check_path: login
                 csrf_token_generator: security.csrf.token_manager
-                provider: in_memory
+                provider: in_db
             logout:
                 path:   /logout
                 target: /

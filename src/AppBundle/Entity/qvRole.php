@@ -29,7 +29,13 @@ class qvRole
      */
     private $name;
 
-
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=45, nullable=false)
+     */
+    private $code;
+    
     /**
      * Get id
      *
@@ -68,5 +74,27 @@ class qvRole
     	return $this->name;
     }
 
-  
+    /**
+     * Set code
+     *
+     * @param string $code
+     *
+     * @return qvRole
+     */
+    public function setCode($code)
+    {
+    	$this->code = $code;
+    
+    	return $this;
+    }
+    
+    /**
+     * Get code
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+    	return $this->code;
+    }
 }
