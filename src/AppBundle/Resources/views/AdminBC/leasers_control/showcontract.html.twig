@@ -3,15 +3,6 @@
 
 {% block title %}Личный кабинет администратора{% endblock %}
 
-{% block header %} 
-<a class="navbar-brand" href="adminbc">QVisitor</a>
-
-{% endblock %}
-
-{%block pagemenu%}
-		{{ include('AppBundle:Adminbc:pagemenu.html.twig') }}
-			{%endblock%}
-
 {% block body %}
 		
 		<div id="page-wrapper">
@@ -21,7 +12,9 @@
 					<div id="breadcrumbs">
 						<br>
 						<ul>
-						<li><a href="adminbc">Главная</a></li>
+						<li><a href="\adminbc\index">Главная</a></li>
+						<li><a href="\adminbc\leasers_control">Управление арендаторами</a></li>
+						<li><a href="show_leaser">Информация об арендаторе</a></li>
 						<li><a href="show_contract">Просмотр контракта</a></li>
 						</ul>
 					</div>

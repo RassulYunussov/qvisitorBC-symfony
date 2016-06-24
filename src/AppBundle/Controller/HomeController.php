@@ -17,7 +17,7 @@ class HomeController extends Controller
     	if($this->get('security.authorization_checker')->isGranted('ROLE_CHECKPOINT'))
     		return $this->redirect('/checkpoint/entrance');
         if($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))
-    		return $this->redirect('/adminbc');
+    		return $this->redirect('/adminbc/index');
     	if($this->get('security.authorization_checker')->isGranted('ROLE_SA'))
     		return $this->redirect('control/analytics'); 
         return $this->render('AppBundle:Home:index.html.twig', array(

@@ -124,10 +124,9 @@ class AdminBCController extends Controller
         ));
     }
 	
-	
-	
+
 		 /**
-     * @Route("/buildings_control/show_checkpoint")
+     * @Route("/checkpoints_control/show_checkpoint")
      * @Method("GET")
      */
     public function show_checkpointAction()
@@ -139,7 +138,7 @@ class AdminBCController extends Controller
     }
 	
 		 /**
-     * @Route("/buildings_control/edit_checkpoint")
+     * @Route("/checkpoints_control/edit_checkpoint")
      * @Method("GET")
      */
     public function edit_checkpointAction()
@@ -152,7 +151,7 @@ class AdminBCController extends Controller
 	
 	
 		 /**
-     * @Route("/buildings_control/create_checkpoint")
+     * @Route("/checkpoints_control/create_checkpoint")
      * @Method("GET")
      */
     public function create_checkpointAction()
@@ -163,6 +162,18 @@ class AdminBCController extends Controller
         ));
     }
 	
+		
+	/**
+     * @Route("/buildings_control/sectors_control")
+     * @Method("GET")
+     */
+    public function sectors_controlAction()
+    {
+    	
+        return $this->render('AppBundle:Adminbc:buildings_control/sectors_control/sectorscontrol.html.twig', array(
+        		
+        ));
+    }
 	
 		 /**
      * @Route("/buildings_control/show_sector")
@@ -248,6 +259,17 @@ class AdminBCController extends Controller
         ));
     }
 
+	 /**
+     * @Route("/buildings_control/floors_control")
+     * @Method("GET")
+     */
+    public function floors_controlAction()
+    {
+    	
+        return $this->render('AppBundle:Adminbc:buildings_control/floors_control/floorscontrol.html.twig', array(
+        		
+        ));
+    }		
 	
 		 /**
      * @Route("/buildings_control/edit_floor")

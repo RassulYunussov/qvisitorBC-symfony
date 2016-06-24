@@ -16,7 +16,7 @@
 						<br>
 						<ul>
 						<li><a href="\adminbc\index">Главная</a></li>
-						<li><a href="\adminbc\leasers_control">Управление арендаторами</a></li>
+						<li><a href="leasers_control">Управление арендаторами</a></li>
 						<li><a href="show_contract">Просмотр контракта</a></li>
 						</ul>
 					</div>

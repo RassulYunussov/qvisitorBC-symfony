@@ -3,18 +3,8 @@
 
 {% block title %}Личный кабинет администратора{% endblock %}
 
-{% block header %}
-    <a class="navbar-brand" href="adminbc">QVisitor</a>
-{% endblock %}
-
-	{%block pagemenu%}
-        {{ include('AppBundle:Adminbc:pagemenu.html.twig') }}
-    {%endblock%}
 
 {% block body %}
-
-
-
 
     <div id="page-wrapper">
 		<div class="row">
@@ -22,10 +12,10 @@
 				{% block breadcrumb %}
 					<div id="breadcrumbs"><br>
 						<ul>
-							<li><a href="adminbc">Главная</a></li>
-							<li><a href="buildings_control">Управление зданиями</a></li>
-							<li><a href="buildings_control">Этажи</a></li>
-							<li><a href="buildings_control">Сектора</a></li>
+							<li><a href="\adminbc\index">Главная</a></li>
+							<li><a href="adminbc\buildings_control">Управление зданиями</a></li>
+							<li><a href="\adminbc\buildings_control">Этажи</a></li>
+							<li><a href="adminbc\buildings_control">Сектора</a></li>
 							<li><a href="show_sector">Информация о секторе</a></li>
 							<li><a href="edit_sector">Изменить информацию о секторе</a></li>
 						</ul>
@@ -55,7 +45,7 @@
 										</div>
 										
 										<div>
-											<label for="qv_sector_contracts">Изменить контракты</label><select class="form-control" id="qv_sector_contracts" name="qv_sector[contracts][]" multiple="multiple"></select></div>
+											<label for="qv_sector_contracts">Сменить контракты</label><select class="form-control" id="qv_sector_contracts" name="qv_sector[contracts][]" multiple="multiple"></select></div>
 										
 										<br>
 										<button type="submit" class="btn btn-success">Сохранить изменения</button>

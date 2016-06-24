@@ -40,7 +40,7 @@
 					</div>
 				</div>
 				<div name="edit_button" align="right">
-				<button type="submit" href="#" class="btn btn-primary">Редактировать</button>
+				<button type="submit" href="#" class="btn btn-primary">Редактировать</a>
 				<div>
 <!-- /.col-lg-6-->
 </div>

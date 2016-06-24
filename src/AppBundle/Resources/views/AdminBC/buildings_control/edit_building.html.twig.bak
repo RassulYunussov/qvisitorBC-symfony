@@ -42,8 +42,8 @@
             </div>
         </div>
         <div name="edit_button" align="right">
-            <button type="submit" href="#" class="btn btn-success">Сохранить изменения</button>
-			  <button type="reset" href="#" class="btn btn-danger">Очистить форму</button>
+            <button type="submit" href="#" class="btn btn-success">Сохранить изменения</a>
+			  <button type="reset" href="#" class="btn btn-danger">Очистить форму</a>
             <div>
                 <!-- /.col-lg-6-->
             </div>

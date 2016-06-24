@@ -3,13 +3,6 @@
 
 {% block title %}Личный кабинет администратора{% endblock %}
 
-{% block header %} 
-<a class="navbar-brand" href="adminbc">QVisitor</a>
-{% endblock %}
-
-{%block pagemenu%}
-{{ include('AppBundle:Adminbc:pagemenu.html.twig') }}
-{%endblock%}
 
 
 {% block body %}
@@ -21,7 +14,7 @@
 <div id="breadcrumbs">
 <br>
 <ul>
-<li><a href="adminbc">Главная</a></li>
+<li><a href="index">Главная</a></li>
 <li><a href="leasers_control">Управление арендаторами</a></li>
 </ul>
 </div>
@@ -44,7 +37,8 @@
 <div class="panel-body">
 <div class="dataTable_wrapper">
 <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
-<div class="row"><div class="col-sm-6"><div class="dataTables_length" id="dataTables-example_length">
+<div class="row">
+	<div class="col-sm-6"><div class="dataTables_length" id="dataTables-example_length">
 <label>
 Show
 <select name="dataTables-example_length" aria-controls="dataTables-example" class="form-control input-sm">
@@ -60,7 +54,7 @@ Show
 
 <div class="col-sm-6">
 <div align="right" id="dataTables-example_filter" class="dataTables_filter" >
-<a class="btn btn-success" href="create_leaser">Добавить арендатора</a>
+<a class="btn btn-success" href="leasers_control/create_leaser">Добавить арендатора</a>
 </div>
 <br>
 </div>
@@ -78,28 +72,28 @@ Show
 </thead>
 <tbody>
 <tr class="gradeA odd" role="row">
-<td class="sorting_1"><a href="show_leaser">APPLE</a></td>
-<td><a href="show_leaser">Tim Cook</a></td>
-<td><a href="show_floor">15,16,17</a></td>
-<td class="center"><a href="show_sector">150-179</a></td>
-<td class="center"><a href="show_contract">Активен</a></td>
+<td class="sorting_1"><a href="leasers_control/show_leaser">APPLE</a></td>
+<td><a href="leasers_control/show_leaser">Tim Cook</a></td>
+<td><a href="buildings_control/show_floor">15,16,17</a></td>
+<td class="center"><a href="buildings_control/show_sector">150-179</a></td>
+<td class="center"><a href="leasers_control/show_contract">Активен</a></td>
 {{ include('AppBundle:Adminbc:actions_for_user.html.twig') }}
 </tr>
 <tr class="gradeA odd" role="row">
-<td class="sorting_1"><a href="show_leaser">MICROSOFT</a></td>
-<td><a href="show_leaser">Bill Gates</a></td>
-<td><a href="show_floor">18,19,20,21</a></td>
-<td class="center"><a href="show_sector">180-219</a></td>
-<td class="center"><a href="show_contract">Активен</a></td>
+<td class="sorting_1"><a href="leasers_control/show_leaser">MICROSOFT</a></td>
+<td><a href="leasers_control/show_leaser">Bill Gates</a></td>
+<td><a href="buildings_control/show_floor">18,19,20,21</a></td>
+<td class="center"><a href="buildings_control/show_sector">180-219</a></td>
+<td class="center"><a href="leasers_control/show_contract">Активен</a></td>
 {{ include('AppBundle:Adminbc:actions_for_user.html.twig') }}
 </tr>
 
 <tr class="gradeA odd" role="row">
 <td class="sorting_1"><a href="show_leaser">FACEBOOK</a></td>
-<td><a href="show_leaser">Mark Zuckerberg</a></td>
-<td><a href="show_floor">11,12,13,14</a></td>
-<td class="center"><a href="show_sector">110-149</a></td>
-<td class="center"><a href="show_contract">Активен</a></td>
+<td><a href="leasers_control/show_leaser">Mark Zuckerberg</a></td>
+<td><a href="buildings_control/show_floor">11,12,13,14</a></td>
+<td class="center"><a href="buildings_control/show_sector">110-149</a></td>
+<td class="center"><a href="leasers_control/show_contract">Активен</a></td>
 {{ include('AppBundle:Adminbc:actions_for_user.html.twig') }}
 </tr>
 

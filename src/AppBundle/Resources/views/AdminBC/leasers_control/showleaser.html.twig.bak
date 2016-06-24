@@ -15,7 +15,7 @@
 						<ul>
 						<li><a href="\adminbc\index">Главная</a></li>
 						<li><a href="\adminbc\leasers_control">Управление арендаторами</a></li>
-						<li><a href="show_leaser">Просмотр информации об арендаторе</a></li>
+						<li><a href="show_leaser">Просмотр информации об арендаторе (пользователе)</a></li>
 						</ul>
 					</div>
 					{% endblock %}

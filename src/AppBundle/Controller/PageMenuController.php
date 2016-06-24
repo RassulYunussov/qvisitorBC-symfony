@@ -12,7 +12,7 @@ class PageMenuController extends Controller
      */
     public function menuAction()
     {
-        return $this->render('AppBundle:PageMenu:menu.html.twig', array(
+        return $this->render('AppBundle:Adminbc:pagemenu.html.twig', array(
             'role'=>"checkpoint"
         ));
     }

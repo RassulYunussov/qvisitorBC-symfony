@@ -3,18 +3,7 @@
 
 {% block title %}Личный кабинет администратора{% endblock %}
 
-{% block header %}
-    <a class="navbar-brand" href="adminbc">QVisitor</a>
-{% endblock %}
-
-	{%block pagemenu%}
-        {{ include('AppBundle:Adminbc:pagemenu.html.twig') }}
-    {%endblock%}
-
 {% block body %}
-
-
-
 
     <div id="page-wrapper">
     <div class="row">
@@ -23,9 +12,9 @@
             <div id="breadcrumbs">
                 <br>
                 <ul>
-                    <li><a href="adminbc">Главная</a></li>
-                    <li><a href="checkpoints_control">Управление КПП</a></li>
-                    <li><a href="create_checkpoint">Создание нового КПП</a></li>
+                    <li><a href="\adminbc\index">Главная</a></li>
+                    <li><a href="\adminbc\buildings_control">Управление КПП</a></li>
+                    <li><a href="\adminbc\buildings_control\create_checkpoint">Создание нового КПП</a></li>
                 </ul>
             </div>
         {% endblock %}
@@ -51,7 +40,7 @@
             </div>
         </div>
         <div name="edit_button" align="right">
-            <a href="#" class="btn btn-success">Создать</a>
+            <button type="submit" href="#" class="btn btn-success">Создать</button>
             <div>
                 <!-- /.col-lg-6-->
             </div>

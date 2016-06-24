@@ -4,15 +4,6 @@
 
 {% block title %}Личный кабинет администратора{% endblock %}
 
-{% block header %} 
-<a class="navbar-brand" href="adminbc">QVisitor</a>
-
-{% endblock %}
-{%block pagemenu%}
-		{{ include('AppBundle:Adminbc:pagemenu.html.twig') }}
-			{%endblock%}
-
-
 {% block body %}
 		
 	 <div id="page-wrapper">
@@ -22,7 +13,7 @@
 					<div id="breadcrumbs">
 						<br>
 						<ul>
-						<li><a href="leaserpage">Главная</a></li>
+						<li><a href="\adminbc\index">Главная</a></li>
 						</ul>
 					</div>
 					{% endblock %}

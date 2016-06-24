@@ -2,7 +2,61 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f27ae763-45e0-4a45-838a-7a86d6e5b960" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/AdminBCController.php.bak" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/editcheckpoint.html.twig.bak" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/create_building.html.twig.bak" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/edit_building.html.twig.bak" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/createcontract.html.twig.bak" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/createleaser.html.twig.bak" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/editcontract.html.twig.bak" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/editleaser.html.twig.bak" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/showcontract.html.twig.bak" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/showleaser.html.twig.bak" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/floors_control/createfloor.html.twig.bak" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/floors_control/floorscontrol.html.twig" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/sectors_control/createsector.html.twig.bak" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/leaserscontrol.html.twig.bak" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/sectors_control/sectorscontrol.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/contractscontrol.html.twig.bak" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/symfony_requirements" afterPath="$PROJECT_DIR$/bin/symfony_requirements" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.lock" afterPath="$PROJECT_DIR$/composer.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/AdminBCController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/AdminBCController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/HomeController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/HomeController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/PageMenuController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/PageMenuController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/adminbc.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/adminbc.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/adminbc.html.twig.bak" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/adminbc.html.twig.bak" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/buildingscontrol.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/buildingscontrol.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/buildingscontrol.html.twig.bak" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/buildingscontrol.html.twig.bak" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/checkpointscontrol.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/checkpointscontrol.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/createcheckpoint.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/createcheckpoint.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/createcheckpoint.html.twig.bak" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/createcheckpoint.html.twig.bak" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/editcheckpoint.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/editcheckpoint.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/showcheckpoint.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/showcheckpoint.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/showcheckpoint.html.twig.bak" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/showcheckpoint.html.twig.bak" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/create_building.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/create_building.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/edit_building.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/edit_building.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/floors_control/createfloor.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/floors_control/createfloor.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/floors_control/editfloor.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/floors_control/editfloor.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/floors_control/editfloor.html.twig.bak" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/floors_control/editfloor.html.twig.bak" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/floors_control/showfloor.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/floors_control/showfloor.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/floors_control/showfloor.html.twig.bak" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/floors_control/showfloor.html.twig.bak" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/sectors_control/editsector.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/sectors_control/editsector.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/sectors_control/editsector.html.twig.bak" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/sectors_control/editsector.html.twig.bak" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/sectors_control/showsector.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/sectors_control/showsector.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/sectors_control/showsector.html.twig.bak" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/sectors_control/showsector.html.twig.bak" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/show_building.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/show_building.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/show_building.html.twig.bak" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/show_building.html.twig.bak" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/contractscontrol.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/contractscontrol.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/createcontract.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/createcontract.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/createleaser.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/createleaser.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/editcontract.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/editcontract.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/editleaser.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/editleaser.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/leaserscontrol.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/leaserscontrol.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/showcontract.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/showcontract.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/showleaser.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/showleaser.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/pagemenu.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/pagemenu.html.twig" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/pagemenu.html.twig.bak" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/pagemenu.html.twig.bak" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/config.php" afterPath="$PROJECT_DIR$/web/config.php" />
     </list>
     <ignored path="qvisitorBC-symfony.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,28 +81,18 @@
       <file leaf-file-name="AdminBCController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/AdminBCController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+            <state relative-caret-position="51">
+              <caret line="117" column="0" selection-start-line="117" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="qvUser.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvUser.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2244">
-              <caret line="132" column="0" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="qvOrder.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvOrder.php">
+      <file leaf-file-name="SigninControllerTest.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/AppBundle/Tests/Controller/SigninControllerTest.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="2" selection-end-column="27" />
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -86,6 +130,7 @@
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/qvContractController.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Entity/qvLeaser.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Entity/qvUser.php" />
+        <option value="$PROJECT_DIR$/src/AppBundle/Controller/PageMenuController.php" />
         <option value="$PROJECT_DIR$/src/AppBundle/Controller/AdminBCController.php" />
       </list>
     </option>
@@ -131,8 +176,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -427,23 +472,26 @@
       <workItem from="1466323213076" duration="1372000" />
       <workItem from="1466352419799" duration="11204000" />
       <workItem from="1466489544887" duration="6585000" />
+      <workItem from="1466748652718" duration="1152000" />
+      <workItem from="1466763682978" duration="1817000" />
+      <workItem from="1466774861463" duration="2238000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28312000" />
+    <option name="totallyTimeSpent" value="33519000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23792094" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25340393" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26340693" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28498295" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -486,58 +534,67 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvOrder.php">
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvUser.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1615">
-          <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
+        <state relative-caret-position="2295">
+          <caret line="136" column="0" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/pagemenu.html.twig">
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvOrder.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="114" selection-start-line="12" selection-start-column="114" selection-end-line="12" selection-end-column="114" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="2" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/editcheckpoint.html.twig">
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/qvLeaserController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="44" column="97" selection-start-line="0" selection-start-column="0" selection-end-line="64" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/createcheckpoint.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="54" column="46" selection-start-line="54" selection-start-column="46" selection-end-line="54" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/showcheckpoint.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="57" column="53" selection-start-line="57" selection-start-column="53" selection-end-line="57" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/leaserscontrol.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1530">
-          <caret line="90" column="52" selection-start-line="90" selection-start-column="52" selection-end-line="90" selection-end-column="52" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#40#85#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/AdminBCController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="42" column="63" selection-start-line="42" selection-start-column="63" selection-end-line="42" selection-end-column="63" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvLeaser.php">
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvUser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2244">
+          <caret line="132" column="0" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvOrder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="2" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/qvLeaserController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#40#85#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/AdminBCController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -600,7 +657,64 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvOrder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1615">
+          <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/pagemenu.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="114" selection-start-line="12" selection-start-column="114" selection-end-line="12" selection-end-column="114" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/editcheckpoint.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="748">
+          <caret line="44" column="97" selection-start-line="0" selection-start-column="0" selection-end-line="64" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/createcheckpoint.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="918">
+          <caret line="54" column="46" selection-start-line="54" selection-start-column="46" selection-end-line="54" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/showcheckpoint.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="969">
+          <caret line="57" column="53" selection-start-line="57" selection-start-column="53" selection-end-line="57" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/leaserscontrol.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1530">
+          <caret line="90" column="52" selection-start-line="90" selection-start-column="52" selection-end-line="90" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/AdminBCController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="42" column="63" selection-start-line="42" selection-start-column="63" selection-end-line="42" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvLeaser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -618,13 +732,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/adminbc.html.twig.bak">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/adminbc.html.twig.bak" />
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/buildings_control/checkpoints_control/editcheckpoint.html.twig.bak" />
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvCheckpoint.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -727,6 +835,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvLeaser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvFloor.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-510">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvUser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="331">
+          <caret line="136" column="0" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvOrder.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -735,34 +865,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvLeaser.php">
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/PageMenuController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvFloor.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-510">
+        <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AppBundle/Entity/qvUser.php">
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Tests/Controller/SigninControllerTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2244">
-          <caret line="132" column="0" selection-start-line="132" selection-start-column="0" selection-end-line="132" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/LoginController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-196">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/AdminBCController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        <state relative-caret-position="51">
+          <caret line="117" column="0" selection-start-line="117" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
           <folding />
         </state>
       </provider>
