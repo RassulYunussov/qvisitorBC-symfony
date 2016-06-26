@@ -15,7 +15,7 @@
 						<ul>
 						<li><a href="\adminbc\index">Главная</a></li>
 						<li><a href="\adminbc\leasers_control">Управление арендаторами</a></li>
-						<li><a href="show_leaser">Просмотр информации об арендаторе (пользователе)</a></li>
+						<li><a href="show_leaser">Просмотр информации об арендаторе</a></li>
 						</ul>
 					</div>
 					{% endblock %}
@@ -32,32 +32,30 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-						
+			
+	
 						<div class="table-responsive">
                                 <table class="table">
                                     
                                     <tbody>
-                                        <tr class="success">
-                                          	<tr class="success">
-                                            <td>ФИО</td>
-											<td>Tim Cook</td>
-											</tr>
-											<tr class="success">
-                                            <td>Название компании</td>
-											<td>Apple Corporation</td>
-											</tr>
-											
-											<tr class="success">
-                                            <td>BIN</td>
-											<td>005469154</td>
-											</tr>
-											<tr>
+                                 <tr>
+                <th>Id</th>
+                <td>{{ qvLeaser.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ qvLeaser.name }}</td>
+            </tr>
+            <tr>
+                <th>Bin</th>
+                <td>{{ qvLeaser.bin }}</td>
+            </tr>
 											<td></td>
-											<td align="right"><br><a href="edit_leaser" class="btn btn-warning">Редактировать</a></td>
+											<td align="right"><br>
+					<a href="{{ path('edit_leaser', { 'id': qvLeaser.id }) }}" class="btn btn-warning">Редактировать</a></td>
 											</tr>
                                     </tbody>
-                                </table>
-								
+                                </table>							
 								<h3 class="page-header">
 								Контракты данного пользователя
 								</h3>
@@ -228,6 +226,4 @@
                     </div>
 	</div>
         <!-- /#page-wrapper -->
-
-    
             {% endblock %}

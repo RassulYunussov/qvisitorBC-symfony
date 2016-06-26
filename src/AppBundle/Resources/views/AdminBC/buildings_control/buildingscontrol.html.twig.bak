@@ -51,7 +51,7 @@
 													
 			<div class="col-sm-6">
 				<div id="dataTables-example_filter" align="right" class="dataTables_filter">
-					<a href="create_building" class="btn btn-success">Добавить здание</a>
+					<a href="buildings_control/create_building" class="btn btn-success">Добавить здание</a>
 				</div><br>
 			</div>
 		</div>
@@ -78,8 +78,8 @@
 		<tbody>
                                      
         <tr class="gradeA odd" role="row">
-			<td class="sorting_1"><label><a href="show_building">001</a></label></td>
-				<td><label><a href="show_building">Здание 1</a></label></td>
+			<td class="sorting_1"><label><a href="buildings_control/show_building">001</a></label></td>
+				<td><label><a href="buildings_control/show_building">Здание 1</a></label></td>
 					<td class="center">
 						<div class="btn-group">
 							<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -88,8 +88,8 @@
                             </button>
 							
 		<ul class="dropdown-menu pull-right" role="menu">
-			<li><a href="show_building">Посмотеть информацию</a></li>
-				<li><a href="edit_building">Изменить информацию</a></li>
+			<li><a href="buildings_control/show_building">Посмотеть информацию</a></li>
+				<li><a href="buildings_control/edit_building">Изменить информацию</a></li>
 					<li><a href="#">Удалить</a></li>
         </ul>
 		

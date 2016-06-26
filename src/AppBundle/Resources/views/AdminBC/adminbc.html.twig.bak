@@ -13,7 +13,7 @@
 					<div id="breadcrumbs">
 						<br>
 						<ul>
-						<li><a href="adminbc">Главная</a></li>
+						<li><a href="\adminbc\index">Главная</a></li>
 						</ul>
 					</div>
 					{% endblock %}

@@ -10,7 +10,7 @@
                                         </li>
                                         <li><a href="{{ path('edit_leaser', { 'id': qvLeaser.id }) }}">Изменить информацию о пользователе</a>
                                         </li>
-                                        <li><a href="">Посмотеть контракты пользователя</a>
+                                        <li><a href="{{ path('') }}">Посмотеть контракты пользователя</a>
                                         </li>
                                         <li><a href="{{ path('delete_leaser', { 'id': qvLeaser.id }) }}">Удалить пользователя</a>
                                         </li>

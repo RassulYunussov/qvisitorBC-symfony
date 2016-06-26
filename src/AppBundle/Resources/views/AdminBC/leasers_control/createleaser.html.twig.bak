@@ -2,21 +2,8 @@
 
 
 {% block title %}Личный кабинет администратора{% endblock %}
-
-{% block header %} 
-<a class="navbar-brand" href="adminbc">QVisitor</a>
-
-{% endblock %}
-
-{%block pagemenu%}
-		{{ include('AppBundle:Adminbc:pagemenu.html.twig') }}
-			{%endblock%}
-
 {% block body %}
 		
-		
-		
-
 	 <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
@@ -24,8 +11,8 @@
 					<div id="breadcrumbs">
 						<br>
 						<ul>
-						<li><a href="adminbc">Главная</a></li>
-						<li><a href="leasers_control">Управление арендаторами</a></li>
+						<li><a href="\adminbc\index">Главная</a></li>
+						<li><a href="\adminbc\leasers_control">Управление арендаторами</a></li>
 						<li><a href="create_leaser">Создание учетной записи арендатора</a></li>
 						
 						</ul>
@@ -35,35 +22,30 @@
                <h1 class="page-header">Личный кабинет администратора</h1>
                 <!-- /.col-lg-12 -->
             </div>
-			<div class="col-lg-4" >
-			<div class="form-group has-success">
-                                            <label>Фамилия </label>
-                                            <input type="text" class="form-control" placeholder="Введите текст">
-                                        </div>
-										<div class="form-group has-success">
-                                            <label>Имя</label>
-                                            <input type="text" class="form-control" placeholder="Введите текст">
-                                        </div>
-										<div class="form-group has-success">
-                                            <label>Отчество</label>
-                                            <input type="text" class="form-control" placeholder="Введите текст">
-                                        </div>
-			<div class="form-group has-success">
-                                            <label>Название компании</label>
-                                            <input type="text" class="form-control" placeholder="Введите текст">
-                                        </div>
-										<div class="form-group has-success">
-                                            <label>BIN</label>
-                                            <input type="number" class="form-control" placeholder="Введите текст">
-                                </div>     
-<br>								
-								<div  align="right">
-								<button type="submit" class="btn btn-success">Добавить арендатора</button>
-								<button type="reset" class="btn btn-danger" >Очистить форму</button>
-	<br><br>							<br><br><br>
-			</div>					</div>
-            <!-- /.row -->
-			        </div>
+	<div class="col-lg-4" >
+		<div class="form-group has-success">
+			<form name="qv_leaser" method="post">
+        <div id="qv_leaser">
+		<div>
+		<label for="qv_leaser_name" class="required">Имя</label>
+		<input class="form-control" type="text" id="qv_leaser_name" name="qv_leaser[name]" required="required" maxlength="45">
+		</div>
+		<div>
+		<label for="qv_leaser_bin" class="required">BIN</label>
+		<input type="text" class="form-control" id="qv_leaser_bin" name="qv_leaser[bin]" required="required" maxlength="45">
+		</div>
+		<input type="hidden" id="qv_leaser__token" name="qv_leaser[_token]" value="IFsYBRs6DqP-svH7-zZEPP2HyA8YcK2EkyQys8bbc78">
+		
+		</div>
+		<div align="right">
+        <button class="btn btn-success" type="submit"> Создать</button>
+		</div>
+	</form>
+
+		</div>				
+	</div>
+        <!-- /.row -->
+		</div>
 	</div>
         <!-- /#page-wrapper -->
 
