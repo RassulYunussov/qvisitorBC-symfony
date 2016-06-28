@@ -20,10 +20,10 @@ class PageMenuController extends Controller
     	if($this->get('security.authorization_checker')->isGranted('ROLE_CHECKPOINT'))
 		return $this->render('AppBundle:Pagemenu:checkpoint_menu.html.twig', array(
         ));
-		if($this->get('security.authorization_checker')->isGranted('ROLE_SA'))
+		if($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))
 		return $this->render('AppBundle:Pagemenu:admin_menu.html.twig', array(
         ));
-		if($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))
+		if($this->get('security.authorization_checker')->isGranted('ROLE_ADMINBC'))
 		return $this->render('AppBundle:Pagemenu:adminbc_menu.html.twig', array(
         ));
 		

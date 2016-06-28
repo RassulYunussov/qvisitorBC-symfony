@@ -75,18 +75,23 @@ Show
 <tbody>
 	
 	{% for qvLeaser in qvLeasers %}
+	
 	<tr>
 		<td><a href="{{ path('show_leaser', { 'id': qvLeaser.id }) }}">{{ qvLeaser.id }}</a></td>
 		<td><a href="{{ path('show_leaser', { 'id': qvLeaser.id }) }}">{{ qvLeaser.bin }}</a></td>
-			<td><a href=""></td>
+		<td><a href=""></td>
 		<td><a href="{{ path('show_leaser', { 'id': qvLeaser.id}) }}">{{ qvLeaser.name }}</a></td>
-		<td></td>
-		<td></td>
+		
+		{% for qvFloorы in qvFloors %}
+			<td><a href="{{ path('show_leaser', { 'id': qvFloor.id}) }}">{{ qvFloor.name }}</a></td>
+		{% endfor %}
+			<td></td>
 				<td></td>
 				{{ include('AppBundle:Adminbc:actions_for_user.html.twig') }}
 				
 	</tr>
-	{% endfor %}
+		{% endfor %}
+	
 </tbody>
 </table>
 </div>
@@ -95,7 +100,7 @@ Show
 <div class="row">
 <div class="col-sm-6">
 <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">
-Показанные записи: 3
+Показанные записи: 
 </div>
 </div>
 
@@ -103,7 +108,7 @@ Show
 <div align="right" class="dataTables_paginate paging_simple_numbers" id="dataTables-example_paginate">
 <ul class="pagination">
 <li class="paginate_button previous disabled" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_previous">
-<a href="#">Previous</a>
+<a href="#">Предыдущая</a>
 </li>
 <li class="paginate_button active" aria-controls="dataTables-example" tabindex="0">
 <a href="#">1</a>
@@ -115,7 +120,7 @@ Show
 <a href="#">3</a>
 </li>
 <li class="paginate_button next" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_next">
-<a href="#">Next</a>
+<a href="#">Следующая</a>
 </li>
 </ul>
 </div>

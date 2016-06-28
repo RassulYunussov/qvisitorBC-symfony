@@ -38,9 +38,11 @@ class AdminBCController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $qvLeasers = $em->getRepository('AppBundle:qvLeaser')->findAll();
-	
+		$qvFloors = $em->getRepository('AppBundle:qvFloor')->findAll();
+		
         return $this->render('AppBundle:Adminbc:leasers_control/leaserscontrol.html.twig', array(
 		'qvLeasers' => $qvLeasers,
+		'qvFloors' => $qvFloors,
         ));
     }
 	
@@ -82,6 +84,7 @@ class AdminBCController extends Controller
 
         return $this->render('AppBundle:Adminbc:leasers_control/showleaser.html.twig', array(
             'qvLeaser' => $qvLeaser,
+			 'qvFloor' => $qvFloor,
 	'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -89,7 +92,7 @@ class AdminBCController extends Controller
     /**
      * Displays a form to edit an existing qvLeaser entity.
 		*
-     * @Route("/{id}", name="edit_leaser")
+     * @Route("/{id}/edit", name="edit_leaser")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, qvLeaser $qvLeaser)
