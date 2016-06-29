@@ -45,4 +45,3 @@ security:
                 provider: in_db
             logout:
                 path:   /logout
-                target: /

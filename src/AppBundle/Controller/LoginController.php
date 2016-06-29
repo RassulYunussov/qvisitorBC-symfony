@@ -32,4 +32,17 @@ class LoginController extends Controller
 	    );
 	
 	}
+	/**
+	 * @Route("/logout", name="logout")
+	 */
+	public function logoutAction(Request $request)
+	{
+		 //do whatever you want here 
+
+        //clear the token, cancel session and redirect
+        $this->get('security.context')->setToken(null);
+        $this->get('request')->getSession()->invalidate();
+        return $this->redirect('/login');
+	
+	}
 }

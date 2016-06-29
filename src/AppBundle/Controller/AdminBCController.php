@@ -36,14 +36,10 @@ class AdminBCController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $qvLeasers = $em->getRepository('AppBundle:qvLeaser')->findAll();
-		$qvFloors = $em->getRepository('AppBundle:qvFloor')->findAll();
-		
+        $qvLeasers = $em->getRepository('AppBundle:qvLeaser')->getLeasersDetailedRaw();
+     	
         return $this->render('AppBundle:Adminbc:leasers_control/leaserscontrol.html.twig', array(
-		'qvLeasers' => $qvLeasers,
-		'qvFloors' => $qvFloors,
-		
+		'qvLeasers' => $qvLeasers
         ));
     }
 	
