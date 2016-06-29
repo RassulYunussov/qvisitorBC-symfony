@@ -54,7 +54,7 @@ Show
 
 <div class="col-sm-6">
 <div align="right" id="dataTables-example_filter" class="dataTables_filter" >
-<a class="btn btn-success" href="{{path('new_leaser')}}">Добавить арендатора</a>
+<a class="btn btn-success" href="{{path('createLeaser')}}">Добавить арендатора</a>
 </div>
 <br>
 </div>
@@ -77,18 +77,15 @@ Show
 	{% for qvLeaser in qvLeasers %}
 	
 	<tr>
-		<td><a href="{{ path('show_leaser', { 'id': qvLeaser.id }) }}">{{ qvLeaser.id }}</a></td>
-		<td><a href="{{ path('show_leaser', { 'id': qvLeaser.id }) }}">{{ qvLeaser.bin }}</a></td>
-		<td><a href=""></td>
-		<td><a href="{{ path('show_leaser', { 'id': qvLeaser.id}) }}">{{ qvLeaser.name }}</a></td>
+		<td><a href="{{ path('showLeaser', { 'id': qvLeaser['id'] }) }}">{{ qvLeaser['id'] }}</a></td>
+		<td><a href="{{ path('showLeaser', { 'id': qvLeaser['id'] }) }}">{{ qvLeaser['bin'] }}</a></td>
 		
-		{% for qvFloorы in qvFloors %}
-			<td><a href="{{ path('show_leaser', { 'id': qvFloor.id}) }}">{{ qvFloor.name }}</a></td>
-		{% endfor %}
-			<td></td>
-				<td></td>
-				{{ include('AppBundle:Adminbc:actions_for_user.html.twig') }}
-				
+		<td><a href="{{ path('showLeaser', { 'id': qvLeaser['id'] }) }}">{{ qvLeaser['name'] }}</a></td>
+		<td><a href=""></td>
+		<td>{{ qvLeaser['count(qvfloor.id)'] }}</td>
+		<td>{{ qvLeaser['count(qvsector.id)'] }}</td>
+		<td></td>
+		{{ include('AppBundle:Adminbc:actions_for_user.html.twig') }}	
 	</tr>
 		{% endfor %}
 	
