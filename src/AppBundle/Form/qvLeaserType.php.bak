@@ -17,7 +17,6 @@ class qvLeaserType extends AbstractType
         $builder
             ->add('name')
             ->add('bin')
-			->add('name_bin')
         ;
     }
     

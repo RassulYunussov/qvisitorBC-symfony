@@ -1,26 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f27ae763-45e0-4a45-838a-7a86d6e5b960" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/irism.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/php.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/actions_for_user.html.twig.bak" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/adminbc.html.twig.bak" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/PageMenu/menu.html.twig" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/SuperAdmin/pagemenu.html.twig" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/AdminBCController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/AdminBCController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/AdminBCController.php.bak" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/AdminBCController.php.bak" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/PageMenuController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/PageMenuController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/leaserscontrol.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/leaserscontrol.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/leaserscontrol.html.twig.bak" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/leaserscontrol.html.twig.bak" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/showleaser.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/showleaser.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/showleaser.html.twig.bak" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/leasers_control/showleaser.html.twig.bak" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/pagemenu.html.twig" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/pagemenu.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/pagemenu.html.twig.bak" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/AdminBC/pagemenu.html.twig.bak" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Resources/views/base.html.twig.bak" afterPath="$PROJECT_DIR$/src/AppBundle/Resources/views/base.html.twig.bak" />
-    </list>
+    <list default="true" id="f27ae763-45e0-4a45-838a-7a86d6e5b960" name="Default" comment="" />
     <ignored path="qvisitorBC-symfony.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -322,12 +303,12 @@
       <workItem from="1466774861463" duration="2928000" />
       <workItem from="1466853645352" duration="112000" />
       <workItem from="1467010829354" duration="1666000" />
-      <workItem from="1467087290139" duration="3629000" />
+      <workItem from="1467087290139" duration="3773000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39616000" />
+    <option name="totallyTimeSpent" value="39760000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
