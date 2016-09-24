@@ -20,7 +20,7 @@ class HomeController extends Controller
     		return $this->redirect('/adminbc/index');
     	if($this->get('security.authorization_checker')->isGranted('ROLE_SA'))
     		return $this->redirect('control/analytics'); 
-        return $this->render('AppBundle:Home:index.html.twig', array(
+        return $this->render('AppBundle:Home:index.html.twig', 	array(
             // ...
         ));
     }

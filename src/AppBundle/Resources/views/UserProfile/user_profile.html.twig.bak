@@ -2,6 +2,10 @@
 
 {% block title %}AppBundle:UserProfile:userProfile{% endblock %}
 
+{% block pagemenu %}
+	{{ include('AppBundle:Checkpoint:pagemenu.html.twig') }}
+{% endblock %}
+
 {% block body %}
 
 <div id="page-wrapper">

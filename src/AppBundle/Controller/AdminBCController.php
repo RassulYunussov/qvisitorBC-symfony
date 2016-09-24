@@ -24,7 +24,7 @@ class AdminBCController extends Controller
      */
     public function adminbcAction()
     {
-			return $this->render('AppBundle:Adminbc:adminbc.html.twig', array(
+			return $this->render('AppBundle:Adminbc:index.html.twig', array(
         ));
     }	
 	
@@ -148,49 +148,38 @@ class AdminBCController extends Controller
         ;
     }
 	
-	/**
-     * @Route("/leasers_control/contracts_control")
-     * @Method("GET")
-     */
-    public function contracts_controlAction()
-    {
-    	
-        return $this->render('AppBundle:Adminbc:leasers_control/contractscontrol.html.twig', array(
-        		
-        ));
-    }
 	
 	 /**
-     * @Route("/leasers_control/show_contract")
+     * @Route("/leasers/show_contract")
      * @Method("GET")
      */
     public function show_contractAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:leasers_control/showcontract.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers/showcontract.html.twig', array(
         		
         ));
     }	
 	
 	 /**
-     * @Route("/leasers_control/edit_contract")
+     * @Route("/leasers/edit_contract")
      * @Method("GET")
      */
     public function edit_contractAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:leasers_control/editcontract.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers/editcontract.html.twig', array(
         		
         ));
     }
 		 /**
-     * @Route("/leasers_control/create_contract")
+     * @Route("/leasers/create_contract")
      * @Method("GET")
      */
     public function createcontractAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:leasers_control/createcontract.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers/createcontract.html.twig', array(
         		
         ));
     }

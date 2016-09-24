@@ -4,6 +4,7 @@
 {% block title %}Личный кабинет администратора{% endblock %}
 
 
+
 {% block body %}
 
 <div id="page-wrapper">

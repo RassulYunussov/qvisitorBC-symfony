@@ -1,6 +1,9 @@
 {% extends 'AppBundle::base.html.twig' %}
 
 {% block title %}Супер-админ{% endblock %}
+{% block pagemenu %}
+	{{ include('AppBundle:SuperAdmin:pagemenu.html.twig') }}
+{% endblock %}
 
 {% block body %}
 
