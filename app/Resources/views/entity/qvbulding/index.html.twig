@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Entity\qvbulding list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity\qvbulding in entity\qvbuldings %}
+            <tr>
+                <td><a href="{{ path('entity_qvbulding_show', { 'id': entity\qvbulding.id }) }}">{{ entity\qvbulding.id }}</a></td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('entity_qvbulding_show', { 'id': entity\qvbulding.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('entity_qvbulding_edit', { 'id': entity\qvbulding.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('entity_qvbulding_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

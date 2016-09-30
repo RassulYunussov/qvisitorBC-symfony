@@ -47,6 +47,16 @@ class qvLeaser
         return $this->id;
     }
 
+	/**
+	 * 
+	 * @return string
+	 * 
+	 * */
+	public function __toString()
+	{
+			return (string)$this->id;
+	}
+	
     /**
      * Set name
      *

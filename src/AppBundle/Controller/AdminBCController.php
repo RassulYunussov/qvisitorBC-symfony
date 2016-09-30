@@ -24,7 +24,7 @@ class AdminBCController extends Controller
      */
     public function adminbcAction()
     {
-			return $this->render('AppBundle:Adminbc:adminbc.html.twig', array(
+			return $this->render('AppBundle:Adminbc:index.html.twig', array(
         ));
     }	
 	
@@ -148,92 +148,163 @@ class AdminBCController extends Controller
         ;
     }
 	
-	/**
-     * @Route("/leasers_control/contracts_control")
-     * @Method("GET")
-     */
-    public function contracts_controlAction()
-    {
-    	
-        return $this->render('AppBundle:Adminbc:leasers_control/contractscontrol.html.twig', array(
-        		
-        ));
-    }
 	
 	 /**
-     * @Route("/leasers_control/show_contract")
+     * @Route("/leasers/show_contract")
      * @Method("GET")
      */
     public function show_contractAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:leasers_control/showcontract.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers/showcontract.html.twig', array(
         		
         ));
     }	
 	
 	 /**
-     * @Route("/leasers_control/edit_contract")
+     * @Route("/leasers/edit_contract")
      * @Method("GET")
      */
     public function edit_contractAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:leasers_control/editcontract.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers/editcontract.html.twig', array(
         		
         ));
     }
 		 /**
-     * @Route("/leasers_control/create_contract")
+     * @Route("/leasers/create_contract")
      * @Method("GET")
      */
     public function createcontractAction()
     {
     	
-        return $this->render('AppBundle:Adminbc:leasers_control/createcontract.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers/createcontract.html.twig', array(
         		
+        ));
+    }
+	
+	/**
+ * @Route("/checkpoints_control", name="checkpoint_index")
+ * @Method("GET")
+ */
+    public function checkpoints_controlAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+		
+        $qvCheckpoints = $em->getRepository('AppBundle:qvCheckpoint')->findAll();
+		
+        return $this->render('AppBundle:AdminBC:buildings_control:checkpoints_control/checkpoints_control.html.twig', array(
+		'qvCheckpoints' => $qvCheckpoints,
         ));
     }
 	
 	
 	
-		 /**
-     * @Route("/buildings_control/show_checkpoint")
+    /**
+     * Creates a new qvCheckpoint entity.
+     *
+     * @Route("/new", name="checkpoint_new")
+     * @Method({"GET", "POST"})
+     */
+    public function create_checkpointAction(Request $request)
+    {
+        $qvCheckpoint = new qvCheckpoint();
+        $form = $this->createForm('AppBundle\Form\qvCheckpointType', $qvCheckpoint);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($qvCheckpoint);
+            $em->flush();
+
+            return $this->redirectToRoute('checkpoint_show', array('id' => $qvCheckpoint->getId()));
+        }
+
+        return $this->render('AppBundle:Adminbc:buildings_control:checkpoints_control/createcheckpoint', array(
+            'qvCheckpoint' => $qvCheckpoint,
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * Finds and displays a qvCheckpoint entity.
+     *
+     * @Route("/{id}", name="checkpoint_show")
      * @Method("GET")
      */
-    public function show_checkpointAction()
+    public function show_checkpointAction(qvCheckpoint $qvCheckpoint)
     {
-    	
-        return $this->render('AppBundle:Adminbc:buildings_control/checkpoints_control/showcheckpoint.html.twig', array(
-        		
+	$deleteForm = $this->createDeleteForm($qvCheckpoint);
+		
+        return $this->render('AppBundle:Adminbc:buildings_control:checkpoints_control/showcheckpoint', array(
+		'qvCheckpoint' => $qvCheckpoint,
+		'delete_form' => $deleteForm->createView(),
         ));
     }
 	
-		 /**
-     * @Route("/buildings_control/edit_checkpoint")
-     * @Method("GET")
+    /**
+     * Displays a form to edit an existing qvCheckpoint entity.
+		*
+     * @Route("/{id}/edit", name="checkpoint_edit")
+     * @Method({"GET", "POST"})
      */
-    public function edit_checkpointAction()
+    public function edit_checkpointAction(Request $request, qvCheckpoint $qvCheckpoint)
     {
-    	
-        return $this->render('AppBundle:Adminbc:buildings_control/checkpoints_control/editcheckpoint.html.twig', array(
-        		
+        $deleteForm = $this->createDeleteForm($qvCheckpoint);
+        $editForm = $this->createForm('AppBundle\Form\qvCheckpointType', $qvCheckpoint);
+        $editForm->handleRequest($request);
+		
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($qvCheckpoint);
+            $em->flush();
+			
+            return $this->redirectToRoute('checkpoint_edit', array('id' => $qvCheckpoint->getId()));
+        }
+		
+        return $this->render('AppBundle:Adminbc:buildings_control:checkpoints_control/editcheckpoint.html.twig', array(
+		'qvCheckpoint' => $qvCheckpoint,
+		'edit_form' => $editForm->createView(),
+		'delete_form' => $deleteForm->createView(),
         ));
     }
 	
-	
-		 /**
-     * @Route("/buildings_control/create_checkpoint")
-     * @Method("GET")
+    /**
+     * Deletes a qvCheckpoint entity.
+		*
+     * @Route("/{id}", name="checkpoint_delete")
+     * @Method("DELETE")
      */
-    public function create_checkpointAction()
+    public function delete_checkpointAction(Request $request, qvCheckpoint $qvCheckpoint)
     {
-    	
-        return $this->render('AppBundle:Adminbc:buildings_control/checkpoints_control/createcheckpoint.html.twig', array(
-        		
-        ));
+        $form = $this->createDeleteForm($qvCheckpoint);
+        $form->handleRequest($request);
+		
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($qvCheckpoint);
+            $em->flush();
+        }
+		
+        return $this->redirectToRoute('checkpoint_index');
     }
 	
+    /**
+     * Creates a form to delete a qvCheckpoint entity.
+		*
+     * @param qvCheckpoint $qvCheckpoint The qvCheckpoint entity
+		*
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm_checkpoint(qvCheckpoint $qvCheckpoint)
+    {
+        return $this->createFormBuilder()
+		->setAction($this->generateUrl('checkpoint_delete', array('id' => $qvCheckpoint->getId())))
+		->setMethod('DELETE')
+		->getForm()
+        ;
+    }
 	
 		 /**
      * @Route("/buildings_control/show_sector")
