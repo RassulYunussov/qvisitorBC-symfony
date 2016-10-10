@@ -12,6 +12,15 @@ class HomeController extends Controller
      */
     public function indexAction()
     {
+    	
+
+    	$authenticationUtils = $this->get('security.authentication_utils');
+    	
+    	// get the login error if there is one
+    	$error = $authenticationUtils->getLastAuthenticationError();
+    	
+    	// last username entered by the user
+    	$lastUsername = $authenticationUtils->getLastUsername();
     	if($this->get('security.authorization_checker')->isGranted('ROLE_LEASER'))
     		return $this->redirect('/leaserpage');
     	if($this->get('security.authorization_checker')->isGranted('ROLE_CHECKPOINT'))
@@ -20,9 +29,11 @@ class HomeController extends Controller
     		return $this->redirect('/adminbc/index');
     	if($this->get('security.authorization_checker')->isGranted('ROLE_SA'))
     		return $this->redirect('control/analytics'); 
-        return $this->render('AppBundle:Home:index.html.twig', 	array(
-            // ...
-        ));
+        return $this->render('AppBundle:Signin:login.html.twig', 	 array(
+	            // last username entered by the user
+	            'last_username' => $lastUsername,
+	            'error'         => $error,
+	        ));
     }
 
     /**

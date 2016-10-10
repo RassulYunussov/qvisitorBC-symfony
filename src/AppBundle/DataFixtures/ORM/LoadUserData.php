@@ -50,7 +50,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 		$leaserUser->setLogin('leaser@qvisitor.com');
 		$leaserUser->setPassword($leaserPassword);
 		$leaserUser->setRole($this->getReference('leaserRole'));
-		$leaserUser->setDisabled(false);
+		$leaserUser->setDisabled(true);
 		
 		$checkpointUser->setLogin('checkpoint@qvisitor.com');
 		$checkpointUser->setPassword($checkpointPassword);
