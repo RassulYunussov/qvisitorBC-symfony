@@ -1,19 +1,25 @@
 {% block actions %}
 <td class="center">
-                                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        Выберите действие
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="{{ path('showLeaser', { 'id': qvLeaser.id }) }}">Информация об учетной записи пользователя</a>
-                                        </li>
-                                        <li><a href="{{ path('editLeaser', { 'id': qvLeaser.id }) }}">Изменить информацию о пользователе</a>
-                                        </li>
-                                        <li><a href="">Посмотеть контракты пользователя</a>
-                                        </li>
-                                        <li><a href="{{ path('deleteLeaser', { 'id': qvLeaser.id }) }}">Удалить пользователя</a>
-                                        </li>
-                                        </ul>
-                                </div></td>
-								{% endblock%}
+    <div class="btn-group">
+        <button type="button" class="btn btn-default btn-xs dropdown-toggle" 
+            data-toggle="dropdown" aria-expanded="false"> 
+                Выберите действие 
+        <span class="caret"></span>
+        </button>
+            <ul class="dropdown-menu pull-right" role="menu">
+                <li>
+                    <a href="{{ path('leasers_show', { 'id': qvLeaser.id }) }}">Информация об учетной записи пользователя</a>
+                </li>
+                <li>
+                    <a href="{{ path('leasers_edit', { 'id': qvLeaser.id }) }}">Изменить информацию о пользователе</a>
+                </li>
+                <li>
+                    <a href="">Посмотеть контракты пользователя</a>
+                </li>
+                <li>
+                    <a href="{{ path('leasers_delete', { 'id': qvLeaser.id }) }}">Удалить пользователя</a>
+                </li>
+            </ul>
+    </div>
+</td>
+{% endblock%}
