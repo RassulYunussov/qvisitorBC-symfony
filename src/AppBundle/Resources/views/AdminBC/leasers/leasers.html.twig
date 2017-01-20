@@ -53,7 +53,7 @@ Show
 
 <div class="col-sm-6">
 <div align="right" id="dataTables-example_filter" class="dataTables_filter" >
-<a class="btn btn-success" href="{{path('createLeaser')}}">Добавить арендатора</a>
+<a class="btn btn-success" href="{{path('leasers_create')}}">Добавить арендатора</a>
 </div>
 <br>
 </div>
@@ -76,10 +76,10 @@ Show
 	{% for qvLeaser in qvLeasers %}
 	
 	<tr>
-		<td><a href="{{ path('showLeaser', { 'id': qvLeaser['id'] }) }}">{{ qvLeaser['id'] }}</a></td>
-		<td><a href="{{ path('showLeaser', { 'id': qvLeaser['id'] }) }}">{{ qvLeaser['bin'] }}</a></td>
+		<td><a href="{{ path('leasers_show', { 'id': qvLeaser['id'] }) }}">{{ qvLeaser['id'] }}</a></td>
+		<td><a href="{{ path('leasers_show', { 'id': qvLeaser['id'] }) }}">{{ qvLeaser['bin'] }}</a></td>
 		<td><a href="#"></a></td>
-		<td><a href="{{ path('showLeaser', { 'id': qvLeaser['id'] }) }}">{{ qvLeaser['name'] }}</a></td>
+		<td><a href="{{ path('leasers_show', { 'id': qvLeaser['id'] }) }}">{{ qvLeaser['name'] }}</a></td>
 		<td>{{ qvLeaser['count(qvfloor.id)'] }}</td>
 		<td>{{ qvLeaser['count(qvsector.id)'] }}</td>
 		<td a="href">Active</td>
