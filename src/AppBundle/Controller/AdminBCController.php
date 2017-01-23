@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\qvLeaser;
+use AppBundle\Entity\qvBuilding;
 use AppBundle\Form\leaserType;
 
 /**
@@ -27,9 +28,10 @@ class AdminBCController extends Controller
 			return $this->render('AppBundle:Adminbc:index.html.twig', array(
         ));
     }	
-	
+
+           
 	 /**
-     * @Route("/leasers")
+     * @Route("/leasers", name="leasers_list")
 	 * 
      * @Method("GET")
      */
@@ -46,33 +48,39 @@ class AdminBCController extends Controller
 	 /**
      * Creates a new qvLeaser entity.
      *
-     * @Route("/leasers/create", name="createLeaser")
+     * @Route("/leasers/create", name="leasers_create")
      * @Method({"GET", "POST"})
      */
     public function createLeaserAction(Request $request)
     {
-        $qvLeaser = new qvLeaser();
-        $form = $this->createForm('AppBundle\Form\qvLeaserType', $qvLeaser);
+       $qvLeaser = new qvLeaser();
+      /* $username = $request->get('name');
+       $user_bin = $request->get('BIN');
+*/
+        $form = $this->createForm('AppBundle\Form\qvNewLeaser', $qvLeaser);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+     if ($form->isSubmitted() && $form->isValid()) {
+
+           // 4) save the User!
             $em = $this->getDoctrine()->getManager();
             $em->persist($qvLeaser);
             $em->flush();
 
-            return $this->redirectToRoute('showLeaser', array('id' => $qvLeaser->getId()));
-        }
-
-        return $this->render('AppBundle:Adminbc:leasers/createleaser.html.twig', array(
+            // ... do any other work - like sending them an email, etc
+            // maybe set a "flash" success message for the user
+            return $this->redirectToRoute('leaser_list', array('id' => $qvLeaser->getId()));
+        }     
+        return $this->render('AppBundle:AdminBC:leasers/createleaser.html.twig', array(
             'qvLeaser' => $qvLeaser,
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ));
     }
 
     /**
      * Finds and displays a qvLeaser entity.
      *
-     * @Route("/leasers/leaser/{id}", name="showLeaser")
+     * @Route("/leasers/leaser/{id}", name="leasers_show")
      * @Method("GET")
      */
     public function showLeaserAction(qvLeaser $qvLeaser)
@@ -81,14 +89,14 @@ class AdminBCController extends Controller
 
         return $this->render('AppBundle:Adminbc:leasers/showleaser.html.twig', array(
             'qvLeaser' => $qvLeaser,
-	'delete_form' => $deleteForm->createView(),
+	        'delete_form' => $deleteForm->createView(),
         ));
     }
 	
     /**
      * Displays a form to edit an existing qvLeaser entity.
 		*
-     * @Route("leasers/leaser/{id}/edit", name="editLeaser")
+     * @Route("/leasers/leaser/{id}/edit", name="leasers_edit")
      * @Method({"GET", "POST"})
      */
     public function editLeaserAction(Request $request, qvLeaser $qvLeaser)
@@ -102,7 +110,7 @@ class AdminBCController extends Controller
             $em->persist($qvLeaser);
             $em->flush();
 			
-            return $this->redirectToRoute('editLeaser', array('id' => $qvLeaser->getId()));
+            return $this->redirectToRoute('leasers_show', array('id' => $qvLeaser->getId()));
         }
 		
         return $this->render('AppBundle:Adminbc:leasers/editleaser.html.twig', array(
@@ -115,21 +123,22 @@ class AdminBCController extends Controller
     /**
      * Deletes a qvLeaser entity.
 		*
-     * @Route("leasers/leaser/{id}", name="deleteLeaser")
+     * @Route("/leasers/leaser/{id}/delete", name="leasers_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, qvLeaser $qvLeaser)
     {
         $form = $this->createDeleteForm($qvLeaser);
         $form->handleRequest($request);
-		
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($qvLeaser);
             $em->flush();
         }
-		
-        return $this->redirectToRoute('leasers');
+
+    return $this->redirectToRoute('leasers_list', array('id' => $qvLeaser->getId()
+        ));
     }
 	
     /**
@@ -142,11 +151,12 @@ class AdminBCController extends Controller
     private function createDeleteForm(qvLeaser $qvLeaser)
     {
         return $this->createFormBuilder()
-		->setAction($this->generateUrl('deleteLeaser', array('id' => $qvLeaser->getId())))
-		->setMethod('DELETE')
-		->getForm()
+            ->setAction($this->generateUrl('leaser_delete', array('id' => $qvLeaser->getId())))
+            ->setMethod('DELETE')
+            ->getForm()
         ;
     }
+    
 	
 	
 	 /**
@@ -343,26 +353,32 @@ class AdminBCController extends Controller
     }
 	
 		 /**
-     * @Route("/buildings_control")
+     * @Route("/buildings_control", name = "buildings_list")
      * @Method("GET")
      */
     public function buildings_controlAction()
     {
-    	
-        return $this->render('AppBundle:Adminbc:buildings_control/buildingscontrol.html.twig', array(
-        		
+        $em = $this->getDoctrine()->getManager();
+        $qvBuildings = $em->getRepository('AppBundle:qvBuilding')->findAll();
+        
+        return $this->render('AppBundle:Adminbc:buildings_control/list_buildings.html.twig', array(
+        'qvBuildings' => $qvBuildings
         ));
     }
 
+
     /**
-     * @Route("/buildings_control/show_building")
+     * @Route("/buildings_control/show_building", name = "buildings_show")
      * @Method("GET")
      */
-    public function show_buildingAction()
+    public function show_buildingAction(qvBuilding $qvBuilding)
     {
+         $deleteForm = $this->createDeleteForm($qvBuilding);
 
+       
         return $this->render('AppBundle:Adminbc:buildings_control/show_building.html.twig', array(
-
+            'qvBuilding' => $qvBuilding,
+            'delete_form' => $deleteForm->createView(),
         ));
     }
 

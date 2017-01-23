@@ -29,12 +29,19 @@
 				<div  align="right">					
 				{{ form_start(edit_form) }}
 				{{ form_widget(edit_form) }}
-				<button type="submit" class="btn btn-info">Сохранить изменения</button>
-				<button type="reset" class="btn btn-warning" >Очистить форму</button>
-				{{ form_end(edit_form) }}
+				<button type="submit" class="btn btn-default btn-circle">
+					<i class="fa fa-check"></i>
+				</button>
+				<button type="reset" class="btn btn-default btn-circle">
+					<i class="fa fa-link"></i>
+				</button>
 				{{ form_start(delete_form) }}
-				<button class="btn btn-danger" type="submit"> Удалить</button>
-				{{ form_end(delete_form) }}
+				<button class="btn btn-danger btn-circle" type="submit">
+					<i class="fa fa-times"></i>
+				</button>
+				{{ form_end(delete_form) }}				
+				{{ form_end(edit_form) }}
+				
 				
 			</button>
 			</div>
