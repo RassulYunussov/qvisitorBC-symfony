@@ -30,6 +30,15 @@ class qvOrderType
     private $name;
 
 
+ /**
+     * Get str
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->name;
+    }
 
     /**
      * Get id
