@@ -78,21 +78,27 @@
 		<tbody>
                                      
         <tr class="gradeA odd" role="row">
-			<td class="sorting_1"><label><a href="buildings_control/show_building">001</a></label></td>
-				<td><label><a href="buildings_control/show_building">Здание 1</a></label></td>
+		 {% for qvBuilding in qvBuildings %}
+            <tr>
+                <td><a href="{{ path('buildings_show', { 'id': qvBuilding.id }) }}">{{ qvBuilding.id }}</a></td>
+                <td><a href="{{ path('buildings_show', {'name': qvBuilding.name }) }}">
+                	{{ qvBuilding.name }}
+                </a>
+                </td>
+        
 					<td class="center">
 						<div class="btn-group">
 							<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                         Выберите действие
 							<span class="caret"></span>
                             </button>
-							
+
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li><a href="buildings_control/show_building">Посмотеть информацию</a></li>
-				<li><a href="buildings_control/edit_building">Изменить информацию</a></li>
-					<li><a href="#">Удалить</a></li>
+				<li><a href="buildings_control/edit_building">Изменить или удалить информацию</a></li>
         </ul>
-		
+</tr>	
+{% endfor %}	
 				</div>
 			</td>
         </tr>
