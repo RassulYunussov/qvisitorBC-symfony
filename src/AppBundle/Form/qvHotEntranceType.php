@@ -12,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+
 class qvHotEntranceType extends AbstractType
 {
     /**
@@ -55,7 +57,16 @@ class qvHotEntranceType extends AbstractType
                 ))
             ->add('checkpoint')
             ->add('user')
-            ->add('leaser')
+            ->add('leaser', TextType::class, array(
+                'disabled' => 'true',
+                'attr'=> array('class' => 'form-control',
+           )))
+            ->add('Выбрать', ButtonType::class, array(
+                'attr' =>array(
+                    'class'=> 'btn btn-default',
+                    'label'=>'Выбрать', 
+                    'data-toggle'=> 'modal',
+                    'data-target'=>'#myModal'), ))
         ;
     }
     

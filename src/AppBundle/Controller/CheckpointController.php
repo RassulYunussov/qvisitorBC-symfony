@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\qvHotEntrance;
+use AppBundle\Entity\qvOrder;
 use AppBundle\Form\qvHotEntranceType;
 
 /**
@@ -37,10 +38,9 @@ class CheckpointController extends Controller
      */
     public function entranceAction()
     {
-    	
-        return $this->render('AppBundle:Checkpoint:entrance.html.twig', array(
-        		
-        ));
+
+
+        return $this->render('AppBundle:Checkpoint:entrance.html.twig', array(        ));
     }
     
     /**
@@ -49,9 +49,10 @@ class CheckpointController extends Controller
      */
     public function entranceRegAction()
     {
-    	 
+    	$em = $this->getDoctrine()->getManager();
+        $qvOrders = $em->getRepository('AppBundle:qvOrder')->findAll();
     	return $this->render('AppBundle:Checkpoint:entrancereg.html.twig', array(
-    
+            'qvOrders'=>$qvOrders,
     	));
     }
 
@@ -86,8 +87,6 @@ class CheckpointController extends Controller
     				'qvHotEntrance' => $qvHotEntrance,
     		));
     	}
-    	
-    	 
     }
     
     
@@ -115,6 +114,7 @@ class CheckpointController extends Controller
 
     	return $this->render('AppBundle:Checkpoint:hotentrancereg.html.twig', array(
             'qvHotEntrance' => $qvHotEntrance,
+            'qvLeasers'=>$qvLeasers,
             'form' => $form->createView()
     	));
     }

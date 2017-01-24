@@ -67,16 +67,15 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for qvOrder in qvOrders %}
+                                            {% for visitor in qvOrder.visitors %}
 										<tr>
-                                        <td>125</td>
-                                        <td>Иванов Иван</td>
+                                        <td>{{qvOrder.id}}</td>
+                                        <td>{{visitor.lastname}} {{visitor.firstname}} {{visitor.patronimic}}</td>
                                         <td><a class="btn btn-sm btn-info" href="#">Зарегистрировать</a></td>
                                         </tr>
-										<tr>
-                                        <td>126</td>
-                                        <td>Петров Семен</td>
-                                        <td><a class="btn btn-sm btn-info" href="#">Зарегистрировать</a></td>
-                                        </tr>
+                                    {% endfor %}
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
