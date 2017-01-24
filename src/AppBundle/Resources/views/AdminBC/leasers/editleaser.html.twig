@@ -22,15 +22,30 @@
                <h1 class="page-header">Изменение информации об арендаторе</h1>
                 <!-- /.col-lg-12 -->
             </div>
-		
+		 <style>
+   li {
+    list-style-type: none; /* Убираем маркеры */
+   }
+   ul {
+    margin-left: 0; /* Отступ слева в браузере IE и Opera */
+    padding-left: 0; /* Отступ слева в браузере Firefox, Safari, Chrome */
+   }
+  </style>
 
 			
 			<div class="col-lg-4" >
 			<div class="form-group has-warning">
-				<div  align="right">					
+				<div  align="right">		
+				<ul>
 				{{ form_start(edit_form) }}
-				{{ form_widget(edit_form) }}
-				<br>
+				 {% for child in edit_form %}
+				<li>
+						 {{ form_label(child) }}
+        			{{ form_widget(child, {'attr': {'class':'form-control'}}) }}
+    </li>
+{% endfor %}
+    </ul>			
+    <br>
 				<button type="submit" class="btn btn-default btn-sm">
 					Сохранить
 				</button>

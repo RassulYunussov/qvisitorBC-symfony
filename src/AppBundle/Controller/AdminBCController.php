@@ -91,9 +91,11 @@ class AdminBCController extends Controller
     public function showLeaserAction(qvLeaser $qvLeaser)
     {
         $deleteForm = $this->createDeleteForm($qvLeaser);
-
+        $em = $this->getDoctrine()->getManager();
+        //$qvContract = $em->getRepository('AppBundle:qvContract')->findAll($leaser);
         return $this->render('AppBundle:Adminbc:leasers/showleaser.html.twig', array(
             'qvLeaser' => $qvLeaser,
+          //  'qvContract' => $qvContract,
 	        'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -213,7 +215,7 @@ class AdminBCController extends Controller
     public function showAction(qvContract $qvContract)
     {
         $deleteForm = $this->createDeleteContractForm($qvContract);
-
+        
         return $this->render('AppBundle:Adminbc:leasers/showcontract.html.twig', array(
             'qvContract' => $qvContract,
             'delete_form' => $deleteForm->createView(),

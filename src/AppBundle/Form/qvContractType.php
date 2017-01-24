@@ -8,10 +8,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-
 class qvContractType extends AbstractType
 {
     /**
@@ -22,23 +18,29 @@ class qvContractType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('startdate', DateTimeType::class, array(
-                 'widget' => 'date', 
-                'format' =>'dd/MM/yyyy hh:mm:ss',
-                'html5' => false,
-                'model_timezone'=>'Asia/Almaty',
-                'attr' => array(
-                    'class' => 'form-control'),
-                'attr' => array(
-                    'class' => 'type_date-inline' )))
-            ->add('enddate', DateTimeType::class, array(
-            'placeholder' => array('datetime' => 'Datetime',))
-            )  
+             ->add('startdate', DateTimeType::class, array(
+    'widget' => 'single_text',
+
+    // do not render as type="date", to avoid HTML5 date pickers
+    'html5' => false,
+
+    // add a class that can be selected in JavaScript
+    'attr' => ['class' => 'js-datepicker'],
+))
+             ->add('enddate', DateTimeType::class, array(
+    'widget' => 'single_text',
+
+    // do not render as type="date", to avoid HTML5 date pickers
+    'html5' => false,
+
+    // add a class that can be selected in JavaScript
+    'attr' => ['class' => 'js-datepicker'],
+))
+           
+            
             ->add('leaser')
             ->add('sectors')
-            ->add('Edit', ButtonType::class, array(
-            'attr' => array('class' => 'edit'), ))
-        ;
+            ;
     }
     
     /**

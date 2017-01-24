@@ -47,13 +47,39 @@
                 <th>Bin</th>
                 <td>{{ qvLeaser.bin }}</td>
             </tr>
-											<td></td>
-											<td align="right"><br>
-					<a href="{{ path('leasers_edit', { 'id': qvLeaser.id }) }}" class="btn btn-warning">Редактировать</a></td>
-											</tr>
-                                    </tbody>
-                                </table>							
+            <tr>
+            <td>
+                
+            </td>
+			<td align="right"><br>
+				<a href="{{ path('leasers_edit', { 'id': qvLeaser.id }) }}" class="btn btn-warning">
+                   Редактировать
+                </a>
+            </td>
+			</tr>
+            </tbody>
+            </table>							
 				</div>	</div>	</div>	</div>	
-			</div>
-			        <!-- /#page-wrapper -->			
+			
+        <div class="row">
+                <div class="col-lg-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            Информация о контрактах данного арендатора
+                        </div>
+                        <div class="panel-body">
+                            <p>
+                                
+                            </p>
+                        </div>
+                        <div class="panel-footer">
+                            Panel Footer
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col-lg-4 -->               
+            </div>		
+            </div>
+                    <!-- /#page-wrapper --> 
+
             {% endblock %}

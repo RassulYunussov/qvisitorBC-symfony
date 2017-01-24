@@ -32,11 +32,12 @@
 						 <li>
 						 {{ form_label(child) }}
         			{{ form_widget(child, {'attr': {'class':'form-control'}}) }}
-        			
     </li>
-{% endfor %}
-</ul>
 
+{% endfor %}
+
+</ul>
+<button type="submit" class="btn btn-default btn-sm">Сохранить</button>
     {{ form_end(edit_form) }}
 
     <ul>
@@ -60,5 +61,11 @@
 	</div>
         <!-- /#page-wrapper -->
 </div>
-    
+    <script>
+    $(document).ready(function() {
+        $('.js-datepicker').datepicker({
+            format: 'yyyy-mm-dd-hh-mm'
+        });
+    });
+</script>
             {% endblock %}
