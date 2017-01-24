@@ -113,6 +113,7 @@ class qvHotEntrance
     {
         
         $this->entrancedate = new \DateTime();
+        date_default_timezone_set( 'Asia/Almaty' );
     }
 
     /**
