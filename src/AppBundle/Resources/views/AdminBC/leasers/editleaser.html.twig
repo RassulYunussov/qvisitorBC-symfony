@@ -15,40 +15,40 @@
 						<li><a href="\adminbc\index">Главная</a></li>
 						<li><a href="\adminbc\leasers_control">Управление арендаторами</a></li>
 						<li><a href="\adminbc\{{qvLeaser.id}}">Просмотр информации об арендаторах</a></li>
-						<li><a href="">Изменение информации об арендаторе</a></li>
 						</ul>
 					</div>
 					{% endblock %}
 											
-               <h1 class="page-header">Личный кабинет администратора</h1>
+               <h1 class="page-header">Изменение информации об арендаторе</h1>
                 <!-- /.col-lg-12 -->
             </div>
+		
+
 			
 			<div class="col-lg-4" >
 			<div class="form-group has-warning">
 				<div  align="right">					
 				{{ form_start(edit_form) }}
 				{{ form_widget(edit_form) }}
-				<button type="submit" class="btn btn-default btn-circle">
-					<i class="fa fa-check"></i>
+				<br>
+				<button type="submit" class="btn btn-default btn-sm">
+					Сохранить
 				</button>
-				<button type="reset" class="btn btn-default btn-circle">
-					<i class="fa fa-link"></i>
+				<button type="reset" class="btn btn-default btn-sm">
+					Отменить
 				</button>
+				{{ form_end(edit_form) }}
+
 				{{ form_start(delete_form) }}
-				<button class="btn btn-danger btn-circle" type="submit">
-					<i class="fa fa-times"></i>
+				<button class="btn btn-default btn-sm" type="submit">
+					Удалить
 				</button>
 				{{ form_end(delete_form) }}				
-				{{ form_end(edit_form) }}
 				
-				
-			</button>
 			</div>
             <!-- /.row -->
 			        </div>
 	</div>
         <!-- /#page-wrapper -->
-
     
             {% endblock %}

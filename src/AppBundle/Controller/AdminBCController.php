@@ -7,6 +7,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\qvLeaser;
+use AppBundle\Entity\qvContract;
+use AppBundle\Form\qvContractType;
+use AppBundle\Entity\qvFloor;
+use AppBundle\Entity\qvSector;
+use AppBundle\Entity\qvCheckpoint;
 use AppBundle\Entity\qvBuilding;
 use AppBundle\Form\leaserType;
 
@@ -69,7 +74,7 @@ class AdminBCController extends Controller
 
             // ... do any other work - like sending them an email, etc
             // maybe set a "flash" success message for the user
-            return $this->redirectToRoute('leaser_list', array('id' => $qvLeaser->getId()));
+            return $this->redirectToRoute('leasers_list', array('id' => $qvLeaser->getId()));
         }     
         return $this->render('AppBundle:AdminBC:leasers/createleaser.html.twig', array(
             'qvLeaser' => $qvLeaser,
@@ -112,7 +117,6 @@ class AdminBCController extends Controller
 			
             return $this->redirectToRoute('leasers_show', array('id' => $qvLeaser->getId()));
         }
-		
         return $this->render('AppBundle:Adminbc:leasers/editleaser.html.twig', array(
 		'qvLeaser' => $qvLeaser,
 		'edit_form' => $editForm->createView(),
@@ -141,6 +145,7 @@ class AdminBCController extends Controller
         ));
     }
 	
+   
     /**
      * Creates a form to delete a qvLeaser entity.
 		*
@@ -151,7 +156,7 @@ class AdminBCController extends Controller
     private function createDeleteForm(qvLeaser $qvLeaser)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('leaser_delete', array('id' => $qvLeaser->getId())))
+            ->setAction($this->generateUrl('leasers_delete', array('id' => $qvLeaser->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;
@@ -160,40 +165,124 @@ class AdminBCController extends Controller
 	
 	
 	 /**
-     * @Route("/leasers/show_contract")
+     * @Route("/leasers/contracts", name="contracts_index")
      * @Method("GET")
      */
-    public function show_contractAction()
+    public function index_contractsAction()
     {
-    	
-        return $this->render('AppBundle:Adminbc:leasers/showcontract.html.twig', array(
-        		
+    	$em = $this->getDoctrine()->getManager();
+
+        $qvContracts = $em->getRepository('AppBundle:qvContract')->findAll();
+
+        return $this->render('AppBundle:Adminbc:leasers/contractscontrol.html.twig', array(
+            'qvContracts' => $qvContracts,
         ));
     }	
-	
-	 /**
-     * @Route("/leasers/edit_contract")
-     * @Method("GET")
+	    
+         /**
+     * @Route("/leasers/create_new_contract", name="contracts_create")
+      * @Method({"GET", "POST"})
      */
-    public function edit_contractAction()
+    public function newAction(Request $request)
     {
-    	
-        return $this->render('AppBundle:Adminbc:leasers/editcontract.html.twig', array(
-        		
-        ));
-    }
-		 /**
-     * @Route("/leasers/create_contract")
-     * @Method("GET")
-     */
-    public function createcontractAction()
-    {
-    	
+        $qvContract = new qvContract();
+        $form = $this->createForm('AppBundle\Form\qvContractType', $qvContract);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($qvContract);
+            $em->flush();
+
+            return $this->redirectToRoute('contracts_index', array('id' => $qvContract->getId()));
+        }
+
         return $this->render('AppBundle:Adminbc:leasers/createcontract.html.twig', array(
-        		
+            'qvContract' => $qvContract,
+            'form' => $form->createView(),
         ));
     }
-	
+
+
+	 /**
+     * Finds and displays a qvContract entity.
+     *
+     * @Route("/leasers/{id}/contract/show", name="contracts_show")
+     * @Method("GET")
+     */
+    public function showAction(qvContract $qvContract)
+    {
+        $deleteForm = $this->createDeleteContractForm($qvContract);
+
+        return $this->render('AppBundle:Adminbc:leasers/showcontract.html.twig', array(
+            'qvContract' => $qvContract,
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Displays a form to edit an existing qvContract entity.
+     *
+     * @Route("/leasers/{id}/contract/edit", name="contracts_edit")
+     * @Method({"GET", "POST"})
+     */
+    public function editAction(Request $request, qvContract $qvContract)
+    {
+        $deleteForm = $this->createDeleteContractForm($qvContract);
+        $editForm = $this->createForm('AppBundle\Form\qvContractType', $qvContract);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($qvContract);
+            $em->flush();
+
+            return $this->redirectToRoute('contracts_index', array('id' => $qvContract->getId()));
+        }
+
+        return $this->render('AppBundle:Adminbc:leasers/editcontract.html.twig', array(
+            'qvContract' => $qvContract,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Deletes a qvContract entity.
+     *
+     * @Route("/leasers/{id}/contract/delete", name="contracts_delete")
+     * @Method("DELETE")
+     */
+    public function deletecontractAction(Request $request, qvContract $qvContract)
+    {
+        $form = $this->createDeleteContractForm($qvContract);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($qvContract);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('contracts_index');
+    }
+
+    /**
+     * Creates a form to delete a qvContract entity.
+     *
+     * @param qvContract $qvContract The qvContract entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteContractForm(qvContract $qvContract)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('contracts_delete', array('id' => $qvContract->getId())))
+            ->setMethod('DELETE')
+            ->getForm()
+        ;
+    }
+
 	/**
  * @Route("/checkpoints_control", name="checkpoint_index")
  * @Method("GET")
@@ -374,7 +463,6 @@ class AdminBCController extends Controller
     public function show_buildingAction(qvBuilding $qvBuilding)
     {
          $deleteForm = $this->createDeleteForm($qvBuilding);
-
        
         return $this->render('AppBundle:Adminbc:buildings_control/show_building.html.twig', array(
             'qvBuilding' => $qvBuilding,

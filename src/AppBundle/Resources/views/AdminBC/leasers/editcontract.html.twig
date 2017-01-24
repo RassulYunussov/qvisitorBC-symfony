@@ -15,50 +15,43 @@
 						<li><a href="\adminbc\index">Главная</a></li>
 						<li><a href="\adminbc\leasers_control">Управление арендаторами</a></li>
 						<li><a href="show_contract">Просмотр информации о контрактах</a></li>
-						<li><a href="edit_contract">Изменение информации о контракте</a></li>
-						
 						</ul>
 					</div>
 					{% endblock %}
 											
-               <h1 class="page-header">Личный кабинет администратора</h1>
+               <h1 class="page-header">Изменение информации о контракте</h1>
                 <!-- /.col-lg-12 -->
             </div>
 
 			<div class="col-lg-6">
 				<div class="form-group">
 					<div id="qv_chontract_startdate">
-						<div>
-							<label for="qv_contract_startdate" class="required">Изменить дату подписания контракта</label>
-							<input type="date" id="qv_contract" name="qv_contract[name]" required="required" class="form-control">
-						</div>
-<div id="qv_contract_enddate">
-								<label for="qv_contract_enddate" class="required">Изменить дату окончания контракта</label>
-							<input type="date" id="qv_contract_enddate" name="qv_contract_enddate[name]" required="required" class="form-control">
-						</div>
-						
-<div id="leaser">
-								<label for="qv_contract_leaser" class="required">Сменить владельца (контракта)</label>
-							<input type="text" name="qv_contract_leaser[name]" required="required" class="form-control">
-						</div>
-						
-<div id="name_company">
-								<label for="qv_contract_name_cmp" class="required">Сменить название компании</label>
-							<input type="text" name="qv_contract_name_cmp[name]" required="required" class="form-control">
-						</div>
-						
-						<div id="sectors">
-								<label for="qv_contract_name_cmp" class="required">Сменить офисы</label>
-							<input type="text" name="qv_contract_sectors[name]" required="required" class="form-control">
-						</div>
-					
-									<input type="hidden" id="qv_checkpoint__token" name="qv_checkpoint[_token]" value="7O8-uFuFPB9fLGtreJFZ6g52Ar5_uwKUl_q4LZv9X38">
+<ul>
+						 {{ form_start(edit_form) }}
+						 {% for child in edit_form %}
+						 <li>
+						 {{ form_label(child) }}
+        			{{ form_widget(child, {'attr': {'class':'form-control'}}) }}
+        			
+    </li>
+{% endfor %}
+</ul>
 
-					</div>
+    {{ form_end(edit_form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('contracts_index') }}" class="btn btn-default btn-sm">Отменить</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+             {% for child in delete_form %}
+                <input type="submit" value="Удалить" class="btn btn-default btn-sm">
+            {% endfor %}
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
 				</div>
-				<div name="edit_button" align="right">
-				<button type="submit" href="#" class="btn btn-primary">Изменить</button>
-				<div>
 <!-- /.col-lg-6-->
 </div>
 			
@@ -66,6 +59,6 @@
 			        </div>
 	</div>
         <!-- /#page-wrapper -->
-
+</div>
     
             {% endblock %}

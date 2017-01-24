@@ -62,7 +62,7 @@ class qvContractController extends Controller
     /**
      * Finds and displays a qvContract entity.
      *
-     * @Route("/{id}", name="contract_show")
+     * @Route("/{id}/show", name="contract_show")
      * @Method("GET")
      */
     public function showAction(qvContract $qvContract)

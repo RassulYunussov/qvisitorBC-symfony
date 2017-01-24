@@ -1,15 +1,35 @@
-
-
+{% block navbar%}
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+			
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="\adminbc\index">QVisitor</a>
+				</div>
+				
+{{ render(controller('AppBundle:UserProfile:profileMenu')) }}
+		
+				<div class="navbar-default sidebar" role="navigation">
+					<div class="sidebar-nav navbar-collapse">
+						<ul class="nav" id="side-menu">
 		<li>
 		 <a href="\adminbc\leasers"><i class="fa fa-dashboard fa-child"></i> Управление арендаторами</a>
-
         </li>
 		
 		<li>
 		 <a href="\adminbc\buildings_control"><i class="fa fa-dashboard fa-building-o"></i> Управление зданиями</a>
-			</li>
-
+		</li>
 		
 		<li>
 		 <a href="\adminbc\checkpoints_control"><i class="fa fa-eye"></i> Управление охраной</a>
-			</li>
+		</li>			
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+	{% endblock %}	
