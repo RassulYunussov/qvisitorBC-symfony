@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Entity\qvHotEntrance;
+use AppBundle\Form\qvHotEntranceType;
 
 /**
  * @Route("/checkpoint")
@@ -54,7 +56,7 @@ class CheckpointController extends Controller
     }
 
     /**
-     * @Route("/hotentrance")
+     * @Route("/hotentrance", name="hotentranc")
      * @Method("GET")
      */
     public function hotentranceAction()
@@ -89,16 +91,31 @@ class CheckpointController extends Controller
     }
     
     
+
+
     
     /**
-     * @Route("/hot-entrance-registration")
-     * @Method("GET")
+     * @Route("/hot-entrance-registration" , name="hereg")
+     * @Method({"GET", "POST"})
      */
-    public function hotEnranceRegAction()
+    public function hotEnranceRegAction(Request $request)
     {
-    	 
+    	  $qvHotEntrance = new qvHotEntrance();
+        $form = $this->createForm('AppBundle\Form\qvHotEntranceType', $qvHotEntrance);
+        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        $qvLeasers = $em->getRepository('AppBundle:qvLeaser')->findAll();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($qvHotEntrance);
+            $em->flush();
+
+            return $this->redirectToRoute('hotentranc', array('id' => $qvHotEntrance->getId()));
+        }
+
     	return $this->render('AppBundle:Checkpoint:hotentrancereg.html.twig', array(
-    
+            'qvHotEntrance' => $qvHotEntrance,
+            'form' => $form->createView()
     	));
     }
     

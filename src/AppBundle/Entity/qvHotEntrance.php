@@ -109,7 +109,11 @@ class qvHotEntrance
     private $user;
 
 
-  
+  public function __construct()
+    {
+        
+        $this->entrancedate = new \DateTime();
+    }
 
     /**
      * Get id

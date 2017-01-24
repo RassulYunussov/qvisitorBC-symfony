@@ -24,7 +24,6 @@ class qvHotEntranceType extends AbstractType
             ->add('attendant')
             ->add('comment')
             ->add('entrancedate', DateTimeType::class, array(
-                'disabled' => 'true',
             'placeholder' => array('datetime' => 'Datetime',))
             )
             ->add('checkpoint')
