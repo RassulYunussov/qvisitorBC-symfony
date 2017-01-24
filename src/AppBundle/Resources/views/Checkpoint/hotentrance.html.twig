@@ -27,7 +27,7 @@
 			</div>
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Посетители</h1>
+                    <h1 class="page-header">Посетители без заявок</h1>
 				</div>
 			</div>
 			
@@ -77,7 +77,7 @@
 										<tr>
                                         <td>{{qvHotEntrance.entrancedate|date('Y-m-d H:i:s') }}</td>
                                         <td>{{ qvHotEntrance.lastname }} {{ qvHotEntrance.firstname }} {{ qvHotEntrance.patronimic }}</td>
-                                        <td>{{ qvHotEntrance.comment }}</td>
+                                        <td>{{ qvHotEntrance.documentnumber }}</td>
 										<td>
 												<button onclick="$('#myModal .modal-dialog').load('hotentrance/{{ qvHotEntrance.id }}');" class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal">Просмотр</button>
 										</td>
