@@ -10,4 +10,10 @@ namespace AppBundle\Repository;
  */
 class qvCheckpointRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function findByBuildingId($buildingId)
+	{
+		return $this->getEntityManager()
+		->createQuery("SELECT c from AppBundle:qvCheckpoint c LEFT JOIN c.building b where b.id = :bId")
+		->setParameter("bId", $buildingId)->getArrayResult();
+	}
 }

@@ -23,9 +23,9 @@
 								<div class="col-lg-6">
 									<div class="form-group">
 												<label>Здание</label>
-												<select id= "name" class="form-control">
+												<select id="building" class="form-control">
 													 {% for qvBuilding in qvBuildings %}
-													<option >{{qvBuilding.name}}</option>
+													<option value='{{ qvBuilding.id }}'>{{qvBuilding.name}}</option>
 													{% endfor %}	
 												</select>
 									</div>
@@ -33,7 +33,7 @@
 								<div class="col-lg-6">
 									<div class="form-group">
 												<label>КПП</label>
-												<select class="form-control">
+												<select id="checkpoints" class="form-control">
 													{% for qvCheckpoint in qvCheckpoints %}
 													<option>{{qvCheckpoint.name}}</option>
 												{% endfor %}
@@ -57,14 +57,21 @@
 
 <script> 
 $(function (){
-	var name = $("#name option:selected").text();
-	console.log(name);
-	$.ajax({
-        type: "POST",
-        url: "{{ path('indexCheck', {'name' : 'name'})}}",
-        data: "{'name': 'name'}",
-        cache: false
-        });
+	$('#building').change(function(){
+				$.ajax({
+			        type: "GET",
+			        url: "{{ path('checkpoints')}}",
+			        data: {'id':$('#building option:selected').val()},
+			        success: function(data){
+						        $('#checkpoints').empty();
+					        	$.each(JSON.parse(data),function(k,v){
+											        		$('#checkpoints').append('<option value="'+v.id+'">'+v.name+'</option>')
+											        	});
+					       	 }
+		        });
+		});
+	
+	
 });
 </script>
 {% endblock %}

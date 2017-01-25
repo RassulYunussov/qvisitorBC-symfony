@@ -6,9 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\qvHotEntrance;
 use AppBundle\Entity\qvOrder;
 use AppBundle\Form\qvHotEntranceType;
+
 
 /**
  * @Route("/checkpoint")
@@ -37,20 +39,20 @@ class CheckpointController extends Controller
 
 
     /**
-     *@Route("/index/{name}", name="indexCheck")
+     *@Route("/bybuilding", name="checkpoints")
      *@Method("GET")
      */
 
-    public function indexAjaxAction(Request $request, $name)
+    public function indexAjaxAction(Request $request)
     {
         if($request->isXmlHttpRequest()) {
-            $query= $em->createQuery("SELECT myname FROM AppBundle:qvCheckpoint myname WHERE myname.building = :name");
-            $query->setParameter('name', $name);
-             $em = $this->getDoctrine()->getManager();
-             $qvCheckpoints = $query->getResult();
-              return $this->render('AppBundle:Checkpoint:index.html.twig', array(
-                'qvCheckpoints'=> $qvCheckpoints,
-            ));
+        	$buildingId = $request->get('id',1);
+        	$em = $this->getDoctrine()->getManager();
+        	$qvCheckpoints=$em->getRepository('AppBundle:qvCheckpoint')->findByBuildingId($buildingId);
+     
+        	$serializer = $this->get('serializer');
+        	$checkpoints = $serializer->serialize($qvCheckpoints, 'json');
+        	return new Response($checkpoints);
         }
     }
 
