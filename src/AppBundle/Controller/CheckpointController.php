@@ -18,11 +18,47 @@ class CheckpointController extends Controller
 {
 	
 
+
+
+    /**
+     *@Route("/index")
+     *@Method("GET")
+     */
+    public function indexAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $qvBuildings=$em->getRepository('AppBundle:qvBuilding')->findAll();
+        $qvCheckpoints=$em->getRepository('AppBundle:qvCheckpoint')->findAll();
+        
+        return $this->render('AppBundle:Checkpoint:index.html.twig', array(
+                'qvBuildings'=> $qvBuildings,'qvCheckpoints'=> $qvCheckpoints,
+            ));
+    }
+
+
+    /**
+     *@Route("/index/{name}", name="indexCheck")
+     *@Method("GET")
+     */
+
+    public function indexAjaxAction(Request $request, $name)
+    {
+        if($request->isXmlHttpRequest()) {
+            $query= $em->createQuery("SELECT myname FROM AppBundle:qvCheckpoint myname WHERE myname.building = :name");
+            $query->setParameter('name', $name);
+             $em = $this->getDoctrine()->getManager();
+             $qvCheckpoints = $query->getResult();
+              return $this->render('AppBundle:Checkpoint:index.html.twig', array(
+                'qvCheckpoints'=> $qvCheckpoints,
+            ));
+        }
+    }
+
 	/**
-	 * @Route("/index")
+	 * @Route("/home")
 	 * @Method("GET")
 	 */
-	public function indexAction()
+	public function homeAction()
 	{
 	
 		return $this->render('AppBundle:Checkpoint:home.html.twig', array(
@@ -33,7 +69,7 @@ class CheckpointController extends Controller
 	
 	
     /**
-     * @Route("/entrance")
+     * @Route("/entrance", name="entrance")
      * @Method("GET")
      */
     public function entranceAction()

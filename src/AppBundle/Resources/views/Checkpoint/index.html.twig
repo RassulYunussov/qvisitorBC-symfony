@@ -23,28 +23,27 @@
 								<div class="col-lg-6">
 									<div class="form-group">
 												<label>Здание</label>
-												<select class="form-control">
-													<option>А1</option>
-													<option>А2</option>
-													<option>B1</option>
-													<option>B2</option>
+												<select id= "name" class="form-control">
+													 {% for qvBuilding in qvBuildings %}
+													<option >{{qvBuilding.name}}</option>
+													{% endfor %}	
 												</select>
 									</div>
-								</div>	
+								</div>
 								<div class="col-lg-6">
 									<div class="form-group">
 												<label>КПП</label>
 												<select class="form-control">
-													<option>КПП 1</option>
-													<option>КПП 2</option>
-													<option>КПП 3</option>
+													{% for qvCheckpoint in qvCheckpoints %}
+													<option>{{qvCheckpoint.name}}</option>
+												{% endfor %}
 												</select>
 									</div>
 								</div>	
                                 	
 								<div class="col-lg-12 text-right">
 									<!-- Change this to a button or input when using this as a form -->
-									<a href="checkpoint/entrance" class="btn btn-primary btn-lg">Подтвердить</a>
+									<a href="{{path('entrance')}}" class="btn btn-primary btn-lg">Подтвердить</a>
 								</div>
                             </fieldset>
                         </form>
@@ -53,4 +52,19 @@
             </div>
         </div>
 </div>
+
+		<script src="{{asset('bootstrap1/bower_components/jquery/dist/jquery.min.js')}}"></script>
+
+<script> 
+$(function (){
+	var name = $("#name option:selected").text();
+	console.log(name);
+	$.ajax({
+        type: "POST",
+        url: "{{ path('indexCheck', {'name' : 'name'})}}",
+        data: "{'name': 'name'}",
+        cache: false
+        });
+});
+</script>
 {% endblock %}
