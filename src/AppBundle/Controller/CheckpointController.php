@@ -30,10 +30,10 @@ class CheckpointController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $qvBuildings=$em->getRepository('AppBundle:qvBuilding')->findAll();
-        $qvCheckpoints=$em->getRepository('AppBundle:qvCheckpoint')->findAll();
+       
         
         return $this->render('AppBundle:Checkpoint:index.html.twig', array(
-                'qvBuildings'=> $qvBuildings,'qvCheckpoints'=> $qvCheckpoints,
+                'qvBuildings'=> $qvBuildings
             ));
     }
 
