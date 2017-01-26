@@ -1,5 +1,7 @@
 <select class="form-control">
-													{% for qvCheckpoint in qvCheckpoints %}
-													<option>{{qvCheckpoint.name}}</option>
-												{% endfor %}
-												</select>
+{% for qvCheckpoint in qvCheckpoints %}
+	<option>
+		{{qvCheckpoint.name}}
+	</option>
+{% endfor %}
+</select>

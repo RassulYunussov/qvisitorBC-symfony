@@ -42,8 +42,19 @@
                             <!-- Tab panes -->
                             <div class="tab-content">
                                 <div class="tab-pane fade active in" id="home">
-                                    <h4>Главный корпус - Main Building</h4>
-                                    <p>Включает 10 этажей</p>
+							
+							     <h4>
+                                    {{ qvBuilding.name }}	
+                                    </h4>
+                                    <p>
+                                    	Включает 
+                                    	
+                                    		<span>
+                                    	{{ count }}
+                                    		</span>
+                            	          	</td>
+                                      	
+                  </tr> этажа(ей) </p>
                                 </div>
                                 <div class="tab-pane fade" id="profile">
 								<br>
@@ -72,55 +83,19 @@
 															</tr>
 														</thead>
 														<tbody>
-															
+															{% for floors in floors %}
 															<tr>
-																<td><label><a href="show_floor">1</a></label></td>
-																<td><a href="show_sector">1-10</a></td>
+																<td>
+																	{{ floors.name }}
+																</td>
 															</tr>
+														{% endfor %}	
+													<tr>
+												<td>Номер сектора </td>
+												<td>
+													
+												</td> 
 															
-															<tr>
-																<td><a href="show_floor">2</a></td>
-																<td><a href="show_sector">11-20</a></td>
-															</tr>
-															
-															<tr>
-																<td><a href="show_floor">3</a></td>
-																<td><a href="show_sector">21-30</a></td>
-															</tr>
-															
-															<tr>
-																<td><a href="show_floor">4</a></td>
-																<td><a href="show_sector">31-40</a></td>
-															</tr>
-															
-															<tr>
-																<td><a href="show_floor">5</a></td>
-																<td><a href="show_sector">41-50</a></td>
-															</tr>
-															
-															<tr>
-																<td><a href="show_floor">6</a></td>
-																<td><a href="show_sector">51-60</a></td>
-															</tr>
-															
-															<tr>
-																<td><a href="show_floor">7</a></td>
-																<td><a href="show_sector">61-70</a></td>
-															</tr>
-																													
-															<tr>
-																<td><a href="show_floor">8</a></td>
-																<td><a href="show_sector">71-80</a></td>
-															</tr>
-															
-															<tr>
-																<td><a href="show_floor">9</a></td>
-																<td><a href="show_sector">81-90</a></td>
-															</tr>
-															
-															<tr>
-																<td><a href="show_floor">10</a></td>
-																<td><a href="show_sector">91-110</a></td>
 															</tr>
 														</tbody>
 													</table>

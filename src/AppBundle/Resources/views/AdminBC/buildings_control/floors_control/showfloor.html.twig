@@ -14,12 +14,11 @@
 							<li><a href="\adminbc\index">Главная</a></li>
 							<li><a href="\adminbc\buildings_control">Управление зданиями</a></li>
 							<li><a href="\adminbc\buildings_control">Этажи</a></li>
-							<li><a href="show_floor">Информация об этаже</a></li>
 						</ul>
 					</div>
 				{% endblock %}
 
-				<h1 class="page-header">Личный кабинет администратора</h1>
+				<h1 class="page-header">Информация об этаже</h1>
 				<!-- /.col-lg-12 -->
 				</div>
    
@@ -40,19 +39,24 @@
                                 <table class="table">
                                     
                                     <tbody>
+                                    	{% qvFloor in qvFloor %}
                                         <tr class="success">
                                           	<tr class="success">
 												<td>Номер этажа</td>
-												<td>Этаж 1</td>
+												<td>{{ qvFloor.name }}</td>
 											</tr>
 											<tr class="success">
 												<td>Название здания</td>
-												<td><a href="\adminbc\buildings_control\show_building">Main Building</a></td>
+												<td>
+													{{  qvFloor.building }}
+												</td>
 											</tr>
+											{% endfloor %}
 											<tr>
 											<td></td>
 											<td align="right"><br><a href="edit_floor" class="btn btn-warning">Редактировать</a></td>
 											</tr>
+                                    	}
                                     </tbody>
                                 </table>
 								

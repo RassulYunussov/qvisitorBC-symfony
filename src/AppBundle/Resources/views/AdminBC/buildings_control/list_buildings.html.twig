@@ -81,7 +81,7 @@
 		 {% for qvBuilding in qvBuildings %}
             <tr>
                 <td><a href="{{ path('buildings_show', { 'id': qvBuilding.id }) }}">{{ qvBuilding.id }}</a></td>
-                <td><a href="{{ path('buildings_show', {'name': qvBuilding.name }) }}">
+                <td><a href="{{ path('buildings_show', {'id': qvBuilding.id }) }}">
                 	{{ qvBuilding.name }}
                 </a>
                 </td>
