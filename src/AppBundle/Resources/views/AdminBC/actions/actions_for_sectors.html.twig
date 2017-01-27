@@ -6,11 +6,11 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="show_sector">Информация об данном секторе</a>
+                                        <li><a {{path('sectors_show', { 'id': qvSector.id })}}>Информация об данном секторе</a>
                                         </li>
-                                        <li><a href="edit_sector">Изменить информацию о секторе</a>
+                                        <li><a {{path('sectors_edit', { 'id': qvSector.id })}}>Изменить информацию о секторе</a>
                                         </li>
-                                        <li><a href="#">Удалить данный сектор</a>
+                                        <li><a {{path('sectors_delete', { 'id': qvSector.id })}}>Удалить данный сектор</a>
                                         </li>
                                         </ul>
                                 </div></td>

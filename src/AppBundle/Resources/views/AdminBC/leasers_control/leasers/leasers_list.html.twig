@@ -64,10 +64,24 @@ Show
 <thead>
 <tr role="row">
 <th class="sorting_asc" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 10px;">№</th>
-<th class="sorting_asc" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 130px;">BIN</th> 
-	<th class="sorting_asc" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 130px;">Название компании</th><th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 120px;">Владелец</th><th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 90px;">Этаж(и)</th><th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 90px;">Офис(ы)</th><th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 60px;">Статус договора</th> <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 40px;">
-Действия
-</th>
+<th class="sorting_asc" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 130px;">
+	BIN
+</th> 
+	<th class="sorting_asc" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 130px;">
+		Название компании
+	</th>
+	<th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 90px;">
+		Этаж(и)
+	</th>
+	<th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 90px;">
+		Офис(ы)
+	</th>
+	<th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 60px;">
+		Статус договора
+	</th>
+	 <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 40px;">
+	Действия
+	</th>
 </tr>
 </thead>
 <tbody>
@@ -77,12 +91,11 @@ Show
 	<tr>
 		<td><a href="{{ path('leasers_show', { 'id': qvLeaser['id'] }) }}">{{ qvLeaser['id'] }}</a></td>
 		<td><a href="{{ path('leasers_show', { 'id': qvLeaser['id'] }) }}">{{ qvLeaser['bin'] }}</a></td>
-		<td><a href="#"></a></td>
 		<td><a href="{{ path('leasers_show', { 'id': qvLeaser['id'] }) }}">{{ qvLeaser['name'] }}</a></td>
 		<td>{{ qvLeaser['count(qvfloor.id)'] }}</td>
 		<td>{{ qvLeaser['count(qvsector.id)'] }}</td>
 		<td a="href">Active</td>
-		{{ include('AppBundle:Adminbc:actions_for_user.html.twig') }}	
+		{{ include('AppBundle:AdminBC:actions/actions_for_user.html.twig') }}	
 	</tr>
 		{% endfor %}
 	
