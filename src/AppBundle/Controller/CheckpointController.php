@@ -77,8 +77,12 @@ class CheckpointController extends Controller
     public function entranceAction()
     {
 
-
-        return $this->render('AppBundle:Checkpoint:entrance.html.twig', array(        ));
+        $em = $this->getDoctrine()->getManager();
+        $qvEntrances = $em->getRepository('AppBundle:qvEntrance')->findAll();
+    
+        return $this->render('AppBundle:Checkpoint:entrance.html.twig', array( 
+                'qvEntrances'=>$qvEntrances,
+               ));
     }
     
     /**

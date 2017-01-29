@@ -65,9 +65,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    	{% for qvEntrance in qvEntrances %}
 										<tr>
-                                        <td>12:12:12</td>
-                                        <td>Иванов Иван</td>
+                                        <td>{{qvEntrance.entrancedate|date('Y-m-d H:i:s') }}</td>
+                                        <td>{{qvEntrance.visitor.lastname}} {{qvEntrance.visitor.firstname}} {{qvEntrance.visitor.patronimic}}</td>
                                         <td></td>
                                         <td>
 											<button class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal">Просмотр</button>
@@ -149,6 +150,7 @@
 											</div>
 										</td>
                                         </tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
