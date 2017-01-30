@@ -68,11 +68,11 @@
                                     </thead>
                                     <tbody>
                                         {% for qvOrder in qvOrders %}
-                                            {% for visitor in qvOrder.visitors %}
+                                            {% for qvVisitor in qvOrder.visitors %}
 										<tr>
                                         <td>{{qvOrder.id}}</td>
-                                        <td>{{visitor.lastname}} {{visitor.firstname}} {{visitor.patronimic}}</td>
-                                        <td><a class="btn btn-sm btn-info" href="#">Зарегистрировать</a></td>
+                                        <td>{{qvVisitor.lastname}} {{qvVisitor.firstname}} {{qvVisitor.patronimic}}</td>
+                                        <td><a class="btn btn-sm btn-info" href="{{ path('add_entrance', { 'qvOrder': qvOrder.id, 'qvVisitor':qvVisitor.id}) }}">Зарегистрировать</a></td>
                                         </tr>
                                     {% endfor %}
                                         {% endfor %}

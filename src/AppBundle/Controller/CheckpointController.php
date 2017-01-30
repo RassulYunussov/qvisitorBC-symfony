@@ -4,12 +4,15 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\qvHotEntrance;
+use AppBundle\Entity\qvEntrance;
 use AppBundle\Entity\qvOrder;
 use AppBundle\Form\qvHotEntranceType;
+use AppBundle\Entity\qvVisitor;
 
 
 /**
@@ -105,10 +108,10 @@ class CheckpointController extends Controller
     }
     
     /**
-     * @Route("/entrance-registration")
+     * @Route("/entrance-registration", name="entrance_registration")
      * @Method("GET")
      */
-    public function entranceRegAction()
+    public function entranceRegPageLoadAction()
     {
     	$em = $this->getDoctrine()->getManager();
         $qvOrders = $em->getRepository('AppBundle:qvOrder')->findAll();
@@ -116,6 +119,27 @@ class CheckpointController extends Controller
             'qvOrders'=>$qvOrders,
     	));
     }
+
+    /**
+     * @Route("/add_entrance/{qvOrder}/{qvVisitor}",name="add_entrance")
+     * @ParamConverter("qvOrder", class="AppBundle:qvOrder")
+     * @ParamConverter("qvVisitor", class="AppBundle:qvVisitor")
+     * @Method("GET")
+     */
+    public function entranceRegAction(qvOrder $qvOrder, qvVisitor $qvVisitor)
+    {
+        $entrance = new qvEntrance();
+        $entrance->setEntrancedate(new \DateTime());
+        $entrance->setOrder($qvOrder);
+        $entrance->setVisitor($qvVisitor);
+        //entrance setCheckpoint, setUser using sessions
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entrance);
+        $em->flush();
+        return $this->redirectToRoute('entrance_registration');
+    }
+
+
 
     /**
      * @Route("/hotentrance", name="hotentranc")
