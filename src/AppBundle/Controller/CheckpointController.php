@@ -136,7 +136,24 @@ class CheckpointController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($entrance);
         $em->flush();
-        return $this->redirectToRoute('entrance_registration');
+        return $this->redirectToRoute('entrance');
+    }
+
+    /**
+     *@Route("/set-registered", name="set_registered")
+     *@Method("GET")
+     */
+
+    public function setRegisteredAjaxAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            $leaserId=$request->get('id', 1);
+            $qvLeaser = $em->getRepository('AppBundle:qvLeaser')->findOneBy(array('id'=>$leaserId));
+            $serializer = $this->get('serializer');
+            $leaser = $serializer->serialize($qvLeaser, 'json');
+            return new Response($leaser);
+        }
     }
 
 

@@ -70,12 +70,21 @@ class qvOrder
      */
     private $user;
 
+    
+
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvVisitor", mappedBy="orders")
      */
     private $visitors;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="registered", type="integer", nullable=true)
+     */
+    private $registered;
 
     /**
      * Constructor
@@ -281,5 +290,29 @@ class qvOrder
     public function getVisitors()
     {
         return $this->visitors;
+    }
+
+    /**
+     * Set registered
+     *
+     * @param integer $registered
+     *
+     * @return qvUser
+     */
+    public function setRegistered($registered)
+    {
+        $this->registered = $registered;
+
+        return $this;
+    }
+
+    /**
+     * Get registered
+     *
+     * @return integer
+     */
+    public function getRegistered()
+    {
+        return $this->registered;
     }
 }
