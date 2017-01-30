@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class qvOrderType extends AbstractType
 {
@@ -32,6 +33,9 @@ class qvOrderType extends AbstractType
             ->add('ordertype')
             ->add('user')
             ->add('visitors')
+            ->add('registered', HiddenType::class, array(
+                'disabled'=>'true',
+                'data'=>0))
         ;
     }
     

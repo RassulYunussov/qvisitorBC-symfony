@@ -225,7 +225,7 @@ public function __toString()
      *
      * @return qvVisitor
      */
-    public function addOrders(\AppBundle\Entity\qvOrd $orders)
+    public function addOrders(\AppBundle\Entity\qvOrder $orders)
     {
         $this->orders[] = $orders;
 

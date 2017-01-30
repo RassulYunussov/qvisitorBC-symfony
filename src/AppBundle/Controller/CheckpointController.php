@@ -4,12 +4,15 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\qvHotEntrance;
+use AppBundle\Entity\qvEntrance;
 use AppBundle\Entity\qvOrder;
 use AppBundle\Form\qvHotEntranceType;
+use AppBundle\Entity\qvVisitor;
 
 
 /**
@@ -49,12 +52,31 @@ class CheckpointController extends Controller
         	$buildingId = $request->get('id',1);
         	$em = $this->getDoctrine()->getManager();
         	$qvCheckpoints=$em->getRepository('AppBundle:qvCheckpoint')->findByBuildingId($buildingId);
-     
         	$serializer = $this->get('serializer');
         	$checkpoints = $serializer->serialize($qvCheckpoints, 'json');
         	return new Response($checkpoints);
         }
     }
+
+     /**
+     *@Route("/add-leaser", name="add-leaser")
+     *@Method("GET")
+     */
+
+    public function addLeaserAjaxAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            $leaserId=$request->get('id', 1);
+            $qvLeaser = $em->getRepository('AppBundle:qvLeaser')->findOneBy(array('id'=>$leaserId));
+            $serializer = $this->get('serializer');
+            $leaser = $serializer->serialize($qvLeaser, 'json');
+            return new Response($leaser);
+        }
+    }
+
+
+
 
 	/**
 	 * @Route("/home")
@@ -77,15 +99,19 @@ class CheckpointController extends Controller
     public function entranceAction()
     {
 
-
-        return $this->render('AppBundle:Checkpoint:entrance.html.twig', array(        ));
+        $em = $this->getDoctrine()->getManager();
+        $qvEntrances = $em->getRepository('AppBundle:qvEntrance')->findAll();
+    
+        return $this->render('AppBundle:Checkpoint:entrance.html.twig', array( 
+                'qvEntrances'=>$qvEntrances,
+               ));
     }
     
     /**
-     * @Route("/entrance-registration")
+     * @Route("/entrance-registration", name="entrance_registration")
      * @Method("GET")
      */
-    public function entranceRegAction()
+    public function entranceRegPageLoadAction()
     {
     	$em = $this->getDoctrine()->getManager();
         $qvOrders = $em->getRepository('AppBundle:qvOrder')->findAll();
@@ -93,6 +119,44 @@ class CheckpointController extends Controller
             'qvOrders'=>$qvOrders,
     	));
     }
+
+    /**
+     * @Route("/add_entrance/{qvOrder}/{qvVisitor}",name="add_entrance")
+     * @ParamConverter("qvOrder", class="AppBundle:qvOrder")
+     * @ParamConverter("qvVisitor", class="AppBundle:qvVisitor")
+     * @Method("GET")
+     */
+    public function entranceRegAction(qvOrder $qvOrder, qvVisitor $qvVisitor)
+    {
+        $entrance = new qvEntrance();
+        $entrance->setEntrancedate(new \DateTime());
+        $entrance->setOrder($qvOrder);
+        $entrance->setVisitor($qvVisitor);
+        //entrance setCheckpoint, setUser using sessions
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entrance);
+        $em->flush();
+        return $this->redirectToRoute('entrance');
+    }
+
+    /**
+     *@Route("/set-registered", name="set_registered")
+     *@Method("GET")
+     */
+
+    public function setRegisteredAjaxAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            $leaserId=$request->get('id', 1);
+            $qvLeaser = $em->getRepository('AppBundle:qvLeaser')->findOneBy(array('id'=>$leaserId));
+            $serializer = $this->get('serializer');
+            $leaser = $serializer->serialize($qvLeaser, 'json');
+            return new Response($leaser);
+        }
+    }
+
+
 
     /**
      * @Route("/hotentrance", name="hotentranc")

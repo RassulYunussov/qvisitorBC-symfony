@@ -25,8 +25,7 @@ class qvHotEntranceType extends AbstractType
         $builder
             ->add('firstname', TextType::class, array(
                 'attr'   =>  array(
-                'class'   => 'form-control'))
-            )
+                'class'   => 'form-control')))
             ->add('lastname', TextType::class, array(
                 'attr'   =>  array(
                 'class'   => 'form-control')))
@@ -55,8 +54,8 @@ class qvHotEntranceType extends AbstractType
                 'disabled' => 'true',
                 'placeholder' => array('datetime' => 'Datetime',),
                 ))
-            ->add('checkpoint')
-            ->add('user')
+            ->add('checkpoint', HiddenType::class)
+            ->add('user', HiddenType::class)
             ->add('leaser', TextType::class, array(
                 'disabled' => 'true',
                 'attr'=> array('class' => 'form-control',
