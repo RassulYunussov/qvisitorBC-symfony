@@ -4,11 +4,16 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="show_checkpoint">Посмотеть информацию</a>
+                                        <li>
+                                            <a href="{{path('checkpoints_show', { 'id': qvCheckpoint.id })}}">
+                                                Посмотеть информацию
+                                        </a>
                                         </li>
-                                        <li><a href="edit_checkpoint">Изменить информацию</a>
+                                        <li>
+                                            <a href="{{path('checkpoints_edit', { 'id': qvCheckpoint.id })}}">
+                                                Изменить или Удалить информацию
+                                            </a>
                                         </li>
-                                        <li><a href="#">Удалить</a>
-                                        </li>
+
                                         </ul>
 										</div>

@@ -30,10 +30,10 @@ class CheckpointController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $qvBuildings=$em->getRepository('AppBundle:qvBuilding')->findAll();
-        $qvCheckpoints=$em->getRepository('AppBundle:qvCheckpoint')->findAll();
+       
         
         return $this->render('AppBundle:Checkpoint:index.html.twig', array(
-                'qvBuildings'=> $qvBuildings,'qvCheckpoints'=> $qvCheckpoints,
+                'qvBuildings'=> $qvBuildings
             ));
     }
 
@@ -49,12 +49,31 @@ class CheckpointController extends Controller
         	$buildingId = $request->get('id',1);
         	$em = $this->getDoctrine()->getManager();
         	$qvCheckpoints=$em->getRepository('AppBundle:qvCheckpoint')->findByBuildingId($buildingId);
-     
         	$serializer = $this->get('serializer');
         	$checkpoints = $serializer->serialize($qvCheckpoints, 'json');
         	return new Response($checkpoints);
         }
     }
+
+     /**
+     *@Route("/add-leaser", name="add-leaser")
+     *@Method("GET")
+     */
+
+    public function addLeaserAjaxAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            $leaserId=$request->get('id', 1);
+            $qvLeaser = $em->getRepository('AppBundle:qvLeaser')->findOneBy(array('id'=>$leaserId));
+            $serializer = $this->get('serializer');
+            $leaser = $serializer->serialize($qvLeaser, 'json');
+            return new Response($leaser);
+        }
+    }
+
+
+
 
 	/**
 	 * @Route("/home")

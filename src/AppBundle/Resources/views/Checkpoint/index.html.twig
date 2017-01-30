@@ -34,9 +34,6 @@
 									<div class="form-group">
 												<label>КПП</label>
 												<select id="checkpoints" class="form-control">
-													{% for qvCheckpoint in qvCheckpoints %}
-													<option>{{qvCheckpoint.name}}</option>
-												{% endfor %}
 												</select>
 									</div>
 								</div>	
@@ -56,22 +53,24 @@
 		<script src="{{asset('bootstrap1/bower_components/jquery/dist/jquery.min.js')}}"></script>
 
 <script> 
+function loadCheckpoints(buildingId){
+	$('#checkpoints').empty();
+	$.ajax({
+        type: "GET",
+        url: "{{ path('checkpoints')}}",
+        data: {'id':buildingId},
+        success: function(data){
+		        	$.each(JSON.parse(data),function(k,v){
+								        		$('#checkpoints').append('<option value="'+v.id+'">'+v.name+'</option>')
+								        	});
+		       	 }
+    });
+}
 $(function (){
+	loadCheckpoints($('#building option:selected').val());
 	$('#building').change(function(){
-				$.ajax({
-			        type: "GET",
-			        url: "{{ path('checkpoints')}}",
-			        data: {'id':$('#building option:selected').val()},
-			        success: function(data){
-						        $('#checkpoints').empty();
-					        	$.each(JSON.parse(data),function(k,v){
-											        		$('#checkpoints').append('<option value="'+v.id+'">'+v.name+'</option>')
-											        	});
-					       	 }
-		        });
-		});
-	
-	
+						loadCheckpoints($('#building option:selected').val());
+				});
 });
 </script>
 {% endblock %}

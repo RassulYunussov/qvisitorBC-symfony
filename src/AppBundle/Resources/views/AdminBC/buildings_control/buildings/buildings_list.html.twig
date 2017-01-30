@@ -51,7 +51,7 @@
 													
 			<div class="col-sm-6">
 				<div id="dataTables-example_filter" align="right" class="dataTables_filter">
-					<a href="buildings_control/create_building" class="btn btn-success">Добавить здание</a>
+					<a href="{{ path('buildings_create') }}" class="btn btn-success">Добавить здание</a>
 				</div><br>
 			</div>
 		</div>
@@ -81,7 +81,7 @@
 		 {% for qvBuilding in qvBuildings %}
             <tr>
                 <td><a href="{{ path('buildings_show', { 'id': qvBuilding.id }) }}">{{ qvBuilding.id }}</a></td>
-                <td><a href="{{ path('buildings_show', {'name': qvBuilding.name }) }}">
+                <td><a href="{{ path('buildings_show', {'id': qvBuilding.id }) }}">
                 	{{ qvBuilding.name }}
                 </a>
                 </td>
@@ -94,8 +94,8 @@
                             </button>
 
 		<ul class="dropdown-menu pull-right" role="menu">
-			<li><a href="buildings_control/show_building">Посмотеть информацию</a></li>
-				<li><a href="buildings_control/edit_building">Изменить или удалить информацию</a></li>
+			<li><a href="{{ path('buildings_show', {'id': qvBuilding.id}) }}">Посмотеть информацию</a></li>
+				<li><a href="{{ path('buildings_edit', {'id': qvBuilding.id}) }}">Изменить или удалить информацию</a></li>
         </ul>
 </tr>	
 {% endfor %}	

@@ -68,9 +68,12 @@
                             Информация о контрактах данного арендатора
                         </div>
                         <div class="panel-body">
-                            <p>
-                                
-                            </p>
+                            {% for contracts in contracts %}
+                            <a href="{{ path('contracts_show', {'id': contracts.id}) }}">
+                             {{ contracts.name }}
+                            </a>
+
+                        {% endfor %}
                         </div>
                         <div class="panel-footer">
                             Panel Footer
