@@ -21,3 +21,4 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
+/nbproject/private/

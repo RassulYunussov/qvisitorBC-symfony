@@ -32,19 +32,25 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-lg-6">
-								<form name="qv_floor" method="post">
-									<div id="qv_floor">
-										<div class="form-group">
-											<label for="qv_floor_name">Номер этажа</label>
-												<input type="text" class="form-control" id="qv_floor_name" name="qv_floor[name]">
-										</div>
-									
-									<div class="form-group">
-										<label for="qv_floor_building">Здание</label>
-										<select class="form-control" id="qv_floor_building" name="qv_floor[building]"><option value=""></option></select>
-										<br>
-										<button type="submit" class="btn btn-success">Создать </button>
-								</form>
+							  <ul>
+                {{ form_start(form) }}
+                 {% for child in form %}
+                <li>
+                         {{ form_label(child) }}
+                    {{ form_widget(child, {'attr': {'class':'form-control'}}) }}
+    </li>
+{% endfor %}
+    </ul>           
+    <br>
+    <div class="form-inline form-input">
+                <button type="submit" class="btn btn-default btn-sm">
+                    Создать
+                </button>
+                <button type="reset" class="btn btn-default btn-sm">
+                    Отменить
+                </button>
+                {{ form_end(form) }}
+                </div>
 							</div>
 							<!-- /.col-lg-6 (nested) -->
 						</div>

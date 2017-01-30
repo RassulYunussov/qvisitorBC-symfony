@@ -34,24 +34,25 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-lg-6">
-								<form name="qv_floor" method="post">
-									<div id="qv_floor">
-										<div class="form-group">
-											<label for="qv_sector_name">Номер сектора</label>
-												<input class="form-control" type="text" id="qv_sector_name" name="qv_sector[name]" required="required" maxlength="45">
-										</div>
-									
-									<div class="form-group">
-										<label for="qv_sector_floor">Номер этажа</label>
-										<select class="form-control" id="qv_sector_floor" name="qv_sector[floor]"><option value=""></option></select>
-										</div>
-										
-										<div>
-											<label for="qv_sector_contracts">Контракты</label><select class="form-control" id="qv_sector_contracts" name="qv_sector[contracts][]" multiple="multiple"></select></div>
-										
-										<br>
-										<button type="submit" class="btn btn-success">Создать </button>
-								</form>
+								     <ul>
+                {{ form_start(form) }}
+                 {% for child in form %}
+                <li>
+                         {{ form_label(child) }}
+                    {{ form_widget(child, {'attr': {'class':'form-control'}}) }}
+    </li>
+{% endfor %}
+    </ul>           
+    <br>
+    <div class="form-inline form-input">
+                <button type="submit" class="btn btn-default btn-sm">
+                    Создать
+                </button>
+                <button type="reset" class="btn btn-default btn-sm">
+                    Отменить
+                </button>
+                {{ form_end(form) }}
+                </div> 
 							</div>
 							<!-- /.col-lg-6 (nested) -->
 						</div>

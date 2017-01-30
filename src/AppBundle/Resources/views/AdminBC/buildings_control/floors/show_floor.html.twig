@@ -5,79 +5,104 @@
 
 {% block body %}
 
-    <div id="page-wrapper">
-		<div class="row">
-			<div class="col-lg-12">
-				{% block breadcrumb %}
-					<div id="breadcrumbs"><br>
-						<ul>
-							<li><a href="\adminbc\index">Главная</a></li>
-							<li><a href="\adminbc\buildings_control">Управление зданиями</a></li>
-							<li><a href="\adminbc\buildings_control">Этажи</a></li>
-						</ul>
-					</div>
-				{% endblock %}
-
-				<h1 class="page-header">Информация об этаже</h1>
-				<!-- /.col-lg-12 -->
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			{% block breadcrumb %}
+				<div id="breadcrumbs"><br>
+				<ul>
+					<li>
+						<a href="{{ path('main_page') }}">
+							Главная
+						</a>
+					</li>
+					<li>
+						<a href="{{ path('buildings_list') }}">
+							Управление зданиями
+						</a>
+					</li>
+					<li>
+						<a href="{{ path('floors_list') }}">
+							Этажи
+						</a>
+					</li>
+				</ul>
 				</div>
-   
-			<div class="col-lg-12">
-				<div class="panel panel-default">
-					
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-lg-6">
-								<div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Информация о секторе
-                        </div>
+			{% endblock %}
+	<!-- /.col-lg-12 -->
+		</div>
+	<br>
+	<h1 class="page-header">Информация об этаже</h1>
+	<br>
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="panel panel-default">
+        		                <div class="panel-heading">
+                		            <i class="fa fa-bar-chart-o fa-fw">
+                		            </i>
+                		           	Этаж № {{ qvFloor.name }} 
+                		           	Расположен в:
+                        		</div>
                         <!-- /.panel-heading -->
-                        <div class="panel-body">
-						
-						<div class="table-responsive">
-                                <table class="table">
-                                    
-                                    <tbody>
-                                    	{% qvFloor in qvFloor %}
-                                        <tr class="success">
-                                          	<tr class="success">
-												<td>Номер этажа</td>
-												<td>{{ qvFloor.name }}</td>
-											</tr>
-											<tr class="success">
-												<td>Название здания</td>
-												<td>
-													{{  qvFloor.building }}
-												</td>
-											</tr>
-											{% endfloor %}
-											<tr>
-											<td></td>
-											<td align="right"><br><a href="edit_floor" class="btn btn-warning">Редактировать</a></td>
-											</tr>
-                                    	}
-                                    </tbody>
-                                </table>
-								
-                            </div>
-					</div>	
-                        <!-- /.panel-body -->
-                    </div>
-							</div>
-							<!-- /.col-lg-6 (nested) -->
-						</div>
-						<!-- /.row (nested) -->
-					</div>
-					<!-- /.panel-body -->
-				</div>
-				<!-- /.panel -->
-			</div>
-   
-        <!-- /.row -->
+    <div class="panel-body">
+		<div class="table-responsive">
+        	<table class="table">
+            	<tbody>
+					<tr class="success">
+						<td>
+							Здании
+						</td>
+						<td>
+							{{ qvFloor.building }}
+						</td>
+					</tr>
+					<tr class="success">
+						<td>
+							Включает сектора
+						</td>
+						<td>
+							{#{% for qvFloor in qvFloor %}
+								{% for sector in sector %}
+									{% if sector.floor == qvFloor.name %}
+										<a href="{{path('sectors_show', 
+											{'id': sector.id }) }}">
+                								{{  sector.name }}, 
+     									</a>
+									{% endif %} 
+								{% endfor %}
+							{% endfor %}#}
+						</td>
+					</tr>
+					<tr>
+						<td align="right">
+							<br>
+							<a href="edit_floor" align="right" class="btn btn-warning">
+								Редактировать
+							</a>
+						</td>
+					</tr>
+                </tbody>
+            </table>					
         </div>
-    <!-- /#page-wrapper -->
 	</div>
+<!-- /.panel-body -->
+						</div>
+					</div>
+			<!-- /.col-lg-6 (nested) -->
+				</div>
+			<!-- /.row (nested) -->
+			</div>
+			<!-- /.panel-body -->
+		</div>
+	<!-- /.panel -->
+	</div>
+<!-- /.row -->
+</div>
+<!-- /#page-wrapper -->
+</div>
     
 
 
