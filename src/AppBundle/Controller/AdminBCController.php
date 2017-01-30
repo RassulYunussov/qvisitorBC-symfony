@@ -194,7 +194,7 @@ class AdminBCController extends Controller
             $em->flush();
             return $this->redirectToRoute('contracts_index', array('id' => $qvContract->getId()));
         }
-        return $this->render('AppBundle:Adminbc:leasers_control/contract/create_contract.html.twig', array(
+        return $this->render('AppBundle:Adminbc:leasers_control/contracts/create_contract.html.twig', array(
             'qvContract' => $qvContract,
             'form' => $form->createView(),
         ));

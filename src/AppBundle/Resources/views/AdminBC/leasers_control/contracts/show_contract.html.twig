@@ -9,26 +9,25 @@
             <div class="row">
                 <div class="col-lg-12">
                 	{% block breadcrumb %}
-					<div id="breadcrumbs">
-						<br>
-						<ul>
-						<li><a href="\adminbc\index">Главная</a></li>
-						<li><a href="\adminbc\leasers_control">Управление арендаторами</a></li>
-						<li><a href="show_leaser">Информация об арендаторе</a></li>
-						<li><a href="show_contract">Просмотр контракта</a></li>
-						</ul>
-					</div>
+					<div id="breadcrumbs" class="btn-group btn-breadcrumb">
+                                <br>
+                                <a class="btn btn-default" href="{{ path('main_page') }}">
+                                    <i class="fa fa-home"></i>
+                                        Главная
+                                </a>
+                                <a class="btn btn-default" href="{{ path('leasers_list') }}">Управление арендаторами</a>
+                                 <a class="btn btn-default" href="{{ path('leasers_list') }}">Управление контрактами</a>
 					{% endblock %}
-											
-               <h1 class="page-header">Просмотр контракта</h1>
+<br><br><br>											
+               <h2 class="page-header">Просмотр контракта</h2>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
 			
-				<h3 class="page-header">
+				<h5 class="page-header">
 								Контракты данного пользователя
-								</h3>
+								</h5>
 								
 						<div class="table-responsive">
                                 <table class="table">

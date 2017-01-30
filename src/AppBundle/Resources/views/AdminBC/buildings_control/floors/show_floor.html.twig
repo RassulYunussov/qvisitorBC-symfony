@@ -9,30 +9,25 @@
 	<div class="row">
 		<div class="col-lg-12">
 			{% block breadcrumb %}
-				<div id="breadcrumbs"><br>
-				<ul>
-					<li>
-						<a href="{{ path('main_page') }}">
-							Главная
-						</a>
-					</li>
-					<li>
-						<a href="{{ path('buildings_list') }}">
-							Управление зданиями
-						</a>
-					</li>
-					<li>
-						<a href="{{ path('floors_list') }}">
-							Этажи
-						</a>
-					</li>
-				</ul>
-				</div>
+				 <div id="breadcrumbs" class="btn-group btn-breadcrumb">
+                        <br>
+                        <a class="btn btn-default" href="{{ path('main_page') }}">
+                        <i class="fa fa-home"></i>Главная
+                        </a>
+                        <a class="btn btn-default" href="{{ path('buildings_list')}}">Управление зданиями
+                        </a>
+                        <a class="btn btn-default" href="{{ path('floors_list')}}">Управление этажами
+                        </a>
+                    </div>
+                    <br>
 			{% endblock %}
 	<!-- /.col-lg-12 -->
 		</div>
 	<br>
-	<h1 class="page-header">Информация об этаже</h1>
+	<br>
+	<br>
+	<br>
+	<h2 class="page-header">Просмотр информации об этаже</h2>
 	<br>
 		<div class="col-lg-12">
 			<div class="panel panel-default">
