@@ -60,12 +60,12 @@ class qvHotEntranceType extends AbstractType
                 'disabled' => 'true',
                 'attr'=> array('class' => 'form-control',
            )))
-            ->add('Выбрать', ButtonType::class, array(
-                'attr' =>array(
-                    'class'=> 'btn btn-default',
-                    'label'=>'Выбрать', 
-                    'data-toggle'=> 'modal',
-                    'data-target'=>'#myModal'), ))
+            ->add('label', ButtonType::class, 
+                array('label'=>'Выбрать',
+                      'attr' =>array(
+                            'class'=> 'btn btn-default',
+                            'data-toggle'=> 'modal',
+                            'data-target'=>'#myModal') ))
         ;
     }
     
