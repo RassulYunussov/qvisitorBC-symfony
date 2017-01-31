@@ -5,24 +5,187 @@
 
 
 {% block body %}
-		
-		<div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                		    {% block breadcrumb %}
-					  <div id="breadcrumbs" class="btn-group btn-breadcrumb">
-             	<br>
-            	<a class="btn btn-default" href="{{ path('main_page') }}">
-            		<i class="fa fa-home"></i>
-            			Главная
-            	</a>
-					<a class="btn btn-default" href="{{ path('buildings_list') }}">
-								Управление зданиями
-						</a>
- </div>
-					{% endblock %}
-					<h1 class="page-header">Просмотр информации о здании </h1>
+	
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-sm-10">
+			 {% block breadcrumb %}
+			    <div id="breadcrumb" class="btn btn-breadcrumb"><br>
+			    	<a href="{{ path('main_page') }}" class="btn btn-default">
+			    		<i class="fa fa-home"></i>Главная
+			    	</a>
+			    	<a href="{{ path('buildings_list') }}" 
+			    	class="btn btn-default">
+			    		Управление зданиями
+			    	</a>
+			    </div>
+			{% endblock %}
+			<h2 class="page-header">
+				Просмотр информации о здании
+			</h2>
+		</div>
+		<br>
+	<div class="col-sm-10">
+    	<div class="panel panel-default">
+        	<div class="panel-heading">
+            	<h5>
+                            	{{ qvBuilding.name }} - Включает 
+                            <span>
+                            {{ count }} этажа(ей)
+                            </span>
+                            </h5>
+            </div>
+    <!-- /.panel-heading -->
+    	<div class="panel-body">
+		    <!-- Nav tabs -->
+		    	<ul class="nav nav-tabs">
+		            <li class="active"><a href="#home" data-toggle="tab">Этажи</a>
+		            </li>
+		            <li><a href="#profile" data-toggle="tab">КПП</a>
+		            </li>
+		        </ul>
+			<!-- Tab panes -->
+			    <div class="tab-content">
+			    	<div class="tab-pane fade in active" id="home">
+			        	<div class="col-sm-10">
+			        		<br>
+			        		<div class="panel panel-default">
+			        	    	<div class="panel-heading">
+			        	        	Этажи данного здания
+			        	     <div class="text-right">
+							<a href="{{ path('floors_create') }}" class="btn btn-success btn-sm text-right">
+								Добавить этаж
+							</a>
+							<a href="{{ path('sectors_create') }}" class="btn btn-success btn-sm text-right">
+								Добавить сектор
+							</a>
+						</div>
+			        	        </div>
+			        	   <!-- /.panel-heading -->
+			        	   <div class="panel-body">
+			        	   <div class="table-responsive table-striped">
+			        	   <table class="table">
+			        	   <thead>
+			        	   <tr>
+			        	   	<th> Номер этажа</th>
+			        	   	<th> Соответствующие сектора</th>
+			        	   </tr>
+			        	   </thead>
+			        	   <tbody>
+			        	   {% for floor in floors %}
+			        	   	<tr>
+			        	   		<td>
+									<a href="{{ path('floors_show', {'id': floor.id }) }}">
+									{{ floor.name }}
+									</a>
+								</td>
+								<td>
+									{% for sector in sectorlist %}
+										{% if sector.floor == floor.name %}
+											<a href="{{path('sectors_show', {'id': sector.id }) }}">
+	                						{{  sector.name }}, 
+	     									</a>
+										{% endif %} 
+									{% endfor %}
+								
+								</td> 
+			        	   </tr>{%	endfor %}
+			        	    </tbody>
+			        	    </table>
+			        	    </div>
+			        	    <!-- /.table-responsive -->
+			        	    </div>
+			        	    <!-- /.panel-body -->
+			        	    </div>
+			        	    <!-- /.panel -->
+			        	    </div>
+			        </div>
+				
+	<div class="tab-pane fade" id="profile">
+		<div class="col-sm-10">
 			<br>
+		<div class="panel panel-default">
+        <div class="panel-heading">
+        	<h5>
+        		Контрольно-пропускные пункты
+        	<div class="text-right">
+		<a href="{{ path('checkpoints_create') }}" class="btn btn-sm btn-success text-right">
+			Добавить КПП
+		</a>
+			</div>		
+        	</h5>
+        </div>
+	 <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                    	<tr>
+<th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 120px;">Наименование
+</th>
+<th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 120px;">Охрана
+</th>
+<th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 40px;">Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+	{% for check in check %} 
+	<tr class="gradeA odd" role="row">
+	<td class="sorting_1">
+	<label>
+	<a href="{{ path('checkpoints_show', { 'id': check['id'] }) }}">
+	{{ check.name }}
+	</a>
+	</label>
+	</td>
+	<td>
+	<label>
+	{% for qvUserPassport in  usp %}
+		<a href="{{ path('show_security', {'id': qvUserPassport['id']}) }}">
+			{{ qvUserPassport.firstname }} {{ qvUserPassport.lastname }}, <br>	
+	{% endfor %}
+	</label>
+	</td>
+	<td class="center"><div class="btn-group">
+	<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+	Выберите действие
+	<span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu pull-right" role="menu">
+	<li>
+		<a href="{{ path('checkpoints_show', { 'id': check.id }) }}">Посмотеть информацию</a>
+	</li>
+	<li>
+		<a href="{{ path('checkpoints_edit', { 'id': check.id }) }}">Изменить или удалить информацию</a>
+	</li>
+	</ul>
+	 </tr>
+	{% endfor %}		
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+					</div>
+			    </div>
+			</div>
+	<!-- /.panel-body -->
+    	</div>
+    <!-- /.panel -->
+    </div>
+</div>
+</div>	
+		
+<!-- /.table-responsive -->
+
+<!-- /.panel-body -->
+<!-- /.panel -->
+{% endblock %}
+{#
 			<div class="col-lg-14">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -98,6 +261,7 @@
 	</div>
 	</div>
 	</div>
+</a></td></tr></tbody></table></div></div></div></div>
 	</div>
 	<!-- /.table-responsive -->
 	<!-- /.panel-body -->
@@ -112,7 +276,16 @@
 <!-- /.panel-heading -->
 <div class="panel-body">
 <div class="dataTable_wrapper">
-<div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6"><div class="dataTables_length" id="dataTables-example_length"><label>Show <select name="dataTables-example_length" aria-controls="dataTables-example" class="form-control input-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-6"><div id="dataTables-example_filter" align="right" class="dataTables_filter">
+<div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+<div class="row"><div class="col-sm-6"><div class="dataTables_length" id="dataTables-example_length">
+<label>Show <select name="dataTables-example_length" aria-controls="dataTables-example" class="form-control input-sm">
+<option value="10">10</option><option value="25">25</option>
+<option value="50">50</option>
+<option value="100">100</option></select> entries</label>
+</div>
+</div>
+<div class="col-sm-6">
+<div id="dataTables-example_filter" align="right" class="dataTables_filter">
 <a href="{{ path('checkpoints_create') }}" class="btn btn-success">Создать КПП</a>
 </div>
 <br>
@@ -153,13 +326,10 @@
 	</button>
 	<ul class="dropdown-menu pull-right" role="menu">
 	<li>
-		<a href="show_checkpoint">Посмотеть информацию</a>
+		<a href="{{ path('checkpoints_show', { 'id': check.id }) }}">Посмотеть информацию</a>
 	</li>
 	<li>
-		<a href="edit_checkpoint">Изменить информацию</a>
-	</li>
-	<li>
-		<a href="#">Удалить</a>
+		<a href="{{ path('checkpoints_edit', { 'id': check.id }) }}">Изменить или удалить информацию</a>
 	</li>
 	</ul>
 	</div>
@@ -209,4 +379,5 @@
             <!-- /.row -->
 	</div>
         <!-- /#page-wrapper -->
-{% endblock %}
+
+#}

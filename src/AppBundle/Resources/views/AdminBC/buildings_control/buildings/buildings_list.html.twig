@@ -8,7 +8,7 @@
 	
 	 <div id="page-wrapper">
             <div class="row">
-				<div class="col-lg-12">
+				<div class="col-sm-10">
              {% block breadcrumb %}
              <div id="breadcrumbs" class="btn-group btn-breadcrumb">
              	<br>
@@ -33,7 +33,7 @@
 			        </div>
 					
 <div class="row" style="float:center" >
-	<div class="col-lg-8">
+	<div class="col-sm-10">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				Здания Бизнес-Центра 
@@ -44,7 +44,7 @@
 			<div class="dataTable_wrapper">
 				<div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
 					<div class="row">
-						<div class="col-sm-6">
+						<div class="col-sm-10">
 							<div class="dataTables_length" id="dataTables-example_length">
 								<label>Show 
 									<select name="dataTables-example_length" aria-controls="dataTables-example" class="form-control input-sm">
@@ -76,8 +76,7 @@
 										
 							<th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 40px;">Действия</th>
 						</tr>
-					</thead>
-                    
+					</thead>  
 		<tbody>                        
         <tr class="gradeA odd" role="row">
 		 {% for qvBuildings in qvBuildings %}
@@ -99,23 +98,26 @@
 				<li>
 					<a href="{{ path('buildings_edit', {'id': qvBuildings.id}) }}">Изменить или удалить информацию</a></li>
         </ul>
-</tr>	
-{% endfor %}	
+</td>	
+	
 				</div>
-			</td>
         </tr>
-	</tbody>
+    {% endfor %}
+	</td>
+</tr>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
 
 		<div class="row">
-			<div class="col-sm-6">
+			<div class="col-sm-10">
 				<div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Показанные записи: 1 
 			</div>
 		</div>
 		
-		<div class="col-sm-6">
+		<div class="col-sm-10">
 			<div class="dataTables_paginate paging_simple_numbers" align="right" id="dataTables-example_paginate">
 				<ul class="pagination">
 					<li class="paginate_button previous disabled" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_previous">

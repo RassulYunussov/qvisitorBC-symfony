@@ -36,7 +36,8 @@
                             <div class="dataTable_wrapper">
                                 <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row"><div class="col-sm-6"><div class="dataTables_length" id="dataTables-example_length"><label>Show <select name="dataTables-example_length" aria-controls="dataTables-example" class="form-control input-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-6">
                                 <div id="dataTables-example_filter" align="right" class="dataTables_filter">
-                                <a href="{{ path('checkpoints_create') }}" class="btn btn-success">Создать checkpoint</a>
+                                <a href="{{ path('chckpoints_create') }}" class="btn btn-success">Добавить новый КПП</a>
+                                <a href="{{ path('new_security') }}" class="btn btn-success">Добавить нового охраника</a>
                                 </div><br></div></div><div class="row"><div class="col-sm-12"><table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info">
                                     <thead>
                                         <tr role="row">
@@ -44,6 +45,9 @@
                                         </th>
                                         
                                         <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 120px;">Здание
+                                        </th>
+
+                                         <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 120px;">Охрана (ФИО)
                                         </th>
                                         
                                         <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 40px;">Действия</th>
@@ -62,40 +66,49 @@
             <a href="{{ path('buildings_show', { 'id': qvCheckpoint.id }) }}">{{ qvCheckpoint.building }}
             </a>
         </td>
+            <td>
+               {% for security in security %}
+               {{ security.firstname}}
+               {{   security.lastname }}
+               {{ security.patronimic }},<br>
+               {%endfor%}
+            </td>
         <td>        {{ include('AppBundle:Adminbc:actions/actions_for_checkpoint.html.twig') }}
         </td>
                 
     </tr>
         {% endfor %}
-                                        </tbody>
-                                </table>
-                                
-                                </div></div><div class="row"><div class="col-sm-6">
-                                <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">
-                                     Показанные записи:  
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="dataTables_paginate paging_simple_numbers" align="right" id="dataTables-example_paginate">
-                                <ul class="pagination">
-                                    <li class="paginate_button previous disabled" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_previous">
-                                        <a href="#">
-                                            Предыдущая
-                                        </a>
-                                    </li>
-                                    <li class="paginate_button active" aria-controls="dataTables-example" tabindex="0">
-                                        <a href="#">
-                                            1
-                                        </a>
-                                    </li>
-                            <li class="paginate_button " aria-controls="dataTables-example" tabindex="0">
-                            <a href="#">2</a></li>
-                            <li class="paginate_button " aria-controls="dataTables-example" tabindex="0">
-                            <a href="#">3</a></li>
-                            <li class="paginate_button next" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_next">
-                            <a href="#">Следующая</a></li>
-                            </ul>
-                            </div>
+      </tbody>
+      </table>
+      </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+    <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">
+    Показанные записи:  
+    </div>
+    </div>
+    <div class="col-sm-6">
+    <div class="dataTables_paginate paging_simple_numbers" align="right" id="dataTables-example_paginate">
+    <ul class="pagination">
+    <li class="paginate_button previous disabled" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_previous">
+    <a href="#">
+    Предыдущая
+    </a>
+    </li>
+    <li class="paginate_button active" aria-controls="dataTables-example" tabindex="0">
+    <a href="#">
+    1
+    </a>
+    </li>
+    <li class="paginate_button " aria-controls="dataTables-example" tabindex="0">
+    <a href="#">2</a></li>
+    <li class="paginate_button " aria-controls="dataTables-example" tabindex="0">
+    <a href="#">3</a></li>
+    <li class="paginate_button next" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_next">
+    <a href="#">Следующая</a></li>
+    </ul>
+    </div>
                             </div>
                             </div>
                             </div>

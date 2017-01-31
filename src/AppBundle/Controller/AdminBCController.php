@@ -16,6 +16,8 @@ use AppBundle\Entity\qvCheckpoint;
 use AppBundle\Entity\qvCheckpointType;
 use AppBundle\Entity\qvBuilding;
 use AppBundle\Form\qvBuildingType;
+use AppBundle\Entity\qvUserPassport;
+use AppBundle\Form\qvUserPassportType;
 /**
  * adminBCController 
  * 
@@ -279,8 +281,15 @@ class AdminBCController extends Controller
         
         $qvCheckpoints = $em->getRepository('AppBundle:qvCheckpoint')->findAll();
         
+          $em = $this->getDoctrine()->getEntityManager();
+            $query = $em->createQuery(
+                'SELECT passport.firstname, passport.lastname, passport.patronimic FROM AppBundle:qvUserPassport passport JOIN passport.user pu  WHERE pu.role = :name'
+)->setParameter('name', '4');
+$security = $query->getResult();
+
         return $this->render('AppBundle:AdminBC:checkpoints_control/checkpoints_list.html.twig', array(
         'qvCheckpoints' => $qvCheckpoints,
+        'security' => $security,
         ));
     }
     
@@ -317,8 +326,16 @@ class AdminBCController extends Controller
     {
     $deleteForm = $this->createDeleteCheckpointForm($qvCheckpoint);
         
+           $em = $this->getDoctrine()->getEntityManager();
+            $query = $em->createQuery(
+                'SELECT passport.firstname, passport.lastname, passport.patronimic FROM AppBundle:qvUserPassport passport JOIN passport.user pu WHERE pu.role = :name'
+)->setParameter('name', '4');
+$security = $query->getResult();
+      
+
         return $this->render('AppBundle:Adminbc:checkpoints_control/show_checkpoint.html.twig', array(
         'qvCheckpoint' => $qvCheckpoint,
+        'security' => $security,
         'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -453,6 +470,16 @@ $count = $query->getSingleScalarResult();
             'SELECT ch.name, ch.id from AppBundle:qvCheckpoint ch WHERE ch.building = :name'
             )->setParameter('name', $qvBuilding);
             $check = $querycheck->getResult();
+
+
+        $qvUserPassports = $em->getRepository('AppBundle:qvUserPassport')->findAll();
+        
+        $em4 = $this->getDoctrine()->getEntityManager();
+            $query = $em4->createQuery(
+                'SELECT passport.id, passport.firstname, passport.lastname, passport.patronimic, passport.birthdate FROM AppBundle:qvUserPassport passport JOIN passport.user pu WHERE pu.role = :name'
+                    )->setParameter('name', '4');
+
+            $usp = $query->getResult();
   /*  if (!$queryFloor)
     {
     throw $this->CreateNotFoundException('Не найдено информации ни по одному этажу');
@@ -465,6 +492,7 @@ $count = $query->getSingleScalarResult();
             'floors' => $floors,
             'sectorlist' => $sectorlist,
             'check' => $check,
+            'usp' => $usp,  
             'delete_form' => $deleteForm->createView(),
         ));
     //}
@@ -733,6 +761,136 @@ $count = $query->getSingleScalarResult();
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('sectors_delete', array('id' => $qvSector->getId())))
+            ->setMethod('DELETE')
+            ->getForm()
+        ;
+    }
+
+     /**
+     * Lists all qvUserPassport entities.
+     *
+     * @Route("/security_control", name="security_list")
+     * @Method("GET")
+     */
+     public function indexSecurityAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $qvUserPassports = $em->getRepository('AppBundle:qvUserPassport')->findAll();
+        
+        $em = $this->getDoctrine()->getEntityManager();
+            $query = $em->createQuery(
+                'SELECT passport.id, passport.firstname, passport.lastname, passport.patronimic, passport.birthdate FROM AppBundle:qvUserPassport passport JOIN passport.user pu WHERE pu.role = :name'
+                    )->setParameter('name', '4');
+
+            $usp = $query->getResult();
+
+        return $this->render('AppBundle:AdminBC:checkpoints_control/security_man/index.html.twig', array(
+            'qvUserPassports' => $qvUserPassports,
+            'usp' => $usp,
+        ));
+    }
+
+    /**
+     * Creates a new qvUserPassport entity.
+     *
+     * @Route("/security/new_security", name="new_security")
+     * @Method({"GET", "POST"})
+     */
+    public function newSecurityAction(Request $request)
+    {
+        $qvUserPassport = new qvUserPassport();
+        $form = $this->createForm('AppBundle\Form\qvUserPassportType', $qvUserPassport);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($qvUserPassport);
+            $em->flush();
+
+            return $this->redirectToRoute('show_security', array('id' => $qvUserPassport->getId()));
+        }
+
+        return $this->render('AppBundle:AdminBC:checkpoints_control/security_man/new.html.twig', array(
+            'qvUserPassport' => $qvUserPassport,
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * Finds and displays a qvUserPassport entity.
+     *
+     * @Route("/security/{id}/show", name="show_security")
+     * @Method("GET")
+     */
+    public function showSecurityAction(qvUserPassport $qvUserPassport)
+    {
+        $deleteForm = $this->createDeleteSecurityForm($qvUserPassport);
+
+        return $this->render('AppBundle:AdminBC:checkpoints_control/security_man/show.html.twig', array(
+            'qvUserPassport' => $qvUserPassport,
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Displays a form to edit an existing qvUserPassport entity.
+     *
+     * @Route("/security/{id}/edit", name="edit_security")
+     * @Method({"GET", "POST"})
+     */
+    public function editSecurityAction(Request $request, qvUserPassport $qvUserPassport)
+    {
+        $deleteForm = $this->createDeleteSecurityForm($qvUserPassport);
+        $editForm = $this->createForm('AppBundle\Form\qvUserPassportType', $qvUserPassport);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($qvUserPassport);
+            $em->flush();
+
+            return $this->redirectToRoute('security_list', array('id' => $qvUserPassport->getId()));
+        }
+
+        return $this->render('AppBundle:AdminBC:checkpoints_control/security_man/edit.html.twig', array(
+            'qvUserPassport' => $qvUserPassport,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Deletes a qvUserPassport entity.
+     *
+     * @Route("/security/{id}/delete", name="delete_security")
+     * @Method("DELETE")
+     */
+    public function deleteSecurityAction(Request $request, qvUserPassport $qvUserPassport)
+    {
+        $form = $this->createDeleteSecurityForm($qvUserPassport);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($qvUserPassport);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('security_list');
+    }
+
+    /**
+     * Creates a form to delete a qvUserPassport entity.
+     *
+     * @param qvUserPassport $qvUserPassport The qvUserPassport entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteSecurityForm(qvUserPassport $qvUserPassport)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('delete_security', array('id' => $qvUserPassport->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;
