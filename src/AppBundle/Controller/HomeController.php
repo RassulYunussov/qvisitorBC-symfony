@@ -22,7 +22,7 @@ class HomeController extends Controller
     	// last username entered by the user
     	$lastUsername = $authenticationUtils->getLastUsername();
     	if($this->get('security.authorization_checker')->isGranted('ROLE_LEASER'))
-    		return $this->redirect('/leaserpage');
+    		return $this->redirect('/leaser/index');
     	if($this->get('security.authorization_checker')->isGranted('ROLE_CHECKPOINT'))
     		return $this->redirect('/checkpoint/index');
         if($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))

@@ -1,7 +1,7 @@
 
 .type_date-inline{
     position: relative;
-    display: inline-block;
+    display: block;
     padding-left: 20px;
     width: 40%;
     height: 34px;
@@ -22,4 +22,12 @@
     -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
     -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.label-margin{
+    margin-top:1em;
+}
+
+.form-margin{
+    margin-bottom: 0.7em
 }

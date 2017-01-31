@@ -24,29 +24,37 @@ class qvHotEntranceType extends AbstractType
     {
         $builder
             ->add('firstname', TextType::class, array(
+                'label'=>'Имя',
                 'attr'   =>  array(
                 'class'   => 'form-control')))
             ->add('lastname', TextType::class, array(
+                'label'=>'Фамилия',
                 'attr'   =>  array(
                 'class'   => 'form-control')))
             ->add('patronimic', TextType::class, array(
+                'label'=>'Отчество',
                 'attr'   =>  array(
                 'class'   => 'form-control')))
             ->add('documentnumber', NumberType::class, array(
+                'label'=>'Номер удостоверения',
                 'attr'   =>  array(
                 'class'   => 'form-control')))
             ->add('organization', TextType::class, array(
+                'label'=>'Название организации',
                 'attr'   =>  array(
                 'class'   => 'form-control')))
             ->add('attendant', TextType::class, array(
+                'label'=>'Встречающий',
                 'attr'   =>  array(
                 'class'   => 'form-control')))
             ->add('comment', TextareaType::class, array(
+                'label'=>'Дополнительно',
                 'attr'   =>  array(
                 'class'   => 'form-control')))
             ->add('entrancedate', DateTimeType::class, array(
+                'label'=>'Время посещения',
                 'widget' => 'single_text', 
-                'format' =>'dd/MM/yyyy hh:mm:ss',
+                'format' =>'dd/MM/yyyy hh:mm',
                 'html5' => false,
                 'model_timezone'=>'Asia/Almaty',
                 'attr' => array(
@@ -57,6 +65,7 @@ class qvHotEntranceType extends AbstractType
             ->add('checkpoint', HiddenType::class)
             ->add('user', HiddenType::class)
             ->add('leaser', TextType::class, array(
+                'label'=>'Арендатор',
                 'disabled' => 'true',
                 'attr'=> array('class' => 'form-control',
            )))

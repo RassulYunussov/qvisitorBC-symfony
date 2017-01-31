@@ -51,7 +51,7 @@
 									<h5>Всего: </h5>
 								</div>
 								<div class="col-lg-4 text-right">
-									<a href="entrance-registration" class="btn btn-info"><i class="fa fa-plus"></i> Зарегистрировать</a>
+									<a href="entrance-registration" class="btn btn-info form-margin"><i class="fa fa-plus"></i> Зарегистрировать</a>
 								</div>
 							</div>
 							<div class="dataTable_wrapper">
@@ -67,7 +67,7 @@
                                     <tbody>
                                     	{% for qvEntrance in qvEntrances %}
 										<tr>
-                                        <td>{{qvEntrance.entrancedate|date('Y-m-d H:i:s') }}</td>
+                                        <td>{{qvEntrance.entrancedate|date('Y-m-d H:i') }}</td>
                                         <td>{{qvEntrance.visitor.lastname}} {{qvEntrance.visitor.firstname}} {{qvEntrance.visitor.patronimic}}</td>
                                         <td></td>
                                         <td>

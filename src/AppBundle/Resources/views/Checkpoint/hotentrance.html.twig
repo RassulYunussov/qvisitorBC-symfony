@@ -56,7 +56,7 @@
 									<h5>Всего: </h5>
 								</div>
 								<div class="col-lg-4 text-right">
-									<a href="hot-entrance-registration" class="btn btn-info"><i class="fa fa-plus"></i> Зарегистрировать</a>
+									<a href="hot-entrance-registration" class="btn btn-info form-margin"><i class="fa fa-plus"></i> Зарегистрировать</a>
 								</div>
 							</div>
                         
@@ -73,7 +73,7 @@
                                     <tbody>
 									{% for qvHotEntrance in qvHotEntrances %}
 										<tr>
-                                        <td>{{qvHotEntrance.entrancedate|date('Y-m-d H:i:s') }}</td>
+                                        <td>{{qvHotEntrance.entrancedate|date('Y-m-d H:i') }}</td>
                                         <td>{{ qvHotEntrance.lastname }} {{ qvHotEntrance.firstname }} {{ qvHotEntrance.patronimic }}</td>
                                         <td>{{ qvHotEntrance.documentnumber }}</td>
 										<td>

@@ -2,15 +2,6 @@
 
 {% block title %}Список посетителей{% endblock %}
 
-{% block pagemenu %}
-		<li>
-			<a href="leaserpage" class = "active">Заявки</a>
-        </li>
-		<li>
-			<a href="visitorlist"  class="active">Посетители</a>
-        </li>
-{% endblock %}
-
 
 
 {% block body %}
@@ -23,8 +14,8 @@
 							<div id="breadcrumbs">
 						<br>
 						<ul class="breadcrumb">
-						<li><a href="leaserpage">Заявки</a></li>
-						<li><a href="visitorlist">Список посетителей</a></li>
+						<li><a href="{{path('index')}}">Главная</a></li>
+						<li><a href="{{path('show_orders')}}">Список заявок</a></li>
 						</ul>
 					</div>
 					{% endblock %}
@@ -34,7 +25,7 @@
 			</div>
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Ваши посетители</h1>
+                    <h1 class="page-header">Список заявок</h1>
 				</div>
 			</div>
 			
@@ -54,7 +45,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4>Список посетителей за сегодня</h4>
+                            <h4>Список заявок</h4>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -63,24 +54,34 @@
 									
 								</div>
 								<div class="col-lg-4 text-right">
-									<a href="leaserpage" class="btn btn-info"><i class="fa fa-plus"></i> Создать новую заявку</a>
+									<a href="{{path ('create_order')}}" class="btn btn-info form-margin"><i class="fa fa-plus"></i> Создать новую заявку</a>
 							</div>
 							</div>
 							<div class="dataTable_wrapper">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Дата</th>
-                                            <th>Время</th>
-                                            <th>ФИО</th>
+                                            <th>Открытие заявки</th>
+                                            <th>Время открытия</th>
+                                            <th>Закрытие заявки</th>
+                                            <th>Время закрытия</th>
+                                            <th>Посетители</th>
                                             <th>Действия</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for qvOrder in qvOrders %}
+                                            
 										<tr>
-                                        <td>01.01.1976</td>
-                                        <td>00:00:00</td>
-										<td> User1 </td>
+                                        <td>{{qvOrder.sdate|date('Y-m-d')}}</td>
+                                        <td>{{qvOrder.opentime|date('H:i')}}</td>
+										<td>{{qvOrder.edate|date('Y-m-d')}}</td>
+                                        <td>{{qvOrder.closetime|date('H:i')}}</td>
+                                        <td> <ul class="list-unstyled">{% for qvVisitor in qvOrder.visitors %}<li>
+                                            {{qvVisitor.lastname}} {{qvVisitor.firstname}} {{qvVisitor.patronimic}}
+                                            </li>
+                                        {% endfor %}
+                                        </td>
                                         <td>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -88,9 +89,7 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="#">Посмотеть заявку</a>
-                                        </li>
-                                        <li><a href="#">Изменить заявку</a>
+                                        <li><a href="{{path('edit_order', {'id': qvOrder.id})}}">Изменить заявку</a>
                                         </li>
                                         <li><a href="#">Удалить заявку</a>
                                         </li>
@@ -98,6 +97,7 @@
                                 </div>
                             </div></td>
 										</tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
