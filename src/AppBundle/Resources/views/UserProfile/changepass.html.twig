@@ -9,12 +9,12 @@
             <div class="row">
                 <div class="col-lg-12">
                 	{% block breadcrumb %}
-					<div id="breadcrumbs">
-						<br>
-						<ul>
-						<li><a href="\adminbc\index">Главная</a></li>
-						<li><a href="\adminbc\edit_pass">Сенить пароль</a></li>
-						</ul>
+                		<br>
+					<div id="breadcrumbs" class="btn-group btn-breadcrumb">
+						<a class="btn btn-default" href="{{ path('main_page') }}">
+							<i class="fa fa-home"></i>
+						</a>
+						<a  class="btn btn-default" href="{{ path('userprofile') }}">Профиль пользователя</a>
 					</div>
 					{% endblock %}
 				
@@ -38,25 +38,7 @@
 												} else return true; 
 											} 
 										</script>
-										<form role="form"action="" method="post" onsubmit="return checkPass()">
-											<div class="form-group">
-												<label>Текущий пароль</label>
-												<input type="password" class="form-control" placeholder="Введите ваш текущий пароль" required>
-											</div>
-											<div class="form-group">
-												<label>Новый пароль</label>
-												<input type="password" class="form-control" placeholder="Введите ваш новый пароль" required name="passwordX" id="passwordX"/>
-											</div>
-											<div class="form-group">
-												<label>Подтвердите новый пароль</label>
-												<input type="password" class="form-control" placeholder="Подтвердите ваш новый пароль" required/ name="passwordY" id="passwordY">
-											</div>
-											
-											<button type="submit" class="btn btn-default" id="submit"> Изменить пароль </button>
-											<button type="reset" class="btn btn-default">Сбросить</button>
-										</form>
-										
-										
+									
 									</div>
 									<!-- /.col-lg-6 (nested) -->
 									

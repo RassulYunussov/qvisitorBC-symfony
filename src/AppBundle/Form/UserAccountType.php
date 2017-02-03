@@ -1,9 +1,12 @@
 <?php
 namespace AppBundle\Form;
+use AppBundle\Entity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-class qvUserType extends AbstractType
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+
+class UserAccountType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -14,9 +17,17 @@ class qvUserType extends AbstractType
         $builder
             ->add('login')
             ->add('password')
-            ->add('disabled')
-            ->add('leaser')
             ->add('roles')
+            ->add('firstname')
+            ->add('lastname')
+            ->add('patronimic')
+            ->add('birthdate', BirthdayType::class, array(
+    'placeholder' => array(
+        'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+    )
+))
+            ->add('gender')
+            ->add('user')
         ;
     }
     
@@ -26,7 +37,7 @@ class qvUserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\qvUser'
+            'data_class' => 'AppBundle\Entity\UserAccount'
         ));
     }
 }

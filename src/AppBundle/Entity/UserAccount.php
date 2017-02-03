@@ -1,80 +1,162 @@
 <?php
 namespace AppBundle\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
-/**
- * qvUserPassport
- *
- * @ORM\Table(name="qvuserpassport", 
- * uniqueConstraints={@ORM\UniqueConstraint(name="id_UserPassport_UNIQUE", columns={"id"})}, indexes={@ORM\Index(name="fk_user_userpassport_idx", columns={"userid"}), @ORM\Index(name="fk_gender_userpassport_idx", columns={"genderid"})})
- * @ORM\Entity(repositoryClass="AppBundle\Repository\qvUserPassportRepository")
- */
-class qvUserPassport
+use Symfony\Component\Security\Core\User\UserInterface;
+
+class qvUserAccountAccount implements UserInterface
 {
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    private $login;
+    /**
+     *
+     * @var string
+     */
+    private $password;
+    
+     /**
+     * @var string
+     *
+     */
+    private $role;
     /**
      * @var string
      *
-     * @ORM\Column(name="firstname", type="string", length=45, nullable=false)
+     * 
      */
-    private $firstname;
+ private $firstname;
     /**
      * @var string
      *
-     * @ORM\Column(name="lastname", type="string", length=45, nullable=false)
+     * 
      */
     private $lastname;
     /**
      * @var string
      *
-     * @ORM\Column(name="patronimic", type="string", length=45, nullable=false)
+     * 
      */
     private $patronimic;
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="birthdate", type="datetime", nullable=false)
+     * 
      */
     private $birthdate;
     /**
      * @var \AppBundle\Entity\qvGender
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\qvGender")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="genderid", referencedColumnName="id")
-     * })
      */
     private $gender;
     /**
-     * @var \AppBundle\Entity\qvUser
+     * @var \AppBundle\Entity\qvUserAccount
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\qvUser")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="userid", referencedColumnName="id")
-     * })
+     * 
      */
     private $user;
+
     /**
-     * Get id
-     *
-     * @return integer
+     * Constructor
      */
-    public function getId()
+    public function __construct()
     {
-        return $this->id;
+        // may not be needed, see section on salt below
+        $this->salt = md5(uniqid(null, true));
+    }
+
+    /**
+     * Set login
+     *
+     * @param string $login
+     *
+     * @return qvUserAccount
+     */
+    public function setLogin($login)
+    {
+        $this->login = $login;
+        return $this;
+    }
+    /**
+     * Get login
+     *
+     * @return string
+     */
+    public function getLogin()
+    {
+        return $this->login;
+    }
+   
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return qvUserAccount
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+        return $this;
+    }
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+    /**
+     * Set role
+     *
+     * @param \AppBundle\Entity\qvRole $role
+     *
+     * @return qvUserAccount
+     */
+    public function setRole(\AppBundle\Entity\qvRole $role)
+    {
+        $this->role = $role;
+        return $this;
+    }
+    /**
+     * Get role
+     *
+     * @return \AppBundle\Entity\qvRole
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    public function getRoles()
+    {
+        return array($this->role->getCode());
+    }
+    
+    public function eraseCredentials()
+    {
+    }
+    public function getUsername()
+    {
+        return $this->login;
+    }
+    
+    public function getSalt()
+    {
+        // you *may* need a real salt depending on your encoder
+        // see section on salt below
+        return null;
     }
     /**
      * Set firstname
      *
      * @param string $firstname
      *
-     * @return qvUserPassport
+     * @return qvUserAccount
      */
     public function setFirstname($firstname)
     {
@@ -99,7 +181,7 @@ class qvUserPassport
      *
      * @param string $lastname
      *
-     * @return qvUserPassport
+     * @return qvUserAccount
      */
     public function setLastname($lastname)
     {
@@ -120,7 +202,7 @@ class qvUserPassport
      *
      * @param string $patronimic
      *
-     * @return qvUserPassport
+     * @return qvUserAccount
      */
     public function setPatronimic($patronimic)
     {
@@ -141,7 +223,7 @@ class qvUserPassport
      *
      * @param \DateTime $birthdate
      *
-     * @return qvUserPassport
+     * @return qvUserAccount
      */
     public function setBirthdate($birthdate)
     {
@@ -162,7 +244,7 @@ class qvUserPassport
      *
      * @param \AppBundle\Entity\qvGender $gender
      *
-     * @return qvUserPassport
+     * @return qvUserAccount
      */
     public function setGender(\AppBundle\Entity\qvGender $gender = null)
     {
@@ -183,7 +265,7 @@ class qvUserPassport
      *
      * @param \AppBundle\Entity\qvUser $user
      *
-     * @return qvUserPassport
+     * @return qvUserAccount
      */
     public function setUser(\AppBundle\Entity\qvUser $user = null)
     {
@@ -200,3 +282,4 @@ class qvUserPassport
         return $this->user;
     }
 }
+    

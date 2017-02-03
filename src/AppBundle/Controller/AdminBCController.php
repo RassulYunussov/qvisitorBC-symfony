@@ -4,6 +4,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use AppBundle\Entity\qvLeaser;
 use AppBundle\Form\qvNewLeaserType;
 use AppBundle\Entity\qvContract;
@@ -18,6 +22,13 @@ use AppBundle\Entity\qvBuilding;
 use AppBundle\Form\qvBuildingType;
 use AppBundle\Entity\qvUserPassport;
 use AppBundle\Form\qvUserPassportType;
+use AppBundle\Entity\qvUser;
+use AppBundle\Form\qvUserType;
+use AppBundle\Entity\UserAccount;
+use AppBundle\Form\UserAccountType;
+
+
+
 /**
  * adminBCController 
  * 
@@ -34,8 +45,8 @@ class AdminBCController extends Controller
     {
             return $this->render('AppBundle:Adminbc:index.html.twig', array(
         ));
-    }   
-           
+    }
+          
      /**
      * @Route("/leasers", name="leasers_list")
      * 
@@ -326,6 +337,8 @@ $security = $query->getResult();
     {
     $deleteForm = $this->createDeleteCheckpointForm($qvCheckpoint);
         
+        $roles = $this->getDoctrine()->getManager()->getRepository('AppBundle:qvUser');
+
            $em = $this->getDoctrine()->getEntityManager();
             $query = $em->createQuery(
                 'SELECT passport.firstname, passport.lastname, passport.patronimic FROM AppBundle:qvUserPassport passport JOIN passport.user pu WHERE pu.role = :name'
@@ -449,37 +462,22 @@ $security = $query->getResult();
     public function showBuildingAction(qvBuilding $qvBuilding)
     {
         $deleteForm = $this->createDeleteBuildingForm($qvBuilding);
-        $em = $this->getDoctrine()->getEntityManager();
-        $query = $em->createQuery(
-    'SELECT COUNT(fl) FROM AppBundle:qvFloor fl WHERE fl.building = :name'
-)->setParameter('name', $qvBuilding);
-$count = $query->getSingleScalarResult();
-      
-        //Работает
-        $em1 = $this->getDoctrine()->getEntityManager();
-        $queryFloor = $em->createQuery(
-            'SELECT fl.name, fl.id from AppBundle:qvFloor fl WHERE fl.building = :name'
-            )->setParameter('name', $qvBuilding);
-            $floors = $queryFloor->getResult();
- //Работает
-        $em2 = $this->getDoctrine()->getManager();
-        $sectorlist = $em2->getRepository('AppBundle:qvSector')->findAll();
-              
- $em3 = $this->getDoctrine()->getEntityManager();
-        $querycheck = $em3->createQuery(
-            'SELECT ch.name, ch.id from AppBundle:qvCheckpoint ch WHERE ch.building = :name'
-            )->setParameter('name', $qvBuilding);
-            $check = $querycheck->getResult();
+        
+        $em = $this->getDoctrine()->getManager();
 
+        $count = $em->getRepository('AppBundle:qvFloor')->countFloorInBuild($qvBuilding);
+      
+        $floors = $em->getRepository('AppBundle:qvFloor')->findFlooorByBuild($qvBuilding);
+ 
+        $sectorlist = $em->getRepository('AppBundle:qvSector')->findAll();
+              
+        $check = $em->getRepository('AppBundle:qvCheckpoint')
+        ->findByBuildingId($qvBuilding);
 
         $qvUserPassports = $em->getRepository('AppBundle:qvUserPassport')->findAll();
         
-        $em4 = $this->getDoctrine()->getEntityManager();
-            $query = $em4->createQuery(
-                'SELECT passport.id, passport.firstname, passport.lastname, passport.patronimic, passport.birthdate FROM AppBundle:qvUserPassport passport JOIN passport.user pu WHERE pu.role = :name'
-                    )->setParameter('name', '4');
-
-            $usp = $query->getResult();
+       $usp = $em->getRepository('AppBundle:qvUserPassport')->findAll();
+        //->findUserpassportByUserRole();
   /*  if (!$queryFloor)
     {
     throw $this->CreateNotFoundException('Не найдено информации ни по одному этажу');
@@ -562,8 +560,10 @@ $count = $query->getSingleScalarResult();
     {
         $em = $this->getDoctrine()->getManager();
         $qvFloors = $em->getRepository('AppBundle:qvFloor')->findAll();
+        
         return $this->render('AppBundle:AdminBC:buildings_control/floors/floors_list.html.twig', array(
             'qvFloors' => $qvFloors,
+            'qvbuild' => $qvFloor,
         ));
     }
     /**
@@ -599,9 +599,12 @@ $count = $query->getSingleScalarResult();
         $deleteForm = $this->createDeleteFloorForm($qvFloor);
         $em = $this->getDoctrine()->getManager();
         $sector = $em->getRepository('AppBundle:qvSector')->findAll();
+        $build = $em->getRepository('AppBundle:qvFloor')->findBuildByFloor($qvFloor);
+
         return $this->render('AppBundle:AdminBC:buildings_control/floors/show_floor.html.twig', array(
             'qvFloor' => $qvFloor,
             'sector' => $sector,
+            'build' => $build,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -691,6 +694,9 @@ $count = $query->getSingleScalarResult();
             $em->flush();
             return $this->redirectToRoute('sectors_show', array('id' => $qvSector->getId()));
         }
+
+
+
         return $this->render('AppBundle:AdminBC:buildings_control/sectors/create_sector.html.twig', array(
             'qvSector' => $qvSector,
             'form' => $form->createView(),
@@ -705,8 +711,16 @@ $count = $query->getSingleScalarResult();
     public function showSectorAction(qvSector $qvSector)
     {
         $deleteForm = $this->createDeleteSectorForm($qvSector);
+        $em = $this->getDoctrine()->getManager();
+
+        $blid = $em->getRepository('AppBundle:qvSector')->findBuildById($qvSector);
+
+        $flid = $em->getRepository('AppBundle:qvSector')->findFloorById($qvSector);
+
         return $this->render('AppBundle:AdminBC:buildings_control/sectors/show_sector.html.twig', array(
             'qvSector' => $qvSector,
+            'blid' => $blid,
+            'flid' => $flid,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -780,7 +794,7 @@ $count = $query->getSingleScalarResult();
         
         $em = $this->getDoctrine()->getEntityManager();
             $query = $em->createQuery(
-                'SELECT passport.id, passport.firstname, passport.lastname, passport.patronimic, passport.birthdate FROM AppBundle:qvUserPassport passport JOIN passport.user pu WHERE pu.role = :name'
+                'SELECT passport.id, passport   .firstname, passport.lastname, passport.patronimic, passport.birthdate FROM AppBundle:qvUserPassport passport JOIN passport.user pu WHERE pu.role = :name'
                     )->setParameter('name', '4');
 
             $usp = $query->getResult();
@@ -792,27 +806,47 @@ $count = $query->getSingleScalarResult();
     }
 
     /**
-     * Creates a new qvUserPassport entity.
+     * Creates a new UserAccount entity.
      *
      * @Route("/security/new_security", name="new_security")
      * @Method({"GET", "POST"})
      */
     public function newSecurityAction(Request $request)
     {
-        $qvUserPassport = new qvUserPassport();
-        $form = $this->createForm('AppBundle\Form\qvUserPassportType', $qvUserPassport);
+       /* $qvUser = new qvUser();
+        $em = $this->getDoctrine()->getManager();
+
+        $currentuser = $this->get('security.token_storage')->getToken()->getUser();
+
+        //$roles = $em->getRepository('AppBundle:qvRole')->findAll();
+        //$users = $em->getRepository('AppBundle:qvUser')->findAll();
+       */
+        $qv = new UserAccountType();
+        $form = $this->createForm(UserAccountType::class, $qv);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($qvUserPassport);
+        //if ($form->isSubmitted() && $form->isValid()) {
+          //  $data = $form->getData();
+
+            //echo $data;
+/*
+            $user->setLogin('qqq@qv.com')
+            $user->setPassword('***')
+            $em->persist($qvUser);
             $em->flush();
 
-            return $this->redirectToRoute('show_security', array('id' => $qvUserPassport->getId()));
-        }
 
+            $passport = new qvUserPassport();
+            $passport->addUser($user)
+            $em->persist($passport);
+            $em->flush();
+            
+            return $this->redirectToRoute('security_list');
+        }
+*/
         return $this->render('AppBundle:AdminBC:checkpoints_control/security_man/new.html.twig', array(
-            'qvUserPassport' => $qvUserPassport,
+          //  'qvUserPassport' => $qvUserPassport,    
+            'qv'=>$qv,
             'form' => $form->createView(),
         ));
     }
@@ -896,3 +930,4 @@ $count = $query->getSingleScalarResult();
         ;
     }
 }
+    

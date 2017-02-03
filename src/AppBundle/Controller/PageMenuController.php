@@ -19,6 +19,7 @@ class PageMenuController extends Controller
     if($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY'))
     //if($session->has('login_gda_CMS'))
     {
+       
     	if($this->get('security.authorization_checker')->isGranted('ROLE_LEASER'))
 		return $this->render('AppBundle:Pagemenu:leaser_menu.html.twig', array(
         ));
@@ -33,7 +34,7 @@ class PageMenuController extends Controller
         ));
 	}
 		else if($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_ANONYMOUS')) {
-			return $this->redirect('/login');
+			return $this->redirectToRoute('/login');
 		}
 		
     }

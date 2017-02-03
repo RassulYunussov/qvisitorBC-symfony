@@ -1,9 +1,12 @@
 <?php
+
 namespace AppBundle\Form;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-class qvUserType extends AbstractType
+
+class qvRegisrationType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -12,11 +15,12 @@ class qvUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('login')
-            ->add('password')
-            ->add('disabled')
-            ->add('leaser')
-            ->add('roles')
+            ->add('login', 'text', ['label'=>'Логин'])
+            ->add('password', 'password', ['label'=>'Пароль'])
+            //->add('disabled', 'number', 'label'=>'Состояние (активный/неактивный)')
+            //->add('leaser', 'text', 'label'=>'Арендатор')
+            ->add('roles', 'text', ['label'=>'Роль'])
+            ->add('Сохранить', 'submit', ['label' => 'Зарегистрировать'])
         ;
     }
     

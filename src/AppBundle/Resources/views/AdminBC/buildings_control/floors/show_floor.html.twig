@@ -13,9 +13,9 @@
                         <br>
                         <a class="btn btn-default" href="{{ path('main_page') }}">
                         <i class="fa fa-home"></i>Главная
-                        </a>
-                        <a class="btn btn-default" href="{{ path('buildings_list')}}">Управление зданиями
-                        </a>
+                        </a>{% for build in build %}
+                        <a class="btn btn-default" href="\adminbc\building\{{ build.id }}\show">Управление зданиями
+                        </a>{% endfor %}
                         <a class="btn btn-default" href="{{ path('floors_list')}}">Управление этажами
                         </a>
                     </div>

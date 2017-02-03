@@ -1,12 +1,13 @@
+{% block profile %}
 <ul class="nav navbar-top-links navbar-right">
 	<li class="dropdown">
 		<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-			<i class="fa fa-user fa-fw"></i>John Smith <i class="fa fa-caret-down"></i>
+			<i class="fa fa-user fa-fw"></i>{{ user }} <i class="fa fa-caret-down"></i>
 		</a>
 		<ul class="dropdown-menu dropdown-user">
 			<li><a href="{{ path('userprofile') }}"><i class="fa fa-user fa-fw"></i>Информация</a>
 			</li>
-			<li><a href="edit_pass"><i class="fa fa-gear fa-fw"></i>Сменить пароль</a>
+			<li><a href="{{ path('changepassword') }}"><i class="fa fa-gear fa-fw"></i>Сменить пароль</a>
 			</li>
 			<li class="divider"></li>
 			<li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i>Выход</a>
@@ -16,3 +17,4 @@
 	</li>
 	<!-- /.dropdown -->
 </ul>
+{% endblock %}

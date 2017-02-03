@@ -10,15 +10,14 @@
 	<div class="row">
 		<div class="col-sm-10">
 			 {% block breadcrumb %}
-			    <div id="breadcrumb" class="btn btn-breadcrumb"><br>
-			    	<a href="{{ path('main_page') }}" class="btn btn-default">
-			    		<i class="fa fa-home"></i>Главная
-			    	</a>
-			    	<a href="{{ path('buildings_list') }}" 
-			    	class="btn btn-default">
-			    		Управление зданиями
-			    	</a>
-			    </div>
+			  <div id="breadcrumbs" class="btn-group btn-breadcrumb">
+				             	<br>
+				            	<a class="btn btn-default" href="{{ path('main_page') }}">
+				            		<i class="fa fa-home"></i>
+				            			Главная
+				            	</a>
+								<a class="btn btn-default" href="{{ path('buildings_list') }}">Управление зданиями</a>
+								</div>
 			{% endblock %}
 			<h2 class="page-header">
 				Просмотр информации о здании
