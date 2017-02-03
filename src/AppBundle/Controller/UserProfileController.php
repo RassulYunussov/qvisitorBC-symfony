@@ -6,14 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\CustomSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\Proxy\SessionHandlerProxy;
 use AppBundle\Form\ChangePasswordType;
-use AppBundle\Form\ChangePassword\ChangePassword;
 use AppBundle\Entity\qvUser;
 use AppBundle\Entity\qvUserPassport;
 class UserProfileController extends Controller
@@ -21,7 +17,6 @@ class UserProfileController extends Controller
 	
 	public function profileMenuAction(Request $request)
 	{
-		
 		$username = $request->getSession()->get('_username');
 		return $this->render('AppBundle:UserProfile:profilemenu.html.twig', array(
 				'username'=>$username,
@@ -46,7 +41,6 @@ class UserProfileController extends Controller
      */
     public function userProfileAction()
     {
-
     	$user = $this->get('security.token_storage')->getToken()->getUser();
 		$em=$this->getDoctrine()->getManager();
 		$userPassport=$em->getRepository('AppBundle:qvUserPassport')->findOneBy(array('user'=>$user->getId()));
@@ -54,9 +48,6 @@ class UserProfileController extends Controller
         'userPassport'=>$userPassport,
         ));
     }
-
-	
-
 }
 
 
