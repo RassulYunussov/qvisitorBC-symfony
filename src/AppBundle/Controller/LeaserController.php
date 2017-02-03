@@ -8,7 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\qvOrder;
 use AppBundle\Entity\qvLeaser;
-
+use AppBundle\Entity\qvUser;
+use AppBundle\Entity\qvUserPassport;
+use AppBundle\Entity\qvContract;
 
 
 /**
@@ -24,9 +26,16 @@ class LeaserController extends Controller
      */
     public function indexAction()
     {
-    	
+        $em = $this->getDoctrine()->getManager();
+        $em1 = $this->getDoctrine()->getEntityManager();
+    	$user = $this->get('security.token_storage')->getToken()->getUser();
+        $userPassport=$em->getRepository('AppBundle:qvUserPassport')->findOneBy(array('user'=>$user->getId()));
+        $qvContracts = $em->getRepository('AppBundle:qvContract')->findBy(array('leaser'=>$user->getLeaser()));
+        $count = $em1->createQuery('SELECT count(contract) from AppBundle:qvContract contract where contract.leaser = :leaser')->setParameter('leaser',$user->getLeaser())->getSingleScalarResult();
         return $this->render('AppBundle:Leaser:index.html.twig', array(
-        		
+        	'userPassport'=>$userPassport,
+            'qvContracts'=>$qvContracts,
+            'count' => $count
         ));
     }
     
