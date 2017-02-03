@@ -62,7 +62,47 @@
         <div class="row">
             <div class="col-sm-10">
                 <div id="dataTables-example_filter" align="right" class="dataTables_filter">
-                    <a href="{{ path('new_security') }}" class="btn btn-success">Добавить охранника</a>
+                    <a href="{{ path('new_security') }}">Добавить нового охранника</a>
+                   {# <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Добавить нового охранника
+                                               </button>#}
+            <div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h1>Создание нового пользователя системы QVisitor</h1>
+                                           <form name="user_account" action="new_role">
+                                            <label>
+                                                Login
+                                            </label>
+                                            <input type="text" name="user_login">
+                                            <br>
+                                            <label>
+                                                Password
+                                            </label>
+                                            <input type="password" name="user_pass">
+                                            <br>
+                                            <label>
+                                                Role
+                                            </label>
+                                            <input type="text" name="user_role">
+                                           </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                               <input type="submit" value="Создать"/>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+        
+                {#<a href="{{ path('new_role') }}" class="btn btn-success">Добавить охранника</a>#}
+            
                 </div>
                 <br>
             </div>
@@ -114,10 +154,10 @@
                 </button>
         <ul class="dropdown-menu pull-right" role="menu">
             <li>
-                <a href="{{ path('userpassport_show', { 'id': qvUserPassport.id }) }}">show</a>
+                <a href="{{ path('show_security', { 'id': qvUserPassport.id }) }}">Посмотреть</a>
                         </li>
                         <li>
-                            <a href="{{ path('userpassport_edit', { 'id': qvUserPassport.id }) }}">edit</a>
+                            <a href="{{ path('edit_security', { 'id': qvUserPassport.id }) }}">Изменить или удалить</a>
                         </li>
         </ul>
 </tr>   

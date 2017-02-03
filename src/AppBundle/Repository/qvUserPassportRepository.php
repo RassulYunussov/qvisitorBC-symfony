@@ -10,4 +10,11 @@ namespace AppBundle\Repository;
  */
 class qvUserPassportRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function findUserpassportByUserRole()
+	{
+	 return $this->getEntityManager()
+	 ->createQuery(
+                'SELECT passport, urole FROM AppBundle:qvUserPassport passport JOIN passport.user user JOIN user.role urole WHERE urole.code = :name'
+                    )->setParameter('name', 'ROLE_CHECKPOINT')->getResult();
+	}
 }

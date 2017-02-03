@@ -25,15 +25,13 @@
             
     <div class="col-lg-4" >
     <div class="form-group has-success">
-      <ul>
-                {{ form_start(form) }}
+            {{ form_start(form) }}
                  {% for child in form %}
-                <li>
+                <br>
                          {{ form_label(child) }}
                     {{ form_widget(child, {'attr': {'class':'form-control'}}) }}
-    </li>
-{% endfor %}
-    </ul>           
+    
+{% endfor %}#}
     <br>
     <div class="form-inline form-input">
                 <button type="submit" class="btn btn-default btn-sm">
@@ -43,7 +41,6 @@
                     Отменить
                 </button>
                 {{ form_end(form) }}
-
                 </div>
     </div>
         <!-- /.row -->

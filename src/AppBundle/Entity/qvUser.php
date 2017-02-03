@@ -1,10 +1,7 @@
 <?php
-
 namespace AppBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-
 /**
  * qvUser
  *
@@ -22,14 +19,12 @@ class qvUser implements UserInterface, \Serializable
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
     /**
      * @var string
      *
      * @ORM\Column(name="login", type="string", length=45, nullable=false)
      */
     private $login;
-
     /**
      * @var string
      *
@@ -37,14 +32,12 @@ class qvUser implements UserInterface, \Serializable
      */
     private $password;
     
-
     /**
      * @var integer
      *
      * @ORM\Column(name="disabled", type="integer", nullable=true)
      */
     private $disabled;
-
     /**
      * @var \AppBundle\Entity\qvLeaser
      *
@@ -54,7 +47,6 @@ class qvUser implements UserInterface, \Serializable
      * })
      */
     private $leaser;
-
      /**
      * @var \AppBundle\Entity\qvRole
      *
@@ -64,18 +56,15 @@ class qvUser implements UserInterface, \Serializable
      * })
      */
     private $role;
-
     /**
      * Constructor
      */
     public function __construct()
     {
-    	$this->disabled = false;
-    	// may not be needed, see section on salt below
-    	$this->salt = md5(uniqid(null, true));
+        $this->disabled = false;
+        // may not be needed, see section on salt below
+        $this->salt = md5(uniqid(null, true));
     }
-
-
     /**
      * Get id
      *
@@ -85,7 +74,6 @@ class qvUser implements UserInterface, \Serializable
     {
         return $this->id;
     }
-
     /**
      * Set login
      *
@@ -96,10 +84,8 @@ class qvUser implements UserInterface, \Serializable
     public function setLogin($login)
     {
         $this->login = $login;
-
         return $this;
     }
-
     /**
      * Get login
      *
@@ -109,15 +95,14 @@ class qvUser implements UserInterface, \Serializable
     {
         return $this->login;
     }
-
     /**
      * toString login
      * 
      * @return string
      */
     public function __toString() 
-	{
-    	return  $this->login;
+    {
+        return  $this->login;
     }
     
     
@@ -131,10 +116,8 @@ class qvUser implements UserInterface, \Serializable
     public function setPassword($password)
     {
         $this->password = $password;
-
         return $this;
     }
-
     /**
      * Get password
      *
@@ -144,7 +127,6 @@ class qvUser implements UserInterface, \Serializable
     {
         return $this->password;
     }
-
        
     /**
      * Set disabled
@@ -156,10 +138,8 @@ class qvUser implements UserInterface, \Serializable
     public function setDisabled($disabled)
     {
         $this->disabled = $disabled;
-
         return $this;
     }
-
     /**
      * Get disabled
      *
@@ -169,7 +149,6 @@ class qvUser implements UserInterface, \Serializable
     {
         return $this->disabled;
     }
-
     /**
      * Set leaser
      *
@@ -180,10 +159,8 @@ class qvUser implements UserInterface, \Serializable
     public function setLeaser(\AppBundle\Entity\qvLeaser $leaser = null)
     {
         $this->leaser = $leaser;
-
         return $this;
     }
-
     /**
      * Get leaser
      *
@@ -193,7 +170,6 @@ class qvUser implements UserInterface, \Serializable
     {
         return $this->leaser;
     }
-
     /**
      * Set role
      *
@@ -204,10 +180,8 @@ class qvUser implements UserInterface, \Serializable
     public function setRole(\AppBundle\Entity\qvRole $role)
     {
         $this->role = $role;
-
         return $this;
     }
-
     /**
      * Get role
      *
@@ -221,30 +195,30 @@ class qvUser implements UserInterface, \Serializable
     /** @see \Serializable::serialize() */
     public function serialize()
     {
-    	return serialize(array(
-    			$this->id,
-    			$this->login,
-    			$this->password,
-    			// see section on salt below
-    		    //$this->salt,
-    	));
+        return serialize(array(
+                $this->id,
+                $this->login,
+                $this->password,
+                // see section on salt below
+                //$this->salt,
+        ));
     }
     
     /** @see \Serializable::unserialize() */
     public function unserialize($serialized)
     {
-    	list (
-    			$this->id,
-    			$this->login,
-    			$this->password,
-    			// see section on salt below
-    			//$this->salt
-    			) = unserialize($serialized);
+        list (
+                $this->id,
+                $this->login,
+                $this->password,
+                // see section on salt below
+                //$this->salt
+                ) = unserialize($serialized);
     }
     
     public function getRoles()
     {
-    	return array($this->role->getCode());
+        return array($this->role->getCode());
     }
     
     public function eraseCredentials()
@@ -252,13 +226,13 @@ class qvUser implements UserInterface, \Serializable
     }
     public function getUsername()
     {
-    	return $this->login;
+        return $this->login;
     }
     
     public function getSalt()
     {
-    	// you *may* need a real salt depending on your encoder
-    	// see section on salt below
-    	return null;
+        // you *may* need a real salt depending on your encoder
+        // see section on salt below
+        return null;
     }
 }

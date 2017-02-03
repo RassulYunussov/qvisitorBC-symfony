@@ -13,10 +13,20 @@ class qvSectorRepository extends \Doctrine\ORM\EntityRepository
 	
 public function findFloorById($id)
 {
-    $query = $this->getEntityManager()
-        ->createQuery('
-            SELECT sector.floor FROM AppBundle:qvSector sector
+    return $this->getEntityManager()
+        ->createQuery(
+        	'SELECT sector.floor FROM AppBundle:qvSector sector
             WHERE sector.id = :id'
-        )->setParameter('id', $id); 
+        )->setParameter('id', $id)->getResult(); 
+}
+
+public function findBuildById($id)
+{
+    return  $this->getEntityManager()
+        ->createQuery('
+            SELECT sector.id, floor.id, bld.id FROM AppBundle:qvSector sector LEFT JOIN 
+            sector.floor floor LEFT JOIN floor.building bld
+            WHERE sector.id = :id'
+        )->setParameter('id', $id)->getResult();
 }
 }
