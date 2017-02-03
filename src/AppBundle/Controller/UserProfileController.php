@@ -6,19 +6,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
 use AppBundle\Entity\qvUser;
-
+use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\qvUserPassport;
 class UserProfileController extends Controller
 {
 	
-	public function profileMenuAction()
+	public function profileMenuAction(Request $request)
 	{
-
-		$user = $this->get('security.token_storage')->getToken()->getUser();
-		$em=$this->getDoctrine()->getManager();
-		$userPassport=$em->getRepository('AppBundle:qvUserPassport')->findOneBy(array('user'=>$user->getId()));
+		
+		$username = $request->getSession()->get('_username');
 		return $this->render('AppBundle:UserProfile:profilemenu.html.twig', array(
-					'userPassport'=>$userPassport,
+				'username'=>$username,
 		));
 	}
 	
