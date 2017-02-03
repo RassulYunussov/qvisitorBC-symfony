@@ -79,7 +79,7 @@ class CheckpointController extends Controller
 
 
 	/**
-	 * @Route("/home")
+	 * @Route("/home", name="home")
 	 * @Method("GET")
 	 */
 	public function homeAction()

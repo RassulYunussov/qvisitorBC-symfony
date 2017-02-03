@@ -24,6 +24,10 @@
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
+.td-bkground{
+  background-color: #F5F5F5;
+}
+
 .label-margin{
     margin-top:1em;
 }

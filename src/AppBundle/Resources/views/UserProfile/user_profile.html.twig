@@ -9,12 +9,19 @@
 	<div class="row">
 				<div class="col-lg-12">
 				{% block breadcrumb %}
+<<<<<<< HEAD
 					<br>
 					<div id="breadcrumbs" class="btn-group btn-breadcrumb">
 						<a class="btn btn-default" href="{{ path('main_page') }}">
 							<i class="fa fa-home"></i>
 						</a>
 						
+=======
+					<div id="bc1" class="btn-group btn-breadcrumb">
+						<br>
+							<a class="btn btn-default" href="{{path('index')}}"><i class="fa fa-home"></i></a>
+							<a class="btn btn-default" href="userprofile">Информация о пользователе</a>
+>>>>>>> e6257a5f53d28238e0e4da5fee503a3044551742
 					</div>
 					{% endblock %}
 				</div>
@@ -23,7 +30,7 @@
 			</div>
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Информация о пользователе</</h1>
+                    <h1 class="page-header">Информация о пользователе</h1>
 				</div>
 			</div>
 	<div class="row">
@@ -36,20 +43,20 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td>Фамилия</td>
-								<td></td>
+								<td class="td-bkground">Фамилия</td>
+								<td>{{userPassport.lastname}}</td>
 							</tr>
 							<tr>
-								<td>Имя</td>
-								<td></td>
+								<td class="td-bkground">Имя</td>
+								<td>{{userPassport.firstname}}</td>
 							</tr>
 							<tr>
-								<td>Отчество</td>
-								<td></td>
+								<td class="td-bkground">Отчество</td>
+								<td>{{userPassport.patronimic}}</td>
 							</tr>
 							<tr>
-								<td>Дата рождения</td>
-								<td></td>
+								<td class="td-bkground">Дата рождения</td>
+								<td>{{userPassport.birthdate|date('Y-m-d') }}</td>
 							</tr>
 						</tbody>
 					</table>
