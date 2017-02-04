@@ -6,6 +6,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use AppBundle\Entity\qvLeaser;
@@ -820,42 +822,68 @@ $security = $query->getResult();
      */
     public function newSecurityAction(Request $request)
     {
-       /* $qvUser = new qvUser();
+        $qvUser = new qvUser();
+        $qvUserPassport = new qvUserPassport();
+
         $em = $this->getDoctrine()->getManager();
 
-        $currentuser = $this->get('security.token_storage')->getToken()->getUser();
+         $data = array();
 
-        //$roles = $em->getRepository('AppBundle:qvRole')->findAll();
-        //$users = $em->getRepository('AppBundle:qvUser')->findAll();
-       */
-        $qv = new UserAccountType();
-        $form = $this->createForm(UserAccountType::class, $qv);
+         $form = $this->createFormBuilder($data)
+            ->add('login', TextType::class)
+            ->add('password', PasswordType::class)
+            ->add('firstname', TextType::class)
+            ->add('lastname', TextType::class)
+            ->add('patronimic', TextType::class)
+            ->add('birthdate', BirthdayType::class, array(
+    'placeholder' => array(
+        'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+    )
+))
+            ->add('gender',  EntityType::class, array(
+        'class' => 'AppBundle\Entity\qvGender')
+            )
+            ->getForm()
+        ;
+    
         $form->handleRequest($request);
 
-        //if ($form->isSubmitted() && $form->isValid()) {
-          //  $data = $form->getData();
+       if ($form->isSubmitted() && $form->isValid()) {
+           
+           $em = $this->getDoctrine()->getManager();
 
-            //echo $data;
-/*
-            $user->setLogin('qqq@qv.com')
-            $user->setPassword('***')
+           $myrole = $em->getRepository('AppBundle:qvRole')->findOneByCode('ROLE_CHECKPOINT');
+
+           $data = $form->getData();
+         
+            $qvUser->setLogin($data['login']);   
+            $qvUser->setPassword($data['password']);
+            $qvUser->setRole($myrole);
+            $qvUser->setDisabled('false');
+
             $em->persist($qvUser);
             $em->flush();
 
-
-            $passport = new qvUserPassport();
-            $passport->addUser($user)
-            $em->persist($passport);
-            $em->flush();
+            $qvUserPassport->setFirstname($data['firstname']);
+            $qvUserPassport->setLastname($data['lastname']);
+            $qvUserPassport->setPatronimic($data['patronimic']);
+            $qvUserPassport->setBirthdate($data['birthdate']);
+            $qvUserPassport->setGender($data['gender']);
+            $qvUserPassport->setUser($qvUser);
             
-            return $this->redirectToRoute('security_list');
-        }
-*/
+            $em->persist($qvUserPassport);
+            $em->flush();
+
+    return $this->redirectToRoute('security_list', array());
+}
+
         return $this->render('AppBundle:AdminBC:checkpoints_control/security_man/new.html.twig', array(
-          //  'qvUserPassport' => $qvUserPassport,    
-            'qv'=>$qv,
+            'qvUserPassport' => $qvUserPassport,
+            'qvUser' => $qvUser,
+            'data' => $data,
             'form' => $form->createView(),
-        ));
+        ));   
+
     }
 
     /**
