@@ -18,11 +18,11 @@ class LoginListener
 	
 	public function onLogin(InteractiveLoginEvent $event)
 	{
-		
+		/*
 		$user = $event->getAuthenticationToken()->getUser();
 		$userPassport=$this->em->getRepository('AppBundle:qvUserPassport')->findOneBy(array('user'=>$user->getId()));
 		$request = $event->getRequest();
 		$session = $request->getSession();
-		$session->set('_username', $userPassport->getFirstName().' '.$userPassport->getLastName());
+		$session->set('_username', $userPassport->getFirstName().' '.$userPassport->getLastName());*/
 	}
 }

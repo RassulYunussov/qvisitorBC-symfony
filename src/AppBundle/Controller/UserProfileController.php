@@ -17,7 +17,7 @@ class UserProfileController extends Controller
 	
 	public function profileMenuAction(Request $request)
 	{
-		$username = $request->getSession()->get('_username');
+		$username = $this->get('security.token_storage')->getToken()->getUsername();
 		return $this->render('AppBundle:UserProfile:profilemenu.html.twig', array(
 				'username'=>$username,
 		));
