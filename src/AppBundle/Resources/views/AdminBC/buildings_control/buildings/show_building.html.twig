@@ -52,11 +52,8 @@
 			        	    	<div class="panel-heading">
 			        	        	Этажи данного здания
 			        	     <div class="text-right">
-							<a href="{{ path('floors_create') }}" class="btn btn-success btn-sm text-right">
+							<a href="{{ path('floors_create', {'id': qvBuilding.id}) }}" class="btn btn-success btn-sm text-right">
 								Добавить этаж
-							</a>
-							<a href="{{ path('sectors_create') }}" class="btn btn-success btn-sm text-right">
-								Добавить сектор
 							</a>
 						</div>
 			        	        </div>
@@ -74,7 +71,7 @@
 			        	   {% for floor in floors %}
 			        	   	<tr>
 			        	   		<td>
-									<a href="{{ path('floors_show', {'id': floor.id }) }}">
+									<a href="{{ path('floors_show', {'idb': qvBuilding.id ,'id': floor.id }) }}">
 									{{ floor.name }}
 									</a>
 								</td>
@@ -140,7 +137,7 @@
 	<td>
 	<label>
 	{% for qvUserPassport in  usp %}
-		<a href="{{ path('show_security', {'id': qvUserPassport['id']}) }}">
+		<a href="{{ path('show_security', {'id': qvUserPassport.id}) }}">
 			{{ qvUserPassport.firstname }} {{ qvUserPassport.lastname }}, <br>	
 	{% endfor %}
 	</label>

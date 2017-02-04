@@ -14,8 +14,8 @@
                         <a class="btn btn-default" href="{{ path('main_page') }}">
                         <i class="fa fa-home"></i>Главная
                         </a>
-                            <a class="btn btn-default" href="\adminbc\building\1\show">Управление зданиями</a>
-                            <a class="btn btn-default" href="\adminbc\building\1\show">Управление этажами</a>
+                            <a class="btn btn-default" href="\adminbc\building\{{qvSector.floor.building.id}}\show">Управление зданиями</a>
+                            <a class="btn btn-default" href="\adminbc\building\{{qvSector.floor.building.id}}\floors\{{qvSector.floor.id}}\show">Управление этажами</a>
                         </div>
 				{% endblock %}
 
@@ -47,7 +47,7 @@
 											</tr>
 											<tr class="success">
 												<td>Номер этажа</td>
-												<td><a href="show_floor">Этаж 1</a></td>
+												<td>Этаж 1</a></td>
 											</tr>
 											<tr class="success">
 												<td>Контракты:</td>

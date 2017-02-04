@@ -59,9 +59,6 @@ class qvOrderType extends AbstractType
                 'class'   => 'form-control form-margin')))
             ->add('user', HiddenType::class)
             ->add('visitors')
-            ->add('registered', HiddenType::class, array(
-                'disabled'=>'true',
-                'data'=>0))
         ;
     }
     
