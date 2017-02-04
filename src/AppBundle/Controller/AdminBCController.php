@@ -474,9 +474,11 @@ $security = $query->getResult();
         $check = $em->getRepository('AppBundle:qvCheckpoint')
         ->findByBuildingId($qvBuilding);
 
-        $qvUserPassports = $em->getRepository('AppBundle:qvUserPassport')->findAll();
+       // $qvUserPassports = $em->getRepository('AppBundle:qvUserPassport')->findAll();
         
        $usp = $em->getRepository('AppBundle:qvUserPassport')->findAll();
+
+
         //->findUserpassportByUserRole();
   /*  if (!$queryFloor)
     {
@@ -563,18 +565,19 @@ $security = $query->getResult();
         
         return $this->render('AppBundle:AdminBC:buildings_control/floors/floors_list.html.twig', array(
             'qvFloors' => $qvFloors,
-            'qvbuild' => $qvFloor,
+            //'qvbuild' => $qvFloor,
         ));
     }
     /**
      * Creates a new qvFloor entity.
      *
-     * @Route("/floors/new_floor", name="floors_create")
+     * @Route("/building/{id}/floors/new_floor", name="floors_create")
      * @Method({"GET", "POST"})
      */
-    public function createFloorAction(Request $request)
+    public function createFloorAction(Request $request,qvBuilding $qvBuilding)
     {
         $qvFloor = new qvFloor();
+        $qvFloor->setBuilding($qvBuilding);
         $form = $this->createForm('AppBundle\Form\qvFloorType', $qvFloor);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -591,7 +594,7 @@ $security = $query->getResult();
     /**
      * Finds and displays a qvFloor entity.
      *
-     * @Route("/floors/{id}/show", name="floors_show")
+     * @Route("/building/{idb}/floors/{id}/show", name="floors_show")
      * @Method("GET")
      */
     public function showFloorAction(qvFloor $qvFloor)
@@ -680,14 +683,17 @@ $security = $query->getResult();
     /**
      * Creates a new qvSector entity.
      *
-     * @Route("/sector/new", name="sectors_create")
+     * @Route("/floor/{id}/sector/new", name="sectors_create")
      * @Method({"GET", "POST"})
      */
-    public function createSectorAction(Request $request)
+    public function createSectorAction(Request $request, qvFloor $qvFloor)
     {
         $qvSector = new qvSector();
+        $qvSector->setFloor($qvFloor);
         $form = $this->createForm('AppBundle\Form\qvSectorType', $qvSector);
         $form->handleRequest($request);
+       // $build = $this->getDoctrine()->getEntityManager
+       
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($qvSector);
@@ -699,6 +705,7 @@ $security = $query->getResult();
 
         return $this->render('AppBundle:AdminBC:buildings_control/sectors/create_sector.html.twig', array(
             'qvSector' => $qvSector,
+            'qvFloor' => $qvFloor,
             'form' => $form->createView(),
         ));
     }
@@ -713,14 +720,14 @@ $security = $query->getResult();
         $deleteForm = $this->createDeleteSectorForm($qvSector);
         $em = $this->getDoctrine()->getManager();
 
-        $blid = $em->getRepository('AppBundle:qvSector')->findBuildById($qvSector);
+       // $blid = $em->getRepository('AppBundle:qvSector')->findBuildById($qvSector);
 
-        $flid = $em->getRepository('AppBundle:qvSector')->findFloorById($qvSector);
-
+ //       $flid = $em->getRepository('AppBundle:qvSector')->findFloorById($qvSector);
+//
         return $this->render('AppBundle:AdminBC:buildings_control/sectors/show_sector.html.twig', array(
             'qvSector' => $qvSector,
-            'blid' => $blid,
-            'flid' => $flid,
+  //          'blid' => $blid,
+    //          'flid' => $flid,
             'delete_form' => $deleteForm->createView(),
         ));
     }

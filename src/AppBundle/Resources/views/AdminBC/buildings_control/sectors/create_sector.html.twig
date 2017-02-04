@@ -18,8 +18,8 @@
 	                        <a class="btn btn-default" href="{{ path('main_page') }}">
 	                        <i class="fa fa-home"></i>Главная
 	                        </a>
-								<a class="btn btn-default" href="\adminbc\building\{{qvSector.id }}\show">Управление зданиями</a>
-								<a class="btn btn-default" href="\adminbc\floors\{{ qvSector.id }}\show">Управление этажами</a>
+								<a class="btn btn-default" href="\adminbc\building\{{qvFloor.building.id}}\show">Управление зданиями</a>
+								<a class="btn btn-default" href="\adminbc\floors\{{ qvFloor.id }}\show">Управление этажами</a>
 								<a class = "btn btn-default" href="{{path('sectors_list')}}">Управление секторами</a>
 						</div>
 				{% endblock %}
