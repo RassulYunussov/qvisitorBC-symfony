@@ -82,6 +82,8 @@
                               		  	{{ form_label(form.leaser) }}
       								    {{ form_errors(form.leaser) }}
      								    {{ form_widget(form.leaser) }}
+                        <input type="text" id="leaser_text" disabled="disabled" class="form-control">
+                        <input type="hidden" id="leaser_id" name="leaser_id" >
      								</div>
        								 <div class="text-right label-margin" >
        								 	{{ form_label(form.label) }}
@@ -144,9 +146,12 @@
 <script src="{{asset('bootstrap1/bower_components/jquery/dist/jquery.min.js')}}"></script>
 <script> 
 $(function (){
-	$('#leasers').on('click', 'td', function(){
-		var leaserId = $(this).find('td').val();
-		$.ajax({
+	$('#leasers td').click(function(event){
+		//var leaserId = $element.val();
+     console.log($(this).attr('value'));
+     $('#leaser_id').val($(this).attr('value'));
+      $('#leaser_text').val($(this).text());
+	/*	$.ajax({
 			type: "GET",
 			url:"{{path('add-leaser')}}",
 			data: {'id': leaserId},
@@ -154,7 +159,7 @@ $(function (){
 				var leaser = JSON.parse(data);
 				$('#qv_hot_entrance_leaser').val(leaser.name);
 			}
-        });
+        });*/
 	});
 });
 

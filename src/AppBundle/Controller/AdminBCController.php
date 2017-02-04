@@ -584,7 +584,7 @@ $security = $query->getResult();
             $em = $this->getDoctrine()->getManager();
             $em->persist($qvFloor);
             $em->flush();
-            return $this->redirectToRoute('floors_show', array('id' => $qvFloor->getId()));
+            return $this->redirectToRoute('buildings_show', array('id' => $qvBuilding->getId(), 'active_page'=>'floor'));
         }
         return $this->render('AppBundle:AdminBC:buildings_control/floors/create_floor.html.twig', array(
             'qvFloor' => $qvFloor,

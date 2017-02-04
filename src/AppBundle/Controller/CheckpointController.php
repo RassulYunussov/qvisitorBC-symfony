@@ -208,6 +208,12 @@ class CheckpointController extends Controller
         $qvLeasers = $em->getRepository('AppBundle:qvLeaser')->findAll();
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            foreach ($qvLeasers as $leaser) {
+                if($leaser->getId()==$request->get('leaser_id'))
+                        $qvHotEntrance->setLeaser($leaser);
+            }
+           
+            
             $em->persist($qvHotEntrance);
             $em->flush();
 

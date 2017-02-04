@@ -16,7 +16,7 @@ class qvFloorType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('building')
+//->add('building')
         ;
     }
     
