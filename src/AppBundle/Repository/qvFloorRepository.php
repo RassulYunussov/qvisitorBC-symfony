@@ -37,4 +37,11 @@ class qvFloorRepository extends \Doctrine\ORM\EntityRepository
             )->setParameter('name', $qvBuilding)->getResult();
     }
 
+     public function findSectorByFloor($qvFloor){
+      return $this->getEntityManager()
+      ->createQuery(
+            'SELECT sector.name, sector.id from AppBundle:qvSector sector 
+            WHERE sector.floor = :name'
+            )->setParameter('name', $qvFloor)->getResult();
+    }
 }

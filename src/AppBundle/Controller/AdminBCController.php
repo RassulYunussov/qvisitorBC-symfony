@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -73,20 +74,67 @@ class AdminBCController extends Controller
     public function createLeaserAction(Request $request)
     {
        $qvLeaser = new qvLeaser();
-     
-        $form = $this->createForm('AppBundle\Form\qvNewLeaser', $qvLeaser);
+       $qvUser = new qvUser();
+        
+        $em = $this->getDoctrine()->getManager();
+
+         $data = array();
+
+         $form = $this->createFormBuilder($data)
+            ->add('name', TextType::class)
+            ->add('bin', NumberType::class)
+            ->add('login', TextType::class)
+            ->add('password', PasswordType::class)
+            ->add('firstname', TextType::class)
+            ->add('lastname', TextType::class)
+            ->add('patronimic', TextType::class)
+            ->add('birthdate', BirthdayType::class, array(
+                'placeholder' => array(
+                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+                )
+            )
+        )
+            ->add('gender',  EntityType::class, array(
+                'class' => 'AppBundle\Entity\qvGender')
+            )
+            ->getForm()
+        ;
         $form->handleRequest($request);
-     if ($form->isSubmitted() && $form->isValid()) {
-           // 4) save the User!
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($qvLeaser);
+
+       if ($form->isSubmitted() && $form->isValid()) {
+          
+           $em = $this->getDoctrine()->getManager();
+
+           $myrole = $em->getRepository('AppBundle:qvRole')->findByCodeLeaser();
+
+           $data = $form->getData();
+            
+            $qvLeaser->SetName($data['name']);
+            $qvLeaser->SetBin($data['bin']);
+            
+            $qvUser->setLogin($data['login']);   
+            $qvUser->setPassword($data['password']);
+            $qvUser->setRole($myrole);
+            $qvUser->setDisabled('false');
+
+            $em->persist($qvUser);
             $em->flush();
-            // ... do any other work - like sending them an email, etc
-            // maybe set a "flash" success message for the user
-            return $this->redirectToRoute('leasers_list', array('id' => $qvLeaser->getId()));
-        }     
+
+            $qvUserPassport->setFirstname($data['firstname']);
+            $qvUserPassport->setLastname($data['lastname']);
+            $qvUserPassport->setPatronimic($data['patronimic']);
+            $qvUserPassport->setBirthdate($data['birthdate']);
+            $qvUserPassport->setGender($data['gender']);
+            $qvUserPassport->setUser($qvUser);
+            
+            $em->persist($qvUserPassport);
+            $em->flush();
+
+            return $this->redirectToRoute('lesers_list', array());
+        }
         return $this->render('AppBundle:AdminBC:leasers_control/leasers/create_leaser.html.twig', array(
             'qvLeaser' => $qvLeaser,
+            'qvUser' => $qvUser,
             'form' => $form->createView()
         ));
     }
@@ -557,7 +605,7 @@ $security = $query->getResult();
 /**
      * Lists all qvFloor entities.
      *
-     * @Route("/floors_control", name="floors_list")
+     * @Route("building/floors_control", name="floors_list")
      * @Method("GET")
      */
     public function floorsControlAction()
@@ -567,7 +615,6 @@ $security = $query->getResult();
         
         return $this->render('AppBundle:AdminBC:buildings_control/floors/floors_list.html.twig', array(
             'qvFloors' => $qvFloors,
-            //'qvbuild' => $qvFloor,
         ));
     }
     /**
@@ -580,13 +627,14 @@ $security = $query->getResult();
     {
         $qvFloor = new qvFloor();
         $qvFloor->setBuilding($qvBuilding);
-        $form = $this->createForm('AppBundle\Form\qvFloorType', $qvFloor);
+        $form = $this->createFormBuilder('AppBundle\Form\qvFloorType', $qvFloor);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($qvFloor);
             $em->flush();
-            return $this->redirectToRoute('floors_show', array('id' => $qvFloor->getId()));
+            return $this->redirectToRoute('floors_show', array(array('idb' => 
+                $qvBuilding->getId(), 'id' => $qvFloor->getId())));
         }
         return $this->render('AppBundle:AdminBC:buildings_control/floors/create_floor.html.twig', array(
             'qvFloor' => $qvFloor,
@@ -603,7 +651,7 @@ $security = $query->getResult();
     {
         $deleteForm = $this->createDeleteFloorForm($qvFloor);
         $em = $this->getDoctrine()->getManager();
-        $sector = $em->getRepository('AppBundle:qvSector')->findAll();
+        $sector = $em->getRepository('AppBundle:qvFloor')->findSectorByFloor($qvFloor);
         $build = $em->getRepository('AppBundle:qvFloor')->findBuildByFloor($qvFloor);
 
         return $this->render('AppBundle:AdminBC:buildings_control/floors/show_floor.html.twig', array(
@@ -616,22 +664,27 @@ $security = $query->getResult();
     /**
      * Displays a form to edit an existing qvFloor entity.
      *
-     * @Route("/floors/{id}/edit", name="floors_edit")
+     * @Route("/building/{idb}/floors/{id}/edit", name="floors_edit")
      * @Method({"GET", "POST"})
      */
     public function editFloorAction(Request $request, qvFloor $qvFloor)
     {
         $deleteForm = $this->createDeleteFloorForm($qvFloor);
         $editForm = $this->createForm('AppBundle\Form\qvFloorType', $qvFloor);
+       
+        $qvBuilding = $this->getDoctrine()->getManager()->getRepository('AppBundle:qvFloor')->findBuildByFloor($qvFloor);
+
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($qvFloor);
             $em->flush();
-            return $this->redirectToRoute('floors_list', array('id' => $qvFloor->getId()));
+            return $this->redirectToRoute('floors_show', array('idb' => 
+                $qvBuilding->getId(), 'id' => $qvFloor->getId()));
         }
         return $this->render('AppBundle:AdminBC:buildings_control/floors/edit_floor.html.twig', array(
             'qvFloor' => $qvFloor,
+            'qvBuilding' => $qvBuilding,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -836,23 +889,23 @@ $security = $query->getResult();
             ->add('lastname', TextType::class)
             ->add('patronimic', TextType::class)
             ->add('birthdate', BirthdayType::class, array(
-    'placeholder' => array(
-        'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-    )
-))
+                'placeholder' => array(
+                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+                )
+            )
+        )
             ->add('gender',  EntityType::class, array(
-        'class' => 'AppBundle\Entity\qvGender')
+                'class' => 'AppBundle\Entity\qvGender')
             )
             ->getForm()
         ;
-    
         $form->handleRequest($request);
 
        if ($form->isSubmitted() && $form->isValid()) {
-           
+          
            $em = $this->getDoctrine()->getManager();
 
-           $myrole = $em->getRepository('AppBundle:qvRole')->findOneByCode('ROLE_CHECKPOINT');
+           $myrole = $em->getRepository('AppBundle:qvRole')->findByCodeCheckpoint('ROLE_CHECKPOINT');
 
            $data = $form->getData();
          
@@ -874,9 +927,8 @@ $security = $query->getResult();
             $em->persist($qvUserPassport);
             $em->flush();
 
-    return $this->redirectToRoute('security_list', array());
-}
-
+            return $this->redirectToRoute('security_list', array());
+        }
         return $this->render('AppBundle:AdminBC:checkpoints_control/security_man/new.html.twig', array(
             'qvUserPassport' => $qvUserPassport,
             'qvUser' => $qvUser,

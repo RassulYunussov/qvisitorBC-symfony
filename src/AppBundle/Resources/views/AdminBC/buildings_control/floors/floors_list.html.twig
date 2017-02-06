@@ -53,7 +53,7 @@
                                                     
             <div class="col-sm-6">
                 <div id="dataTables-example_filter" align="right" class="dataTables_filter">
-                    <a href="{{ path('floors_create') }}" class="btn btn-success">Добавить этаж</a>
+                    <a href="#" class="btn btn-success">Добавить этаж</a>
                 </div><br>
             </div>
         </div>
@@ -109,7 +109,7 @@
                 </button>
         <ul class="dropdown-menu pull-right" role="menu">
             <li>
-                <a href="{{ path('floors_show', {'id': qvFloor.id}) }}">Посмотеть информацию</a></li>
+                <a href="{{ path('floors_show', {'idb': qvFloor.building.id, 'id': qvFloor.id}) }}">Посмотеть информацию</a></li>
                 <li>
                     <a href="{{ path('floors_edit', {'id': qvFloor.id}) }}">Изменить или удалить информацию</a></li>
         </ul>
