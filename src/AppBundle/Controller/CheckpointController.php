@@ -228,13 +228,21 @@ class CheckpointController extends Controller
         $data = array();
 
         $form = $this->createFormBuilder($data)
-            ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
-            ->add('patronimic', TextType::class)
-            ->add('documentnumber', NumberType::class)
-            ->add('organization', TextType::class)
-            ->add('attendant', TextType::class)
-            ->add('comment', TextareaType::class)
+
+            ->add('lastname', TextType::class, array(
+                'label'=>'Фамилия',))
+            ->add('firstname', TextType::class, array(
+                'label'=>'Имя',))
+            ->add('patronimic', TextType::class, array(
+                'label'=>'Отчество',))
+            ->add('documentnumber', NumberType::class, array(
+                'label'=>'Номер документа',))
+            ->add('organization', TextType::class, array(
+                'label'=>'Организация',))
+            ->add('attendant', TextType::class, array(
+                'label'=>'Встречающий',))
+            ->add('comment', TextareaType::class, array(
+                'label'=>'Дополнительно',))
             ->add('entrancedate', DateTimeType::class, array(
                 'data'=> new \DateTime(),
                 'label'=>'Время посещения',
@@ -248,7 +256,8 @@ class CheckpointController extends Controller
                 'placeholder' => array('datetime' => 'Datetime',),
                 ))
             ->add('leaser', EntityType::class, array(
-        'class' => 'AppBundle\Entity\qvLeaser'))
+                'class' => 'AppBundle\Entity\qvLeaser',
+                'label' => 'Арендатор'))
             ->getForm();
 
 

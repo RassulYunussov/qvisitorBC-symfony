@@ -28,68 +28,91 @@
 		</div>
 		
 		<div class="row">
-      <div class="col-lg-12">
-          <div class="panel panel-default">
-              <div class="panel-heading">
-                 <i class="glyphicon glyphicon-user"></i> Посетитель
-              </div>
-              <div class="panel-body">
+
+                <div class="col-lg-12">
+
                 {{ form_start(form) }}
-                                  <div class="form-margin">
+                  <div class="col-lg-6">
+                  <div class="panel panel-default">
+                <div class="panel-heading">
+                 Персональные данные
+                </div>
+                  <div class="panel-body">
+                    <div class="form-margin">
                                       {{ form_label(form.firstname) }}
                           {{ form_errors(form.firstname) }}
                         {{ form_widget(form.firstname, {'attr': {'class':'form-control'}}) }}
                     </div>
-                                  <div class="form-margin">
+                    <div class="form-margin">
                                       {{ form_label(form.lastname) }}
                           {{ form_errors(form.lastname) }}
                         {{ form_widget(form.lastname, {'attr': {'class':'form-control'}}) }}
                     </div>
-                                  <div class="form-margin">
+                    <div class="form-margin">
                                       {{ form_label(form.patronimic) }}
                           {{ form_errors(form.patronimic) }}
                         {{ form_widget(form.patronimic, {'attr': {'class':'form-control'}}) }}
                     </div>
-                                  <div class="form-margin">
+                    <div class="form-margin">
                                       {{ form_label(form.documentnumber) }}
                           {{ form_errors(form.documentnumber) }}
                         {{ form_widget(form.documentnumber, {'attr': {'class':'form-control'}}) }}
                     </div>
-                                  <div class="form-margin">
+
+                  </div></div>
+                </div>
+                  
+
+
+
+                  <div class="col-lg-6">
+                    <div class="panel panel-default">
+                <div class="panel-heading">
+                 Дополнительные данные
+                </div>
+                  <div class="panel-body">
+                    <div class="form-margin">
                                       {{ form_label(form.organization) }}
                           {{ form_errors(form.organization) }}
                         {{ form_widget(form.organization, {'attr': {'class':'form-control'}}) }}
                     </div>
-                                  <div class="form-margin">
+                    <div class="form-margin">
                                       {{ form_label(form.attendant) }}
                           {{ form_errors(form.attendant) }}
                         {{ form_widget(form.attendant, {'attr': {'class':'form-control'}}) }}
                     </div>
-                                  <div class="form-margin">
+                    <div class="form-margin">
                                       {{ form_label(form.comment) }}
                           {{ form_errors(form.comment) }}
                         {{ form_widget(form.comment, {'attr': {'class':'form-control'}}) }}
                     </div>
-                                  <div class="form-margin">
+                    <div class="form-margin">
                                       {{ form_label(form.entrancedate) }}
                           {{ form_errors(form.entrancedate) }}
                         {{ form_widget(form.entrancedate, {'attr': {'class':'form-control'}}) }}
                     </div>
-                                  <div class="form-margin">
+                    <div class="form-margin">
                                       {{ form_label(form.leaser) }}
                           {{ form_errors(form.leaser) }}
                         {{ form_widget(form.leaser, {'attr': {'class':'form-control'}}) }}
                     </div>
+                  </div></div>
+                  </div>
                   <div>
                        {{ form_widget(form)}}</div>
+                       <div class="col-lg-6">
                        <input type="submit" class="btn btn-primary" value="Зарегистрировать" />
-                       <a class="btn btn-default" href="hotentrance">Отмена</a>
+                       <a class="btn btn-default" href="hotentrance">Отмена</a></div>
                      {{ form_end(form) }}
 
+                          </div>
               </div>
           </div>
-      </div>
-    </div>
-  </div>
-
+      {% endblock %}
+{% block js %}
+<script type="text/javascript">
+      $(document).ready(function() {
+        $("#form_leaser").select2();
+      });
+    </script>
 {% endblock %}
