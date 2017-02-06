@@ -14,7 +14,7 @@ class qvRoleRepository extends \Doctrine\ORM\EntityRepository
 	{
         return $this->getEntityManager()
         ->createQuery(
-          'SELECT role.id, role.code, role.name from AppBundle:qvRole role 
+          'SELECT role from AppBundle:qvRole role 
           WHERE role.code = :code'
             )->setParameter('code', 'ROLE_LEASER')->getResult();
     }
@@ -23,7 +23,7 @@ class qvRoleRepository extends \Doctrine\ORM\EntityRepository
 	{
         return $this->getEntityManager()
         ->createQuery(
-          'SELECT role.id, role.code, role.name from AppBundle:qvRole role 
+          'SELECT role from AppBundle:qvRole role 
           WHERE role.code = :code'
             )->setParameter('code', 'ROLE_CHECKPOINT')->getResult();
     }

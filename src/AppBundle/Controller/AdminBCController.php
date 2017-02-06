@@ -75,7 +75,7 @@ class AdminBCController extends Controller
     {
        $qvLeaser = new qvLeaser();
        $qvUser = new qvUser();
-        
+        $qvUserPassport = new qvUserPassport();
         $em = $this->getDoctrine()->getManager();
 
          $data = array();
@@ -105,13 +105,16 @@ class AdminBCController extends Controller
           
            $em = $this->getDoctrine()->getManager();
 
-           $myrole = $em->getRepository('AppBundle:qvRole')->findByCodeLeaser();
+           $myrole = $em->getRepository('AppBundle:qvRole')->findOneById('2');
 
            $data = $form->getData();
             
             $qvLeaser->SetName($data['name']);
             $qvLeaser->SetBin($data['bin']);
             
+            $em->persist($qvLeaser);
+            $em->flush();
+
             $qvUser->setLogin($data['login']);   
             $qvUser->setPassword($data['password']);
             $qvUser->setRole($myrole);
@@ -130,7 +133,7 @@ class AdminBCController extends Controller
             $em->persist($qvUserPassport);
             $em->flush();
 
-            return $this->redirectToRoute('lesers_list', array());
+            return $this->redirectToRoute('leasers_list', array());
         }
         return $this->render('AppBundle:AdminBC:leasers_control/leasers/create_leaser.html.twig', array(
             'qvLeaser' => $qvLeaser,
@@ -907,7 +910,7 @@ $security = $query->getResult();
           
            $em = $this->getDoctrine()->getManager();
 
-           $myrole = $em->getRepository('AppBundle:qvRole')->findByCodeCheckpoint('ROLE_CHECKPOINT');
+           $myrole = $em->getRepository('AppBundle:qvRole')->findByCodeCheckpoint();
 
            $data = $form->getData();
          
