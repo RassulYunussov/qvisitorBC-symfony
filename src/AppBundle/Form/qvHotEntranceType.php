@@ -64,7 +64,7 @@ class qvHotEntranceType extends AbstractType
                 ))
             ->add('checkpoint', HiddenType::class)
             ->add('user', HiddenType::class)
-            ->add('leaser', TextType::class, array(
+            ->add('leaser', HiddenType::class, array(
                 'label'=>'Арендатор',
                 'disabled' => 'true',
                 'attr'=> array('class' => 'form-control',

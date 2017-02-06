@@ -17,59 +17,54 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Пожалуйста выберите рабочее место</h3>
                     </div>
-                    <div class="panel-body">
-                        <form role="form">
-                            <fieldset>
-								<div class="col-lg-6">
-									<div class="form-group">
-												<label>Здание</label>
-												<select id="building" class="form-control">
-													 {% for qvBuilding in qvBuildings %}
-													<option value='{{ qvBuilding.id }}'>{{qvBuilding.name}}</option>
-													{% endfor %}	
-												</select>
-									</div>
-								</div>
-								<div class="col-lg-6">
-									<div class="form-group">
-												<label>КПП</label>
-												<select id="checkpoints" class="form-control">
-												</select>
-									</div>
-								</div>	
-                                	
-								<div class="col-lg-12 text-right">
-									<!-- Change this to a button or input when using this as a form -->
-									<a href="{{path('entrance')}}" class="btn btn-primary btn-lg">Подтвердить</a>
-								</div>
-                            </fieldset>
-                        </form>
-					 </div>
-                </div>
-            </div>
-        </div>
+						                    <div class="panel-body">
+						                    	<div class="col-md-12">
+						                        {{form_start(form)}}
+						                        <table>
+						                        	<tbody>
+						                        		<tr>
+						                        			<td class="col-md-3">
+						              		   		{{ form_label(form.building) }}
+												    {{ form_errors(form.building) }}
+												    {{ form_widget(form.building, {'attr': {'class':'form-control'}}) }}
+												</td>
+												<td class="col-md-3">
+						              		   		{{ form_label(form.checkpoint) }}
+												    {{ form_errors(form.checkpoint) }}
+												    {{ form_widget(form.checkpoint, {'attr': {'class':'form-control'}}) }}
+												</td></tr></tbody></table>
+											    <br>
+											    <div class="form-inline form-input col-md-12 text-right btn-pdn">
+											                <button type="submit" class="btn btn-primary btn-md">
+						                   				 Подтвердить
+									                </button>
+									                {{ form_end(form) }}
+														 </div>
+									                </div>
+						            		</div>
+        </div></div>
 </div>
 
 		<script src="{{asset('bootstrap1/bower_components/jquery/dist/jquery.min.js')}}"></script>
 
 <script> 
 function loadCheckpoints(buildingId){
-	$('#checkpoints').empty();
+	$('#form_checkpoint').empty();
 	$.ajax({
         type: "GET",
         url: "{{ path('checkpoints')}}",
         data: {'id':buildingId},
         success: function(data){
 		        	$.each(JSON.parse(data),function(k,v){
-								        		$('#checkpoints').append('<option value="'+v.id+'">'+v.name+'</option>')
+								        		$('#form_checkpoint').append('<option value="'+v.id+'">'+v.name+'</option>')
 								        	});
 		       	 }
     });
 }
 $(function (){
-	loadCheckpoints($('#building option:selected').val());
-	$('#building').change(function(){
-						loadCheckpoints($('#building option:selected').val());
+	loadCheckpoints($('#form_building option:selected').val());
+	$('#form_building').change(function(){
+						loadCheckpoints($('#form_building option:selected').val());
 				});
 });
 </script>

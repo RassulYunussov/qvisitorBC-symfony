@@ -62,7 +62,7 @@
                                         <tr>
                                             <th>Время</th>
                                             <th>ФИО</th>
-                                            <th>Номер удостоверения</th>
+                                            <th>Объект визита</th>
                                             <th>Действия</th>
                                         </tr>
                                     </thead>
@@ -71,7 +71,7 @@
 										<tr>
                                         <td>{{qvHotEntrance.entrancedate|date('Y-m-d H:i') }}</td>
                                         <td>{{ qvHotEntrance.lastname }} {{ qvHotEntrance.firstname }} {{ qvHotEntrance.patronimic }}</td>
-                                        <td>{{ qvHotEntrance.documentnumber }}</td>
+                                        <td>{{ qvHotEntrance.leaser }}</td>
 										<td>
 												<button onclick="$('#myModal .modal-dialog').load('hotentrance/{{ qvHotEntrance.id }}');" class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal">Просмотр</button>
 										</td>

@@ -33,9 +33,11 @@
 }
 
 .form-margin{
-    margin-bottom: 0.7em
+    margin-bottom: 0.7em;
 }
-
+.btn-pdn{
+    padding-right: 15px;
+}
 /* Breadcrumbs from http://bootsnipp.com/snippets/featured/triangle-breadcrumbs-arrows */
 .btn-breadcrumb .btn:not(:last-child):after {
   content: " ";

@@ -8,10 +8,19 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use AppBundle\Entity\qvHotEntrance;
 use AppBundle\Entity\qvEntrance;
 use AppBundle\Entity\qvOrder;
+use AppBundle\Entity\qvCheckpoint;
 use AppBundle\Form\qvHotEntranceType;
+use AppBundle\Entity\qvUser;
 use AppBundle\Entity\qvVisitor;
 
 
@@ -26,17 +35,47 @@ class CheckpointController extends Controller
 
 
     /**
-     *@Route("/index")
-     *@Method("GET")
+     *@Route("/index", name="select_checkpoint")
+     *@Method({"GET", "POST"})
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $qvBuildings=$em->getRepository('AppBundle:qvBuilding')->findAll();
-       
+
+        $em = $this->getDoctrine()->getManager();
+
+        $data = array();
+
+        $form = $this->createFormBuilder($data)
+            ->add('building',  EntityType::class, array(
+                'label'=>'Здание',
+        'class' => 'AppBundle\Entity\qvBuilding')
+            )
+            ->add('checkpoint',  EntityType::class, array(
+                'label'=>'КПП',
+        'class' => 'AppBundle\Entity\qvCheckpoint')
+            )
+            ->getForm()
+        ;
+    
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+           
+            $em = $this->getDoctrine()->getManager();
+            $session  = $this->get("session");
+            $data = $form->getData();
+            $session->set('checkpoint', $data['checkpoint']);
+            $session->set('building', $data['building']);
+
+             return $this->redirectToRoute('entrance', array());
+            }
         
         return $this->render('AppBundle:Checkpoint:index.html.twig', array(
-                'qvBuildings'=> $qvBuildings
+            'qvBuildings'=> $qvBuildings,
+            'data' => $data,
+            'form' => $form->createView(),
             ));
     }
 
@@ -55,23 +94,6 @@ class CheckpointController extends Controller
         	$serializer = $this->get('serializer');
         	$checkpoints = $serializer->serialize($qvCheckpoints, 'json');
         	return new Response($checkpoints);
-        }
-    }
-
-     /**
-     *@Route("/add-leaser", name="add-leaser")
-     *@Method("GET")
-     */
-
-    public function addLeaserAjaxAction(Request $request)
-    {
-        if($request->isXmlHttpRequest()) {
-            $em = $this->getDoctrine()->getManager();
-            $leaserId=$request->get('id', 1);
-            $qvLeaser = $em->getRepository('AppBundle:qvLeaser')->findOneBy(array('id'=>$leaserId));
-            $serializer = $this->get('serializer');
-            $leaser = $serializer->serialize($qvLeaser, 'json');
-            return new Response($leaser);
         }
     }
 
@@ -201,24 +223,73 @@ class CheckpointController extends Controller
      */
     public function hotEnranceRegAction(Request $request)
     {
-    	  $qvHotEntrance = new qvHotEntrance();
-        $form = $this->createForm('AppBundle\Form\qvHotEntranceType', $qvHotEntrance);
-        $form->handleRequest($request);
+    	$qvHotEntrance = new qvHotEntrance();
         $em = $this->getDoctrine()->getManager();
-        $qvLeasers = $em->getRepository('AppBundle:qvLeaser')->findAll();
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+        $data = array();
+
+        $form = $this->createFormBuilder($data)
+            ->add('firstname', TextType::class)
+            ->add('lastname', TextType::class)
+            ->add('patronimic', TextType::class)
+            ->add('documentnumber', NumberType::class)
+            ->add('organization', TextType::class)
+            ->add('attendant', TextType::class)
+            ->add('comment', TextareaType::class)
+            ->add('entrancedate', DateTimeType::class, array(
+                'data'=> new \DateTime(),
+                'label'=>'Время посещения',
+                'widget' => 'single_text', 
+                'format' =>'dd/MM/yyyy hh:mm',
+                'html5' => false,
+                'model_timezone'=>'Asia/Almaty',
+                'attr' => array(
+                    'class' => 'form-control'),
+                'disabled' => 'true',
+                'placeholder' => array('datetime' => 'Datetime',),
+                ))
+            ->add('leaser', EntityType::class, array(
+        'class' => 'AppBundle\Entity\qvLeaser'))
+            ->getForm();
+
+
+        $form->handleRequest($request);
+
+       if ($form->isSubmitted() && $form->isValid()) {
+           
+           $em = $this->getDoctrine()->getManager();
+           $em2 = $this->getDoctrine()->getEntityManager();
+           $data = $form->getData();
+
+           $qvUser = new qvUser();
+           $qvUser = $this->get('security.token_storage')->getToken()->getUser();
+           $session = $this->get("session");
+           $chp = $session->get('checkpoint');
+           $checkpoint = $em->getRepository('AppBundle:qvCheckpoint')->findOneBy(array('id'=>$chp->getId()));
+
+           $qvHotEntrance->setFirstname($data['firstname']);
+           $qvHotEntrance->setLastname($data['lastname']);
+           $qvHotEntrance->setPatronimic($data['patronimic']);
+           $qvHotEntrance->setDocumentnumber($data['documentnumber']);
+           $qvHotEntrance->setOrganization($data['organization']);
+           $qvHotEntrance->setAttendant($data['attendant']);
+           $qvHotEntrance->setComment($data['comment']);
+           $qvHotEntrance->setEntrancedate(new \DateTime());
+           $qvHotEntrance->setCheckpoint($checkpoint);
+           $qvHotEntrance->setLeaser($data['leaser']);
+           $qvHotEntrance->setUser($qvUser);
+        
             $em->persist($qvHotEntrance);
             $em->flush();
 
-            return $this->redirectToRoute('hotentranc', array('id' => $qvHotEntrance->getId()));
-        }
+    return $this->redirectToRoute('hotentranc', array());
+}
 
-    	return $this->render('AppBundle:Checkpoint:hotentrancereg.html.twig', array(
-            'qvHotEntrance' => $qvHotEntrance,
-            'qvLeasers'=>$qvLeasers,
-            'form' => $form->createView()
-    	));
+        return $this->render('AppBundle:Checkpoint:hotentrancereg.html.twig', array(
+            
+            'data' => $data,
+            'form' => $form->createView(),
+        ));   
+
     }
     
    
