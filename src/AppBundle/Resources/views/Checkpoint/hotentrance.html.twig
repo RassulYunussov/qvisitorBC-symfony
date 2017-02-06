@@ -62,6 +62,7 @@
                                         <tr>
                                             <th>Время</th>
                                             <th>ФИО</th>
+                                            <th>КПП</th>
                                             <th>Объект визита</th>
                                             <th>Действия</th>
                                         </tr>
@@ -71,6 +72,7 @@
 										<tr>
                                         <td>{{qvHotEntrance.entrancedate|date('Y-m-d H:i') }}</td>
                                         <td>{{ qvHotEntrance.lastname }} {{ qvHotEntrance.firstname }} {{ qvHotEntrance.patronimic }}</td>
+                                        <td>{{ qvHotEntrance.checkpoint }}</td>
                                         <td>{{ qvHotEntrance.leaser }}</td>
 										<td>
 												<button onclick="$('#myModal .modal-dialog').load('hotentrance/{{ qvHotEntrance.id }}');" class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal">Просмотр</button>
@@ -92,4 +94,14 @@
                 <!-- /.col-lg-12 -->
             </div>
 		</div>
+{% endblock %}
+{% block js %}
+    
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+                responsive: true
+        });
+    });
+    </script>
 {% endblock %}
