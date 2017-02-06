@@ -1,0 +1,22 @@
+{% block profile %}
+<ul class="nav navbar-top-links navbar-right">
+	<li class="dropdown">
+		<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			{{building}} {{checkpoint}} <i class="fa fa-user fa-fw"></i> {{username}}<i class="fa fa-caret-down"></i>
+		</a>
+		<ul class="dropdown-menu dropdown-user">
+			<li><a href="{{ path('userprofile') }}"><i class="fa fa-user fa-fw"></i>Информация</a>
+			</li>
+			<li><a href="{{ path('changepassword') }}"><i class="fa fa-gear fa-fw"></i>Сменить пароль</a>
+			</li>
+			<li><a href="{{ path('select_checkpoint') }}"><i class="fa fa-building fa-fw"></i>Сменить КПП</a>
+			</li>
+			<li class="divider"></li>
+			<li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i>Выход</a>
+			</li>
+		</ul>
+		<!-- /.dropdown-user -->
+	</li>
+	<!-- /.dropdown -->
+</ul>
+{% endblock %}

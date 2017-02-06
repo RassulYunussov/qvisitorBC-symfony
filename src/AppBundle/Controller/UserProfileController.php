@@ -18,6 +18,17 @@ class UserProfileController extends Controller
 	public function profileMenuAction(Request $request)
 	{
 		$username = $this->get('security.token_storage')->getToken()->getUsername();
+        
+        if($this->get('security.authorization_checker')->isGranted('ROLE_CHECKPOINT')){
+            $session = $this->get("session");
+        
+        $checkpoint = $session->get('checkpoint');
+        $building = $session->get('building');
+        return $this->render('AppBundle:UserProfile:profileMenuCheckpoint.html.twig', array(
+            'username'=>$username,
+            'checkpoint'=> $checkpoint,
+            'building'=>$building
+        ));}
 		return $this->render('AppBundle:UserProfile:profilemenu.html.twig', array(
 				'username'=>$username,
 		));
