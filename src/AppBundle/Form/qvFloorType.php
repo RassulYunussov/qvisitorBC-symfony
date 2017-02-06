@@ -18,16 +18,14 @@ class qvFloorType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-<<<<<<< HEAD
             ->add('name', TextType::class, array(
                 'label'=>'Название этажа',
                 'attr'   =>  array(
                 'class'   => 'form-control')))
             ->add('building')
-=======
             ->add('name')
-//->add('building')
->>>>>>> 3540b5302ab57cf0bf9b2595446263780e021e8c
+            ->add('building')
+
         ;
     }
     
