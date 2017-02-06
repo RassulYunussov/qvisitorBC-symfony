@@ -10,4 +10,21 @@ namespace AppBundle\Repository;
  */
 class qvRoleRepository extends \Doctrine\ORM\EntityRepository
 {
+		public function findByCodeLeaser()
+	{
+        return $this->getEntityManager()
+        ->createQuery(
+          'SELECT role from AppBundle:qvRole role 
+          WHERE role.code = :code'
+            )->setParameter('code', 'ROLE_LEASER')->getResult();
+    }
+
+    public function findByCodeCheckpoint()
+	{
+        return $this->getEntityManager()
+        ->createQuery(
+          'SELECT role from AppBundle:qvRole role 
+          WHERE role.code = :code'
+            )->setParameter('code', 'ROLE_CHECKPOINT')->getResult();
+    }
 }

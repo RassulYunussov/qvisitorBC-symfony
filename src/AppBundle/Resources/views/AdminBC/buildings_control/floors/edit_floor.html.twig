@@ -7,16 +7,16 @@
 
     <div id="page-wrapper">
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col-lg-10">
 				{% block breadcrumb %}
 					 <div id="breadcrumbs" class="btn-group btn-breadcrumb">
                         <br>
                         <a class="btn btn-default" href="{{ path('main_page') }}">
                         <i class="fa fa-home"></i>Главная
                         </a>
-							<a class="btn btn-default" href="\adminbc\building\{{qvBuilding.id}}\show">Управление зданиями</a>
-							<a class="btn btn-default" href="{{ path('floors_list') }}">Управление этажами</a>
-							<a class = "btn btn-default" href="\adminbc\floors\{{qvFloor.id}}\show">Информация об этаже</a>
+							<a class="btn btn-default" href="\adminbc\building\{{qvFloor.building.id}}\show">Управление зданиями</a>
+							<a class="btn btn-default" href="\adminbc\building\{{qvFloor.building.id}}\show	">Управление этажами</a>
+							<a class = "btn btn-default" href="{{ path('floors_show', {'idb':qvFloor.building.id, 'id':qvFloor.id}) }}">Информация об этаже</a>
 					</div>
 				{% endblock %}
 
@@ -24,51 +24,56 @@
 				<!-- /.col-lg-12 -->
 				</div>
    
-			<div class="col-lg-12">
-				<div class="panel panel-default">
-					
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-lg-6">
-								  <ul>
-                {{ form_start(edit_form) }}
-                 {% for child in edit_form %}
-                <li>
-                    {{ form_widget(child, {'attr': {'class':'form-control'}}) }}
-    </li>
-{% endfor %}
-    </ul>           
-    <br>
-    <div class="form-inline form-input">
-                <button type="submit" class="btn btn-default btn-sm">
-                    Сохранить
-                </button>
-                <a href="{{ floors_list }}" class="btn btn-default btn-sm">
-                    Отменить
-                </button>
-                {{ form_end(edit_form) }}
-
-                {{ form_start(delete_form) }}
-                <button class="btn btn-default btn-sm" type="submit">
-                    Удалить
-                </button>
-                {{ form_end(delete_form) }}             
-    </div>
-							</div>
-							<!-- /.col-lg-6 (nested) -->
-						</div>
-						<!-- /.row (nested) -->
-					</div>
-					<!-- /.panel-body -->
+<div class="col-lg-8">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-lg-6">
+						{{ form_start(edit_form) }}
+							  {{ form_widget(edit_form) }}
+							  <br>
+							<table align="right">
+							<tbody>
+							<tr>
+								<td>
+									<button type="submit" class="btn btn-default btn-sm">
+			    				Сохранить
+			    			</button>
+			    				</td>
+			    				<td>
+			    					
+			    				</td>			  		
+			  					<td>
+			  						<a href="\adminbc\building\{{ qvFloor.building.id }}\show" class="btn btn-default btn-sm">
+			    						Отменить
+			    					</a>
+			    				</td>
+			    				<td>	
+			    				</td>
+			    				<td>
+			 			{{ form_end(edit_form) }}
+            			{{ form_start(delete_form) }}
+ 							<button class="btn btn-default btn-sm" type="submit">
+                    			Удалить
+                			</button>
+            			{{ form_end(delete_form) }}             
+            			</td><td>
+            			</td>
+            		</tr>
+            	</tbody>
+            			</table>
 				</div>
-				<!-- /.panel -->
+	
+	</div>
+	<!-- /.col-lg-6 (nested) -->
+		</div>
+		<!-- /.row (nested) -->
 			</div>
-   
+			<!-- /.panel-body -->
+			</div>
+			<!-- /.panel -->
+			</div>
         <!-- /.row -->
         </div>
     <!-- /#page-wrapper -->
-	</div>
-    
-
-
 {% endblock %}

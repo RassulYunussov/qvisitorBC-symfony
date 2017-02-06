@@ -13,10 +13,10 @@
                         <br>
                         <a class="btn btn-default" href="{{ path('main_page') }}">
                         <i class="fa fa-home"></i>Главная
-                        </a>{% for build in build %}
-                        <a class="btn btn-default" href="\adminbc\building\{{ build.id }}\show">Управление зданиями
-                        </a>{% endfor %}
-                        <a class="btn btn-default" href="{{ path('floors_list')}}">Управление этажами
+                        </a>
+                        <a class="btn btn-default" href="\adminbc\building\{{qvFloor.building.id}}\show">Управление зданиями
+                        </a>
+                        <a class="btn btn-default" href="\adminbc\building\{{qvFloor.building.id}}\show">Управление этажами
                         </a>
                     </div>
                     <br>
@@ -39,51 +39,41 @@
                 		            <i class="fa fa-bar-chart-o fa-fw">
                 		            </i>
                 		           	Этаж № {{ qvFloor.name }} 
-                		           	Расположен в:
-                        		</div>
+                				</div>
                         <!-- /.panel-heading -->
     <div class="panel-body">
 		<div class="table-responsive">
         	<table class="table">
             	<tbody>
 					<tr class="success">
-						<td>
-							Здании
+						<td>	
+						Расположен в здании:
 						</td>
-						<td>
-							{{ qvFloor.building }}
-						</td>
+						<td>{{ qvFloor.building }}</td>
 					</tr>
 					<tr class="success">
 						<td>
 							Включает сектора
 						</td>
 						<td>
-							{#{% for qvFloor in qvFloor %}
 								{% for sector in sector %}
-									{% if sector.floor == qvFloor.name %}
 										<a href="{{path('sectors_show', 
 											{'id': sector.id }) }}">
                 								{{  sector.name }}, 
      									</a>
-									{% endif %} 
-								{% endfor %}
-							{% endfor %}#}
+							{% endfor %}
 						</td>
 					</tr>
 					<tr>
 						<td>
-					<a href="{{ path('sectors_create', {'id': qvFloor.id}) }}" class="btn btn-success btn-sm text-right">
-								Добавить сектор
-							</a>
 						</td>
-					</tr>
-					<tr>
-						<td align="right">
+						<td>
+							<div class="text-right">
 							<br>
-							<a href="{{ path('floors_edit', { 'id': qvFloor.id }) }}" align="right" class="btn btn-warning">
+							<a href="{{ path('floors_edit', { 'idb': qvFloor.building.id,'id': qvFloor.id }) }}" align="right" class="btn  btn-default">
 								Редактировать
 							</a>
+							</div>
 						</td>
 					</tr>
                 </tbody>
