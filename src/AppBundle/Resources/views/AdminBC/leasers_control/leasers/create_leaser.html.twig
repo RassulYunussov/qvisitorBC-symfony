@@ -25,23 +25,16 @@
 			
 	<div class="col-lg-4" >
 	<div class="form-group has-success">
-      <ul>
-				{{ form_start(form) }}
-				 {% for child in form %}
-				<li>
-						 {{ form_label(child) }}
-        			{{ form_widget(child, {'attr': {'class':'form-control'}}) }}
-    </li>
-{% endfor %}
-    </ul>			
-    <br>
-    <div class="form-inline form-input">
+				{{ form_start(form)}}		
+    {{ form_widget(form) }}
+    
+        <div class="form-inline form-input">
 				<button type="submit" class="btn btn-default btn-sm">
 					Создать
 				</button>
-				<button type="reset" class="btn btn-default btn-sm">
+				<a href="{{ path('leasers_list') }}" class="btn btn-default btn-sm">
 					Отменить
-				</button>
+				</a>
 				{{ form_end(form) }}
 
 				</div>

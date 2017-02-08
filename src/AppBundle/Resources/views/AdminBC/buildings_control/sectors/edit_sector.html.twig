@@ -18,7 +18,7 @@
 		<a class="btn btn-default" href="{{ path('buildings_list') }}">Управление зданиями</a>
 		<a class="btn btn-default" href="{{ path('buildings_show', {'id': qvBuilding.id}) }}">Управление этажами</a>
 		<a class = "btn btn-default" href="{{ path('floors_show', {'qvBuilding': qvBuilding.id, 'id':qvFloor.id}) }}">Управление секторами</a>
-		<a class="btn btn-default" href="{{ path('sectors_show', {'qvBuilding': qvBuilding.id, 'qvFloor':qvFloor.id, 'id':qvSector.id }) }}'">Просмотр информации о секторе</a>
+		<a class="btn btn-default" href="{{ path('sectors_show', {'qvBuilding': qvBuilding.id, 'qvFloor':qvFloor.id, 'id':qvSector.id }) }}">Просмотр информации о секторе</a>
 					</div>
 				{% endblock %}
 

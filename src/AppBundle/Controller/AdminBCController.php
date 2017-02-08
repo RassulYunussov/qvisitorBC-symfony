@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Form\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use AppBundle\Entity\qvLeaser;
 use AppBundle\Form\qvNewLeaserType;
@@ -81,22 +82,48 @@ class AdminBCController extends Controller
          $data = array();
 
          $form = $this->createFormBuilder($data)
-            ->add('name', TextType::class)
-            ->add('bin', NumberType::class)
-            ->add('login', TextType::class)
-            ->add('password', PasswordType::class)
-            ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
-            ->add('patronimic', TextType::class)
-            ->add('birthdate', BirthdayType::class, array(
-                'placeholder' => array(
-                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-                )
-            )
-        )
+            ->add('name', TextType::class, array(
+                'label'=>'Имя',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('bin', NumberType::class, array(
+                'label'=>'БИН пользователя',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('login', TextType::class, array(
+                'label'=>'Логин',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('password', PasswordType::class, array(
+                'label'=>'Пароль',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('firstname', TextType::class, array(
+                'label'=>'Фамилия',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('lastname', TextType::class, array(
+                'label'=>'Имя',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('patronimic', TextType::class, array(
+                'label'=>'Отчество',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('birthdate', BirthdayType::class,  array(
+                'label'=>'Дата Рождения',
+                'widget' => 'single_text', 
+                'format' =>'dd/MM/yyyy',
+                'placeholder' => 'Укажите дату в формате дд/мм/гггг',
+                'html5' => false,
+                'attr' => array(
+                    'class' => 'form-control')
+                ))
             ->add('gender',  EntityType::class, array(
-                'class' => 'AppBundle\Entity\qvGender')
-            )
+                'label'=>'Выберите пол',
+                'class' => 'AppBundle\Entity\qvGender',
+                'attr' => array('class'=>'form-control form-input')
+            ))
+          //  ->add('save', ButtonType::class,  array(
+          //  'label' => 'Сохранить',
+            //'attr' => array('class' => 'btn btn-default'),
+           // ))
+            //->add('cancel', ButtonType::class,  array(
+            //'label' => 'Отменить',
+            //'attr' => array('class' => 'btn btn-default',
             ->getForm()
         ;
         $form->handleRequest($request);
@@ -286,13 +313,28 @@ class AdminBCController extends Controller
     }   
         
          /**
-     * @Route("/contracts/create_contract", name="contracts_create")
+     * @Route("/leaser/{qvLeaser}/contracts/create_contract", name="contracts_create")
+     * @ParamConverter("qvLeaser", class="AppBundle:qvLeaser")
       * @Method({"GET", "POST"})
      */
-    public function contractCreateAction(Request $request)
+    public function contractCreateAction(Request $request, qvLeaser $qvLeaser)
     {
         $qvContract = new qvContract();
-        $form = $this->createForm('AppBundle\Form\qvContractType', $qvContract);
+        $form = $this->createFormBuilder($qvContract)
+        ->add('name', TextType::class, array(
+            'label'=>'Номер контракта',
+            'attr'=>array('class'=>'form-control form-input')))
+        ->add('startdate', BirthdayType::class, array(
+                'label'=>'Время ',
+                'widget' => 'single_text', 
+                'format' =>'dd/MM/yyyy hh:mm',
+                'html5' => false,
+                'model_timezone'=>'Asia/Almaty',
+                'attr' => array(
+                    'class' => 'form-control'),
+                'placeholder' => 'Укажите дату в формате дд/мм/гггг',
+                ))
+            ;
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -302,32 +344,35 @@ class AdminBCController extends Controller
         }
         return $this->render('AppBundle:Adminbc:leasers_control/contracts/create_contract.html.twig', array(
             'qvContract' => $qvContract,
+            'qvLeaser'=> $qvLeaser,
             'form' => $form->createView(),
         ));
     }
      /**
      * Finds and displays a qvContract entity.
-     *
-     * @Route("/contract/{id}/show", name="contracts_show")
+     * @ParamConverter("qvLeaser", class="AppBundle:qvLeaser")
+     * @Route("/leaser/{qvLeaser}/contract/{id}/show", name="contracts_show")
      * @Method("GET")
      */
-    public function showContractAction(qvContract $qvContract)
+    public function showContractAction(qvContract $qvContract, qvLeaser $qvLeaser)
     {
         $em = $this->getDoctrine()->getManager();
         $deleteForm = $this->createDeleteContractForm($qvContract);
-        
+        $qvContracts = $em->getRepository('AppBundle:qvContract')->findAll();
         return $this->render('AppBundle:Adminbc:leasers_control/contracts/show_contract.html.twig', array(
             'qvContract' => $qvContract,
+            'qvContracts' => $qvContracts,
+            'qvLeaser'=> $qvLeaser,
             'delete_form' => $deleteForm->createView(),
         ));
     }
     /**
      * Displays a form to edit an existing qvContract entity.
-     *
-     * @Route("/contract/{id}/edit", name="contracts_edit")
+     * @ParamConverter("qvLeaser", class="AppBundle:qvLeaser")
+     * @Route("leaser/{qvLeaser}/contract/{id}/edit", name="contracts_edit")
      * @Method({"GET", "POST"})
      */
-    public function editContractAction(Request $request, qvContract $qvContract)
+    public function editContractAction(Request $request, qvContract $qvContract, qvLeaser $qvLeaser)
     {
         $deleteForm = $this->createDeleteContractForm($qvContract);
         $editForm = $this->createForm('AppBundle\Form\qvContractType', $qvContract);
@@ -340,6 +385,7 @@ class AdminBCController extends Controller
         }
         return $this->render('AppBundle:Adminbc:leasers_control/contracts/edit_contract.html.twig', array(
             'qvContract' => $qvContract,
+            'qvLeaser'=> $qvLeaser,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));

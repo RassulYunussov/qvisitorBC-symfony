@@ -16,187 +16,127 @@
                                         Главная
                                 </a>
                                 <a class="btn btn-default" href="{{ path('leasers_list') }}">Управление арендаторами</a>
-                                 <a class="btn btn-default" href="{{ path('leasers_list') }}">Управление контрактами</a>
+                                 <a class="btn btn-default" href="{{ path('leasers_show',{'id':qvLeaser.id}) }}">Управление контрактами</a>
 					{% endblock %}
 <br><br><br>											
-               <h2 class="page-header">Просмотр контракта</h2>
+               <h2 class="page-header">Просмотр контрактов</h2>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
+			</div>
 			
-				<h5 class="page-header">
-								Контракты данного пользователя
-								</h5>
-								
-						<div class="table-responsive">
+			<div class="row">
+               	<div class="col-lg-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Контракты данного пользователя
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="table-responsive">
                                 <table class="table">
-                                    
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Контракт</th>
+                                            <th>Дата начала действия</th>
+                                            <th>Дата окончания действия</th>
+                                        </tr>
+                                    </thead>
                                     <tbody>
-                                        <tr class="danger">
-                                          <div class="panel-body">  
-						<td> <b><a data-toggle="modal" data-target="#myModal">
-                                Контракт № 1</a></b></td>
-								<td>			
-                            <!-- Button trigger modal -->
-                           
-                            <!-- Modal -->
+      {% for contract in qvContracts %}
+    <tr class="success"><td>  {{ loop.index }}</td>
+    <td><b>
+    	<a data-toggle="modal" data-target="#myModal">
+        {{  contract.name}} 
+        </a>
+    </b><br>
+	</td>
+	<td>{% if contract.startdate %}{{ contract.startdate|date('d-m-Y') }}{% endif %}</td>
+	<td>{% if contract.enddate %}{{ contract.enddate|date('d-m-Y') }}{% endif %}</td>
+    <td>			
+   <!-- Button trigger modal -->   
+   	<!-- Modal -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          					<h4 class="modal-title" id="myModalLabel">Информация о контракте № 1</h4>
+          					<h4 class="modal-title" id="myModalLabel">Информация о контракте {{ contract.name }}</h4>
                     </div>
-                <div class="modal-body">
-                <div class="panel-body">
-				<div class="col-lg-12">
-				<div class="table-responsive">
-				<table class="table table-hover">
-				<tbody>
-					{% for contract in qvContract %}
-				<tr>
+<div class="modal-body">
+	<div class="panel-body">
+		<div class="col-lg-12">
+
+<div class="table-responsive">
+	<table class="table table-hover">
+		<tbody>
+			<tr>
                 <td>Номер договора</td>
-				<td>contract.name</td>
+				<td>{{ contract.name }}</td>
 				</tr>
 				<tr>
                 <td>Название компании</td>
-				<td>contract.leaser</td>
-				</tr>
-				<tr>
-                <td>Владелец</td>
-				<td>Tim Cook</td>
-				</tr>
-				<tr>
-                <td>Этаж(и)</td>
-				<td>15,16,17</td>
-											</tr>
-											<tr>
-											<td>Офис(ы)</td>
-											<td>150-179</td>
-											</tr>
-											<tr>
-											<td>Статус договора</td>
-											<td>Активен</td>
-											</tr>
-											<tr>
-											<td>Подписан</td>
-											<td>01.01.2014</td>
-											</tr>
-											<tr>
-											<td>Срок окончания действия</td>
-											<td>01.12.2017</td>
-											</tr>
-						{% endfor %}
-						</tbody>
-						</table>
-																	</div>
-															<!-- /.panel-body -->
-														</div>
-                                        </div>
-									
-										
-										
-                                       
-									   <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                                            
-                                        </div>
-                                    </div>
-                                    <!-- /.modal-content -->
-                                </div>
-                                <!-- /.modal-dialog -->
-                            </div>
-                            <!-- /.modal -->
-                        </div>
-						</td>
-											<td align="right">
-		<a href="{{ path('edit_contract', 'idl': qvContract.leaser.id, 'id': qvContract.id) }}" class="btn btn-warning">Редактировать</a></td>
-											</tr>
-											<tr class="danger">
-                                           	  <td> <b><a data-toggle="modal" data-target="#myModal1">
-                                Контракт № 2</a></b></td>
-										<td>	
-                            <!-- Button trigger modal -->
-                           
-                            <!-- Modal -->
-                            <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                            <h4 class="modal-title" id="myModalLabel">Информация о контракте № 2</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                           <div class="panel-body">
-																<div class="col-lg-12">
-																	<div class="table-responsive">
-																		<table class="table table-hover">
-																		
-																			<tbody>
-																		   <tr>
-                                            <td>Номер договора</td>
-											<td>545468</td>
-											</tr>
-											<tr>
-                                            <td>Название компании</td>
-											<td>Microsoft</td>
-											</tr>
-											<tr>
-                                            <td>Владелец</td>
-											<td>Bill Gates</td>
-											</tr>
-											<tr>
-                                            <td>Этаж(и)</td>
-											<td>18,19,20</td>
-											</tr>
-											<tr>
-											<td>Офис(ы)</td>
-											<td>180-209</td>
-											</tr>
-											<tr>
-											<td>Статус договора</td>
-											<td>Активен</td>
-											</tr>
-											<tr>
-											<td>Подписан</td>
-											<td>01.01.2014</td>
-											</tr>
-											<tr>
-											<td>Срок окончания действия</td>
-											<td>01.12.2017</td>
-											</tr>
-																			</tbody>
-																		</table>
-																	</div>
-																	
-															<!-- /.panel-body -->
-														</div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                                        </div>
-                                    </div>
-                                    <!-- /.modal-content -->
-                                </div>
-                                <!-- /.modal-dialog -->
-                            </div>
-                            <!-- /.modal -->
-                        </div>
-						</td>
-											<td align="right"><a href="edit_contract" class="btn btn-warning">Редактировать</a></td>
-											</tr>
-											
-                                    </tbody>
-                                </table>
-																
-                            </div>
-					</div>	
-                        <!-- /.panel-body -->
-                    </div>
-			
-	</div>
-        <!-- /#page-wrapper -->
+				<td>{{ contract.leaser }}</td>
+			</tr>
 
+			<tr>
+                <td>Офис(ы)</td>
+                {% for contract in contract %}
+				<td>{{ contract.sectors }}</td>
+			{% endfor %}
+			</tr>
+			<tr>
+				<td>Статус договора</td>
+				<td></td>
+			</tr>
+			
+			<tr>
+				<td>Подписан</td>
+				<td>{% if contract.startdate %}{{ contract.startdate|date('Y-m-d H:i:s') }}{% endif %}</td>
+			</tr>
+			
+			<tr>
+				<td>Срок окончания действия</td>
+				<td>{% if contract.startdate %}{{ contract.startdate|date('Y-m-d H:i:s') }}{% endif %}
+				</td>
+            </tr>
+		</tbody>
+	</table>
+	</div>
+	<!-- /.panel-body -->
+	</div>
+    </div>
+		<div class="modal-footer">
+    		<button type="button" class="btn btn-default" data-dismiss="modal">
+    			Закрыть
+    		</button>
+        </div>
+        </div>
+        <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+                {% endfor %}
+                </div>
+            </td>
+        </tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+<!-- /.panel-body -->
+		</div>
+		<!-- /.col-lg-4 -->
+    </div>
+</div>
+<!-- /.table-responsive -->
+</div>
+<!-- /#page-wrapper -->
+
+            
+        
     
             {% endblock %}
