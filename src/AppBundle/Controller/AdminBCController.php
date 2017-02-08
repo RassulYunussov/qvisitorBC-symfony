@@ -8,9 +8,11 @@ use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bridge\Doctrine\Form\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use AppBundle\Entity\qvLeaser;
 use AppBundle\Form\qvNewLeaserType;
 use AppBundle\Entity\qvContract;
@@ -29,8 +31,6 @@ use AppBundle\Entity\qvUser;
 use AppBundle\Form\qvUserType;
 use AppBundle\Entity\UserAccount;
 use AppBundle\Form\UserAccountType;
-
-
 
 /**
  * adminBCController 
@@ -177,18 +177,58 @@ class AdminBCController extends Controller
     public function editLeaserAction(Request $request, qvLeaser $qvLeaser)
     {
         $deleteForm = $this->createDeleteLeaserForm($qvLeaser);
-        $editForm = $this->createForm('AppBundle\Form\qvLeaserType', $qvLeaser);
-        $editForm->handleRequest($request);
         
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+        $data = array();
+        $qvUserPassport = new qvUserPassport();
+
+         $editForm = $this->createFormBuilder($data)
+            ->add('name', TextType::class)
+            ->add('bin', NumberType::class)
+            ->add('firstname', TextType::class)
+            ->add('lastname', TextType::class)
+            ->add('patronimic', TextType::class)
+            ->add('birthdate', BirthdayType::class, array(
+                'placeholder' => array(
+                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+                )
+            )
+        )
+            ->add('gender',  EntityType::class, array(
+                'class' => 'AppBundle\Entity\qvGender')
+            )
+            ->getForm()
+        ;
+        $editForm->handleRequest($request);
+
+       if ($editForm->isSubmitted() && $form->isValid()) {
+          
+           $em = $this->getDoctrine()->getManager();
+
+           $myrole = $em->getRepository('AppBundle:qvRole')->findOneById('2');
+
+           $data = $form->getData();
+            
+            $qvLeaser->SetName($data['name']);
+            $qvLeaser->SetBin($data['bin']);
+            
             $em->persist($qvLeaser);
             $em->flush();
-            
+
+            $qvUserPassport->setFirstname($data['firstname']);
+            $qvUserPassport->setLastname($data['lastname']);
+            $qvUserPassport->setPatronimic($data['patronimic']);
+            $qvUserPassport->setBirthdate($data['birthdate']);
+            $qvUserPassport->setGender($data['gender']);
+            $qvUserPassport->setUser($qvUser);
+
+            $em->persist($qvLeaser);
+            $em->flush();
+
             return $this->redirectToRoute('leasers_list', array('id' => $qvLeaser->getId()));
         }
         return $this->render('AppBundle:AdminBC:leasers_control/leasers/edit_leaser.html.twig', array(
         'qvLeaser' => $qvLeaser,
+        'qvUserPassport' => $qvUserPassport,
         'edit_form' => $editForm->createView(),
         'delete_form' => $deleteForm->createView(),
         ));
@@ -233,7 +273,7 @@ class AdminBCController extends Controller
     
     
      /**
-     * @Route("/leasers/contracts", name="contracts_list")
+     * @Route("/contracts", name="contracts_list")
      * @Method("GET")
      */
     public function index_contractsAction()
@@ -246,7 +286,7 @@ class AdminBCController extends Controller
     }   
         
          /**
-     * @Route("/leasers/contract/create_contract", name="contracts_create")
+     * @Route("/contracts/create_contract", name="contracts_create")
       * @Method({"GET", "POST"})
      */
     public function contractCreateAction(Request $request)
@@ -268,11 +308,12 @@ class AdminBCController extends Controller
      /**
      * Finds and displays a qvContract entity.
      *
-     * @Route("/leasers/contract/{id}/show", name="contracts_show")
+     * @Route("/contract/{id}/show", name="contracts_show")
      * @Method("GET")
      */
     public function showContractAction(qvContract $qvContract)
     {
+        $em = $this->getDoctrine()->getManager();
         $deleteForm = $this->createDeleteContractForm($qvContract);
         
         return $this->render('AppBundle:Adminbc:leasers_control/contracts/show_contract.html.twig', array(
@@ -283,7 +324,7 @@ class AdminBCController extends Controller
     /**
      * Displays a form to edit an existing qvContract entity.
      *
-     * @Route("/leasers/contract/{id}/edit", name="contracts_edit")
+     * @Route("/contract/{id}/edit", name="contracts_edit")
      * @Method({"GET", "POST"})
      */
     public function editContractAction(Request $request, qvContract $qvContract)
@@ -306,7 +347,7 @@ class AdminBCController extends Controller
     /**
      * Deletes a qvContract entity.
      *
-     * @Route("/leasers/contract/{id}/delete", name="contracts_delete")
+     * @Route("/contract/{id}/delete", name="contracts_delete")
      * @Method("DELETE")
      */
     public function deletecontractAction(Request $request, qvContract $qvContract)
@@ -361,7 +402,7 @@ $security = $query->getResult();
     /**
      * Creates a new qvCheckpoint entity.
      *
-     * @Route("/checkpoint/create_checkpoint", name="checkpoints_create")
+     * @Route("/checkpoints/create_checkpoint", name="checkpoints_create")
      * @Method({"GET", "POST"})
      */
     public function createCheckpointAction(Request $request)
@@ -423,7 +464,7 @@ $security = $query->getResult();
             $em->persist($qvCheckpoint);
             $em->flush();
             
-            return $this->redirectToRoute('checkpoints_list', array('id' => $qvCheckpoint->getId()));
+            return $this->redirectToRoute('buildings_show', array('id' => $qvCheckpoint->getId()));
         }
         
         return $this->render('AppBundle:Adminbc:checkpoints_control/edit_checkpoint.html.twig', array(
@@ -493,9 +534,19 @@ $security = $query->getResult();
     public function buildingCreateAction(Request $request)
     {
         $qvBuilding = new qvBuilding();
-        $form = $this->createForm('AppBundle\Form\qvBuildingType', $qvBuilding);
+        
+        $data = array();
+        $form = $this->createFormBuilder($data)
+        ->add('name', TextType::class, array(
+            'label' => 'Название здания',
+            'attr'=>array('class'=>'form-control form-input')))
+        ->getForm();
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $qvBuilding->setName($data['name']);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($qvBuilding);
             $em->flush();
@@ -565,7 +616,7 @@ $security = $query->getResult();
             $em = $this->getDoctrine()->getManager();
             $em->persist($qvBuilding);
             $em->flush();
-            return $this->redirectToRoute('buildings_show', array('id' => $qvBuilding->getId()));
+            return $this->redirectToRoute('buildings_list', array('id' => $qvBuilding->getId()));
         }
         return $this->render('AppBundle:AdminBC:buildings_control/buildings/edit_building.html.twig', array(
             'qvBuilding' => $qvBuilding,
@@ -608,7 +659,8 @@ $security = $query->getResult();
 /**
      * Lists all qvFloor entities.
      *
-     * @Route("building/floors_control", name="floors_list")
+     * @Route("/building/{qvBuilding}/floors_control", name="floors_list")
+     * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
      * @Method("GET")
      */
     public function floorsControlAction()
@@ -623,68 +675,67 @@ $security = $query->getResult();
     /**
      * Creates a new qvFloor entity.
      *
-     * @Route("/building/{id}/floors/new_floor", name="floors_create")
+     * @Route("/building/{qvBuilding}/floors/new_floor", name="floors_create")
+     * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
      * @Method({"GET", "POST"})
      */
-    public function createFloorAction(Request $request,qvBuilding $qvBuilding)
+    public function createFloorAction(Request $request, qvBuilding $qvBuilding)
     {
         $qvFloor = new qvFloor();
-        $qvFloor->setBuilding($qvBuilding);
-        $form = $this->createFormBuilder('AppBundle\Form\qvFloorType', $qvFloor);
+        $form = $this->createForm('AppBundle\Form\qvFloorType', $qvFloor);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($qvFloor);
             $em->flush();
 
-            return $this->redirectToRoute('floors_show', array(array('idb' => 
-                $qvBuilding->getId(), 'id' => $qvFloor->getId())));
-            return $this->redirectToRoute('buildings_show', array('id' => $qvBuilding->getId(), 'active_page'=>'floor'));
-        }
+            return $this->redirectToRoute('floors_show', array('qvBuilding' => $qvBuilding->getId(),'id' => $qvFloor->getId()));
+            }
         return $this->render('AppBundle:AdminBC:buildings_control/floors/create_floor.html.twig', array(
             'qvFloor' => $qvFloor,
+            'qvBuilding' => $qvBuilding,
             'form' => $form->createView(),
         ));
     }
     /**
      * Finds and displays a qvFloor entity.
      *
-     * @Route("/building/{idb}/floors/{id}/show", name="floors_show")
+     * @Route("/building/{qvBuilding}/floors/{id}/show", name="floors_show")
+     * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
      * @Method("GET")
      */
-    public function showFloorAction(qvFloor $qvFloor)
+    public function showFloorAction(qvFloor $qvFloor, qvBuilding $qvBuilding)
     {
         $deleteForm = $this->createDeleteFloorForm($qvFloor);
         $em = $this->getDoctrine()->getManager();
         $sector = $em->getRepository('AppBundle:qvFloor')->findSectorByFloor($qvFloor);
-        $build = $em->getRepository('AppBundle:qvFloor')->findBuildByFloor($qvFloor);
-
+      
         return $this->render('AppBundle:AdminBC:buildings_control/floors/show_floor.html.twig', array(
             'qvFloor' => $qvFloor,
+            'qvBuilding'=>$qvBuilding,
             'sector' => $sector,
-            'build' => $build,
             'delete_form' => $deleteForm->createView(),
         ));
     }
     /**
      * Displays a form to edit an existing qvFloor entity.
      *
-     * @Route("/building/{idb}/floors/{id}/edit", name="floors_edit")
+     * @Route("/building/{qvBuilding}/floors/{id}/edit", name="floors_edit")
+     * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
      * @Method({"GET", "POST"})
      */
-    public function editFloorAction(Request $request, qvFloor $qvFloor)
+    public function editFloorAction(Request $request, qvFloor $qvFloor, 
+        qvBuilding $qvBuilding)
     {
         $deleteForm = $this->createDeleteFloorForm($qvFloor);
         $editForm = $this->createForm('AppBundle\Form\qvFloorType', $qvFloor);
        
-        $qvBuilding = $this->getDoctrine()->getManager()->getRepository('AppBundle:qvFloor')->findBuildByFloor($qvFloor);
-
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($qvFloor);
             $em->flush();
-            return $this->redirectToRoute('floors_show', array('idb' => 
+            return $this->redirectToRoute('floors_show', array('qvBuilding' => 
                 $qvBuilding->getId(), 'id' => $qvFloor->getId()));
         }
         return $this->render('AppBundle:AdminBC:buildings_control/floors/edit_floor.html.twig', array(
@@ -709,7 +760,7 @@ $security = $query->getResult();
             $em->remove($qvFloor);
             $em->flush();
         }
-        return $this->redirectToRoute('floors_list');
+        return $this->redirectToRoute('buildings_list');
     }
     /**
      * Creates a form to delete a qvFloor entity.
@@ -729,10 +780,12 @@ $security = $query->getResult();
  /**
      * Lists all qvSector entities.
      *
-     * @Route("/sectors_control", name="sectors_list")
+     * @Route("/building/{qvBuilding}/floor/{qvFloor}/sectors", name="sectors_list")
+     * @ParamConverter("qvFloor", class="AppBundle:qvFloor")
+     * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
      * @Method("GET")
      */
-    public function listSectorsAction()
+    public function listSectorsAction(qvBuilding $qvBuilding, qvFloor $qvFloor)
     {
         $em = $this->getDoctrine()->getManager();
         $qvSectors = $em->getRepository('AppBundle:qvSector')->findAll();
@@ -743,73 +796,96 @@ $security = $query->getResult();
     /**
      * Creates a new qvSector entity.
      *
-     * @Route("/floor/{id}/sector/new", name="sectors_create")
+     * @Route("/building/{qvBuilding}/floor/{qvFloor}/sectors/new_sector", name="sectors_create")
+     * @ParamConverter("qvFloor", class="AppBundle:qvFloor")
+     * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
      * @Method({"GET", "POST"})
      */
-    public function createSectorAction(Request $request, qvFloor $qvFloor)
+    public function createSectorAction(Request $request, qvBuilding $qvBuilding, qvFloor $qvFloor)
     {
         $qvSector = new qvSector();
-        $qvSector->setFloor($qvFloor);
-        $form = $this->createForm('AppBundle\Form\qvSectorType', $qvSector);
+        $data = array();
+
+        $em = $this->getDoctrine()->getManager();
+        
+        $form = $this->createFormBuilder($data)
+        ->add('name', TextType::class, array(
+            'label'=>'Название сектора',
+            'attr'=>array('class'=>'form-control form-input ')))
+        ->getForm();
+        
         $form->handleRequest($request);
-       // $build = $this->getDoctrine()->getEntityManager
-       
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            
+            $data = $form->getData();
+            
+            $qvSector->setName($data['name']);
+            $qvSector->setFloor($qvFloor);
+
             $em->persist($qvSector);
             $em->flush();
-            return $this->redirectToRoute('sectors_show', array('id' => $qvSector->getId()));
+            return $this->redirectToRoute('sectors_show', array('qvBuilding' => 
+                $qvBuilding->getId(), 'qvFloor' => $qvFloor->getId(),'id' => $qvSector->getId()));
         }
-
-
 
         return $this->render('AppBundle:AdminBC:buildings_control/sectors/create_sector.html.twig', array(
             'qvSector' => $qvSector,
             'qvFloor' => $qvFloor,
+            'qvBuilding' =>$qvBuilding,
             'form' => $form->createView(),
         ));
     }
     /**
      * Finds and displays a qvSector entity.
      *
-     * @Route("/sector/{id}/show", name="sectors_show")
+     * @Route("/building/{qvBuilding}/floor/{qvFloor}/sector/{id}/show", name="sectors_show")
+     * @ParamConverter("qvFloor", class="AppBundle:qvFloor")
+     * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
      * @Method("GET")
      */
-    public function showSectorAction(qvSector $qvSector)
+    public function showSectorAction(qvSector $qvSector, qvBuilding $qvBuilding, qvFloor $qvFloor)
     {
         $deleteForm = $this->createDeleteSectorForm($qvSector);
         $em = $this->getDoctrine()->getManager();
-
-       // $blid = $em->getRepository('AppBundle:qvSector')->findBuildById($qvSector);
-
- //       $flid = $em->getRepository('AppBundle:qvSector')->findFloorById($qvSector);
-//
         return $this->render('AppBundle:AdminBC:buildings_control/sectors/show_sector.html.twig', array(
             'qvSector' => $qvSector,
-  //          'blid' => $blid,
-    //          'flid' => $flid,
-            'delete_form' => $deleteForm->createView(),
+            'qvFloor' =>$qvFloor,
+            'qvBuilding'=>$qvBuilding,
+        'delete_form' => $deleteForm->createView(),
         ));
     }
     /**
      * Displays a form to edit an existing qvSector entity.
      *
-     * @Route("/sector/{id}/edit", name="sectors_edit")
+     * @Route("/building/{qvBuilding}/floor/{qvFloor}/sector/{id}/edit", name="sectors_edit")
+     * @ParamConverter("qvFloor", class="AppBundle:qvFloor")
+     * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
      * @Method({"GET", "POST"})
      */
-    public function editSectorAction(Request $request, qvSector $qvSector)
+    public function editSectorAction(Request $request, qvSector $qvSector, qvFloor $qvFloor, qvBuilding $qvBuilding)
     {
         $deleteForm = $this->createDeleteSectorForm($qvSector);
-        $editForm = $this->createForm('AppBundle\Form\qvSectorType', $qvSector);
+        
+        $editForm = $this->createFormBuilder($qvSector)
+        ->add('name', TextType::class, array(
+            'label'=>'Название сектора',
+            'attr'=> array('class'=>'form-control')))
+        ->getForm();
+
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($qvSector);
             $em->flush();
-            return $this->redirectToRoute('sectors_list', array('id' => $qvSector->getId()));
+            return $this->redirectToRoute('sectors_show', 
+                array('qvBuilding' => $qvBuilding->getId(), 'qvFloor' => 
+                    $qvFloor->getId(),'id' => $qvSector->getId()));
         }
         return $this->render('AppBundle:AdminBC:buildings_control/sectors/edit_sector.html.twig', array(
             'qvSector' => $qvSector,
+            'qvBuilding'=>$qvBuilding,
+            'qvFloor'=>$qvFloor,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -818,7 +894,7 @@ $security = $query->getResult();
      * Deletes a qvSector entity.
      *
      * @Route("/sector/{id}/delete", name="sectors_delete")
-     * @Method("DELETE")
+    * @Method("DELETE")
      */
     public function deleteSectorAction(Request $request, qvSector $qvSector)
     {
@@ -829,7 +905,7 @@ $security = $query->getResult();
             $em->remove($qvSector);
             $em->flush();
         }
-        return $this->redirectToRoute('sectors_list');
+        return $this->redirectToRoute('buildings_list');
     }
     /**
      * Creates a form to delete a qvSector entity.

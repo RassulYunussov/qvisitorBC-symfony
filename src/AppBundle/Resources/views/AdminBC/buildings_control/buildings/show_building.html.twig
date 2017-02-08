@@ -52,7 +52,7 @@
 			        	    	<div class="panel-heading">
 			        	        	Этажи данного здания
 			        	     <div class="text-right">
-							<a href="{{ path('floors_create', {'id': qvBuilding.id}) }}" class="btn btn-success btn-sm text-right">
+							<a href="{{ path('floors_create', {'qvBuilding': qvBuilding.id}) }}" class="btn btn-success btn-sm text-right">
 								Добавить этаж
 							</a>
 						</div>
@@ -71,14 +71,14 @@
 			        	   {% for floor in floors %}
 			        	   	<tr>
 			        	   		<td>
-									<a href="{{ path('floors_show', {'idb': qvBuilding.id ,'id': floor.id }) }}">
+									<a href="{{ path('floors_show', {'qvBuilding': qvBuilding.id ,'id': floor.id }) }}">
 									{{ floor.name }}
 									</a>
 								</td>
 								<td>
 									{% for sector in sectorlist %}
 										{% if sector.floor == floor.name %}
-											<a href="{{path('sectors_show', {'id': sector.id }) }}">
+											<a href="{{path('sectors_show', {'qvBuilding': qvBuilding.id, 'qvFloor': sector.floor.id, 'id': sector.id }) }}">
 	                						{{  sector.name }}, 
 	     									</a>
 										{% endif %} 

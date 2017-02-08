@@ -52,8 +52,11 @@
                         </div>
                                                     
             <div class="col-sm-6">
-                <div id="dataTables-example_filter" align="right" class="dataTables_filter">
-                    <a href="#" class="btn btn-success">Добавить этаж</a>
+            <div id="dataTables-example_filter" align="right" class="dataTables_filter">
+        <a href="{{ path('floors_create', {'idb': qvFloor.building.id })}}" 
+            class="btn btn-success">
+            Добавить этаж
+        </a>
                 </div><br>
             </div>
         </div>
@@ -111,7 +114,7 @@
             <li>
                 <a href="{{ path('floors_show', {'idb': qvFloor.building.id, 'id': qvFloor.id}) }}">Посмотеть информацию</a></li>
                 <li>
-                    <a href="{{ path('floors_edit', {'id': qvFloor.id}) }}">Изменить или удалить информацию</a></li>
+                    <a href="{{ path('floors_edit', {'idb': qvFloor.building.id,'id': qvFloor.id}) }}">Изменить или удалить информацию</a></li>
         </ul>
 </tr>   
 {% endfor %}    

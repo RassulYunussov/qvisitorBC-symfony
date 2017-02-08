@@ -17,8 +17,7 @@
                         <a class="btn btn-default" href="{{ path('main_page') }}">
                         <i class="fa fa-home"></i>Главная
                         </a>
-							<a class="btn btn-default" href="\adminbc\building\{{qvFloor.building.id}}\show">Управление зданиями</a>
-							<a class="btn btn-default" href="{{ path('floors_list') }}">Управление этажами</a>
+							<a class="btn btn-default" href="{{ path('buildings_show',{'id':qvBuilding.id}) }}">Управление зданиями</a>
 					</div>
 				{% endblock %}
 
@@ -46,7 +45,7 @@
                 <button type="submit" class="btn btn-default btn-sm">
                     Создать
                 </button>
-                <a href="{{ path('buildings_show', {'id': qvFloor.building.id}) }}" class="btn btn-default btn-sm">
+                <a href="{{ path('buildings_show', {'id': qvBuilding.id}) }}" class="btn btn-default btn-sm">
                     Отменить
                 </a>
                 {{ form_end(form) }}

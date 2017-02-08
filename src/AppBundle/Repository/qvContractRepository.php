@@ -10,4 +10,21 @@ namespace AppBundle\Repository;
  */
 class qvContractRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function findContractByLeaser($qvLeaser)
+	{
+        return $this->getEntityManager()
+        ->createQuery(
+          'SELECT contract.id, contract.name, contract.leaser, contract.startdate, contract.enddate,
+          contract.sectors from AppBundle:qvContract contract JOIN contract.leaser leaser  
+         	 WHERE contract.leaser = :name'
+            )->setParameter('name', $qvLeaser)->getResult();
+    }
+    public function findLeaserByContract($qvContract)
+	{
+        return $this->getEntityManager()
+        ->createQuery(
+          'SELECT contract from AppBundle:qvContract contract JOIN contract.leaser leaser  
+         	 WHERE contract.id = :id'
+            )->setParameter('id', $qvContract)->getResult();
+    }
 }

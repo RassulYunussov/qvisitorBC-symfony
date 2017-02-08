@@ -39,6 +39,9 @@
                 		            <i class="fa fa-bar-chart-o fa-fw">
                 		            </i>
                 		           	Этаж № {{ qvFloor.name }} 
+                		           	<div class="text-right">
+                		           	<a class="btn btn-success btn-xs" href="{{ path('sectors_create', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id}) }}">Добавить сектор</a>
+                		           </div>
                 				</div>
                         <!-- /.panel-heading -->
     <div class="panel-body">
@@ -56,12 +59,11 @@
 							Включает сектора
 						</td>
 						<td>
-								{% for sector in sector %}
-										<a href="{{path('sectors_show', 
-											{'id': sector.id }) }}">
-                								{{  sector.name }}, 
-     									</a>
-							{% endfor %}
+{% for sector in sector %}
+<a href="{{path('sectors_show', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id,'id':sector.id }) }}">
+{{  sector.name }}, 
+	</a>
+{% endfor %}
 						</td>
 					</tr>
 					<tr>
@@ -70,7 +72,7 @@
 						<td>
 							<div class="text-right">
 							<br>
-							<a href="{{ path('floors_edit', { 'idb': qvFloor.building.id,'id': qvFloor.id }) }}" align="right" class="btn  btn-default">
+							<a href="{{ path('floors_edit', { 'qvBuilding': qvBuilding.id,'id': qvFloor.id }) }}" align="right" class="btn  btn-default">
 								Редактировать
 							</a>
 							</div>

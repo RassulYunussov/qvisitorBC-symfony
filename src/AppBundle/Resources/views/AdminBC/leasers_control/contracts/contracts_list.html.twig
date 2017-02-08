@@ -126,7 +126,7 @@
                     </button>
                     <ul class="dropdown-menu pull-right" role="menu">
                         <li>
-                            <a href="{{ path('contracts_show', { 'id': qvContract.id }) }}">
+                            <a href="{{ path('contracts_show', { 'idl': qvContract.leaser.id, 'id': qvContract.id }) }}">
                                 Посмотеть контракт
                             </a>
                         </li>

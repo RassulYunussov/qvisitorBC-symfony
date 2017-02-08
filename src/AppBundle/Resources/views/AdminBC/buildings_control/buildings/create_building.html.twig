@@ -24,31 +24,37 @@
         <h1 class="page-header">Создание нового здания</h1>
         <!-- /.col-lg-12 -->
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-8">
         <div class="form-group">
+            <div class="col-md-6">
             <div id="qv_checkpoint">
-                <ul>
                 {{ form_start(form) }}
-                 {% for child in form %}
-                <li>
-                         {{ form_label(child) }}
-                    {{ form_widget(child, {'attr': {'class':'form-control'}}) }}
-    </li>
-{% endfor %}
-    </ul>           
+                 {{ form_row(form.name) }}
     <br>
     <div class="form-inline form-input">
+        <div class="text-right">
+        <table align="right" class="text-right">
+            <tbody class="text-right">
+                <tr class="text-right">
+            <td class="text-right">
                 <button type="submit" class="btn btn-default btn-sm">
                     Создать
-                </button>
+                </button></td>
+                <td class="text-right">
                 <a href="\adminbc\building\{{qvBuilding.id}}\show" class="btn btn-default btn-sm">
                     Отменить
                 </a>
+            </td>
                 {{ form_end(form) }}
-                </div> 
+                </tr>
+            </tbody>
+        </table> 
+         </div>
+     </div>
         </div>
-                <!-- /.col-lg-6-->
+                <!-- /.col-lg-8-->
             </div>
+        </div>
             <!-- /.row -->
         </div>
     </div>

@@ -14,9 +14,9 @@
                         <a class="btn btn-default" href="{{ path('main_page') }}">
                         <i class="fa fa-home"></i>Главная
                         </a>
-							<a class="btn btn-default" href="\adminbc\building\{{qvFloor.building.id}}\show">Управление зданиями</a>
-							<a class="btn btn-default" href="\adminbc\building\{{qvFloor.building.id}}\show	">Управление этажами</a>
-							<a class = "btn btn-default" href="{{ path('floors_show', {'idb':qvFloor.building.id, 'id':qvFloor.id}) }}">Информация об этаже</a>
+							<a class="btn btn-default" href="{{ path('buildings_list') }}">Управление зданиями</a>
+							<a class="btn btn-default" href="{{ path('buildings_show', {'id':qvBuilding.id}) }}">Управление этажами</a>
+							<a class = "btn btn-default" href="{{ path('floors_show', {'qvBuilding':qvFloor.building.id, 'id':qvFloor.id}) }}">Информация об этаже</a>
 					</div>
 				{% endblock %}
 
