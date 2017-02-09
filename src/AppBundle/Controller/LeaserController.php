@@ -169,49 +169,91 @@ class LeaserController extends Controller
     }
 
     /**
-     * @Route("/orders/create-order", name="create_or")
-     * @Method({"GET", "POST"})
-     */
-    public function createOrAction(Request $request)
-    {
-
-        $qvOrder = new qvOrder();
-        $form = $this->createForm('AppBundle\Form\qvOrderType', $qvOrder);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($qvOrder);
-            $em->flush();
-
-            return $this->redirectToRoute('show_orders');
-        }
-
-        return $this->render('AppBundle:Leaser:create_order.html.twig', array(
-            'qvOrder' => $qvOrder,
-            'form' => $form->createView(),
-        ));
-    }
-    
-    /**
      * @Route("/orders/{id}/edit-order", name="edit_order")
      * @Method({"GET", "POST"})
      */
     public function editOrderAction(Request $request, qvOrder $qvOrder)
     {
-        $editForm = $this->createForm('AppBundle\Form\qvOrderType', $qvOrder);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $this->get('security.token_storage')->getToken()->getUser()->getId();
+        $qvVisitors=$em->getRepository('AppBundle:qvVisitor')->getVisitor($user);
+        $editForm = $this->createFormBuilder($qvOrder)
+            ->add('sdate', DateType::class, array(
+                'label'=>'Дата открытия заявки',
+                'widget'=>'single_text',
+                'attr'   =>  array(
+                'class'   => 'form-margin type_date-inline'))
+            )
+            ->add('opentime', TimeType::class, array(
+                'label'=>'Время открытия заявки',
+                'widget'=>'single_text',
+                'attr'   =>  array(
+                'class'   => 'form-margin type_date-inline'))
+            ) 
+            ->add('edate', DateType::class, array(                
+                'label'=>'Дата закрытия заявки',
+                'widget'=>'single_text',
+                'attr'   =>  array(
+                'class'   => 'form-margin type_date-inline'))
+            ) 
+            ->add('closetime', TimeType::class, array(
+                'label'=>'Время закрытия заявки',
+                'widget'=>'single_text',
+                'attr'   =>  array(
+                'class'   => 'form-margin type_date-inline'))
+            ) 
+            ->add('ordertype', EntityType::class, array(
+                'class' => 'AppBundle:qvOrderType',
+                'query_builder' => function (qvOrderTypeRepository $er) {
+                        return $er->createQueryBuilder('u')
+                        ->orderBy('u.name', 'ASC');
+                },
+                'choice_label' => 'name',
+                'label'=>'Тип заявки',
+                'attr'   =>  array(
+                'class'   => 'form-control form-margin')))
+            ->add('visitors', EntityType::class, [
+                'class'     => 'AppBundle:qvVisitor',
+                'query_builder' => function (qvVisitorRepository $repo) {
+                    return $repo->createQueryBuilder('f')
+                        ->where('f.id >= :id')
+                        ->setParameter('id', 1);
+                },
+                'multiple'  => true
+            ])
+           ->add('select', ButtonType::class, array(
+                    'label'=>'Выбрать', 
+                'attr' =>array(
+                    'class'=> 'btn btn-default',
+                    'data-toggle'=> 'modal',
+                    'data-target'=>'#myModal'), ))
+            ->getForm()
+        ;
+    
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+
             $em = $this->getDoctrine()->getManager();
+
+            $qvUser = new qvUser();
+            $qvUser = $this->get('security.token_storage')->getToken()->getUser();
+            $qvOrder = $editForm->getData();
+            $qvOrder->setUser($qvUser);
             $em->persist($qvOrder);
             $em->flush();
 
-            return $this->redirectToRoute('edit_order', array('id' => $qvOrder->getId()));
-        }
+           
+
+
+
+    return $this->redirectToRoute('show_orders');
+}
 
         return $this->render('AppBundle:Leaser:edit_order.html.twig', array(
-            'qvOrder' => $qvOrder,
+            'visitors'=>$qvVisitors,
             'edit_form' => $editForm->createView(),
         ));
     }

@@ -26,7 +26,7 @@
                 <!-- /.col-lg-12 -->
             </div>
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-8">
                 
                     <div class="panel panel-default">
                     <div class="panel-heading">
@@ -35,34 +35,71 @@
                       <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-12">
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input class="btn btn-default" type="submit" value="Изменить" />
-    {{ form_end(edit_form) }}
-<!--
-                                    <h3>Информация о посетителе</h3>
-                                    <form role="form">
+                                    {{form_start(edit_form)}}
+                                <table class="col-lg-12">
+                                    <tbody>
+                                      <tr>
+                                        <td class="td-padding">{{ form_label(edit_form.sdate) }}
+                                            {{ form_errors(edit_form.sdate) }}
+                                            {{ form_widget(edit_form.sdate, {'attr': {'class':'form-control'}}) }}
+                                        </td>
+                                        <td class="td-padding">{{ form_label(edit_form.opentime) }}
+                                            {{ form_errors(edit_form.opentime) }}
+                                            {{ form_widget(edit_form.opentime, {'attr': {'class':'form-control'}}) }}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td class="td-padding">{{ form_label(edit_form.edate) }}
+                                            {{ form_errors(edit_form.edate) }}
+                                            {{ form_widget(edit_form.edate, {'attr': {'class':'form-control'}}) }}
+                                        </td>
+                                        <td class="td-padding">{{ form_label(edit_form.closetime) }}
+                                            {{ form_errors(edit_form.closetime) }}
+                                            {{ form_widget(edit_form.closetime, {'attr': {'class':'form-control'}}) }}
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                </table>
+                                <div  class="td-padding">{{ form_label(edit_form.ordertype) }}
+                                     {{ form_errors(edit_form.ordertype) }}
+                                     {{ form_widget(edit_form.ordertype, {'attr': {'class':'form-control'}}) }}</div>
+
+                                <div style="display:none">{{ form_label(edit_form.visitors) }}
+                                     {{ form_errors(edit_form.visitors) }}
+                                     {{ form_widget(edit_form.visitors) }}</div>
+                                <div  class="td-padding" id='visitors-input'>
+                                    <label>Посетители</label>
+                                </div>
+                                <div class="text-right">{{ form_label(edit_form.select) }}
+                                     {{ form_widget(edit_form.select) }}</div>
+                                     <div class="td-padding">
+                                <input type="submit" class="btn btn-primary" value="Создать" />
+                                <a class="btn btn-default" href="{{path('show_orders')}}">Отмена</a></div>
+                                    {{form_end(edit_form)}}
+<!--                                      <h3>Информация о посетителе</h3>
+                                  <form role="form">
                                         <div class="form-group has-success">
                                             <label class="control-label" for="inputSuccess">Фамилия посетителя</label>
-                                            <input type="text" class="form-control" name="first_name" >
+                                            <input type="text" class="form-control" id="inputSuccess" name="first_name" required>
                                         </div>
                                         <div class="form-group has-warning">
                                             <label class="control-label" for="inputWarning">Имя посетителя</label>
-                                            <input type="text" class="form-control" name = "last_name">
+                                            <input type="text" class="form-control" id="inputWarning" name = "last_name" required>
                                         </div>
                                         <div class="form-group has-error">
                                             <label class="control-label" for="inputError">Отчество посетителя</label>
-                                            <input type="text" class="form-control" name="patronymic">
+                                            <input type="text" class="form-control" id="inputError" name="patronymic">
                                         </div>
-                                           <button type="submit" class="btn btn-default">Изменить заявку</button>                                                                              
-                                           <button type="reset" class="btn btn-default">Отменить</button>
-                                    </form>
-                                   -->
+                                           <button type="submit" class="btn btn-default">Создать заявку</button>                                                                                            
+                                           <button type="reset" class="btn btn-default">Очистить форму</button>
+                                    </form>-->
+                                   
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->
                             </div>
                             <!-- /.row (nested) -->
                         </div>
+
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
@@ -76,4 +113,91 @@
     </div>
     <!-- /#wrapper -->
     
-            {% endblock %}
+   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel">Выбрать к кому посетитель</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                                <div class="form-group input-group">
+                                                                    <input type="text" class="form-control" placeholder="Найти">
+                                                                    <span class="input-group-btn"><button class="btn btn-default" type="button"><i class="fa fa-search"></i></button></span>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="dataTable_wrapper">
+                                                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Название организации</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="visitors">
+                                                                {%for visitor in visitors%}
+                                                                <tr value="{{visitor.id}}" name="{{visitor.firstname}}">
+                                                                <td  name"tdf" data-dismiss="modal">{{visitor.firstname}}</td>
+                                                                </tr>
+                                                                {%endfor%}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                                                </div>
+                                            </div>
+                                        <!-- /.modal-content -->
+                                        </div>
+                                    <!-- /.modal-dialog -->
+                                    </div>
+            {% endblock %}            
+{% block js %}
+<script> 
+$(function (){
+
+    $('#form_visitors option:selected').each(function(){
+        $('#visitors-input').append('<div class="visitor form-group input-group"><input id="'+$(this).attr('value')+'" type="text" disabled="true" class="form-control form-margin" value="'+$(this).text()+'"/><span class="input-group-btn"  id="'+$(this).attr('value')+'"><button  class="btn btn-default" id="delete" type="button"><i class="fa fa-times"></i></button></span></div>');    
+    });
+    $('#delete').click(function(){
+        $("#form_visitors option[value='" + $(this).parent().attr('id') + "']").prop("selected", false);
+        console.log($(this).parent().attr('id'));
+        $(this).parent().parent().remove();
+    });
+
+    var array = [];
+    $('#visitors tr').click(function(event){
+        var name = $(this).attr('name');
+        var i=0;
+        $('#visitors-input').find('input:text').each(function(){
+              if(  $(this).attr('value') == name){
+                i++;
+              }
+        })
+        if (i == 0){
+        $('#visitors-input').append('<div class="visitor form-group input-group"><input id="'+$(this).attr('value')+'" type="text" disabled="true" class="form-control form-margin" value="'+$(this).attr('name')+'"/><span class="input-group-btn"  id="'+$(this).attr('value')+'"><button  class="btn btn-default" id="delete" type="button"><i class="fa fa-times"></i></button></span></div>');
+
+            $("#form_visitors option[value='" + $(this).attr('value') + "']").prop("selected", true);
+            console.log($(this).attr('value'));
+            array.push($(this).attr('value'));}
+
+    $('#delete').click(function(){
+        $("#form_visitors option[value='" + $(this).parent().attr('id') + "']").prop("selected", false);
+        console.log($(this).parent().attr('id'));
+        $(this).parent().parent().remove();
+    });
+    console.log(array);
+    });
+
+    $('input[id="hello"]').click(function(){
+        $('select[name="form[visitors][]"]').val(array);
+        console.log($('select[name="form[visitors][]"]').val(array));
+    })
+});
+
+
+</script>
+{% endblock %}
