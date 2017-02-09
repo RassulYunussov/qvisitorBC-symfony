@@ -83,7 +83,7 @@
                                     <ul class="dropdown-menu pull-right" role="menu">
                                         <li><a href="{{path('edit_order', {'id': qvOrder.id})}}">Изменить заявку</a>
                                         </li>
-                                        <li><a href="#">Удалить заявку</a>
+                                        <li><a href="{{path('delete_order', {'id': qvOrder.id})}}">Удалить заявку</a>
                                         </li>
                                         </ul>
                                 </div>
@@ -101,4 +101,14 @@
                 <!-- /.col-lg-12 -->
             </div>
 		</div>
+{% endblock %}
+{% block js %}
+    
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+                responsive: true
+        });
+    });
+    </script>
 {% endblock %}

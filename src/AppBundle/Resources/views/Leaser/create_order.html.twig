@@ -37,10 +37,43 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     {{form_start(form)}}
-                                    {{form_widget(form)}}
+                                <table>
+                                    <tbody>
+                                      <tr>
+                                        <td>{{ form_label(form.sdate) }}
+                                            {{ form_errors(form.sdate) }}
+                                            {{ form_widget(form.sdate, {'attr': {'class':'form-control'}}) }}
+                                        </td>
+                                        <td>{{ form_label(form.opentime) }}
+                                            {{ form_errors(form.opentime) }}
+                                            {{ form_widget(form.opentime, {'attr': {'class':'form-control'}}) }}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>{{ form_label(form.edate) }}
+                                            {{ form_errors(form.edate) }}
+                                            {{ form_widget(form.edate, {'attr': {'class':'form-control'}}) }}
+                                        </td>
+                                        <td>{{ form_label(form.closetime) }}
+                                            {{ form_errors(form.closetime) }}
+                                            {{ form_widget(form.closetime, {'attr': {'class':'form-control'}}) }}
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                </table>
+                                <div>{{ form_label(form.ordertype) }}
+                                     {{ form_errors(form.ordertype) }}
+                                     {{ form_widget(form.ordertype, {'attr': {'class':'form-control'}}) }}</div>
 
-                                    <input type="submit" class="btn btn-primary" value="Создать" />
-                                     <a class="btn btn-default" href="{{path('show_orders')}}">Отмена</a>
+                                <div style="display:none">{{ form_label(form.visitors) }}
+                                     {{ form_errors(form.visitors) }}
+                                     {{ form_widget(form.visitors) }}</div>
+                                <div id='visitors-input'></div>
+                                <div>{{ form_label(form.select) }}
+                                     {{ form_widget(form.select) }}</div>
+                                <input type="submit" class="btn btn-primary" value="Создать" />
+                                <input id ="hello" type="button" class="btn btn-primary" value="Соз" />
+                                <a class="btn btn-default" href="{{path('show_orders')}}">Отмена</a>
                                     {{form_end(form)}}
 <!--                                      <h3>Информация о посетителе</h3>
                                   <form role="form">
@@ -66,6 +99,8 @@
                             <!-- /.row (nested) -->
                         </div>
                         <!-- /.panel-body -->
+                       
+  
                     </div>
                     <!-- /.panel -->
                 </div>
@@ -77,6 +112,76 @@
 
     </div>
     <!-- /#wrapper -->
-    
+   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel">Выбрать к кому посетитель</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                                <div class="form-group input-group">
+                                                                    <input type="text" class="form-control" placeholder="Найти">
+                                                                    <span class="input-group-btn"><button class="btn btn-default" type="button"><i class="fa fa-search"></i></button></span>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="dataTable_wrapper">
+                                                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Название организации</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="visitors">
+                                                                {%for visitor in visitors%}
+                                                                <tr value="{{visitor.id}}" name="{{visitor.firstname}}">
+                                                                <td  name"tdf" data-dismiss="modal">{{visitor.firstname}}</td>
+                                                                </tr>
+                                                                {%endfor%}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                                                </div>
+                                            </div>
+                                        <!-- /.modal-content -->
+                                        </div>
+                                    <!-- /.modal-dialog -->
+                                    </div>
 
             {% endblock %}
+            {% block js %}
+                <script> 
+$(function (){
+
+    var array = [];
+    $('#visitors tr').click(function(event){
+        var name = $(this).attr('name');
+        var i=0;
+        $('#visitors-input').find('input:text').each(function(){
+              if(  $(this).attr('value') == name){
+                i++;
+              }
+        })
+        if (i == 0){
+        $('#visitors-input').append('<input id="'+$(this).attr('value')+'" type="text" disabled="true" class="form-control" value="'+$(this).attr('name')+'"/>');
+            $("#form_visitors option[value='" + $(this).attr('value') + "']").prop("selected", true);
+            array.push($(this).attr('value'));}
+
+    console.log(array);
+    });
+
+    $('input[id="hello"]').click(function(){
+        $('select[name="form[visitors][]"]').val(array);
+        console.log($('select[name="form[visitors][]"]').val(array));
+    })
+});
+
+
+</script>
+{% endblock %}
