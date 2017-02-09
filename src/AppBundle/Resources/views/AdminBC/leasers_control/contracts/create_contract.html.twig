@@ -32,14 +32,12 @@
             <div id="qv_checkpoint">
    			 {{ form_start(form) }}
         {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+        <br>
+        <table align="right"><tbody><tr><td>
+        <input class="btn btn-default" type="submit" value="Создать" /></td>
+        <td><a class="btn btn-default" href="{{ path('contracts_list') }}">Отменить</a>
+        </td></tr></tbody></table>
     {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('contract_index') }}">Back to the list</a>
-        </li>
-    </ul>
 </div>
 </div>
 	   <!-- /.col-lg-6-->
