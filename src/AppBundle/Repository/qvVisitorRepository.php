@@ -25,7 +25,7 @@ class qvVisitorRepository extends \Doctrine\ORM\EntityRepository
 									left join rf_visitor_order on rf_visitor_order.visitorid = qvvisitor.id
 									left join qvorder on qvorder.id = rf_visitor_order.orderid
 									left join qvuser on qvuser.id = qvorder.userid
-									where qvuser.id = ?');
+									where qvuser.id = ? group by qvvisitor.id');
 		$statement->bindValue(1, $qvUser);
 		$statement->execute();
 		$result = $statement->fetchAll();

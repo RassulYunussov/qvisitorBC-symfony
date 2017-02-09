@@ -146,19 +146,14 @@ class LeaserController extends Controller
             $qvOrder->setClosetime($data['closetime']);
             $qvOrder->setOrdertype($data['ordertype']);
             $qvOrder->setUser($qvUser);
-            $em->persist($qvOrder);
-            $em->flush();
-
-            $myOrder = $em->getRepository('AppBundle:qvOrder')->findOneBy(array('id'=>11));
 
             foreach ($data['visitors'] as $visitor) {
                 
-               
-                    $qvVisitors->addOrders($myOrder);
-                    $em->persist($qvVisitors);
-                    $em->flush();
-               
+               $qvOrder->addVisitors($visitor);
                 }
+
+            $em->persist($qvOrder);
+            $em->flush();
 
            
 
