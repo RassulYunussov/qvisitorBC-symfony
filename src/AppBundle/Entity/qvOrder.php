@@ -75,7 +75,15 @@ class qvOrder
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvVisitor", mappedBy="orders")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\qvVisitor", inversedBy="orders")
+     * @ORM\JoinTable(name="rf_visitor_order",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="orderid", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="visitorid", referencedColumnName="id")
+     *   }
+     * )
      */
     private $visitors;
 
