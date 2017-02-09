@@ -71,15 +71,20 @@
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             Информация о контрактах данного арендатора
+                             <a class="btn btn-success btn-xs" href="{{ path('contracts_create', {'qvLeaser':qvLeaser.id}) }}">Новый контракт</a>
+                                 </div>
                         <div class="text-right" align="right">
-                             <table><tbody><tr><td><a class="btn btn-success btn-xs" href="{{ path('contracts_create', {'qvLeaser':qvLeaser.id}) }}">Новый контракт</a></td></tr></tbody></table>
+                          
+                            
                         </div>
-                        </div>
+                   
                         <div class="panel-body">
                             {% for contracts in contracts %}
+                            
+                            {{  loop.index  }} Контракт&nbsp;&nbsp; - &nbsp;&nbsp;
                             <a href="{{ path('contracts_show', {'qvLeaser':qvLeaser.id,'id': contracts.id}) }}">
                              {{ contracts.name }}
-                            </a>
+                            </a><br>
 
                         {% endfor %}
                         </div>

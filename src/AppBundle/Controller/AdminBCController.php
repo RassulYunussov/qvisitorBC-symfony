@@ -343,7 +343,6 @@ class AdminBCController extends Controller
                 'widget' => 'single_text', 
                 'format' =>'dd/MM/yyyy',
                 'html5' => false,
-                'attr' => ['class' => 'js-datepicker'],
                 'attr' => array(
                     'class' => 'form-control type_date-inline'),
                 'placeholder' => 'Укажите дату в формате дд/мм/гггг',
@@ -366,7 +365,7 @@ class AdminBCController extends Controller
             $qvContract->setEnddate($data['enddate']);
             $qvContract->setLeaser($qvLeaser);
             foreach ($data['sectors'] as $sector) {
-            $qvContract->addSectors($data['sectors']);
+            $qvContract->addSectors($sector);
         }
             
 
@@ -390,11 +389,13 @@ class AdminBCController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $deleteForm = $this->createDeleteContractForm($qvContract);
-        $qvContracts = $em->getRepository('AppBundle:qvContract')->findAll();
+        $qvContracts = $em->getRepository('AppBundle:qvContract')->findOneByLeaser($qvLeaser);
+        $onecontr = $em->getRepository('AppBundle:qvContract')->findOneById($qvContract);
         return $this->render('AppBundle:Adminbc:leasers_control/contracts/show_contract.html.twig', array(
             'qvContract' => $qvContract,
             'qvContracts' => $qvContracts,
             'qvLeaser'=> $qvLeaser,
+            'onecontr' => $onecontr,
             'delete_form' => $deleteForm->createView(),
         ));
     }
