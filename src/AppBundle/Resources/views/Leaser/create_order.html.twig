@@ -35,46 +35,47 @@
                         </div>
                       <div class="panel-body">
                             <div class="row">
-                                <div class="col-lg-10">
+                                <div class="col-lg-12">
                                     {{form_start(form)}}
-                                <table>
+                                <table class="col-lg-12">
                                     <tbody>
                                       <tr>
-                                        <td>{{ form_label(form.sdate) }}
+                                        <td class="td-padding">{{ form_label(form.sdate) }}
                                             {{ form_errors(form.sdate) }}
                                             {{ form_widget(form.sdate, {'attr': {'class':'form-control'}}) }}
                                         </td>
-                                        <td>{{ form_label(form.opentime) }}
+                                        <td class="td-padding">{{ form_label(form.opentime) }}
                                             {{ form_errors(form.opentime) }}
                                             {{ form_widget(form.opentime, {'attr': {'class':'form-control'}}) }}
                                         </td>
                                       </tr>
                                       <tr>
-                                        <td>{{ form_label(form.edate) }}
+                                        <td class="td-padding">{{ form_label(form.edate) }}
                                             {{ form_errors(form.edate) }}
                                             {{ form_widget(form.edate, {'attr': {'class':'form-control'}}) }}
                                         </td>
-                                        <td>{{ form_label(form.closetime) }}
+                                        <td class="td-padding">{{ form_label(form.closetime) }}
                                             {{ form_errors(form.closetime) }}
                                             {{ form_widget(form.closetime, {'attr': {'class':'form-control'}}) }}
                                         </td>
                                       </tr>
                                     </tbody>
                                 </table>
-                                <div>{{ form_label(form.ordertype) }}
+                                <div  class="td-padding">{{ form_label(form.ordertype) }}
                                      {{ form_errors(form.ordertype) }}
                                      {{ form_widget(form.ordertype, {'attr': {'class':'form-control'}}) }}</div>
 
                                 <div style="display:none">{{ form_label(form.visitors) }}
                                      {{ form_errors(form.visitors) }}
                                      {{ form_widget(form.visitors) }}</div>
-                                <div id='visitors-input'>
+                                <div  class="td-padding" id='visitors-input'>
                                     <label>Посетители</label>
                                 </div>
                                 <div class="text-right">{{ form_label(form.select) }}
                                      {{ form_widget(form.select) }}</div>
+                                     <div class="td-padding">
                                 <input type="submit" class="btn btn-primary" value="Создать" />
-                                <a class="btn btn-default" href="{{path('show_orders')}}">Отмена</a>
+                                <a class="btn btn-default" href="{{path('show_orders')}}">Отмена</a></div>
                                     {{form_end(form)}}
 <!--                                      <h3>Информация о посетителе</h3>
                                   <form role="form">
@@ -170,10 +171,17 @@ $(function (){
               }
         })
         if (i == 0){
-        $('#visitors-input').append('<input id="'+$(this).attr('value')+'" type="text" disabled="true" class="form-control form-margin" value="'+$(this).attr('name')+'"/>');
+        $('#visitors-input').append('<div class="visitor form-group input-group"><input id="'+$(this).attr('value')+'" type="text" disabled="true" class="form-control form-margin" value="'+$(this).attr('name')+'"/><span class="input-group-btn"  id="'+$(this).attr('value')+'"><button  class="btn btn-default" id="delete" type="button"><i class="fa fa-times"></i></button></span></div>');
+
             $("#form_visitors option[value='" + $(this).attr('value') + "']").prop("selected", true);
+            console.log($(this).attr('value'));
             array.push($(this).attr('value'));}
 
+    $('#delete').click(function(){
+        $("#form_visitors option[value='" + $(this).parent().attr('id') + "']").prop("selected", false);
+        console.log($(this).parent().attr('id'));
+        $(this).parent().parent().remove();
+    });
     console.log(array);
     });
 
