@@ -27,52 +27,65 @@
           <h1 class="page-header">Создание нового контракта</h1>
         <!-- /.col-lg-12 -->
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-12">
         <div class="form-group">
-            <div id="qv_checkpoint">
-   			 {{ form_start(form) }}
-             <table>
-                <tbody>
-                    <tr>
-                        <td>
-                            {{ form_label(form.name) }}
-                            {{ form_errors(form.name) }}
-                            {{ form_widget(form.name, {'attr': {'class':'form-control'}}) }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            {{ form_label(form.startdate) }}
-                            {{ form_errors(form.startdate) }}
-                            {{ form_widget(form.startdate, {'attr': {'class':'form-control'}}) }}
-                        </td>
-                        <td>  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>    </td>
-                        <td>
-                            {{ form_label(form.enddate) }}
-                            {{ form_errors(form.enddate) }}
-                            {{ form_widget(form.enddate, {'attr': {'class':'form-control'}}) }}
-                        </td>
-                    </tr>
-                    <br><br>
-                    <tr>
-                        <td><br>
-                            {{ form_label(form.sectors) }}
-                            {{ form_errors(form.sectors) }}
-                            {{ form_widget(form.sectors, {'attr': {'class':'form-control'}}) }}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        <br>
-        <table align="right"><tbody><tr><td>
-        <input class="btn btn-default" type="submit" value="Создать" /></td>
-        <td><a class="btn btn-default" href="{{ path('contracts_list') }}">Отменить</a>
-        </td>
-        {{form_end(form)}}
+            <div id="qv_contract">
+   			{{ form_start(form) }}
+    <table>
+        <tbody>
+        <tr>
+            <td class="col-md-3">
+                {{ form_label(form.name) }}
+                {{ form_errors(form.name) }}
+                {{ form_widget(form.name, {'attr': {'class':'form-control'}}) }}
+            </td>
+            <td class="col-md-3">
+                {{ form_label(form.startdate) }}
+                {{ form_errors(form.startdate) }}
+                {{ form_widget(form.startdate, {'attr': {'class':'form-control'}}) }}
+            </td>
+
+            <td class="col-md-3">
+                {{ form_label(form.enddate) }}
+                {{ form_errors(form.enddate) }}
+                {{ form_widget(form.enddate, {'attr': {'class':'form-control'}}) }}
+            </td>
         </tr>
-    </tbody>
-</table>
-    {{ form_end(form) }}
+        <tr>
+            <td class="col-md-4">
+                {{ form_label(form.buildings) }}
+                {{ form_errors(form.buildings) }}
+                {{ form_widget(form.buildings, {'attr': {'class':'form-control'}}) }}
+            </td>
+
+            <td class="col-md-4">
+                {{ form_label(form.floors) }}
+                {{ form_errors(form.floors) }}
+                {{ form_widget(form.floors, {'attr': {'class':'form-control'}}) }}
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-4">
+                {{ form_label(form.sectors) }}
+                {{ form_errors(form.sectors) }}
+                {{ form_widget(form.sectors, {'attr': {'class':'form-control'}}) }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+        <br>
+        <table align="right">
+            <tbody>
+                <tr>
+                    <td>
+        <input class="btn btn-default" type="submit" value="Создать" /></td>
+        <td><a class="btn btn-default" href="{{ path('leasers_show', {'id':qvLeaser.id}) }}">Отменить</a>
+                    </td>
+        {{form_end(form)}}
+                </tr>
+            </tbody>
+        </table>
 </div>
 </div>
 	   <!-- /.col-lg-6-->
@@ -81,4 +94,50 @@
         </div>
     </div>
     <!-- /#page-wrapper -->
+    <script src="{{asset('bootstrap1/bower_components/jquery/dist/jquery.min.js')}}"></script>
+
+<script> 
+function loadFloors(buildingId){
+    $('#form_floors').empty();
+    $.ajax({
+        type: "GET",
+        url: "{{ path('floors')}}",
+        data: {'id':buildingId},
+        success: function(data){
+                    $.each(JSON.parse(data),function(k,v){
+                                                $('#form_floors').append('<option value="'+v.id+'">'+v.name+'</option>')
+                                            });
+                 }
+    });
+}
+$(function (){
+    loadFloors($('#form_buildings option:selected').val());
+    $('#form_buildings').change(function(){
+                        loadFloors($('#form_buildings option:selected').val());
+                });
+});
+</script>
+
+<script type="text/javascript">
+
+function loadSectors(floorId){
+    $('#form_sectors').empty();
+    $.ajax({
+        type: "GET",
+        url: "{{ path('sectors')}}",
+        data: {'id':floorId},
+        success: function(data){
+                    $.each(JSON.parse(data),function(k,v){
+                                                $('#form_sectors').append('<option value="'+v.id+'">'+v.name+'</option>')
+                                            });
+                 }
+    });
+}
+$(function (){
+    loadSectors($('#form_floors option:selected').val());
+    $('#form_floors').change(function(){
+                        loadSectors($('#form_floors option:selected').val());
+                });
+});
+</script>
  {% endblock %}

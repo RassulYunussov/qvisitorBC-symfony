@@ -29,33 +29,63 @@
 
 			<div class="col-lg-6">
 				<div class="form-group">
-					<div id="qv_chontract_startdate">
-<ul>
-						 {{ form_start(edit_form) }}
-						 {% for child in edit_form %}
-						 <li>
-						 {{ form_label(child) }}
-        			{{ form_widget(child, {'attr': {'class':'form-control'}}) }}
-    </li>
+					<div id="qv_contract">
+                        {{ form_start(edit_form) }}
+    <table>
+        <tbody>
+        <tr>
+            <td class="col-md-3">
+                {{ form_label(edit_form.name) }}
+                {{ form_errors(edit_form.name) }}
+                {{ form_widget(edit_form.name, {'attr': {'class':'form-control'}}) }}
+            </td>
+            <td class="col-md-3">
+                {{ form_label(edit_form.startdate) }}
+                {{ form_errors(edit_form.startdate) }}
+                {{ form_widget(edit_form.startdate, {'attr': {'class':'form-control'}}) }}
+            </td>
 
-{% endfor %}
+            <td class="col-md-3">
+                {{ form_label(edit_form.enddate) }}
+                {{ form_errors(edit_form.enddate) }}
+                {{ form_widget(edit_form.enddate, {'attr': {'class':'form-control'}}) }}
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-4">
+                {{ form_label(edit_form.buildings) }}
+                {{ form_errors(edit_form.buildings) }}
+                {{ form_widget(edit_form.buildings, {'attr': {'class':'form-control'}}) }}
+            </td>
 
-</ul>
-<button type="submit" class="btn btn-default btn-sm">Сохранить</button>
-    {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('contracts_list') }}" class="btn btn-default btn-sm">Отменить</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-             {% for child in delete_form %}
-                <input type="submit" value="Удалить" class="btn btn-default btn-sm">
-            {% endfor %}
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+            <td class="col-md-4">
+                {{ form_label(edit_form.floors) }}
+                {{ form_errors(edit_form.floors) }}
+                {{ form_widget(edit_form.floors, {'attr': {'class':'form-control'}}) }}
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-4">
+                {{ form_label(edit_form.sectors) }}
+                {{ form_errors(edit_form.sectors) }}
+                {{ form_widget(edit_form.sectors, {'attr': {'class':'form-control'}}) }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+        <br>
+        <table align="right">
+            <tbody>
+                <tr>
+                    <td>
+        <input class="btn btn-default" type="submit" value="Сохранить" /></td>
+        <td><a class="btn btn-default" href="{{ path('leasers_show', {'id':qvLeaser.id}) }}">Отменить</a>
+                    </td>
+        {{form_end(edit_form)}}
+                </tr>
+            </tbody>
+        </table>						
 				</div>
 <!-- /.col-lg-6-->
 </div>
@@ -71,5 +101,51 @@
             format: 'yyyy-mm-dd-hh-mm'
         });
     });
+</script>
+   <script src="{{asset('bootstrap1/bower_components/jquery/dist/jquery.min.js')}}"></script>
+
+<script> 
+function loadFloors(buildingId){
+    $('#form_floors').empty();
+    $.ajax({
+        type: "GET",
+        url: "{{ path('floors')}}",
+        data: {'id':buildingId},
+        success: function(data){
+                    $.each(JSON.parse(data),function(k,v){
+                                                $('#form_floors').append('<option value="'+v.id+'">'+v.name+'</option>')
+                                            });
+                 }
+    });
+}
+$(function (){
+    loadFloors($('#form_buildings option:selected').val());
+    $('#form_buildings').change(function(){
+                        loadFloors($('#form_buildings option:selected').val());
+                });
+});
+</script>
+
+<script type="text/javascript">
+
+function loadSectors(floorId){
+    $('#form_sectors').empty();
+    $.ajax({
+        type: "GET",
+        url: "{{ path('sectors')}}",
+        data: {'id':floorId},
+        success: function(data){
+                    $.each(JSON.parse(data),function(k,v){
+                                                $('#form_sectors').append('<option value="'+v.id+'">'+v.name+'</option>')
+                                            });
+                 }
+    });
+}
+$(function (){
+    loadSectors($('#form_floors option:selected').val());
+    $('#form_floors').change(function(){
+                        loadSectors($('#form_floors option:selected').val());
+                });
+});
 </script>
             {% endblock %}

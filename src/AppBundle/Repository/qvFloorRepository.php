@@ -44,4 +44,10 @@ class qvFloorRepository extends \Doctrine\ORM\EntityRepository
             WHERE sector.floor = :name'
             )->setParameter('name', $qvFloor)->getResult();
     }
+
+     public function findByBuildingId($buildingId){
+      return $this->getEntityManager()
+        ->createQuery("SELECT c from AppBundle:qvFloor c LEFT JOIN c.building b where b.id = :bId"
+          )->setParameter("bId", $buildingId)->getArrayResult();
+  }
 }

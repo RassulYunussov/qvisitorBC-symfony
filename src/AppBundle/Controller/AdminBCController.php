@@ -4,6 +4,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -188,8 +189,10 @@ class AdminBCController extends Controller
             {
         $contracts = 'Не найдено ни одного контракта';
             }
+        $qvContract = $em->getRepository('AppBundle:qvContract')->findOneByLeaser($qvLeaser);
         return $this->render('AppBundle:AdminBC:leasers_control/leasers/show_leaser.html.twig', array(
             'qvLeaser' => $qvLeaser,
+            'qvContract' => $qvContract,
             'contracts' => $contracts,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -207,33 +210,57 @@ class AdminBCController extends Controller
         
         $data = array();
         $qvUserPassport = new qvUserPassport();
-
+        $qvUser = new qvUser();
+        $qvLeaser = new qvLeaser();
          $editForm = $this->createFormBuilder($data)
-            ->add('name', TextType::class)
-            ->add('bin', NumberType::class)
-            ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
-            ->add('patronimic', TextType::class)
-            ->add('birthdate', BirthdayType::class, array(
-                'placeholder' => array(
-                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-                )
-            )
-        )
+            ->add('name', TextType::class, array(
+                'label'=>'Имя',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('bin', NumberType::class, array(
+                'label'=>'БИН пользователя',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('login', TextType::class, array(
+                'label'=>'Логин',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('password', PasswordType::class, array(
+                'label'=>'Пароль',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('firstname', TextType::class, array(
+                'label'=>'Фамилия',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('lastname', TextType::class, array(
+                'label'=>'Имя',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('patronimic', TextType::class, array(
+                'label'=>'Отчество',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('birthdate', BirthdayType::class,  array(
+                'label'=>'Дата Рождения',
+                'widget' => 'single_text', 
+                'format' =>'dd/MM/yyyy',
+                'placeholder' => 'Укажите дату в формате дд/мм/гггг',
+                'html5' => false,
+                'attr' => array(
+                    'class' => 'form-control')
+                ))
             ->add('gender',  EntityType::class, array(
-                'class' => 'AppBundle\Entity\qvGender')
-            )
+                'label'=>'Выберите пол',
+                'class' => 'AppBundle\Entity\qvGender',
+                'attr' => array('class'=>'form-control form-input')
+            ))
+            
             ->getForm()
         ;
+        
         $editForm->handleRequest($request);
 
-       if ($editForm->isSubmitted() && $form->isValid()) {
-          
+       if ($editForm->isSubmitted() && $editForm->isValid()) {
+    
            $em = $this->getDoctrine()->getManager();
 
            $myrole = $em->getRepository('AppBundle:qvRole')->findOneById('2');
 
-           $data = $form->getData();
+           $data = $editForm->getData();
             
             $qvLeaser->SetName($data['name']);
             $qvLeaser->SetBin($data['bin']);
@@ -263,7 +290,6 @@ class AdminBCController extends Controller
     
     /**
      * Deletes a qvLeaser entity.
-        *
      * @Route("/leasers/leaser/{id}/delete", name="leasers_delete")
      * @Method("DELETE")
      */
@@ -315,7 +341,7 @@ class AdminBCController extends Controller
          /**
      * @Route("/leaser/{qvLeaser}/contracts/create_contract", name="contracts_create")
      * @ParamConverter("qvLeaser", class="AppBundle:qvLeaser")
-      * @Method({"GET", "POST"})
+     * @Method({"GET", "POST"})
      */
     public function contractCreateAction(Request $request, qvLeaser $qvLeaser)
     {
@@ -347,6 +373,21 @@ class AdminBCController extends Controller
                     'class' => 'form-control type_date-inline'),
                 'placeholder' => 'Укажите дату в формате дд/мм/гггг',
                 ))
+
+          ->add('buildings', EntityType::class, array(
+                'class' => 'AppBundle\Entity\qvBuilding',
+                'attr' => array(
+                    'class' => 'form-control form-input'),
+                'label'=>'Здания',
+               // 'multiple' =>'true',
+                ))
+          ->add('floors', EntityType::class, array(
+                'class' => 'AppBundle\Entity\qvFloor',
+                'attr' => array(
+                    'class' => 'form-control form-input'),
+                'label'=>'Этажи',
+                //'multiple' =>'true',
+                ))
           ->add('sectors', EntityType::class, array(
                 'class' => 'AppBundle\Entity\qvSector',
                 'attr' => array(
@@ -371,7 +412,7 @@ class AdminBCController extends Controller
 
             $em->persist($qvContract);
             $em->flush();
-            return $this->redirectToRoute('contracts_list', array('id' => $qvContract->getId()));
+            return $this->redirectToRoute('leasers_show', array('id'=>$qvLeaser->getId()));
         }
         return $this->render('AppBundle:Adminbc:leasers_control/contracts/create_contract.html.twig', array(
             'qvContract' => $qvContract,
@@ -379,6 +420,43 @@ class AdminBCController extends Controller
             'form' => $form->createView(),
         ));
     }
+
+
+     /**
+     *@Route("/bybuildings", name="floors")
+     *@Method("GET")
+     */
+
+    public function indexSectorAjaxAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+            $floorId = $request->get('id',1);
+            $em = $this->getDoctrine()->getManager();
+            $qvfloors=$em->getRepository('AppBundle:qvFloor')->findByBuildingId($floorId);
+            $serializer = $this->get('serializer');
+            $floors = $serializer->serialize($qvfloors, 'json');
+            return new Response($floors);
+        }
+    }
+
+    /**
+     *@Route("/byfloors", name="sectors")
+     *@Method("GET")
+     */
+
+    public function indexFloorsAjaxAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+            $floorId = $request->get('id',2);
+            $em = $this->getDoctrine()->getManager();
+            $qvsectors=$em->getRepository('AppBundle:qvSector')->findByFloorId($floorId);
+            $serializer = $this->get('serializer');
+            $sectors = $serializer->serialize($qvsectors, 'json');
+            return new Response($sectors);
+        }
+    }
+
+
      /**
      * Finds and displays a qvContract entity.
      * @ParamConverter("qvLeaser", class="AppBundle:qvLeaser")
@@ -390,7 +468,9 @@ class AdminBCController extends Controller
         $em = $this->getDoctrine()->getManager();
         $deleteForm = $this->createDeleteContractForm($qvContract);
         $qvContracts = $em->getRepository('AppBundle:qvContract')->findOneByLeaser($qvLeaser);
+
         $onecontr = $em->getRepository('AppBundle:qvContract')->findOneById($qvContract);
+
         return $this->render('AppBundle:Adminbc:leasers_control/contracts/show_contract.html.twig', array(
             'qvContract' => $qvContract,
             'qvContracts' => $qvContracts,
@@ -399,23 +479,119 @@ class AdminBCController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
+
+    /**
+     * @Route("/showModal/{id}", name="contracts_modal")
+     * @Method("GET")
+     */
+    public function ContractsDetailsAction(Request $request,$id)
+    {
+        if($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+             
+            $qvModalContract = $em->getRepository('AppBundle:qvContract')->findOneBy(array('id'=>$id));
+            $qvcontr = $em->getRepository('AppBundle:qvSector')->findSectorByContract($id);
+            
+            return $this->render('AppBundle:Adminbc:leasers_control/contracts/detailscontract.html.twig', array(
+                    'qvModalContract' => $qvModalContract,
+                    'qvcontr' => $qvcontr,
+            ));
+        }
+    }
+
     /**
      * Displays a form to edit an existing qvContract entity.
      * @ParamConverter("qvLeaser", class="AppBundle:qvLeaser")
-     * @Route("leaser/{qvLeaser}/contract/{id}/edit", name="contracts_edit")
+     * @Route("/leaser/{qvLeaser}/contract/{id}/edit", name="contracts_edit")
      * @Method({"GET", "POST"})
      */
     public function editContractAction(Request $request, qvContract $qvContract, qvLeaser $qvLeaser)
     {
         $deleteForm = $this->createDeleteContractForm($qvContract);
-        $editForm = $this->createForm('AppBundle\Form\qvContractType', $qvContract);
+         $em = $this->getDoctrine()->getManager();
+            
+        $qvContract = new qvContract();
+        $data = array();
+
+        $editForm = $this->createFormBuilder($data)
+        ->add('name', TextType::class, array(
+            'label'=>'Номер контракта',
+            'attr'=>array('class'=>'form-control form-input')))
+        ->add('startdate', DateType::class, array(
+                'label'=>'Дата начала',
+                'widget' => 'single_text', 
+                'format' =>'dd/MM/yyyy',
+                'html5' => false,
+                'attr' => ['class' => 'js-datepicker'],
+                'attr' => array(
+                    'class' => 'form-margin type_date-inline'),
+                'placeholder' => 'Укажите дату в формате дд/мм/гггг',
+                ))
+         ->add('enddate', DateType::class, array(
+                'label'=>'Дата окончания',
+                'widget' => 'single_text', 
+                'format' =>'dd/MM/yyyy',
+                'html5' => false,
+                'attr' => array(
+                    'class' => 'form-control type_date-inline'),
+                'placeholder' => 'Укажите дату в формате дд/мм/гггг',
+                ))
+
+          ->add('buildings', EntityType::class, array(
+                'class' => 'AppBundle\Entity\qvBuilding',
+                'attr' => array(
+                    'class' => 'form-control form-input'),
+                'label'=>'Здания',
+               // 'multiple' =>'true',
+                ))
+          ->add('floors', EntityType::class, array(
+                'class' => 'AppBundle\Entity\qvFloor',
+                'attr' => array(
+                    'class' => 'form-control form-input'),
+                'label'=>'Этажи',
+                //'multiple' =>'true',
+                ))
+           ->add('buildings', EntityType::class, array(
+                'class' => 'AppBundle\Entity\qvBuilding',
+                'attr' => array(
+                    'class' => 'form-control form-input'),
+                'label'=>'Здания',
+               // 'multiple' =>'true',
+                ))
+          ->add('floors', EntityType::class, array(
+                'class' => 'AppBundle\Entity\qvFloor',
+                'attr' => array(
+                    'class' => 'form-control form-input'),
+                'label'=>'Этажи',
+                //'multiple' =>'true',
+                ))
+          ->add('sectors', EntityType::class, array(
+                'class' => 'AppBundle\Entity\qvSector',
+                'attr' => array(
+                    'class' => 'form-control form-input'),
+                'label'=>'Сектора',
+                'multiple' =>'true',
+                ))
+        ->getForm()
+            ;
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $data = $editForm->getData();
+
+            $qvContract->setName($data['name']);
+            $qvContract->setStartdate($data['startdate']);
+            $qvContract->setEnddate($data['enddate']);
+            $qvContract->setLeaser($qvLeaser);
+            foreach ($data['sectors'] as $sector) {
+            $qvContract->addSectors($sector);
+        }
+            
+
             $em->persist($qvContract);
             $em->flush();
-            return $this->redirectToRoute('contracts_list', array('id' => $qvContract->getId()));
+            return $this->redirectToRoute('leasers_show', array('id'=>$qvLeaser->getId()));
         }
+        
         return $this->render('AppBundle:Adminbc:leasers_control/contracts/edit_contract.html.twig', array(
             'qvContract' => $qvContract,
             'qvLeaser'=> $qvLeaser,
@@ -423,9 +599,25 @@ class AdminBCController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
+
+
+    /**
+     * Deletes a qvOrder entity.
+     * @ParamConverter("qvLeaser", class="AppBundle:qvLeaser")
+     * @Route("/leaser/{qvLeaser}/contract/{id}/delete", name="contract_deleting")
+     * @Method({"GET", "POST"})
+     */
+
+    public function deleteAction(Request $request, qvContract $qvContract, 
+        qvLeaser $qvLeaser)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($qvContract);
+        $em->flush();
+        return $this->redirectToRoute('leasers_show', array('id'=>$qvLeaser->getId()));
+    }
     /**
      * Deletes a qvContract entity.
-     *
      * @Route("/contract/{id}/delete", name="contracts_delete")
      * @Method("DELETE")
      */

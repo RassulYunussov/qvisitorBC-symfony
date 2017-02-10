@@ -1,101 +1,136 @@
-	{% extends 'AppBundle::base.html.twig' %}
-
-
+{% extends 'AppBundle::base.html.twig' %}
 
 {% block title %}Личный кабинет администратора{% endblock %}
 
 {% block body %}
-		
-		<div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                		    {% block breadcrumb %}
-					   <div id="breadcrumbs" class="btn-group btn-breadcrumb">
-                <br>
-                <a class="btn btn-default" href="{{ path('main_page') }}">
-                    <i class="fa fa-home"></i>
-                        Главная
-                </a>
-                <a class="btn btn-default" href="{{ path('leasers_list') }}">
-                        Управление арендаторами
-                </a>
-                
-             </div>
-					{% endblock %}
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            {% block breadcrumb %}
+    			<div id="breadcrumbs" class="btn-group btn-breadcrumb">
+                    <br>
+                    <a class="btn btn-default" href="{{ path('main_page') }}">
+                        <i class="fa fa-home"></i>
+                    </a>
+                    <a class="btn btn-default" href="{{ path('leasers_list') }}">
+                            Управление арендаторами
+                    </a>
+                </div>
+			{% endblock %}
 											
-               <h1 class="page-header">Просмотр информации об арендаторе</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <!-- /.row -->
-			<div class="col-lg-6">
-                   			<div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Информация об арендаторе
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-			
-	
-						<div class="table-responsive">
-                                <table class="table">
-                                    
-                                    <tbody>
-                                 <tr>
-                <th>Id</th>
-                <td>{{ qvLeaser.id }}</td> </tr>
-								 <tr>
-                <th>Name</th>
-                <td>{{ qvLeaser.name }}</td>
-            </tr>
-            <tr>
-                <th>Bin</th>
-                <td>{{ qvLeaser.bin }}</td>
-            </tr>
-            <tr>
-            <td>
+            <h1 class="page-header">Просмотр информации об арендаторе</h1>
+        </div>
+    <!-- /.col-lg-12 -->
+    </div>
+<!-- /.row -->
+
+<div class="col-lg-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i> Информация об арендаторе
+        </div>
+<!-- /.panel-heading -->
+
+<div class="panel-body">			
+    <div class="table-responsive">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <td>
+                        {{ qvLeaser.id }}
+                    </td>
+                </tr>
+				
+                <tr>
+                    <th>
+                        Название компании арендатора
+                    </th>
+                    
+                    <td>
+                        {{ qvLeaser.name }}
+                    </td>
+                </tr>
                 
-            </td>
-			<td align="right"><br>
-				<a href="{{ path('leasers_edit', { 'id': qvLeaser.id }) }}" class="btn btn-warning">
-                   Редактировать
-                </a>
-            </td>
-			</tr>
+                <tr>
+                    <th>
+                        Bin
+                    </th>
+                    <td>
+                       {{ qvLeaser.bin }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+			         
+                    <td align="right"><br>
+				        <a href="{{ path('leasers_edit', { 'id': qvLeaser.id }) }}" class="btn btn-warning">
+                            Редактировать
+                        </a>
+                    </td>
+			    </tr>
             </tbody>
-            </table>							
-				</div>	</div>	</div>	</div>	
-			
-        <div class="row">
-                <div class="col-lg-6">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            Информация о контрактах данного арендатора
-                             <a class="btn btn-success btn-xs" href="{{ path('contracts_create', {'qvLeaser':qvLeaser.id}) }}">Новый контракт</a>
-                                 </div>
-                        <div class="text-right" align="right">
-                          
-                            
-                        </div>
-                   
-                        <div class="panel-body">
-                            {% for contracts in contracts %}
-                            
-                            {{  loop.index  }} Контракт&nbsp;&nbsp; - &nbsp;&nbsp;
-                            <a href="{{ path('contracts_show', {'qvLeaser':qvLeaser.id,'id': contracts.id}) }}">
-                             {{ contracts.name }}
-                            </a><br>
+        </table>							
+    </div>
+</div>
+</div>
+</div>
 
-                        {% endfor %}
-                        </div>
-                        <div class="panel-footer">
-                            Panel Footer
-                        </div>
-                    </div>
-                </div>
-                <!-- /.col-lg-4 -->               
-            </div>		
+<div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                Информация о контрактах данного арендатора
+                    <a class="btn btn-success btn-xs" href="{{ path('contracts_create', {'qvLeaser':qvLeaser.id}) }}">
+                        Новый контракт
+                    </a>
             </div>
-                    <!-- /#page-wrapper --> 
+   
+<div class="panel-body">
+    <div class="form-group"> 
+        <table>
+            <tbody>
+                {% for contracts in qvContract %}
+                    <tr>
+                        <td>
+                            {{  loop.index  }} Контракт - &nbsp;
+                        </td>
+                        
+                        <td>
+                            <button onclick="$('#myModal .modal-dialog').load('{{ path('contracts_modal', { 'id':contracts.id }) }}');" class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal">
+                                {{  contracts.name }} 
+                            </button>
+                        </td>
+                        
+                        <td>
+                            <a href="{{ path("contracts_edit", {'qvLeaser':qvLeaser.id,'id':contracts.id}) }}" class="btn btn-default btn-circle text-right">
+                                <i class="fa fa-link"></i>
+                            </a>
+                        </td>
+                        
+                        <td>
+                            <a href="{{ path("contract_deleting", {'qvLeaser':qvLeaser.id,'id':contracts.id}) }}" class="btn btn-default btn-circle">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}  <br>
+            </tbody>
+        </table>                 		
+    </div>
+</div>
 
-            {% endblock %}
+<div class="panel-footer">
+    /*/*/*/*/*
+</div>
+</div></div></div>
+</div>
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog"></div>  
+                </div>
+<!-- /#page-wrapper --> 
+{% endblock %}

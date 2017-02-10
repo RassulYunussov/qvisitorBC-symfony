@@ -29,4 +29,26 @@ public function findBuildById($id)
             WHERE sector.id = :id'
         )->setParameter('id', $id)->getResult();
 }
+
+ public function findSectorByContract($id){
+      $conn = $this->getEntityManager()->getConnection();
+    $statement = $conn->prepare('Select qvsector.id, qvsector.name from qvsector 
+              left join rf_contract_sector on rf_contract_sector.sectorid = qvsector.id
+             
+              left join qvcontract on qvcontract.id = rf_contract_sector.contractid
+             
+                    where qvcontract.id = ?
+                    group by qvsector.id');
+    $statement->bindValue(1, $id);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    return $result;
+    }
+
+     public function findByFloorId($floorId)
+    {
+        return $this->getEntityManager()
+        ->createQuery("SELECT c from AppBundle:qvSector c LEFT JOIN c.floor f where f.id = :fId")
+        ->setParameter("fId", $floorId)->getArrayResult();
+    }
 }

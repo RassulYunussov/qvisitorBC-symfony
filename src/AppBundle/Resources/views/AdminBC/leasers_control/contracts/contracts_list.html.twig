@@ -63,7 +63,9 @@
 						    </div>
                         </div>
 		                <div class="panel-body" align="right">
+                            {% for qvContract in qvContracts %}
  <a type="button" href="{{ path('contracts_create', {'qvLeaser':qvContract.leaser.id}) }}" class="btn btn-success">Создать контракт</a>
+{% endfor %}
 						</div>
                     </div>
 	<div class="row">
