@@ -21,7 +21,7 @@ class qvVisitorRepository extends \Doctrine\ORM\EntityRepository
 	public function getVisitor($qvUser)
 	{
 		$conn = $this->getEntityManager()->getConnection();
-		$statement = $conn->prepare('SELECT qvvisitor.id, qvvisitor.firstname from qvvisitor 
+		$statement = $conn->prepare('SELECT qvvisitor.id, qvvisitor.firstname, qvvisitor.lastname, qvvisitor.patronimic from qvvisitor 
 									left join rf_visitor_order on rf_visitor_order.visitorid = qvvisitor.id
 									left join qvorder on qvorder.id = rf_visitor_order.orderid
 									left join qvuser on qvuser.id = qvorder.userid

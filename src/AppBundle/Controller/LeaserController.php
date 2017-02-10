@@ -10,18 +10,22 @@ use AppBundle\Entity\qvOrder;
 use AppBundle\Entity\qvLeaser;
 use AppBundle\Entity\qvUser;
 use AppBundle\Entity\qvUserPassport;
+use AppBundle\Entity\qvVisitor;
 use AppBundle\Entity\qvContract;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use AppBundle\Repository\qvOrderTypeRepository;
+use AppBundle\Repository\qvGenderRepository;
+use AppBundle\Repository\qvOrderRepository;
 use AppBundle\Repository\qvVisitorRepository;
 use AppBundle\Form\qvVisitorType;
 
@@ -75,7 +79,7 @@ class LeaserController extends Controller
         $data = array();
 
         $user = $this->get('security.token_storage')->getToken()->getUser()->getId();
- $qvVisitors=$em->getRepository('AppBundle:qvVisitor')->getVisitor($user);
+        $qvVisitors=$em->getRepository('AppBundle:qvVisitor')->getVisitor($user);
         $form = $this->createFormBuilder($data)
             ->add('sdate', DateType::class, array(
                 'label'=>'Дата открытия заявки',
@@ -154,10 +158,6 @@ class LeaserController extends Controller
 
             $em->persist($qvOrder);
             $em->flush();
-
-           
-
-
 
     return $this->redirectToRoute('show_orders');
 }
@@ -245,10 +245,6 @@ class LeaserController extends Controller
             $em->persist($qvOrder);
             $em->flush();
 
-           
-
-
-
     return $this->redirectToRoute('show_orders');
 }
 
@@ -276,6 +272,71 @@ class LeaserController extends Controller
 
 
 
+    /**
+     * @Route("/new_visitor", name="new_visitor")
+     * @Method({"GET","POST"})
+     */
+    public function newVisitorAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $arr = array();
+        $visitorform = $this->createFormBuilder($arr)
+            ->add('lastname', TextType::class,array(
+                'label'=>'Фамилия',
+                'attr'   =>  array(
+                'class'   => 'form-margin form-control')))
+            ->add('firstname', TextType::class,array(
+                'label'=>'Имя',
+                'attr'   =>  array(
+                'class'   => 'form-margin form-control')))
+            ->add('patronimic', TextType::class,array(
+                'label'=>'Отчество',
+                'attr'   =>  array(
+                'class'   => 'form-margin form-control')))
+            ->add('birthdate', BirthdayType::class, array(
+                'label'=>'Дата рождения',
+                'widget'=>'single_text',
+                'attr'   =>  array(
+                'class'   => 'form-margin type_date-inline form-control')))
+            ->add('gender',EntityType::class, array(
+                'class' => 'AppBundle:qvGender',
+                'query_builder' => function (qvGenderRepository $er) {
+                        return $er->createQueryBuilder('u')
+                        ->orderBy('u.name', 'ASC');
+                },
+                'choice_label' => 'name',
+                'label'=>'Пол',
+                'attr'   =>  array(
+                'class'   => 'form-control form-margin form-control')))
+            ->getForm()
+            ;
+
+    
+        $visitorform->handleRequest($request);
+
+        if ($visitorform->isSubmitted() && $visitorform->isValid()) {
+            $qvVisitor = new qvVisitor();
+
+            $arr = $visitorform->getData();
+            $qvVisitor->setLastname($arr['lastname']);
+            $qvVisitor->setFirstname($arr['firstname']);
+            $qvVisitor->setPatronimic($arr['patronimic']);
+            $qvVisitor->setBirthdate($arr['birthdate']);
+            $qvVisitor->setGender($arr['gender']);
+            $em->persist($qvVisitor);
+            $em->flush();
+
+            return $this->redirectToRoute('show_orders');
+        }
+
+            return $this->render('AppBundle:Leaser:new_visitor.html.twig', array(
+                    'visitorform'=>$visitorform->createView()
+            ));
+       }
+    }
 
 
 }

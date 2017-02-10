@@ -1,0 +1,16 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}Личный кабинет пользователя{% endblock %}
+
+
+
+{% block body %}
+		
+                <div>
+                    {{form_start(visitorform)}}
+                    {{ form_widget(visitorform) }}
+                        <input type="submit" class="btn btn-primary" value="Создать" />
+                        <button class="btn btn-default" data-dismiss="modal">Отмена</a>
+                    {{form_end(visitorform)}}
+                </div>
+            {% endblock %}
