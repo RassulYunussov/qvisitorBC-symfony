@@ -122,7 +122,7 @@ class CheckpointController extends Controller
     {
 
         $em = $this->getDoctrine()->getManager();
-        $qvEntrances = $em->getRepository('AppBundle:qvEntrance')->findAll();
+        $qvEntrances = $em->getRepository('AppBundle:qvEntrance')->findCurrentEntrance();
     
         return $this->render('AppBundle:Checkpoint:entrance.html.twig', array( 
                 'qvEntrances'=>$qvEntrances,
@@ -188,7 +188,7 @@ class CheckpointController extends Controller
     {
     	$em = $this->getDoctrine()->getManager();
     	
-    	$qvHotEntrances = $em->getRepository('AppBundle:qvHotEntrance')->findAll();
+    	$qvHotEntrances = $em->getRepository('AppBundle:qvHotEntrance')->findCurrentHotEntrance();
     	
     	return $this->render('AppBundle:Checkpoint:hotentrance.html.twig', array(
     			'qvHotEntrances' => $qvHotEntrances,

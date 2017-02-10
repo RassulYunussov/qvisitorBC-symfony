@@ -13,4 +13,8 @@ class qvHotEntranceRepository extends \Doctrine\ORM\EntityRepository
 	public function findAll(){
 		return $this->findBy(array(), array('entrancedate' => 'desc'));
 	}
+	public function findCurrentHotEntrance(){
+		return $this->getEntityManager()
+		->createQuery('SELECT hotentrance from AppBundle:qvHotEntrance hotentrance where hotentrance.entrancedate > CURRENT_DATE()')->getResult();
+	}
 }
