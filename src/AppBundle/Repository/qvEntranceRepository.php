@@ -10,4 +10,9 @@ namespace AppBundle\Repository;
  */
 class qvEntranceRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function findCurrentEntrance(){
+		return $this->getEntityManager()
+		->createQuery('SELECT entrance from AppBundle:qvEntrance entrance where entrance.entrancedate > CURRENT_DATE()')->getResult();
+	}
+
 }
