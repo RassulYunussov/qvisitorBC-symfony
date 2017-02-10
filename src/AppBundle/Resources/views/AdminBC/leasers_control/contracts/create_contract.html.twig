@@ -31,15 +31,48 @@
         <div class="form-group">
             <div id="qv_checkpoint">
    			 {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+             <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            {{ form_label(form.name) }}
+                            {{ form_errors(form.name) }}
+                            {{ form_widget(form.name, {'attr': {'class':'form-control'}}) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{ form_label(form.startdate) }}
+                            {{ form_errors(form.startdate) }}
+                            {{ form_widget(form.startdate, {'attr': {'class':'form-control'}}) }}
+                        </td>
+                        <td>  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>    </td>
+                        <td>
+                            {{ form_label(form.enddate) }}
+                            {{ form_errors(form.enddate) }}
+                            {{ form_widget(form.enddate, {'attr': {'class':'form-control'}}) }}
+                        </td>
+                    </tr>
+                    <br><br>
+                    <tr>
+                        <td><br>
+                            {{ form_label(form.sectors) }}
+                            {{ form_errors(form.sectors) }}
+                            {{ form_widget(form.sectors, {'attr': {'class':'form-control'}}) }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        <br>
+        <table align="right"><tbody><tr><td>
+        <input class="btn btn-default" type="submit" value="Создать" /></td>
+        <td><a class="btn btn-default" href="{{ path('contracts_list') }}">Отменить</a>
+        </td>
+        {{form_end(form)}}
+        </tr>
+    </tbody>
+</table>
     {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('contract_index') }}">Back to the list</a>
-        </li>
-    </ul>
 </div>
 </div>
 	   <!-- /.col-lg-6-->
@@ -48,6 +81,4 @@
         </div>
     </div>
     <!-- /#page-wrapper -->
-
-
-{% endblock %}
+ {% endblock %}

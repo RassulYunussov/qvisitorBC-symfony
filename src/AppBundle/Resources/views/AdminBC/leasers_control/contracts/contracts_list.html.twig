@@ -63,7 +63,7 @@
 						    </div>
                         </div>
 		                <div class="panel-body" align="right">
-                            <a type="button" href="{{ path('contracts_create') }}" class="btn btn-success">Создать контракт</a>
+ <a type="button" href="{{ path('contracts_create', {'qvLeaser':qvContract.leaser.id}) }}" class="btn btn-success">Создать контракт</a>
 						</div>
                     </div>
 	<div class="row">
@@ -101,11 +101,11 @@
             {% for qvContract in qvContracts %}
             <tr>
                 <td>
-                  <a href="{{ path('contracts_show', { 'id': qvContract.id }) }}">{{ qvContract.id }}
+                <a href="{{ path('contracts_show', { 'qvLeaser': qvContract.leaser.id,'id': qvContract.id }) }}">{{ qvContract.id }}
                     </a>
                 </td>
                 <td>
-                    <a href="{{ path('contracts_show', { 'id': qvContract.id }) }}">{{ qvContract.name }}
+                    <a href="{{ path('contracts_show', {'qvLeaser': qvContract.leaser.id, 'id': qvContract.id }) }}">{{ qvContract.name }}
                 </td>
                 <td>
                     {% if qvContract.startdate %}{{ qvContract.startdate|date('Y-m-d H:i:s') }}{% endif %}
@@ -126,12 +126,12 @@
                     </button>
                     <ul class="dropdown-menu pull-right" role="menu">
                         <li>
-                            <a href="{{ path('contracts_show', { 'idl': qvContract.leaser.id, 'id': qvContract.id }) }}">
+                            <a href="{{ path('contracts_show', { 'qvLeaser': qvContract.leaser.id, 'id': qvContract.id }) }}">
                                 Посмотеть контракт
                             </a>
                         </li>
                         <li>
-                            <a href="{{ path('contracts_edit', { 'id': qvContract.id }) }}">
+                            <a href="{{ path('contracts_edit', { 'qvLeaser': qvContract.leaser.id,'id': qvContract.id }) }}">
                                 Изменить или удалить информацию о пользователе
                             </a>
                         </li>

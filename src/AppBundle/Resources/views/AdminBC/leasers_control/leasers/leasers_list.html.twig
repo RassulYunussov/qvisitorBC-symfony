@@ -31,121 +31,85 @@
 <div class="panel-heading">
 Арендаторы
 <!-- /.panel-heading -->
-</div>
-
-<div class="panel-body">
-<div class="dataTable_wrapper">
-<div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
-<div class="row">
-	<div class="col-sm-6"><div class="dataTables_length" id="dataTables-example_length">
-<label>
-Show
-<select name="dataTables-example_length" aria-controls="dataTables-example" class="form-control input-sm">
-<option value="10">10</option>
-<option value="25">25</option>
-<option value="50">50</option>
-<option value="100">100</option>
-</select> entries
-</label>
+<div class="text-right">
+<a class="btn btn-success btn-xs" href="{{ path('leasers_create') }}">Добавить арендатора</a>
 </div>
 </div>
 
-
-<div class="col-sm-6">
-<div align="right" id="dataTables-example_filter" class="dataTables_filter" >
-<a class="btn btn-success" href="{{path('leasers_create')}}">Добавить арендатора</a>
 </div>
-<br>
 </div>
 </div>
 
 <div class="row">
-<div class="col-sm-12">
-<table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info">
-<thead>
-<tr role="row">
-<th class="sorting_asc" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 10px;">№</th>
-<th class="sorting_asc" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 130px;">
-	BIN
-</th> 
-	<th class="sorting_asc" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 130px;">
-		Название компании
-	</th>
-	<th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 90px;">
-		Этаж(и)
-	</th>
-	<th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 90px;">
-		Офис(ы)
-	</th>
-	<th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 60px;">
-		Статус договора
-	</th>
-	 <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: 40px;">
-	Действия
-	</th>
-</tr>
-</thead>
-<tbody>
-	
-	{% for qvLeaser in qvLeasers %}
-	
-	<tr>
-		<td><a href="{{ path('leasers_show', { 'id': qvLeaser['id'] }) }}">{{ qvLeaser['id'] }}</a></td>
-		<td><a href="{{ path('leasers_show', { 'id': qvLeaser['id'] }) }}">{{ qvLeaser['bin'] }}</a></td>
-		<td><a href="{{ path('leasers_show', { 'id': qvLeaser['id'] }) }}">{{ qvLeaser['name'] }}</a></td>
-		<td>{{ qvLeaser['count(qvfloor.id)'] }}</td>
-		<td>{{ qvLeaser['count(qvsector.id)'] }}</td>
-		<td a="href">Active</td>
-		{{ include('AppBundle:AdminBC:actions/actions_for_user.html.twig') }}	
-	</tr>
-		{% endfor %}
-	
-</tbody>
-</table>
-</div>
-</div>
-
-<div class="row">
-<div class="col-sm-6">
-<div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">
-Показанные записи: 
-</div>
-</div>
-
-<div class="col-sm-6">
-<div align="right" class="dataTables_paginate paging_simple_numbers" id="dataTables-example_paginate">
-<ul class="pagination">
-<li class="paginate_button previous disabled" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_previous">
-<a href="#">Предыдущая</a>
-</li>
-<li class="paginate_button active" aria-controls="dataTables-example" tabindex="0">
-<a href="#">1</a>
-</li>
-<li class="paginate_button " aria-controls="dataTables-example" tabindex="0">
-<a href="#">2</a>
-</li>
-<li class="paginate_button " aria-controls="dataTables-example" tabindex="0">
-<a href="#">3</a>
-</li>
-<li class="paginate_button next" aria-controls="dataTables-example" tabindex="0" id="dataTables-example_next">
-<a href="#">Следующая</a>
-</li>
-</ul>
-</div>
-</div>
-</div>
+	<div class="col-sm-12">
+		<table class="table table-striped table-bordered table-hover dataTable no-footer" id="LeaserdataTables" role="grid" aria-describedby="dataTables-example_info">
+            <thead>
+            <tr role="row">
+            	<th class="sorting_asc" tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 172px;">		
+            		№ 
+            	</th>
+            	<th class="sorting" tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 204px;">
+            		BIN
+            	</th>
+            	<th class="sorting" tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 185px;">
+            		Название компании
+            	</th>
+            	<th class="sorting" tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 185px;">
+            		Занимает Этаж(и)
+            	</th>
+            	<th class="sorting" tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 149px;">
+            		Занимает Офис(ы) 
+            	</th>
+            	<th class="sorting" tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 110px;">
+            		Действия:
+            	</th>
+            </tr>
+        	</thead>
+        <tbody>
+        	{% for qvLeaser in qvLeasers %}
+            <tr class="gradeA odd" role="row">
+            	<td class="sorting_1">{{ loop.index }}</td>
+                <td class="center"><a href="{{ path('leasers_show', {'id':qvLeaser.id})}}">
+                	{{ qvLeaser.bin }}
+                </td></a>
+                <td class="center"><a href="{{ path('leasers_show', {'id':qvLeaser.id})}}">
+                	{{ qvLeaser.name }}
+                </a></td>
+                <td class="center">{{ qvLeaser.countS }}</td>
+                <td class="center">{{ qvLeaser.countf }}</td>
+                <td class="center">
+    				<div class="btn-group">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+	                			Выберите действие 
+	        					<span class="caret"></span>
+	        				</button>
+	            			
+	            			<ul class="dropdown-menu pull-right" role="menu">
+		                		<li>
+		                    		<a href="{{ path('leasers_show', { 'id': qvLeaser.id }) }}">Информация об учетной записи пользователя
+		                    		</a>
+		                		</li>
+		                		<li>
+		                    		<a href="{{ path('leasers_edit', { 'id': qvLeaser.id }) }}">Изменить или удалить информацию о пользователе
+		                    		</a>
+		                		</li>
+	                	</ul>
+    				</div>
+				</td>
+            </tr>
+			{% endfor %}
+        </tbody>
+    </table>
 </div>
 </div>
 <!-- /.table-responsive -->
-
-</div>
-<!-- /.panel-body -->
-</div>
-<!-- /.panel -->
-</div>
-<!-- /.col-lg-12 -->
-</div>	
 </div>
 <!-- /#page-wrapper -->
-
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+	$(document).ready(function(){
+    $('#LeaserdataTables').DataTable();
+});
+</script>
 {% endblock %}

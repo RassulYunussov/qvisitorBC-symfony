@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use AppBundle\Entity\qvLeaser;
 use AppBundle\Form\qvNewLeaserType;
@@ -60,7 +61,6 @@ class AdminBCController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $qvLeasers = $em->getRepository('AppBundle:qvLeaser')->getLeasersDetailedRaw();
-        
         return $this->render('AppBundle:AdminBC:leasers_control/leasers/leasers_list.html.twig', array(
         'qvLeasers' => $qvLeasers
         ));
@@ -319,28 +319,59 @@ class AdminBCController extends Controller
      */
     public function contractCreateAction(Request $request, qvLeaser $qvLeaser)
     {
+        $em = $this->getDoctrine()->getManager();
+            
         $qvContract = new qvContract();
-        $form = $this->createFormBuilder($qvContract)
+        $data = array();
+
+        $form = $this->createFormBuilder($data)
         ->add('name', TextType::class, array(
             'label'=>'Номер контракта',
             'attr'=>array('class'=>'form-control form-input')))
-        ->add('startdate', BirthdayType::class, array(
-                'label'=>'Время ',
+        ->add('startdate', DateType::class, array(
+                'label'=>'Дата начала',
                 'widget' => 'single_text', 
-                'format' =>'dd/MM/yyyy hh:mm',
+                'format' =>'dd/MM/yyyy',
                 'html5' => false,
-                'model_timezone'=>'Asia/Almaty',
+                'attr' => ['class' => 'js-datepicker'],
                 'attr' => array(
-                    'class' => 'form-control'),
+                    'class' => 'form-margin type_date-inline'),
                 'placeholder' => 'Укажите дату в формате дд/мм/гггг',
                 ))
+         ->add('enddate', DateType::class, array(
+                'label'=>'Дата окончания',
+                'widget' => 'single_text', 
+                'format' =>'dd/MM/yyyy',
+                'html5' => false,
+                'attr' => array(
+                    'class' => 'form-control type_date-inline'),
+                'placeholder' => 'Укажите дату в формате дд/мм/гггг',
+                ))
+          ->add('sectors', EntityType::class, array(
+                'class' => 'AppBundle\Entity\qvSector',
+                'attr' => array(
+                    'class' => 'form-control form-input'),
+                'label'=>'Сектора',
+                'multiple' =>'true',
+                ))
+        ->getForm()
             ;
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $data = $form->getData();
+
+            $qvContract->setName($data['name']);
+            $qvContract->setStartdate($data['startdate']);
+            $qvContract->setEnddate($data['enddate']);
+            $qvContract->setLeaser($qvLeaser);
+            foreach ($data['sectors'] as $sector) {
+            $qvContract->addSectors($sector);
+        }
+            
+
             $em->persist($qvContract);
             $em->flush();
-            return $this->redirectToRoute('contracts_index', array('id' => $qvContract->getId()));
+            return $this->redirectToRoute('contracts_list', array('id' => $qvContract->getId()));
         }
         return $this->render('AppBundle:Adminbc:leasers_control/contracts/create_contract.html.twig', array(
             'qvContract' => $qvContract,
@@ -358,11 +389,13 @@ class AdminBCController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $deleteForm = $this->createDeleteContractForm($qvContract);
-        $qvContracts = $em->getRepository('AppBundle:qvContract')->findAll();
+        $qvContracts = $em->getRepository('AppBundle:qvContract')->findOneByLeaser($qvLeaser);
+        $onecontr = $em->getRepository('AppBundle:qvContract')->findOneById($qvContract);
         return $this->render('AppBundle:Adminbc:leasers_control/contracts/show_contract.html.twig', array(
             'qvContract' => $qvContract,
             'qvContracts' => $qvContracts,
             'qvLeaser'=> $qvLeaser,
+            'onecontr' => $onecontr,
             'delete_form' => $deleteForm->createView(),
         ));
     }
