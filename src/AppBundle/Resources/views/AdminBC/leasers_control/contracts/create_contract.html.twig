@@ -96,48 +96,48 @@
     <!-- /#page-wrapper -->
     <script src="{{asset('bootstrap1/bower_components/jquery/dist/jquery.min.js')}}"></script>
 
-<script> 
-function loadFloors(buildingId){
-    $('#form_floors').empty();
-    $.ajax({
-        type: "GET",
-        url: "{{ path('floors')}}",
-        data: {'id':buildingId},
-        success: function(data){
+    <script> 
+        function loadFloors(buildingId){
+            $('#form_floors').empty();
+            $.ajax({
+                type: "GET",
+                url: "{{ path('floors')}}",
+                data: {'id':buildingId},
+                success: function(data){
                     $.each(JSON.parse(data),function(k,v){
-                                                $('#form_floors').append('<option value="'+v.id+'">'+v.name+'</option>')
-                                            });
-                 }
-    });
-}
-$(function (){
-    loadFloors($('#form_buildings option:selected').val());
-    $('#form_buildings').change(function(){
-                        loadFloors($('#form_buildings option:selected').val());
-                });
-});
-</script>
+                        $('#form_floors').append('<option value="'+v.id+'">'+v.name+'</option>')
+                    });
+                }
+            });
+        }
+        $(function (){
+            loadFloors($('#form_buildings option:selected').val());
+            $('#form_buildings').change(function(){
+                loadFloors($('#form_buildings option:selected').val());
+            });
+        });
+    </script>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-function loadSectors(floorId){
-    $('#form_sectors').empty();
-    $.ajax({
-        type: "GET",
-        url: "{{ path('sectors')}}",
-        data: {'id':floorId},
-        success: function(data){
+        function loadSectors(floorId){
+            $('#form_sectors').empty();
+            $.ajax({
+                type: "GET",
+                url: "{{ path('sectors')}}",
+                data: {'id':floorId},
+                success: function(data){
                     $.each(JSON.parse(data),function(k,v){
-                                                $('#form_sectors').append('<option value="'+v.id+'">'+v.name+'</option>')
-                                            });
-                 }
-    });
-}
-$(function (){
-    loadSectors($('#form_floors option:selected').val());
-    $('#form_floors').change(function(){
-                        loadSectors($('#form_floors option:selected').val());
-                });
-});
-</script>
+                        $('#form_sectors').append('<option value="'+v.id+'">'+v.name+'</option>')
+                    });
+                }
+            });
+        }
+        $(function (){
+            loadSectors($('#form_floors option:selected').val());
+            $('#form_floors').change(function(){
+                loadSectors($('#form_floors option:selected').val());
+            });
+        });
+    </script>
  {% endblock %}

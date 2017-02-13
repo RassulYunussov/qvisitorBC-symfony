@@ -2,117 +2,117 @@
 
 {% block title %}Регистрация посетителя{% endblock %}
 
-{% block pagemenu %}
-	{{ include('AppBundle:Checkpoint:pagemenu.html.twig') }}
-{% endblock %}
+  {% block pagemenu %}
+   {{ include('AppBundle:Checkpoint:pagemenu.html.twig') }}
+ {% endblock %}
 
 
 
-{% block body %}
+ {% block body %}
 
   <div id="page-wrapper">
-            <!-- Page Heading -->
-		{% block breadcrumb %}
-				<div id="bc1" class="btn-group btn-breadcrumb">
-                        <br>
-                        <a class="btn btn-default" href="index"><i class="fa fa-home"></i></a>
-                        <a class="btn btn-default" href="hotentrance">Посетители без заявок</a>
-                        <a class="btn btn-default" href="hotentrance-registration">Регистрация посетителя без заявки</a>
-    		</div>
-		{% endblock %}
+    <!-- Page Heading -->
+    {% block breadcrumb %}
+      <div id="bc1" class="btn-group btn-breadcrumb">
+        <br>
+        <a class="btn btn-default" href="index"><i class="fa fa-home"></i></a>
+        <a class="btn btn-default" href="hotentrance">Посетители без заявок</a>
+        <a class="btn btn-default" href="hotentrance-registration">Регистрация посетителя без заявки</a>
+      </div>
+    {% endblock %}
 
     <div class="row">
       <div class="col-lg-12">
-          <h1 class="page-header">Регистрация посетителя без заявки</h1>
-			</div>
-		</div>
-		
-		<div class="row">
+        <h1 class="page-header">Регистрация посетителя без заявки</h1>
+      </div>
+    </div>
+    
+    <div class="row">
 
-                <div class="col-lg-12">
+      <div class="col-lg-12">
 
-                {{ form_start(form) }}
-                  <div class="col-lg-6">
-                  <div class="panel panel-default">
-                <div class="panel-heading">
-                 Персональные данные
-                </div>
-                  <div class="panel-body">
-                    <div class="form-margin">
-                                      {{ form_label(form.firstname) }}
-                          {{ form_errors(form.firstname) }}
-                        {{ form_widget(form.firstname, {'attr': {'class':'form-control'}}) }}
-                    </div>
-                    <div class="form-margin">
-                                      {{ form_label(form.lastname) }}
-                          {{ form_errors(form.lastname) }}
-                        {{ form_widget(form.lastname, {'attr': {'class':'form-control'}}) }}
-                    </div>
-                    <div class="form-margin">
-                                      {{ form_label(form.patronimic) }}
-                          {{ form_errors(form.patronimic) }}
-                        {{ form_widget(form.patronimic, {'attr': {'class':'form-control'}}) }}
-                    </div>
-                    <div class="form-margin">
-                                      {{ form_label(form.documentnumber) }}
-                          {{ form_errors(form.documentnumber) }}
-                        {{ form_widget(form.documentnumber, {'attr': {'class':'form-control'}}) }}
-                    </div>
+        {{ form_start(form) }}
+        <div class="col-lg-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+             Персональные данные
+           </div>
+           <div class="panel-body">
+            <div class="form-margin">
+              {{ form_label(form.firstname) }}
+              {{ form_errors(form.firstname) }}
+              {{ form_widget(form.firstname, {'attr': {'class':'form-control'}}) }}
+            </div>
+            <div class="form-margin">
+              {{ form_label(form.lastname) }}
+              {{ form_errors(form.lastname) }}
+              {{ form_widget(form.lastname, {'attr': {'class':'form-control'}}) }}
+            </div>
+            <div class="form-margin">
+              {{ form_label(form.patronimic) }}
+              {{ form_errors(form.patronimic) }}
+              {{ form_widget(form.patronimic, {'attr': {'class':'form-control'}}) }}
+            </div>
+            <div class="form-margin">
+              {{ form_label(form.documentnumber) }}
+              {{ form_errors(form.documentnumber) }}
+              {{ form_widget(form.documentnumber, {'attr': {'class':'form-control'}}) }}
+            </div>
 
-                  </div></div>
-                </div>
-                  
+          </div></div>
+        </div>
+        
 
 
 
-                  <div class="col-lg-6">
-                    <div class="panel panel-default">
-                <div class="panel-heading">
-                 Дополнительные данные
-                </div>
-                  <div class="panel-body">
-                    <div class="form-margin">
-                                      {{ form_label(form.organization) }}
-                          {{ form_errors(form.organization) }}
-                        {{ form_widget(form.organization, {'attr': {'class':'form-control'}}) }}
-                    </div>
-                    <div class="form-margin">
-                                      {{ form_label(form.attendant) }}
-                          {{ form_errors(form.attendant) }}
-                        {{ form_widget(form.attendant, {'attr': {'class':'form-control'}}) }}
-                    </div>
-                    <div class="form-margin">
-                                      {{ form_label(form.comment) }}
-                          {{ form_errors(form.comment) }}
-                        {{ form_widget(form.comment, {'attr': {'class':'form-control'}}) }}
-                    </div>
-                    <div class="form-margin">
-                                      {{ form_label(form.entrancedate) }}
-                          {{ form_errors(form.entrancedate) }}
-                        {{ form_widget(form.entrancedate, {'attr': {'class':'form-control'}}) }}
-                    </div>
-                    <div class="form-margin">
-                                      {{ form_label(form.leaser) }}
-                          {{ form_errors(form.leaser) }}
-                        {{ form_widget(form.leaser, {'attr': {'class':'form-control'}}) }}
-                    </div>
-                  </div></div>
-                  </div>
-                  <div>
-                       {{ form_widget(form)}}</div>
-                       <div class="col-lg-6">
-                       <input type="submit" class="btn btn-primary" value="Зарегистрировать" />
-                       <a class="btn btn-default" href="hotentrance">Отмена</a></div>
-                     {{ form_end(form) }}
+        <div class="col-lg-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+             Дополнительные данные
+           </div>
+           <div class="panel-body">
+            <div class="form-margin">
+              {{ form_label(form.organization) }}
+              {{ form_errors(form.organization) }}
+              {{ form_widget(form.organization, {'attr': {'class':'form-control'}}) }}
+            </div>
+            <div class="form-margin">
+              {{ form_label(form.attendant) }}
+              {{ form_errors(form.attendant) }}
+              {{ form_widget(form.attendant, {'attr': {'class':'form-control'}}) }}
+            </div>
+            <div class="form-margin">
+              {{ form_label(form.comment) }}
+              {{ form_errors(form.comment) }}
+              {{ form_widget(form.comment, {'attr': {'class':'form-control'}}) }}
+            </div>
+            <div class="form-margin">
+              {{ form_label(form.entrancedate) }}
+              {{ form_errors(form.entrancedate) }}
+              {{ form_widget(form.entrancedate, {'attr': {'class':'form-control'}}) }}
+            </div>
+            <div class="form-margin">
+              {{ form_label(form.leaser) }}
+              {{ form_errors(form.leaser) }}
+              {{ form_widget(form.leaser, {'attr': {'class':'form-control'}}) }}
+            </div>
+          </div></div>
+        </div>
+        <div>
+         {{ form_widget(form)}}</div>
+         <div class="col-lg-6">
+           <input type="submit" class="btn btn-primary" value="Зарегистрировать" />
+           <a class="btn btn-default" href="hotentrance">Отмена</a></div>
+           {{ form_end(form) }}
 
-                          </div>
-              </div>
-          </div>
-      {% endblock %}
-{% block js %}
-<script type="text/javascript">
+         </div>
+       </div>
+     </div>
+   {% endblock %}
+   {% block js %}
+    <script type="text/javascript">
       $(document).ready(function() {
         $("#form_leaser").select2();
       });
     </script>
-{% endblock %}
+  {% endblock %}

@@ -14,12 +14,17 @@
                         <a class="btn btn-default" href="{{ path('main_page') }}">
                         <i class="fa fa-home"></i>Главная
                         </a>
-                            <a class="btn btn-default" href="\adminbc\building\{{qvSector.floor.building.id}}\show">Управление зданиями</a>
-                            <a class="btn btn-default" href="\adminbc\building\{{qvSector.floor.building.id}}\floors\{{qvSector.floor.id}}\show">Управление этажами</a>
+                            <a class="btn btn-default" href="{{ path('buildings_list') }}">Управление зданиями</a>
+                            
+                            <a class="btn btn-default" href="{{ path('buildings_show',{'qvBuilding':qvBuilding.id}) }}">{{ qvBuilding.name }}
+                        </a>
+								<a class="btn btn-default" href="{{ path('buildings_show',{'qvBuilding':qvBuilding.id}) }}">Управление этажами</a>
+								<a class="btn btn-default" href="{{ path('floors_show',{'qvBuilding':qvBuilding.id, 'id':qvFloor.id}) }}">{{ qvFloor.name }}
+                        </a>
                         </div>
 				{% endblock %}
 
-				<h1 class="page-header">Просмотр информации о секторе</h1>
+				<h1 class="page-header">Сектор № {{ qvSector.name }}</h1>
 				<!-- /.col-lg-12 -->
 				</div>
    
@@ -42,8 +47,6 @@
                                     <tbody>
                                         <tr class="success">
                                           	<tr class="success">
-                                            <td>Номер сектора</td>
-											<td>{{ qvSector.name }}</td>
 											</tr>
 											<tr class="success">
 												<td>Номер этажа</td>
