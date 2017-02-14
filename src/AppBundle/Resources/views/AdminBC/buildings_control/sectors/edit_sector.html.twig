@@ -8,17 +8,21 @@
 
     <div id="page-wrapper">
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col-lg-14">
 				{% block breadcrumb %}
 					 <div id="breadcrumbs" class="btn-group btn-breadcrumb">
                         <br>
                         <a class="btn btn-default" href="{{ path('main_page') }}">
-                        <i class="fa fa-home"></i>Главная
+                        <i class="fa fa-home"></i>
                         </a>
 		<a class="btn btn-default" href="{{ path('buildings_list') }}">Управление зданиями</a>
-		<a class="btn btn-default" href="{{ path('buildings_show', {'id': qvBuilding.id}) }}">Управление этажами</a>
-		<a class = "btn btn-default" href="{{ path('floors_show', {'qvBuilding': qvBuilding.id, 'id':qvFloor.id}) }}">Управление секторами</a>
-		<a class="btn btn-default" href="{{ path('sectors_show', {'qvBuilding': qvBuilding.id, 'qvFloor':qvFloor.id, 'id':qvSector.id }) }}">Просмотр информации о секторе</a>
+		<a class="btn btn-default" href="{{ path('buildings_show',{'qvBuilding':qvBuilding.id}) }}">{{ qvBuilding.name }}
+                        </a>
+								<a class="btn btn-default" href="{{ path('buildings_show',{'qvBuilding':qvBuilding.id}) }}">Управление этажами</a>
+								<a class="btn btn-default" href="{{ path('floors_show',{'qvBuilding':qvBuilding.id, 'id':qvFloor.id}) }}"> Этаж {{ qvFloor.name }}
+                        </a>
+		{#<a class = "btn btn-default" href="{{ path('floors_show', {'qvBuilding': qvBuilding.id, 'id':qvFloor.id}) }}">Управление секторами</a>#}
+		<a class="btn btn-default" href="{{ path('sectors_show', {'qvBuilding': qvBuilding.id, 'qvFloor':qvFloor.id, 'id':qvSector.id }) }}">Просмотр информации о секторе {{ qvSector.name }}</a>
 					</div>
 				{% endblock %}
 

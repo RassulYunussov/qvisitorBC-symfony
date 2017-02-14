@@ -214,16 +214,10 @@ class AdminBCController extends Controller
         $qvLeaser = new qvLeaser();
          $editForm = $this->createFormBuilder($data)
             ->add('name', TextType::class, array(
-                'label'=>'Имя',
+                'label'=>'Название компании',
                 'attr' => array('class'=>'form-control form-input')))
             ->add('bin', NumberType::class, array(
                 'label'=>'БИН пользователя',
-                'attr' => array('class'=>'form-control form-input')))
-            ->add('login', TextType::class, array(
-                'label'=>'Логин',
-                'attr' => array('class'=>'form-control form-input')))
-            ->add('password', PasswordType::class, array(
-                'label'=>'Пароль',
                 'attr' => array('class'=>'form-control form-input')))
             ->add('firstname', TextType::class, array(
                 'label'=>'Фамилия',
@@ -258,7 +252,7 @@ class AdminBCController extends Controller
     
            $em = $this->getDoctrine()->getManager();
 
-           $myrole = $em->getRepository('AppBundle:qvRole')->findOneById('2');
+           $myrole = $em->getRepository('AppBundle:qvRole')->findOneByName('ROLE_LEASER');
 
            $data = $editForm->getData();
             
@@ -510,7 +504,7 @@ class AdminBCController extends Controller
         $deleteForm = $this->createDeleteContractForm($qvContract);
          $em = $this->getDoctrine()->getManager();
             
-        $qvContract = new qvContract();
+        //$qvContract = new qvContract();
         $data = array();
 
         $editForm = $this->createFormBuilder($data)
@@ -672,33 +666,44 @@ $security = $query->getResult();
     
     /**
      * Creates a new qvCheckpoint entity.
-     *
-     * @Route("/checkpoints/create_checkpoint", name="checkpoints_create")
+     * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
+     * @Route("/building/{qvBuilding}/checkpoints/create_checkpoint", name="checkpoints_create")
      * @Method({"GET", "POST"})
      */
-    public function createCheckpointAction(Request $request)
+    public function createCheckpointAction(Request $request, qvBuilding $qvBuilding)
     {
         $qvCheckpoint = new qvCheckpoint();
-        $form = $this->createForm('AppBundle\Form\qvCheckpointType', $qvCheckpoint);
+         $data = array();
+        
+        $form = $this->createFormBuilder($data)
+        ->add('name', TextType::class, array(
+            'label' => 'Название КПП',
+            'attr'=>array('class'=>'form-control form-input')))
+        ->getForm();
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $qvCheckpoint->setName($data['name']);
+            $qvCheckpoint->setBuilding($qvBuilding);
             $em = $this->getDoctrine()->getManager();
             $em->persist($qvCheckpoint);
             $em->flush();
-            return $this->redirectToRoute('checkpoints_show', array('id' => $qvCheckpoint->getId()));
+            return $this->redirectToRoute('checkpoints_show', array('qvBuilding'=> $qvBuilding->getId(),'id' => $qvCheckpoint->getId()));
         }
         return $this->render('AppBundle:Adminbc:checkpoints_control/create_checkpoint.html.twig', array(
             'qvCheckpoint' => $qvCheckpoint,
+            'qvBuilding' => $qvBuilding,
             'form' => $form->createView(),
         ));
     }
     /**
      * Finds and displays a qvCheckpoint entity.
-     *
-     * @Route("/checkpoint/{id}/show", name="checkpoints_show")
+     * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
+     * @Route("/building/{qvBuilding}/checkpoint/{id}/show", name="checkpoints_show")
      * @Method("GET")
      */
-    public function showCheckpointAction(qvCheckpoint $qvCheckpoint)
+    public function showCheckpointAction(qvCheckpoint $qvCheckpoint, qvBuilding $qvBuilding)
     {
     $deleteForm = $this->createDeleteCheckpointForm($qvCheckpoint);
         
@@ -713,6 +718,7 @@ $security = $query->getResult();
 
         return $this->render('AppBundle:Adminbc:checkpoints_control/show_checkpoint.html.twig', array(
         'qvCheckpoint' => $qvCheckpoint,
+        'qvBuilding' => $qvBuilding,
         'security' => $security,
         'delete_form' => $deleteForm->createView(),
         ));
@@ -720,26 +726,32 @@ $security = $query->getResult();
     
     /**
      * Displays a form to edit an existing qvCheckpoint entity.
-        *
-     * @Route("/checkpoint/{id}/edit", name="checkpoints_edit")
+     * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
+     * @Route("/building/{qvBuilding}/checkpoint/{id}/edit", name="checkpoints_edit")
      * @Method({"GET", "POST"})
      */
-    public function editCheckpointAction(Request $request, qvCheckpoint $qvCheckpoint)
+    public function editCheckpointAction(Request $request, qvCheckpoint $qvCheckpoint, qvBuilding $qvBuilding)
     {
         $deleteForm = $this->createDeleteCheckpointForm($qvCheckpoint);
-        $editForm = $this->createForm('AppBundle\Form\qvCheckpointType', $qvCheckpoint);
+        $em = $this->getDoctrine()->getManager();
+        $qvCheckpoint = $em->getRepository('AppBundle:qvCheckpoint')->findOneById($qvCheckpoint);
+        $editForm = $this->createFormBuilder($qvCheckpoint)
+        ->add('name', TextType::class, array(
+            'label' => 'Название КПП',
+            'attr'=>array('class'=>'form-control form-input')))
+        ->getForm();
+
         $editForm->handleRequest($request);
         
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($qvCheckpoint);
             $em->flush();
             
-            return $this->redirectToRoute('buildings_show', array('id' => $qvCheckpoint->getId()));
+            return $this->redirectToRoute('checkpoints_show', array('qvBuilding'=>$qvBuilding->getId(),'id' => $qvCheckpoint->getId()));
         }
         
         return $this->render('AppBundle:Adminbc:checkpoints_control/edit_checkpoint.html.twig', array(
         'qvCheckpoint' => $qvCheckpoint,
+        'qvBuilding' =>$qvBuilding,
         'edit_form' => $editForm->createView(),
         'delete_form' => $deleteForm->createView(),
         ));
@@ -831,7 +843,7 @@ $security = $query->getResult();
     /**
      * Finds and displays a qvBuilding entity.
      *
-     * @Route("/building/{id}/show", name="buildings_show")
+     * @Route("/building/{qvBuilding}/show", name="buildings_show")
      * @Method("GET")
      */
     public function showBuildingAction(qvBuilding $qvBuilding)
@@ -875,17 +887,21 @@ $security = $query->getResult();
     /**
      * Displays a form to edit an existing qvBuilding entity.
      *
-     * @Route("/building/{id}/edit", name="buildings_edit")
+     * @Route("/building/{qvBuilding}/edit", name="buildings_edit")
      * @Method({"GET", "POST"})
      */
     public function editBuildingAction(Request $request, qvBuilding $qvBuilding)
     {
         $deleteForm = $this->createDeleteBuildingForm($qvBuilding);
-        $editForm = $this->createForm('AppBundle\Form\qvBuildingType', $qvBuilding);
+
+        $editForm = $this->createFormBuilder($qvBuilding)
+        ->add('name', TextType::class, array(
+            'label'=> 'Наименование здания',
+            'attr'=> array('class'=> 'form-control form-margin')))
+        ->getForm();
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($qvBuilding);
             $em->flush();
             return $this->redirectToRoute('buildings_list', array('id' => $qvBuilding->getId()));
         }
@@ -953,10 +969,20 @@ $security = $query->getResult();
     public function createFloorAction(Request $request, qvBuilding $qvBuilding)
     {
         $qvFloor = new qvFloor();
-        $form = $this->createForm('AppBundle\Form\qvFloorType', $qvFloor);
+        $data = array();
+        
+        $form = $this->createFormBuilder($data)
+        ->add('name', TextType::class, array(
+            'label' => 'Название этажа',
+            'attr'=>array('class'=>'form-control form-input')))
+        ->getForm();
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
             $em = $this->getDoctrine()->getManager();
+            $qvFloor->setName($data['name']);
+            $qvFloor->setBuilding($qvBuilding);
             $em->persist($qvFloor);
             $em->flush();
 
@@ -999,12 +1025,15 @@ $security = $query->getResult();
         qvBuilding $qvBuilding)
     {
         $deleteForm = $this->createDeleteFloorForm($qvFloor);
-        $editForm = $this->createForm('AppBundle\Form\qvFloorType', $qvFloor);
+          $editForm = $this->createFormBuilder($qvFloor)
+        ->add('name', TextType::class, array(
+            'label' => 'Название этажа',
+            'attr'=>array('class'=>'form-control form-input')))
+        ->getForm();
        
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($qvFloor);
             $em->flush();
             return $this->redirectToRoute('floors_show', array('qvBuilding' => 
                 $qvBuilding->getId(), 'id' => $qvFloor->getId()));
@@ -1137,7 +1166,7 @@ $security = $query->getResult();
     public function editSectorAction(Request $request, qvSector $qvSector, qvFloor $qvFloor, qvBuilding $qvBuilding)
     {
         $deleteForm = $this->createDeleteSectorForm($qvSector);
-        
+         $em = $this->getDoctrine()->getManager();
         $editForm = $this->createFormBuilder($qvSector)
         ->add('name', TextType::class, array(
             'label'=>'Название сектора',
@@ -1146,8 +1175,6 @@ $security = $query->getResult();
 
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($qvSector);
             $em->flush();
             return $this->redirectToRoute('sectors_show', 
                 array('qvBuilding' => $qvBuilding->getId(), 'qvFloor' => 
@@ -1315,12 +1342,24 @@ $security = $query->getResult();
     public function editSecurityAction(Request $request, qvUserPassport $qvUserPassport)
     {
         $deleteForm = $this->createDeleteSecurityForm($qvUserPassport);
-        $editForm = $this->createForm('AppBundle\Form\qvUserPassportType', $qvUserPassport);
+          $em = $this->getDoctrine()->getManager();
+        $editForm = $this->createFormBuilder($qvUserPassport)
+        ->add('firstname', TextType::class)
+            ->add('lastname', TextType::class)
+            ->add('patronimic', TextType::class)
+            ->add('birthdate', BirthdayType::class, array(
+                'placeholder' => array(
+                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+                )
+            )
+        )
+            ->add('gender',  EntityType::class, array(
+                'class' => 'AppBundle\Entity\qvGender')
+            )
+            ->getForm();
         $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($qvUserPassport);
+        if ($editForm->isSubmitted() && $editForm->isValid()) {  
             $em->flush();
 
             return $this->redirectToRoute('security_list', array('id' => $qvUserPassport->getId()));

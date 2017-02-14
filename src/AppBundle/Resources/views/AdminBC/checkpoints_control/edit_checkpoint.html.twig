@@ -25,18 +25,11 @@
 			<div class="col-lg-6">
 				<div class="form-group">
 					<div id="qv_checkpoint">
-			<ul>			
     {{ form_start(edit_form) }}
-        {% for child in edit_form %}
-				<li>
-						 {{ form_label(child) }}
-        			{{ form_widget(child, {'attr': {'class':'form-control'}}) }}
-    </li>
-{% endfor %}
-</ul>
+    {{ form_row(edit_form.name) }}
 <div class="form-input" align="right">
      <input class="btn btn-default btn-sm" type="submit" value="Изменить" />
-            <a class="btn btn-default btn-sm" href="{{ path('checkpoints_list') }}">Отменить</a>
+            <a class="btn btn-default btn-sm" href="{{ path('buildings_show', {'qvBuilding':qvBuilding.id}) }}">Отменить</a>
      
     {{ form_end(edit_form) }}
 

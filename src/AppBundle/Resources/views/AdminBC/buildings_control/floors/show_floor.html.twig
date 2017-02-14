@@ -14,9 +14,11 @@
                         <a class="btn btn-default" href="{{ path('main_page') }}">
                         <i class="fa fa-home"></i>Главная
                         </a>
-                        <a class="btn btn-default" href="\adminbc\building\{{qvFloor.building.id}}\show">Управление зданиями
+                        <a class="btn btn-default" href="{{ path('buildings_list') }}">Управление зданиями
                         </a>
-                        <a class="btn btn-default" href="\adminbc\building\{{qvFloor.building.id}}\show">Управление этажами
+                        <a class="btn btn-default" href="{{ path('buildings_show',{'qvBuilding':qvBuilding.id}) }}">{{ qvBuilding.name }}
+                        </a>
+                        <a class="btn btn-default" href="{{ path('buildings_show', {'qvBuilding':qvBuilding.id}) }}">Управление этажами
                         </a>
                     </div>
                     <br>
@@ -27,7 +29,7 @@
 	<br>
 	<br>
 	<br>
-	<h2 class="page-header">Просмотр информации об этаже</h2>
+	<h2 class="page-header">{{ qvFloor.name }}</h2>
 	<br>
 		<div class="col-lg-12">
 			<div class="panel panel-default">
@@ -38,34 +40,38 @@
         		                <div class="panel-heading">
                 		            <i class="fa fa-bar-chart-o fa-fw">
                 		            </i>
-                		           	Этаж № {{ qvFloor.name }} 
-                		           	<div class="text-right">
-                		           	<a class="btn btn-success btn-xs" href="{{ path('sectors_create', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id}) }}">Добавить сектор</a>
-                		           </div>
+                		            Расположен в здании:
+									{{  qvFloor.building }}
                 				</div>
                         <!-- /.panel-heading -->
+{% if sector is empty %}
+	<div><font size='3'> Сектора отсутствуют</font> 
+			<p class="text-right"> <a class="btn btn-success btn-xs" href="{{ path('sectors_create', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id}) }}">Добавить сектор</a>
+	</p></div>
+{% else %}
     <div class="panel-body">
 		<div class="table-responsive">
         	<table class="table">
             	<tbody>
-					<tr class="success">
-						<td>	
-						Расположен в здании:
-						</td>
-						<td>{{ qvFloor.building }}</td>
-					</tr>
-					<tr class="success">
-						<td>
-							Включает сектора
-						</td>
-						<td>
+            		<thead>
+            			<th>
+            				#
+            			</th>
+            			<th>
+            				№ Сектора
+            			</th>
+            		</thead>
 {% for sector in sector %}
-<a href="{{path('sectors_show', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id,'id':sector.id }) }}">
-{{  sector.name }}, 
-	</a>
-{% endfor %}
+					<tr class="success">
+						<td>
+							{{ loop.index }}
 						</td>
+						<td>
+	<a href="{{path('sectors_show', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id,'id':sector.id }) }}">
+{{  sector.name }}, 
+	</a></td>
 					</tr>
+{% endfor %}			
 					<tr>
 						<td>
 						</td>
@@ -78,10 +84,14 @@
 							</div>
 						</td>
 					</tr>
+					<div class="text-right">
+						<a class="btn btn-success btn-xs" href="{{ path('sectors_create', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id}) }}">Добавить сектор</a>
+					</div>
                 </tbody>
             </table>					
         </div>
 	</div>
+	{% endif %}
 <!-- /.panel-body -->
 						</div>
 					</div>
