@@ -15,9 +15,9 @@
 					{% block breadcrumb %}
 					<div id="bc1" class="btn-group btn-breadcrumb">
 						<br>
-                        <a class="btn btn-default" href="index"><i class="fa fa-home"></i></a>
-						<a class="btn btn-default" href="entrance">Посетители</a>
-						<a class="btn btn-default" href="entrance-registration">Регистрация посетителя</a>
+                        <a class="btn btn-default" href="{{path('home')}}"><i class="fa fa-home"></i></a>
+						<a class="btn btn-default" href="{{path('entrance')}}">Посетители</a>
+						<a class="btn btn-default" href="{{path('entrance_registration')}}">Регистрация посетителя</a>
 						
 					</div>
 					{% endblock %}
@@ -65,13 +65,14 @@
                                     </thead>
                                     <tbody>
                                         {% for qvOrder in qvOrders %}
-                                            {% for qvVisitor in qvOrder.visitors %}
-										<tr>
+                                            <tr>
                                         <td>{{qvOrder.id}}</td>
-                                        <td>{{qvVisitor.lastname}} {{qvVisitor.firstname}} {{qvVisitor.patronimic}}</td>
-                                        <td><a class="btn btn-sm btn-info" href="{{ path('add_entrance', { 'qvOrder': qvOrder.id, 'qvVisitor':qvVisitor.id}) }}">Зарегистрировать</a></td>
+                                          <td>  {% for qvVisitor in qvOrder.visitors %}
+										
+                                        {{qvVisitor.lastname}} {{qvVisitor.firstname}} {{qvVisitor.patronimic}} </br>{% endfor %}</td>
+                                        <td><button onclick="$('#myModal .modal-dialog').load('{{path('select-visitor', {'qvOrder': qvOrder.id})}}');" class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal">Зарегистрировать</button><a href="{{path('test',{'qvOrder': qvOrder.id})}}" class="btn btn-danger">тест, без модального окна РАБОТАЕТ</a></td>
                                         </tr>
-                                    {% endfor %}
+                                    
                                         {% endfor %}
                                     </tbody>
                                 </table>
@@ -83,6 +84,9 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
+
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog"></div></div>
 		</div>
 {% endblock %}
 

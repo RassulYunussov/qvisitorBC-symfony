@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use AppBundle\Entity\qvHotEntrance;
@@ -22,6 +23,7 @@ use AppBundle\Entity\qvCheckpoint;
 use AppBundle\Form\qvHotEntranceType;
 use AppBundle\Entity\qvUser;
 use AppBundle\Entity\qvVisitor;
+use AppBundle\Repository\qvVisitorRepository;
 
 
 /**
@@ -131,9 +133,9 @@ class CheckpointController extends Controller
     
     /**
      * @Route("/entrance-registration", name="entrance_registration")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      */
-    public function entranceRegPageLoadAction()
+    public function entranceRegPageLoadAction(Request $request)
     {
     	$em = $this->getDoctrine()->getManager();
         $qvOrders = $em->getRepository('AppBundle:qvOrder')->findAll();
@@ -161,22 +163,6 @@ class CheckpointController extends Controller
         return $this->redirectToRoute('entrance');
     }
 
-    /**
-     *@Route("/set-registered", name="set_registered")
-     *@Method("GET")
-     */
-
-    public function setRegisteredAjaxAction(Request $request)
-    {
-        if($request->isXmlHttpRequest()) {
-            $em = $this->getDoctrine()->getManager();
-            $leaserId=$request->get('id', 1);
-            $qvLeaser = $em->getRepository('AppBundle:qvLeaser')->findOneBy(array('id'=>$leaserId));
-            $serializer = $this->get('serializer');
-            $leaser = $serializer->serialize($qvLeaser, 'json');
-            return new Response($leaser);
-        }
-    }
 
 
 
@@ -196,6 +182,119 @@ class CheckpointController extends Controller
     	
     }
     
+
+    /**
+     * @Route("/test/{qvOrder}", name="test")
+     * @ParamConverter("qvOrder", class="AppBundle:qvOrder")
+     * @Method({"GET", "POST"})
+     */
+    public function testAction(Request $request, $qvOrder)
+    {   
+            $em = $this->getDoctrine()->getManager();
+
+        $data = array();
+            $form = $this->createFormBuilder($data)
+                ->add('visitors', EntityType::class, [
+                'class'     => 'AppBundle:qvVisitor',
+                'query_builder' => function (qvVisitorRepository $repo) use ($qvOrder) {
+                    return $repo->createQueryBuilder('f')
+                        ->innerJoin('f.orders', 'o')
+                        ->where('o.id = :id')
+                        ->setParameter('id', $qvOrder);
+                },
+                'multiple'  => true,
+                'expanded'=> true
+            ])
+                ->getForm();
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+           $qvUser = new qvUser();
+           $qvUser = $this->get('security.token_storage')->getToken()->getUser();
+           $session = $this->get("session");
+           $chp = $session->get('checkpoint');
+           $checkpoint = $em->getRepository('AppBundle:qvCheckpoint')->findOneBy(array('id'=>$chp->getId()));
+                foreach ($data['visitors'] as $visitor) {
+            $entrance = new qvEntrance();
+            $entrance->setEntrancedate(new \DateTime());
+            $entrance->setOrder($qvOrder);
+            $entrance->setVisitor($visitor);
+            $entrance->setCheckpoint($checkpoint);
+            $entrance->setUser($qvUser);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entrance);
+            $em->flush();
+                }
+
+           
+
+             return $this->redirectToRoute('entrance', array());
+            }
+                return $this->render('AppBundle:Leaser:test.html.twig', array(
+            'form' => $form->createView(),
+            ));
+    }
+
+
+    /**
+     * @Route("/entrance-registration/{qvOrder}", name="select-visitor")
+     * @ParamConverter("qvOrder", class="AppBundle:qvOrder")
+     * @Method({"GET", "POST"})
+     */
+    public function selectVisitorAction(Request $request, $qvOrder)
+    {
+          $data = array();
+            $em = $this->getDoctrine()->getManager();
+            $form = $this->createFormBuilder($data)
+                ->add('visitors', EntityType::class, [
+                'class'     => 'AppBundle:qvVisitor',
+                'query_builder' => function (qvVisitorRepository $repo) use ($qvOrder) {
+                    return $repo->createQueryBuilder('f')
+                        ->innerJoin('f.orders', 'o')
+                        ->where('o.id = :id')
+                        ->setParameter('id', $qvOrder);
+                },
+                'multiple'  => true,
+                'expanded'=> true
+            ])
+                ->getForm();
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+
+            $data = $form->getData(); $qvUser = new qvUser();
+            $qvUser = $this->get('security.token_storage')->getToken()->getUser();
+            $session = $this->get("session");
+            $chp = $session->get('checkpoint');
+            $checkpoint = $em->getRepository('AppBundle:qvCheckpoint')->findOneBy(array('id'=>$chp->getId()));
+                foreach ($data['visitors'] as $visitor) {
+                    $entrance = new qvEntrance();
+                    $entrance->setEntrancedate(new \DateTime());
+                    $entrance->setOrder($qvOrder);
+                    $entrance->setVisitor($visitor);
+                    $entrance->setCheckpoint($checkpoint);
+                    $entrance->setUser($qvUser);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($entrance);
+                    $em->flush();
+                        }
+             return $this->redirectToRoute('entrance');
+            }
+                    if($request->isXmlHttpRequest()) {
+            
+            $qvVisitors = $em->getRepository('AppBundle:qvVisitor')->findVisitorByOrder($qvOrder);
+
+
+            return $this->render('AppBundle:Checkpoint:selectvisitor.html.twig', array(
+                    'qvVisitors' => $qvVisitors,
+
+                    'form' => $form->createView(),
+            ));
+        }
+    }
+
+
     /**
      * @Route("/hotentrance/{id}", name="hotentrance")
      * @Method("GET")
