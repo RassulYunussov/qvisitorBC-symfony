@@ -1,6 +1,8 @@
 <?php
 
 namespace AppBundle\Repository;
+use Doctrine\DBAL\Query\Expression\CompositeExpression;
+use Doctrine\DBAL\Connection;
 
 /**
  * qvEntranceRepository
@@ -15,4 +17,8 @@ class qvEntranceRepository extends \Doctrine\ORM\EntityRepository
 		->createQuery('SELECT entrance from AppBundle:qvEntrance entrance where entrance.entrancedate > CURRENT_DATE()')->getResult();
 	}
 
+	public function findEntrancesByVisitor($qvVisitor){
+		return $this->getEntityManager()
+		->createQuery('SELECT entrance from AppBundle:qvEntrance entrance left join entrance.visitor v where v.id =:id')->setParameter("id", $qvVisitor)->getResult();
+	}
 }

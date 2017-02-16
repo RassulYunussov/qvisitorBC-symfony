@@ -61,7 +61,7 @@
                                     	{% for qvEntrance in qvEntrances %}
 										<tr>
                                         <td>{{qvEntrance.entrancedate|date('Y-m-d H:i') }}</td>
-                                        <td>{{qvEntrance.visitor.lastname}} {{qvEntrance.visitor.firstname}} {{qvEntrance.visitor.patronimic}}</td>
+                                        <td><a href="{{path('visitor_info', {'id':qvEntrance.id})}}">{{qvEntrance.visitor.lastname}} {{qvEntrance.visitor.firstname}} {{qvEntrance.visitor.patronimic}}</a></td>
                                         <td></td>
                                         <td>
 											<button class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal">Просмотр</button>
