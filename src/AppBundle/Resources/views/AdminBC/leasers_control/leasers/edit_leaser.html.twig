@@ -40,6 +40,8 @@
 	<div class="form-group has-warning">
 		<div class="form-margin">		
 			{{ form_start(edit_form) }}
+			{{form_widget(edit_form)}}
+			<br>
         <button class="btn btn-default" type="submit" name="save"> Сохранить </button>
         <a class="btn btn-default" href="{{ path('leasers_list') }}">Отменить</a>
 			{{ form_end(edit_form) }}
@@ -47,17 +49,12 @@
 	</div>
 </div>
 </div>
-<div class="row">	
-	<div <div class="col-lg-6">	
-<div class="text-right">
 	{{  form_start(delete_form) }}
 			<button class="btn btn-default btn-sm" type="submit">
 				Удалить
 			</button>
 		{{ form_end(delete_form) }}				
 </div>
- </div>   <!-- /.row -->
+    <!-- /.row -->
         <!-- /#page-wrapper -->   
-</div>
-</div>
             {% endblock %}
