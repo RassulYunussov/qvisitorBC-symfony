@@ -79,7 +79,7 @@ class LeaserController extends Controller
         $data = array();
 
         $user = $this->get('security.token_storage')->getToken()->getUser()->getId();
-        $qvVisitors=$em->getRepository('AppBundle:qvVisitor')->getVisitor($user);
+        $qvVisitors=$em->getRepository('AppBundle:qvVisitor')->findVisitorByUser($user);
         $form = $this->createFormBuilder($data)
             ->add('sdate', DateType::class, array(
                 'label'=>'Дата открытия заявки',
@@ -338,5 +338,23 @@ class LeaserController extends Controller
        }
     }
 
+
+    /**
+    * @Route("/modal/visitors", name="visitor_modal")
+    * @Method("GET")
+    */
+    public function visitorModalAction(Request $request)
+    {
+    	if($request->isXmlHttpRequest()){
+    		$em=$this->getDoctrine()->getManager();
+
+        	$user = $this->get('security.token_storage')->getToken()->getUser()->getId();
+        	$qvVisitors=$em->getRepository('AppBundle:qvVisitor')->findVisitorByUser($user);
+    		
+    		return $this->render('AppBundle:Leaser:visitor_modal.html.twig', array(
+    			'visitors'=>$qvVisitors));
+
+    	}
+    }
 
 }

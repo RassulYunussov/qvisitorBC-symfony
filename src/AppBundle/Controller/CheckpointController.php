@@ -399,6 +399,28 @@ class CheckpointController extends Controller
         ));   
 
     }
+
+
+    /**
+    * @Route("/entrance/visitor/{id}", name="visitor_info")
+    * @Method("GET")
+    */
+    public function visitorInfoAction(Request $request, $id)
+    {
+        $em=$this->getDoctrine()->getManager();
+        $entrance = $em->getRepository('AppBundle:qvEntrance')->findOneBy(array('id'=>$id));
+        $qvUserpassport = array();
+        $qvVisitor = $entrance->getVisitor();
+        $qvEntrances = $em->getRepository('AppBundle:qvEntrance')->findEntrancesByVisitor($qvVisitor);
+        foreach ($qvEntrances as $qvEntrance) {
+            $qvUserPassport = $em->getRepository('AppBundle:qvUserPassport')->findUserpassportByEntrance($qvEntrance);
+
+        }
+        return $this->render('AppBundle:Checkpoint:visitor_info.html.twig', array(
+            'qvVisitor'=>$qvVisitor,
+            'qvEntrances'=>$qvEntrances,
+            'qvUserPassport'=>$qvUserPassport));
+    }
     
    
 }
