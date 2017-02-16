@@ -21,16 +21,16 @@ class PageMenuController extends Controller
     {
        
     	if($this->get('security.authorization_checker')->isGranted('ROLE_LEASER'))
-		return $this->render('AppBundle:Pagemenu:leaser_menu.html.twig', array(
+		return $this->render('AppBundle:PageMenu:leaser_menu.html.twig', array(
         ));
     	if($this->get('security.authorization_checker')->isGranted('ROLE_CHECKPOINT'))
-		return $this->render('AppBundle:Pagemenu:checkpoint_menu.html.twig', array(
+		return $this->render('AppBundle:PageMenu:checkpoint_menu.html.twig', array(
         ));
 	    if($this->get('security.authorization_checker')->isGranted('ROLE_SA'))
-		return $this->render('AppBundle:Pagemenu:admin_menu.html.twig', array(
+		return $this->render('AppBundle:PageMenu:admin_menu.html.twig', array(
         ));
 		if($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))
-		return $this->render('AppBundle:Pagemenu:adminbc_menu.html.twig', array(
+		return $this->render('AppBundle:PageMenu:adminbc_menu.html.twig', array(
         ));
 	}
 		else if($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_ANONYMOUS')) {

@@ -7,7 +7,7 @@
 		<ul class="dropdown-menu dropdown-user">
 			<li><a href="{{ path('userprofile') }}"><i class="fa fa-user fa-fw"></i>Информация</a>
 			</li>
-			<li><a href="{{ path('changepassword') }}"><i class="fa fa-gear fa-fw"></i>Сменить пароль</a>
+			<li><a href="{{ path('changepassword', {'qvUser':qvUser.id}) }}"><i class="fa fa-gear fa-fw"></i>Сменить пароль</a>
 			</li>
 			<li><a href="{{ path('select_checkpoint') }}"><i class="fa fa-building fa-fw"></i>Сменить КПП</a>
 			</li>

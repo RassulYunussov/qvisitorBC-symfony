@@ -99,11 +99,16 @@
 <td>
 	<div class="text-right">
 <div class="btn-group">
-	<a class="btn btn-outline btn-default btn-xs" href="{{ path('checkpoints_show', {'qvBuilding': qvBuilding.id, 'id': check.id }) }}"> Посмотреть</a>
-	<a class="btn btn-outline btn-default btn-xs" href="{{ path('checkpoints_edit', {'qvBuilding': qvBuilding.id, 'id': check.id }) }}"> Изменить </a>
-
-	<button class="btn btn-outline btn-default btn-xs" type="submit">
-		Удалить
+	
+  <a class="btn btn-circle btn-default btn-xs" href="{{ path('checkpoints_show', {'qvBuilding':qvBuilding.id, 'id': check.id }) }}" data-title="Посмотреть информацию">
+                        <i class="fa fa-check"></i>
+                  </a> &nbsp; 
+                  
+                  <a class="btn btn-circle btn-default" href="{{ path('checkpoints_edit', { 'qvBuilding':qvBuilding.id, 'id': check.id }) }}" data-title="Изменить или удалить информацию о КПП">
+                    <i class="fa fa-edit"></i>
+                  </a>
+	<button class="btn btn-circle btn-default btn-xs" type="submit" data-title = "Удалить пока не работает">
+		<i class="fa fa-times"></i>
 	</button>
 
 </div>

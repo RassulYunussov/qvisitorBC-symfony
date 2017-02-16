@@ -37,12 +37,12 @@
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="panel panel-default">
-        		                <div class="panel-heading">
+        		                {#<div class="panel-heading">
                 		            <i class="fa fa-bar-chart-o fa-fw">
                 		            </i>
                 		            Расположен в здании:
 									{{  qvFloor.building }}
-                				</div>
+                				</div>#}
                         <!-- /.panel-heading -->
 {% if sector is empty %}
 	<div><font size='3'> Сектора отсутствуют</font> 
@@ -70,24 +70,25 @@
 	<a href="{{path('sectors_show', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id,'id':sector.id }) }}">
 {{  sector.name }}, 
 	</a></td>
-					</tr>
+				    </tr>
 {% endfor %}			
-					<tr>
-						<td>
+					<tr class="text-right">
+						<td class="text-right">
 						</td>
 						<td>
 							<div class="text-right">
+								<a class="btn btn-success btn-xs" href="{{ path('sectors_create', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id}) }}">		Добавить сектор
+								</a>
+							</div>
+							<div class="text-right">
 							<br>
-							<a href="{{ path('floors_edit', { 'qvBuilding': qvBuilding.id,'id': qvFloor.id }) }}" align="right" class="btn  btn-default">
-								Редактировать
+							<a href="{{ path('floors_edit', { 'qvBuilding': qvBuilding.id,'id': qvFloor.id }) }}" align="right" class="btn btn-circle  btn-default btn-lg" data-title ="Редактировать">
+								<i class="fa fa-pencil"></i>								
 							</a>
 							</div>
 						</td>
 					</tr>
-					<div class="text-right">
-						<a class="btn btn-success btn-xs" href="{{ path('sectors_create', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id}) }}">Добавить сектор</a>
-					</div>
-                </tbody>
+					</tbody>
             </table>					
         </div>
 	</div>

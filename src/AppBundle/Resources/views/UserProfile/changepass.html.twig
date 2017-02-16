@@ -25,20 +25,16 @@
 					<div class="col-lg-6">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								------------------------
 							</div>
 							<div class="panel-body">
 								<div class="row">
 									<div class="col-lg-6">
-										<script>
-											function checkPass() { 
-												if (document.getElementById('passwordX').value != document.getElementById('passwordY').value) { 
-													alert('Пароли не совпадают! Попробуйте еще раз!') 
-													return false; 
-												} else return true; 
-											} 
-										</script>
-									
+										
+									{{form_start(form)}}
+									{{form_row(form.password)}}
+<br><input type="submit" name="Save" value="Изменить" class="btn btn-default btn-xs">
+<a href="main_page" class="btn btn-default btn-xs">Отменить </a>
+									{{form_end(form)}}
 									</div>
 									<!-- /.col-lg-6 (nested) -->
 									
@@ -57,5 +53,20 @@
 	
 	</div>
 	</div>
-	
+{% endblock %}
+{% block js %}
+	<script>
+		 $(document).ready(function() {
+        $('#form_password_second').change(function() {
+            var pass = $("#form_password_first").val();
+            var pass_rep = $("#form_password_second").val();
+
+            if (pass != pass_rep) {
+                $("#form_password_second").css('border', 'red 2px solid');
+              	alert('Введенные пароли не совпадают! Пожалуйста, попробуйте еще раз.');	
+    }else {     $("#form_password_second").css('border', '#3c763d 1px solid');}
+
+        });
+    });
+	</script>
 {% endblock %}

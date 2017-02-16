@@ -3,24 +3,7 @@
 {% block title %}Личный кабинет администратора{% endblock %}
 
 	{% block body %}
-		<style>
-			.btn {
-				display: inline-block; /* Строчно-блочный элемент */
-				position: relative; /* Относительное позиционирование */
-			}
-			.btn:hover::after {
-				content: attr(data-title); /* Выводим текст */
-				position: relative; /* Абсолютное позиционирование */
-				left: -70%; top: 100%; /* Положение подсказки */
-				z-index: 1; /* Отображаем подсказку поверх других элементов */
-				background: rgba(255,255,230,0.9); /* Полупрозрачный цвет фона */
-				font-family: Arial, sans-serif; /* Гарнитура шрифта */
-				font-size: 10px; /* Размер текста подсказки */
-				padding: 3px 5px; /* Поля */
-				border: 0.5px solid #333; /* Параметры рамки */
-			}
-		</style>
-
+		
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">

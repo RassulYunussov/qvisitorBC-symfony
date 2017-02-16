@@ -9,9 +9,10 @@ use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Bridge\Doctrine\Form\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -36,7 +37,7 @@ use AppBundle\Entity\UserAccount;
 use AppBundle\Form\UserAccountType;
 
 /**
- * adminBCController 
+ * AdminBCController 
  * 
  * @Route("/adminbc")
  * 
@@ -49,7 +50,7 @@ class AdminBCController extends Controller
      */
     public function adminbcAction()
     {
-            return $this->render('AppBundle:Adminbc:index.html.twig', array(
+            return $this->render('AppBundle:AdminBC:index.html.twig', array(
         ));
     }
           
@@ -92,9 +93,14 @@ class AdminBCController extends Controller
             ->add('login', TextType::class, array(
                 'label'=>'Логин',
                 'attr' => array('class'=>'form-control form-input')))
-            ->add('password', PasswordType::class, array(
-                'label'=>'Пароль',
-                'attr' => array('class'=>'form-control form-input')))
+            ->add('password', RepeatedType::class, array(
+                'type'=> PasswordType::class,
+                'invalid_message'=>'Пароли должны совпадать',
+                'options' => array('attr' => array('class' => 'password-field')),
+                'required' => true,
+                'first_options'  => array('label' => 'Пароль', 'attr' => array('class'=>'form-control form-input')),
+                'second_options' => array('label' => 'Повторите пароль', 'attr' => array('class'=>'form-control form-input'))
+                    ))
             ->add('firstname', TextType::class, array(
                 'label'=>'Фамилия',
                 'attr' => array('class'=>'form-control form-input')))
@@ -134,7 +140,7 @@ class AdminBCController extends Controller
            $em = $this->getDoctrine()->getManager();
 
            $myrole = $em->getRepository('AppBundle:qvRole')->findOneById('2');
-
+           $encoder = $this->container->get('security.password_encoder');
            $data = $form->getData();
             
             $qvLeaser->SetName($data['name']);
@@ -144,7 +150,8 @@ class AdminBCController extends Controller
             $em->flush();
 
             $qvUser->setLogin($data['login']);   
-            $qvUser->setPassword($data['password']);
+            $mypass = $encoder->encodePassword($qvUser, $data['password']);
+            $qvUser->setPassword($mypass);
             $qvUser->setRole($myrole);
             $qvUser->setDisabled('false');
 
@@ -408,7 +415,7 @@ class AdminBCController extends Controller
             $em->flush();
             return $this->redirectToRoute('leasers_show', array('id'=>$qvLeaser->getId()));
         }
-        return $this->render('AppBundle:Adminbc:leasers_control/contracts/create_contract.html.twig', array(
+        return $this->render('AppBundle:AdminBC:leasers_control/contracts/create_contract.html.twig', array(
             'qvContract' => $qvContract,
             'qvLeaser'=> $qvLeaser,
             'form' => $form->createView(),
@@ -465,7 +472,7 @@ class AdminBCController extends Controller
 
         $onecontr = $em->getRepository('AppBundle:qvContract')->findOneById($qvContract);
 
-        return $this->render('AppBundle:Adminbc:leasers_control/contracts/show_contract.html.twig', array(
+        return $this->render('AppBundle:AdminBC:leasers_control/contracts/show_contract.html.twig', array(
             'qvContract' => $qvContract,
             'qvContracts' => $qvContracts,
             'qvLeaser'=> $qvLeaser,
@@ -486,7 +493,7 @@ class AdminBCController extends Controller
             $qvModalContract = $em->getRepository('AppBundle:qvContract')->findOneBy(array('id'=>$id));
             $qvcontr = $em->getRepository('AppBundle:qvSector')->findSectorByContract($id);
             
-            return $this->render('AppBundle:Adminbc:leasers_control/contracts/detailscontract.html.twig', array(
+            return $this->render('AppBundle:AdminBC:leasers_control/contracts/detailscontract.html.twig', array(
                     'qvModalContract' => $qvModalContract,
                     'qvcontr' => $qvcontr,
             ));
@@ -586,7 +593,7 @@ class AdminBCController extends Controller
             return $this->redirectToRoute('leasers_show', array('id'=>$qvLeaser->getId()));
         }
         
-        return $this->render('AppBundle:Adminbc:leasers_control/contracts/edit_contract.html.twig', array(
+        return $this->render('AppBundle:AdminBC:leasers_control/contracts/edit_contract.html.twig', array(
             'qvContract' => $qvContract,
             'qvLeaser'=> $qvLeaser,
             'edit_form' => $editForm->createView(),
@@ -691,7 +698,7 @@ $security = $query->getResult();
             $em->flush();
             return $this->redirectToRoute('checkpoints_show', array('qvBuilding'=> $qvBuilding->getId(),'id' => $qvCheckpoint->getId()));
         }
-        return $this->render('AppBundle:Adminbc:checkpoints_control/create_checkpoint.html.twig', array(
+        return $this->render('AppBundle:AdminBC:checkpoints_control/create_checkpoint.html.twig', array(
             'qvCheckpoint' => $qvCheckpoint,
             'qvBuilding' => $qvBuilding,
             'form' => $form->createView(),
@@ -716,7 +723,7 @@ $security = $query->getResult();
 $security = $query->getResult();
       
 
-        return $this->render('AppBundle:Adminbc:checkpoints_control/show_checkpoint.html.twig', array(
+        return $this->render('AppBundle:AdminBC:checkpoints_control/show_checkpoint.html.twig', array(
         'qvCheckpoint' => $qvCheckpoint,
         'qvBuilding' => $qvBuilding,
         'security' => $security,
@@ -749,7 +756,7 @@ $security = $query->getResult();
             return $this->redirectToRoute('checkpoints_show', array('qvBuilding'=>$qvBuilding->getId(),'id' => $qvCheckpoint->getId()));
         }
         
-        return $this->render('AppBundle:Adminbc:checkpoints_control/edit_checkpoint.html.twig', array(
+        return $this->render('AppBundle:AdminBC:checkpoints_control/edit_checkpoint.html.twig', array(
         'qvCheckpoint' => $qvCheckpoint,
         'qvBuilding' =>$qvBuilding,
         'edit_form' => $editForm->createView(),
@@ -1284,12 +1291,13 @@ $security = $query->getResult();
           
            $em = $this->getDoctrine()->getManager();
 
-           $myrole = $em->getRepository('AppBundle:qvRole')->findByCodeCheckpoint();
+           $myrole = $em->getRepository('AppBundle:qvRole')->findOneById(4);
 
            $data = $form->getData();
-         
+            $encoder = $this->container->get('security.password_encoder');
+            $mypass = $encoder->encodePassword($qvUser, $data['password']);
             $qvUser->setLogin($data['login']);   
-            $qvUser->setPassword($data['password']);
+            $qvUser->setPassword($mypass);
             $qvUser->setRole($myrole);
             $qvUser->setDisabled('false');
 
@@ -1309,9 +1317,9 @@ $security = $query->getResult();
             return $this->redirectToRoute('security_list', array());
         }
         return $this->render('AppBundle:AdminBC:checkpoints_control/security_man/new.html.twig', array(
-            'qvUserPassport' => $qvUserPassport,
-            'qvUser' => $qvUser,
-            'data' => $data,
+            //'qvUserPassport' => $qvUserPassport,
+            //'qvUser' => $qvUser,
+            //'data' => $data,
             'form' => $form->createView(),
         ));   
 

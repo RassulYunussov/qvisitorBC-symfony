@@ -19,12 +19,14 @@ class qvRoleRepository extends \Doctrine\ORM\EntityRepository
             )->setParameter('code', 'ROLE_LEASER')->getResult();
     }
 
-    public function findByCodeCheckpoint()
+    public function findOneByCode()
 	{
         return $this->getEntityManager()
         ->createQuery(
-          'SELECT role from AppBundle:qvRole role 
+          'SELECT role.id, role.name, role.code from AppBundle:qvRole role 
           WHERE role.code = :code'
             )->setParameter('code', 'ROLE_CHECKPOINT')->getResult();
     }
+
+
 }

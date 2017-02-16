@@ -36,13 +36,29 @@
 								Отменить
 							</a>
 							{{ form_end(form) }}
-
 						</div>
 					</div>
 					<!-- /.row -->
 				</div>
 			</div>
 			<!-- /#page-wrapper -->
-		</div>>
-		
+		</div>
 	{% endblock %}
+
+	{% block js %}
+			<script>
+		  $(document).ready(function() {
+        $('#form_password_second').change(function() {
+            var pass = $("#form_password_first").val();
+            var pass_rep = $("#form_password_second").val();
+
+            if (pass != pass_rep) {
+                $("#form_password_second").css('border', 'red 2px solid');
+              	alert('Введенные пароли не совпадают! Пожалуйста, попробуйте еще раз.');	
+    }else {     $("#form_password_second").css('border', '#3c763d 1px solid');}
+
+        });
+    });
+		</script>
+	{% endblock %}
+	
