@@ -281,7 +281,7 @@ class CheckpointController extends Controller
                         }
              return $this->redirectToRoute('entrance');
             }
-                    if($request->isXmlHttpRequest()) {
+            if($request->isXmlHttpRequest()) {
             
             $qvVisitors = $em->getRepository('AppBundle:qvVisitor')->findVisitorByOrder($qvOrder);
 
@@ -411,6 +411,14 @@ class CheckpointController extends Controller
         $qvUserpassport = array();
         $qvVisitor = $em->getRepository('AppBundle:qvVisitor')->findOneBy(array('id'=>$id));
         $qvEntrances = $em->getRepository('AppBundle:qvEntrance')->findEntrancesByVisitor($qvVisitor);
+        if (count($qvEntrances) == 0) {
+            $message = "У данного человека нет посещений";
+             return $this->render('AppBundle:Checkpoint:visitor_info_error.html.twig', array(
+            'qvVisitor'=>$qvVisitor,
+            'message'=>$message));
+        }
+         else {
+
         foreach ($qvEntrances as $qvEntrance) {
             $qvUserPassport = $em->getRepository('AppBundle:qvUserPassport')->findUserpassportByEntrance($qvEntrance);
 
@@ -419,6 +427,8 @@ class CheckpointController extends Controller
             'qvVisitor'=>$qvVisitor,
             'qvEntrances'=>$qvEntrances,
             'qvUserPassport'=>$qvUserPassport));
+        }
+
     }
     
     /**

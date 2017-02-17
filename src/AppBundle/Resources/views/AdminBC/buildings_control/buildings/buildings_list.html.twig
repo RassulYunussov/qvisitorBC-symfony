@@ -195,11 +195,69 @@
         #}
     </div>
     <!-- /#page-wrapper -->
+{% endblock %}
+
+
 {% block js %}
 <script type="text/javascript">
 	$(document).ready(function(){
-    	$('#dataTables-buidings').DataTable();
+    	$('#dataTables-buidings').DataTable({
+    		select: true
+    	});
 	});   
  </script>
-{% endblock %}
+ <script>
+ 	var editor; // use a global for the submit and return data rendering in the examples
+ 
+$(document).ready(function() {
+    editor = new $.fn.dataTable.Editor( {
+        ajax: "../php/staff.php",
+        table: "#dataTables-buidings",
+        fields: [ {
+                label: "#:",
+                name: "index"
+            }, {
+                label: "Название здания:",
+                name: "name"
+            }, {
+                label: "Действия:",
+                name: "actions"
+            }
+        ]
+    } );
+ 
+    // Activate the bubble editor on click of a table cell
+    $('#dataTables-buidings').on( 'click', 'tbody td:not(:first-child)', function (e) {
+        editor.bubble( this );
+    } );
+ 
+    $('#dataTables-buidings').DataTable( {
+        dom: "Bfrtip",
+        scrollY: 300,
+        paging: false,
+        ajax: "../php/staff.php",
+        columns: [
+            {
+                data: null,
+                defaultContent: '',
+                className: 'select-checkbox',
+                orderable: false
+            },
+            { data: "index" },
+            { data: "name" },
+            { data: "actions" },
+            ],
+        order: [ 1, 'asc' ],
+        select: {
+            style:    'os',
+            selector: 'td:first-child'
+        },
+        buttons: [
+            { extend: "Добавить", editor: editor },
+            { extend: "Изменить",   editor: editor },
+            { extend: "Удалить", editor: editor }
+        ]
+    } );
+} );
+ </script>
 {% endblock %}
