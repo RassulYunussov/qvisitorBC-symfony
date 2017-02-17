@@ -56,6 +56,9 @@
                 {{ form_label(form.buildings) }}
                 {{ form_errors(form.buildings) }}
                 {{ form_widget(form.buildings, {'attr': {'class':'form-control'}}) }}
+                <br><div id="build-label" class="text-info form-margin col-lg-12" >
+                </div>
+                <div id="cancel" class="text-danger form-margin col-lg-12"><a href="javascript:change();" class="text-info">Cancel</a></div>
             </td>
 
             <td class="col-md-4">
@@ -140,11 +143,53 @@
             });
         });
     </script>
+<script>
+
+                function change() { 
+                theText.focus(); 
+                document.execcommand("Cancel"); 
+                };
+</script>
 
     <script>
-    $(document).ready(function($) {
-        
-    });
-    </script>
+    $(document).ready(function()
+     {
+        var $build;
+        $('#form_floors').hide(); 
+        $('label[for="form_floors"]').hide();
+        $('#form_sectors').hide();
+        $('label[for="form_sectors"]').hide();
 
+  $('#form_buildings').prepend($ ('<option value="0"></option>'));
+            $("#form_buildings [value='0']").attr("selected", "selected");
+  
+            $('#form_buildings').change(function()
+                {
+                $('#form_floors').prepend($ ('<option value="0"></option>'));
+            $("#form_floors [value='0']").attr("selected", "selected");
+  
+                $('#form_floors').show();
+                $('label[for="form_floors"]').show();
+                $('#form_buildings').hide('slow', function(){
+                $build = $('#form_buildings option:selected').text();
+                $build = $('#build-label').html("<h4>"+ "Выбрано здание " + $build + "</h4>");
+                $('label[for="form_buildings"]').hide();
+                }); 
+                
+                $('#build-label').append('#cancel').show();
+            }); 
+                
+
+            $('#form_floors').change(function()
+                {              
+                $('#form_sectors').show();
+                $('label[for="form_sectors"]').show();
+                $('#form_floors').hide('slow', function(){
+                    var $floor = $('#form_floors option:selected').text();
+                    $('#build-label').html("<h4>" + $build.text() + "/" + $floor +  "</h4>");
+                });
+                $('label[for="form_floors"]').hide();        
+            });
+        });
+    </script>
  {% endblock %}
