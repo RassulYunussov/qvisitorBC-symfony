@@ -408,9 +408,8 @@ class CheckpointController extends Controller
     public function visitorInfoAction(Request $request, $id)
     {
         $em=$this->getDoctrine()->getManager();
-        $entrance = $em->getRepository('AppBundle:qvEntrance')->findOneBy(array('id'=>$id));
         $qvUserpassport = array();
-        $qvVisitor = $entrance->getVisitor();
+        $qvVisitor = $em->getRepository('AppBundle:qvVisitor')->findOneBy(array('id'=>$id));
         $qvEntrances = $em->getRepository('AppBundle:qvEntrance')->findEntrancesByVisitor($qvVisitor);
         foreach ($qvEntrances as $qvEntrance) {
             $qvUserPassport = $em->getRepository('AppBundle:qvUserPassport')->findUserpassportByEntrance($qvEntrance);
@@ -422,5 +421,24 @@ class CheckpointController extends Controller
             'qvUserPassport'=>$qvUserPassport));
     }
     
-   
+    /**
+    * @Route("/orders", name="orders_list")
+    * @Method({"GET", "POST"})
+    */
+    public function ordersListAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $qvUserPassport = array();
+        $qvOrders = $em->getRepository('AppBundle:qvOrder')->findActiveOrders();
+        foreach ($qvOrders as $qvOrder) 
+        {
+            $qvUserPassport = $em->getRepository('AppBundle:qvUserPassport')->findUserpassportByOrder($qvOrder);
+        }
+        
+        return $this->render('AppBundle:Checkpoint:orders_list.html.twig', array(
+            'qvOrders' => $qvOrders,
+            'qvUserPassport' => $qvUserPassport
+            ));
+    }
+
 }
