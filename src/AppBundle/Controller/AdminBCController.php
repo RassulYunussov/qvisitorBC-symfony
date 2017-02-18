@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -40,7 +41,7 @@ use AppBundle\Form\UserAccountType;
  * AdminBCController 
  * 
  * @Route("/adminbc")
- * 
+ * @Security("has_role('ROLE_ADMIN')")
  */
 class AdminBCController extends Controller
 {
