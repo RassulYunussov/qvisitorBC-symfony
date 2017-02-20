@@ -1,7 +1,7 @@
 <?php
 
 namespace AppBundle\Controller;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -28,6 +28,7 @@ use AppBundle\Repository\qvVisitorRepository;
 
 /**
  * @Route("/checkpoint")
+ * @Security("has_role('ROLE_CHECKPOINT')")
  */
 
 class CheckpointController extends Controller
