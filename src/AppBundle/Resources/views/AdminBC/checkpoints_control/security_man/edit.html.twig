@@ -24,13 +24,7 @@
             </div>
             <div class="form-group">
                     <div id="qv_checkpoint">
-            
-    {{ form_start(edit_form) }}
-        {% for child in edit_form %}
-             
-                         {{ form_label(child) }}
-                    {{ form_widget(child, {'attr': {'class':'form-control'}}) }}
-    
+                     {#{{form_start(edit_form)}}#}
 {% endfor %}
 <div class="form-input" align="right">
      <input class="btn btn-default btn-sm" type="submit" value="Изменить" />

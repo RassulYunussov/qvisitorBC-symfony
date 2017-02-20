@@ -30,4 +30,18 @@ class qvUserPassportRepository extends \Doctrine\ORM\EntityRepository
 		$result = $statement->fetchAll();
 		return $result;
 	}
+	public function findUserpassportByLeaser($qvLeaser)
+	{
+		$conn = $this->getEntityManager()->getConnection();
+		$statement = $conn->prepare('SELECT qvuserpassport.id, qvuserpassport.userid,qvuserpassport.lastname, qvuserpassport.firstname, qvuserpassport.patronimic from 							qvuserpassport 
+									left join qvuser on qvuser.id = qvuserpassport.userid 
+									left join qvleaser on qvuser.leaserid = qvuser.leaserid 
+									where qvuser.leaserid = ?');
+		$statement->bindValue(1, $qvLeaser->getId());
+		$statement->execute();
+		$result = $statement->fetchAll();
+		return $result;
+	}
+
+
 }

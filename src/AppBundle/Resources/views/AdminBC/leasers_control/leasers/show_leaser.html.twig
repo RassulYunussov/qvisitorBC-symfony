@@ -68,8 +68,8 @@
                                 </td>
 
                                 <td align="right"><br>
-                                    <a href="{{ path('leasers_edit', { 'id': qvLeaser.id }) }}" class="btn btn-circle btn-default btn-lg" data-title = " Редактировать"> 
-                                        <i class="fa fa-pencil"></i>
+                               
+                             <a href="{{ path('leasers_edit', { 'id': qvLeaser.id }) }}" class="btn btn-default">Редактировать 
                                     </a>
                                 </td>
                             </tr>
@@ -93,7 +93,7 @@
                             </p>
                             <p>
                                 Вы можете создать - 
-                                <a class="btn btn-success btn-xs" href="{{ path('contracts_create', {'qvLeaser':qvLeaser.id}) }}">
+                                <a class="btn btn-default" href="{{ path('contracts_create', {'qvLeaser':qvLeaser.id}) }}">
                                     Новый контракт
                                 </a>
                             </p>
@@ -107,20 +107,20 @@
                                             </td>
 
                                             <td>
-                                                <button data-title="Просмотр" onclick="$('#myModal .modal-dialog').load('{{ path('contracts_modal', { 'id':contracts.id }) }}');" class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal">
+                                                <button data-title="Просмотр" onclick="$('#myModal .modal-dialog').load('{{ path('contracts_modal', { 'id':contracts.id }) }}');" class="btn btn-sm btn-default btn-infotext" data-toggle="modal" data-target="#myModal">
                                                     {{  contracts.name }}
                                                 </button>
                                             </td>
 
                                             <td>
-                                                <a data-title="Изменить" href="{{ path("contracts_edit", {'qvLeaser':qvLeaser.id,'id':contracts.id}) }}" class="btn btn-default btn-circle text-right">
-                                                    <i class="fa fa-pencil"></i>
+                                                <a data-title="Изменить" href="{{ path("contracts_edit", {'qvLeaser':qvLeaser.id,'id':contracts.id}) }}" class="btn btn-default btn-infotext">
+                                                <i class="fa fa-pencil"></i>
                                                 </a>
                                             </td>
 
                                             <td>
-                                                <a data-title="Удалить" href="{{ path("contract_deleting", {'qvLeaser':qvLeaser.id,'id':contracts.id}) }}" class="btn btn-default btn-circle">
-                                                    <i class="fa fa-times"></i>
+                                                <a data-title="Удалить" href="{{ path("contract_deleting", {'qvLeaser':qvLeaser.id,'id':contracts.id}) }}" class="btn btn-default btn-infotext">
+                                             <i class="text-center fa fa-times"></i>
                                                 </a>
                                             </td>
                                         </tr>
@@ -130,8 +130,8 @@
                         </div>
                     </div>            		
                     <div class="panel-footer text-right">
-                            <a class="btn btn-success btn-xs" href="{{ path('contracts_create', {'qvLeaser':qvLeaser.id}) }}">
-                                Новый контракт
+                            <a class="btn btn-success" href="{{ path('contracts_create', {'qvLeaser':qvLeaser.id}) }}">
+                                Добавить новый контракт
                             </a>
                     </div>
             {% endif %}

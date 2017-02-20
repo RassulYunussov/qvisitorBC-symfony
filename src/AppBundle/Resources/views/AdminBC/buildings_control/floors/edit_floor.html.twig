@@ -33,6 +33,8 @@
 				<div class="col-lg-6">
 						{{ form_start(edit_form) }}
 							  {{ form_row(edit_form.name) }}
+							  {{form_widget(edit_form._token)}}
+
 							  <br>
 							<table align="right">
 							<tbody>

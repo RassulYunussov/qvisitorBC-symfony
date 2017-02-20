@@ -69,7 +69,8 @@
                                         <td>{{qvOrder.id}}</td>
                                           <td>  {% for qvVisitor in qvOrder.visitors %}
 										
-                                        {{qvVisitor.lastname}} {{qvVisitor.firstname}} {{qvVisitor.patronimic}} </br>{% endfor %}</td>
+                                        {{qvVisitor.lastname}} {{qvVisitor.firstname}} {{qvVisitor.patronimic}} </br>{% endfor %}
+                                        </td>
                                         <td><button onclick="$('#myModal .modal-dialog').load('{{path('select-visitor', {'qvOrder': qvOrder.id})}}');" class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal">Зарегистрировать</button><a href="{{path('test',{'qvOrder': qvOrder.id})}}" class="btn btn-danger">тест, без модального окна РАБОТАЕТ</a></td>
                                         </tr>
                                     

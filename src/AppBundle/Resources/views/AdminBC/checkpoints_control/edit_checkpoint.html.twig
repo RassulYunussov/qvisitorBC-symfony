@@ -27,6 +27,8 @@
 					<div id="qv_checkpoint">
     {{ form_start(edit_form) }}
     {{ form_row(edit_form.name) }}
+    {{form_widget(edit_form._token)}}
+
 <div class="form-input" align="right">
      <input class="btn btn-default btn-sm" type="submit" value="Изменить" />
             <a class="btn btn-default btn-sm" href="{{ path('buildings_show', {'qvBuilding':qvBuilding.id}) }}">Отменить</a>

@@ -63,13 +63,15 @@
                 <td class="center">{{ qvLeaser.countS }}</td>
                 <td class="center">{{ qvLeaser.countf }}</td>
                 <td>
-	               <a class="btn btn-circle btn-default btn-xs" href="{{ path('leasers_show', { 'id': qvLeaser.id }) }}" data-title="Информация об учетной записи пользователя">
-                        <i class="fa fa-check"></i>
+                    <div class="btn-group">
+	               <a class="btn btn-default btn-infotext" href="{{ path('leasers_show', { 'id': qvLeaser.id }) }}" data-title="Информация об учетной записи пользователя">
+                        <i class="fa fa-eye"></i>
 		          </a> &nbsp; 
 		          
-                  <a class="btn btn-circle btn-default" href="{{ path('leasers_edit', { 'id': qvLeaser.id }) }}" data-title="Изменить или удалить информацию о пользователе">
+                  <a class="btn btn-default btn-infotext" href="{{ path('leasers_edit', { 'id': qvLeaser.id }) }}" data-title="Изменить или удалить информацию о пользователе">
                     <i class="fa fa-edit"></i>
 		          </a>
+              </div>
 				</td>
             </tr>
 			{% endfor %}
@@ -77,7 +79,7 @@
     </table>
     <br>    
     <div class="text-right">
-        <a class="btn btn-success btn-md" href="{{ path('leasers_create') }}">Добавить арендатора</a>
+        <a class="btn btn-success" href="{{ path('leasers_create') }}">Добавить арендатора</a>
     </div>
 
 </div>

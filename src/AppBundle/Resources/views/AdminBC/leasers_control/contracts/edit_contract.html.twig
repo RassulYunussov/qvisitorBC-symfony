@@ -69,6 +69,8 @@
                                 {{ form_label(edit_form.sectors) }}
                                 {{ form_errors(edit_form.sectors) }}
                                 {{ form_widget(edit_form.sectors, {'attr': {'class':'form-control'}}) }}
+                                {{form_widget(edit_form._token)}}
+
                             </td>
                         </tr>
                     </tbody>

@@ -55,11 +55,11 @@
 	{{ build.name }}</a>
 </td>
 <td>	
-		<div class="btn-group">	
-			<a data-title="Показать информацию" class="btn btn-circle btn-default btn-xs" href="{{ path('buildings_show', {'qvBuilding': build.id}) }}">
-				<p class="fa fa-eye"></p>
+		<div class="text-left btn-group">	
+			<a data-title="Показать информацию" class="btn btn-default btn-infotext" href="{{ path('buildings_show', {'qvBuilding': build.id}) }}">
+				<i class="fa fa-eye"></i>
 			</a>
-			<a data-title="Изменить или удалить" class="btn btn-circle btn-default btn-xs" href="{{ path('buildings_edit', {'qvBuilding': build.id}) }}">
+			<a data-title="Изменить или удалить" class="btn btn-default btn-infotext" href="{{ path('buildings_edit', {'qvBuilding': build.id}) }}">
 				<span class="glyphicon glyphicon-edit"></span>
 			</a>
         </div>
@@ -70,7 +70,7 @@
 </table>
 <br>
 <div class="text-right">
-<a class="btn btn-success btn-md" href="{{ path('buildings_create')}}">
+<a class="btn btn-success" href="{{ path('buildings_create')}}">
 	Добавить здание
 </a>
 </div>

@@ -24,4 +24,13 @@ class qvBuildingRepository extends \Doctrine\ORM\EntityRepository
     			WHERE fl.building = :name'
 			)->setParameter('name', $build)->getSingleScalarResult();
       }*/
+
+     public function countFloorInBuilding($build){
+      return $this->getEntityManager()
+      ->createQuery(
+        'SELECT Count(floor) FROM AppBundle:qvFloor floor join floor.building build  
+          WHERE build = :name'
+      )->setParameter('name', $build)->getScalarResult();
+      }
+    
 }

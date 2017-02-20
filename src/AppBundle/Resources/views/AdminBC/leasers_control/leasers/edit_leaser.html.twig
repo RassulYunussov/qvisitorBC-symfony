@@ -16,7 +16,7 @@
 				            			Главная
 				            	</a>
 								<a class="btn btn-default" href="{{ path('leasers_list') }}">Управление арендаторами</a>
-								<a class="btn btn-default" href="\adminbc\leasers\leaser\{{qvLeaser.id}}\show">
+								<a class="btn btn-default" href="{{path('leasers_show', {'id':qvLeaser.id})}}">
 									Просмотр информации об арендаторах
 								</a>
 					</div>
@@ -36,25 +36,75 @@
   </style>
 </div>
 <div class="row">
-<div class="col-lg-6" >
+                <div class="col-lg-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Пожалуйста, выберите действие.
+                        </div>
+                        <!-- .panel-heading -->
+    <div class="panel-body">
+    	<div class="panel-group" id="accordion">
+        	<div class="panel panel-default">
+            	<div class="panel-heading">
+                	<h4 class="panel-title">
+    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" class="collapsed">Изменить информацию о компании</a>
+	</h4>
+</div>
+<div id="collapseOne" class="panel-collapse collapse" aria-expanded="true" style="height: 0px;">
+<div class="panel-body">                                          
 	<div class="form-group has-warning">
 		<div class="form-margin">		
 			{{ form_start(edit_form) }}
 			{{form_widget(edit_form)}}
+            {{form_widget(edit_form._token)}}
 			<br>
         <button class="btn btn-default" type="submit" name="save"> Сохранить </button>
         <a class="btn btn-default" href="{{ path('leasers_list') }}">Отменить</a>
 			{{ form_end(edit_form) }}
-		</div>	
-	</div>
-</div>
 </div>
 	{{  form_start(delete_form) }}
-			<button class="btn btn-default btn-sm" type="submit">
+			<button class="btn btn-default" type="submit">
 				Удалить
 			</button>
 		{{ form_end(delete_form) }}				
 </div>
-    <!-- /.row -->
+</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed" aria-expanded="false">Изменить информацию о владельце </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTwo" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                        <div class="panel-body">
+
+<div class="col-lg-6" >
+	<div class="form-group has-warning">
+		<div class="form-margin">		
+			{{ form_start(edit_form2) }}
+			{{form_widget(edit_form2)}}
+			<br>
+        <button class="btn btn-default" type="submit" name="save"> Сохранить </button>
+        <a class="btn btn-default" href="{{ path('leasers_list') }}">Отменить</a>
+			{{ form_end(edit_form2) }}
+	</div>
+</div>	
+</div>
+</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- .panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+</div>    <!-- /.row -->
         <!-- /#page-wrapper -->   
             {% endblock %}

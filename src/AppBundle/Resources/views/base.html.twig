@@ -17,11 +17,14 @@
 	<link href="{{ asset('bootstrap1/bower_components/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{ asset('bootstrap1/dateStyle.css')}}" rel="stylesheet" type="text/css">
 	<style type="text/css">
-			.btn-circle {
+	.btn-infotext{
+		color: #2c442a;
+	}
+			.btn-infotext {
 				display: inline-block; /* Строчно-блочный элемент */
 				position: relative; /* Относительное позиционирование */
 			}
-			.btn-circle:hover::after {
+			.btn-infotext:hover::after {
 				content: attr(data-title); /* Выводим текст */
 				position: absolute; /* Относительное позиционирование */
 				right: 10%; top: 100%; /* Положение подсказки */

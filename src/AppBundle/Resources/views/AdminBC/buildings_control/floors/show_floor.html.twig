@@ -24,91 +24,87 @@
                     <br>
 			{% endblock %}
 	<!-- /.col-lg-12 -->
-		</div>
-	<br>
-	<br>
-	<br>
-	<br>
-	<h2 class="page-header">{{ qvFloor.name }}</h2>
-	<br>
-		<div class="col-lg-12">
+	<h2 class="page-header">Этаж {{ qvFloor.name }}</h2>
+</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-10">
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<div class="row">
-						<div class="col-lg-6">
-							<div class="panel panel-default">
-        		                {#<div class="panel-heading">
-                		            <i class="fa fa-bar-chart-o fa-fw">
-                		            </i>
-                		            Расположен в здании:
-									{{  qvFloor.building }}
-                				</div>#}
-                        <!-- /.panel-heading -->
-{% if sector is empty %}
-	<div><font size='3'> Сектора отсутствуют</font> 
-			<p class="text-right"> <a class="btn btn-success btn-xs" href="{{ path('sectors_create', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id}) }}">Добавить сектор</a>
+	{% if sector is empty %}
+	<div>
+		<font size='3'> Сектора отсутствуют</font> 
+			<p class="text-right"> <a class="btn btn-default" href="{{ path('sectors_create', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id}) }}">Добавить сектор</a>
+			<a href="{{path('floors_edit', {'qvBuilding':qvBuilding.id, 'id':qvFloor.id})}}" class="btn btn-default">Редактировать этаж</a>
 	</p></div>
 {% else %}
-    <div class="panel-body">
-		<div class="table-responsive">
-        	<table class="table">
-            	<tbody>
-            		<thead>
-            			<th>
-            				#
-            			</th>
-            			<th>
-            				№ Сектора
-            			</th>
-            		</thead>
-{% for sector in sector %}
-					<tr class="success">
-						<td>
-							{{ loop.index }}
-						</td>
-						<td>
-	<a href="{{path('sectors_show', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id,'id':sector.id }) }}">
-{{  sector.name }}, 
-	</a></td>
-				    </tr>
-{% endfor %}			
-					<tr class="text-right">
-						<td class="text-right">
-						</td>
-						<td>
-							<div class="text-right">
-								<a class="btn btn-success btn-xs" href="{{ path('sectors_create', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id}) }}">		Добавить сектор
-								</a>
-							</div>
-							<div class="text-right">
-							<br>
-							<a href="{{ path('floors_edit', { 'qvBuilding': qvBuilding.id,'id': qvFloor.id }) }}" align="right" class="btn btn-circle  btn-default btn-lg" data-title ="Редактировать">
-								<i class="fa fa-pencil"></i>								
-							</a>
-							</div>
-						</td>
-					</tr>
-					</tbody>
-            </table>					
-        </div>
+		<div class="row">
+                <div class="col-lg-12">                      
+<div class="panel-body">
+	<div class="dataTable_wrapper">
+    	<div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+        	<div class="row">
+            	<div class="col-sm-12">
+                	<table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTables-show-floor" role="grid" aria-describedby="dataTables-example_info">
+<thead>
+	<tr role="row">
+		<th class="sorting_asc" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 101px;">#</th>
+		<th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 126px;">№ Сектора</th>
+		<th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 126px;">Действия</th>
+	</tr>
+</thead>
+	<tbody>                   
+    {% for sector in sector %}
+		<tr>
+			<td>
+				{{ loop.index }}
+			</td>
+			
+			<td>
+				<a href="{{path('sectors_edit', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id,'id':sector.id }) }}">
+					{{  sector.name }} 
+				</a>
+			</td>
+			<td>
+				<a href="{{ path('sector_deleting', {'qvBuilding': qvBuilding.id,'qvFloor': qvFloor.id, 'qvSector':sector.id }) }}" align="right" class="btn btn-default btn-infotext" data-title = "Удалить сектор"><i class="fa fa-times"></i>
+				</a>
+			</td>
+		</tr>
+{% endfor %}
+    </tbody>
+</table>
+<br>
+<div class="text-right">
+	<a href="{{ path('floors_edit', { 'qvBuilding': qvBuilding.id,'id': qvFloor.id }) }}" align="right" class="btn btn-default">Редактировать этаж
+	</a>
+		<a class="btn btn-success" href="{{ path('sectors_create', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id}) }}">
+			Добавить сектор
+		</a>
 	</div>
+</div>
+	</div>
+    	</div>
+			</div>
+        		</div>
+      
 	{% endif %}
 <!-- /.panel-body -->
-						</div>
 					</div>
 			<!-- /.col-lg-6 (nested) -->
 				</div>
 			<!-- /.row (nested) -->
 			</div>
-			<!-- /.panel-body -->
 		</div>
-	<!-- /.panel -->
 	</div>
-<!-- /.row -->
 </div>
-<!-- /#page-wrapper -->
 </div>
-    
+{% endblock %}
 
-
+{% block js %}
+	<script>
+	$(document).ready(function(){
+		$('#dataTables-show-floor').DataTable();
+	});
+	</script>
 {% endblock %}

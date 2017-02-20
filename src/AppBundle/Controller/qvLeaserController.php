@@ -88,11 +88,10 @@ class qvLeaserController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $em->persist($qvLeaser);
             $em->flush();
 
-            return $this->redirectToRoute('leaser_edit', array('id' => $qvLeaser->getId()));
+            return $this->redirectToRoute('leasers_list', array('id' => $qvLeaser->getId()));
         }
 
         return $this->render('AppBundle:qvleaser:edit.html.twig', array(

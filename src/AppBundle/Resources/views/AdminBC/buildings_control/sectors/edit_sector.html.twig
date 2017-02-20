@@ -18,11 +18,10 @@
 		<a class="btn btn-default" href="{{ path('buildings_list') }}">Управление зданиями</a>
 		<a class="btn btn-default" href="{{ path('buildings_show',{'qvBuilding':qvBuilding.id}) }}">{{ qvBuilding.name }}
                         </a>
-								<a class="btn btn-default" href="{{ path('buildings_show',{'qvBuilding':qvBuilding.id}) }}">Управление этажами</a>
-								<a class="btn btn-default" href="{{ path('floors_show',{'qvBuilding':qvBuilding.id, 'id':qvFloor.id}) }}"> Этаж {{ qvFloor.name }}
-                        </a>
-		{#<a class = "btn btn-default" href="{{ path('floors_show', {'qvBuilding': qvBuilding.id, 'id':qvFloor.id}) }}">Управление секторами</a>#}
-		<a class="btn btn-default" href="{{ path('sectors_show', {'qvBuilding': qvBuilding.id, 'qvFloor':qvFloor.id, 'id':qvSector.id }) }}">Просмотр информации о секторе {{ qvSector.name }}</a>
+		<a class="btn btn-default" href="{{ path('buildings_show',{'qvBuilding':qvBuilding.id}) }}">Управление этажами</a>
+		<a class="btn btn-default" href="{{ path('floors_show',{'qvBuilding':qvBuilding.id, 'id':qvFloor.id}) }}"> Этаж {{ qvFloor.name }}
+        </a>
+		<a class="btn btn-default" {#href="{{ path('sectors_show', {'qvBuilding': qvBuilding.id, 'qvFloor':qvFloor.id, 'id':qvSector.id }) }}"#} >Сектор {{ qvSector.name }}</a>
 					</div>
 				{% endblock %}
 
@@ -38,6 +37,8 @@
 									<ul>			
     {{ form_start(edit_form) }}
 {{ form_row(edit_form.name) }}
+{{form_widget(edit_form._token)}}
+
 <br>
 <div class="form-input" align="right">
 <table>

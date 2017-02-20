@@ -57,6 +57,7 @@
               {{ form_label(form.documentnumber) }}
               {{ form_errors(form.documentnumber) }}
               {{ form_widget(form.documentnumber, {'attr': {'class':'form-control'}}) }}
+              {{form_widget(form._token)}}
             </div>
 
           </div></div>
@@ -95,11 +96,13 @@
               {{ form_label(form.leaser) }}
               {{ form_errors(form.leaser) }}
               {{ form_widget(form.leaser, {'attr': {'class':'form-control'}}) }}
+              {{form_widget(form._token)}}      
             </div>
           </div></div>
         </div>
-        <div>
-         {{ form_widget(form)}}</div>
+        <div>             
+         {{ form_widget(form)}}
+       {{form_widget(form._token)}}</div>
          <div class="col-lg-6">
            <input type="submit" class="btn btn-primary" value="Зарегистрировать" />
            <a class="btn btn-default" href="hotentrance">Отмена</a></div>
