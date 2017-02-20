@@ -363,11 +363,16 @@ class AdminBCController extends Controller
                 'format' =>'dd/MM/yyyy',
                 'html5' => false,
                 'attr' => array(
-                    'class' => 'form-control type_date-inline'),
+                'class' => 'form-control type_date-inline'),
                 'placeholder' => 'Укажите дату в формате дд/мм/гггг',
                 ))
-            ->add('sectors', HiddenType::class, array(
-                'attr' => array('multiple'=>'true')))
+            ->add('sectors', ChoiceType::class, array(
+                'multiple'=>'true',
+                'expanded' => 'true',
+                'required' => 'true',
+                'label' => false,
+                'attr' => array('class' => 'form-control type_date-inline'),
+                ))
        /*   ->add('buildings', EntityType::class, array(
                 'class' => 'AppBundle\Entity\qvBuilding',
                 'attr' => array(

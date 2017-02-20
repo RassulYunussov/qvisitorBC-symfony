@@ -31,10 +31,10 @@
         <!-- /.col-lg-12 -->
     </div>
     <div class="col-lg-4">
-        <div class="form-group" >
-            <div id="qv_contract" >
+        <div class="form-group">
+            <div id="qv_contract">
    			{{ form_start(form) }}
-    <table align="center">
+        <table align="center">
         <tbody>
         <tr>
             <td class="col-md-3">
@@ -57,31 +57,32 @@
                 {{ form_widget(form.enddate, {'attr': {'class':'form-control'}}) }}
             </td>
         </tr>
-<tr> 
-<td class="col-md-3">
-    <label>
-        Выбранные сектора
-    </label>
-    <div disabled="true" id='sectors_array'></div>
-</td>    
-</tr>
+        <tr>
+            <td class="col-md-3">
+                <label id="label-form-sectors">Вы выбрали, следующие сектора: </label>
+                {{ form_errors(form.sectors) }}
+                {{form_widget(form.sectors, {'attr': {'class': 'form-control'}}) }}
+            </td>
+        </tr>
+</tbody>
+</table>
+<br>
+<table>
+<tbody>        
 <tr>
-    <td> &nbsp; &nbsp;
+    <td class="col-md-3">
+        <button type="button" onclick="$('#myModal .modal-dialog').load();" class="btn btn-sm btn-success" data-toggle="modal" data-target="#myModal">
+                <i class="fa fa-plus"></i>
+                Добавить сектора             
+        </button>
     </td>
 </tr>
-<tr class="col-md-3">
-<td>
-    <button type="button" onclick="$('#myModal .modal-dialog').load();" class="btn btn-sm btn-success" data-toggle="modal" data-target="#myModal">
-      <i class="fa fa-plus"></i>  Добавить сектора             
-    </button><br><br>
-</td>
-</tr>
-
+<tr><td>&nbsp;</td></tr>
 <tr class="text-right">
-       <td>
-        <input class="btn btn-default" type="submit" value="Создать" />
-        <a class="btn btn-default" href="{{ path('leasers_show', {'id':qvLeaser.id}) }}">Отменить</a>
-</td>
+    <td class="col-md-3">
+            <input class="btn btn-default" type="submit" value="Создать" />
+            <a class="btn btn-default" href="{{ path('leasers_show', {'id':qvLeaser.id}) }}">Отменить</a>
+    </td>
 </tr>
 {{form_end(form)}}
         </tbody>
@@ -236,6 +237,9 @@
     $(document).ready(function()
      {
         var $build;
+        $('#form_sectors').replaceWith('<select multiple="true" class="form-control form-inline form-margin" id="form_sectors"></select>');
+        $('#label-form-sectors').hide();
+        $('#form_sectors').hide();
         $('#form_floors').hide(); 
         $('#cancel').hide();
         $('label[for="form_floors"]').hide();
@@ -289,23 +293,26 @@
                         {
                             valueid.push($(this).val());
                             valuename.push($(this).text());
-                            $('#sectors_array').html(valuename + ',');
-                            $('#form_sectors').html(valueid);
+
+                            $('#form_sectors').empty();
+                            for (key in valueid){ 
+                            $('#form_sectors').append('<option value="'+ valueid[key] +'"> '+valuename[key]+' </option>');}
+                            $('#label-form-sectors').show();
+                            $('#form_sectors').show();
+                            
+                            $('#form_sectors :selected').each(function()
+                            {
+                                this.selected=true;
+                            });
                             $('#myModal').modal('hide');
                         });
                      return false;
             });
         });
-
     </script>
 </div>  
+</div>  
 </div>
-</div>
-<style type="text/css">
-#form_sectrors{
-    display: none;
-}
-</style>
 <!-- /#page-wrapper -->   
  {% endblock %}
  {% block js %}
