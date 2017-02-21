@@ -111,15 +111,11 @@ class AdminBCController extends Controller
             ->add('patronimic', TextType::class, array(
                 'label'=>'Отчество',
                 'attr' => array('class'=>'form-control form-input')))
-            ->add('birthdate', BirthdayType::class,  array(
-                'label'=>'Дата Рождения',
-                'widget' => 'single_text', 
-                'format' =>'dd/MM/yyyy',
-                'placeholder' => 'Укажите дату в формате дд/мм/гггг',
-                'html5' => false,
+            ->add('birthdate', BirthdayType::class, array(
+                'label'=> 'Дата рождения',
+                'widget'=>'single_text',
                 'attr' => array(
-                    'class' => 'form-control')
-                ))
+                'class'=>'form-control form-input')))
             ->add('gender',  EntityType::class, array(
                 'label'=>'Выберите пол',
                 'class' => 'AppBundle\Entity\qvGender',
@@ -280,6 +276,30 @@ class AdminBCController extends Controller
         'delete_form' => $deleteForm->createView(),
         ));
     }
+
+    /**
+     * Displays a form to edit an existing qvLeaser entity.
+        *
+     * @Route("/leasers/leaser/{id}/disabled", name="leasers_disabled")
+     * @Method({"GET", "POST"})
+     */
+    public function DisabledLeaserAction(Request $request, qvLeaser $qvLeaser)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $qvUser = new qvUser();
+
+        $qvUser = $em->getRepository('AppBundle:qvUser')->findUser($qvLeaser);
+
+       // $query = $em->createQuery('UPDATE AppBundle\Entity\qvUser u SET u.disabled = 1 WHERE u.leaser = :id');
+        //$query->setParameter('id', $leaser);
+        
+        $qvUser->setDisabled(1);
+        $em->merge($qvUser);
+        $em->flush();
+
+         return $this->redirectToRoute('leasers_list', array('id' => $qvLeaser->getId()));
+    }   
     
     /**
      * Deletes a qvLeaser entity.
@@ -1312,20 +1332,35 @@ $security = $query->getResult();
          $data = array();
 
          $form = $this->createFormBuilder($data)
-            ->add('login', TextType::class)
-            ->add('password', PasswordType::class)
-            ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
-            ->add('patronimic', TextType::class)
+            ->add('login', TextType::class, array(
+                'label'=>'Логин',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('password', RepeatedType::class, array(
+                'type'=> PasswordType::class,
+                'invalid_message'=>'Пароли должны совпадать',
+                'options' => array('attr' => array('class' => 'password-field')),
+                'required' => true,
+                'first_options'  => array('label' => 'Пароль', 'attr' => array('class'=>'form-control form-input')),
+                'second_options' => array('label' => 'Повторите пароль', 'attr' => array('class'=>'form-control form-input'))))
+            ->add('firstname', TextType::class , array(
+                'label'=> 'Имя',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('lastname', TextType::class, array(
+                'label'=> 'Фамилия',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('patronimic', TextType::class, array(
+                'label'=> 'Отчество',
+                'attr' => array('class'=>'form-control form-input')))
             ->add('birthdate', BirthdayType::class, array(
-                'placeholder' => array(
-                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-                )
-            )
-        )
+                'label'=> 'Дата рождения',
+                'widget'=>'single_text',
+                'attr' => array(
+                'class'=>'form-control form-input')))
             ->add('gender',  EntityType::class, array(
-                'class' => 'AppBundle\Entity\qvGender')
-            )
+                'label'=> 'Пол',
+                'class' => 'AppBundle\Entity\qvGender',
+                'attr' => array('class'=>'form-control form-input')))
+            
             ->getForm()
         ;
         $form->handleRequest($request);

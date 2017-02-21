@@ -18,7 +18,7 @@
                     </div>
                 {% endblock %}
 
-                <h1 class="page-header">Управление зданиями</h1>
+                <h1 class="page-header">Управление охраной</h1>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
@@ -87,6 +87,12 @@
                                 {% endfor %} 
                                     </tbody>
                                 </table>
+                                <br>
+<div class="text-right">
+<a class="btn btn-success" href="{{ path('new_security')}}">
+    Добавить охранника
+</a>
+</div>
                             </div>
                             <!-- /.table-responsive -->
                         </div>
