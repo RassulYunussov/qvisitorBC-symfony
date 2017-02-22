@@ -59,8 +59,13 @@
                 
             </td>
             <td align="right"><br>
-                <a href="{{ path('edit_security', { 'id': qvUserPassport.id }) }}" class="btn btn-circle btn-default btn-lg" data-title = "Редактировать"> <i class = "fa fa-pencil"></i>         
+                <a href="{{ path('edit_security', { 'id': qvUserPassport.id }) }}" class="btn btn-infotext btn-default">Редактировать
                 </a>
+            </td>
+             <td align="right"><br>{% for us in qvUser %}
+                <a href="{{ path('user_disabled', {'qvUser': us.id }) }}" class="btn btn-default">Заблокировать
+                </a>
+                    {% endfor %}
             </td>
             </tr>
             </tbody>

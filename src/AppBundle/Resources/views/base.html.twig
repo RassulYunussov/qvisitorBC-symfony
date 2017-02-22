@@ -16,6 +16,9 @@
 	<link href="{{ asset('bootstrap1/bower_components/morrisjs/morris.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{ asset('bootstrap1/bower_components/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{ asset('bootstrap1/dateStyle.css')}}" rel="stylesheet" type="text/css">
+	<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+	
 
 	<style type="text/css">
 	.btn-infotext{
@@ -40,7 +43,20 @@
 				display: none;
 			}
 	</style>
-	
+	 <style>
+        .disabled  {
+        	background: #d8d3d3;
+        	pointer-events: none;
+            cursor: default;
+        	color: #9f7070;	
+        }
+       .enabled {
+		    pointer-events: auto;
+    		cursor: pointer;
+}
+
+        </style>
+
 	{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -68,6 +84,8 @@
 
 		<script src="{{asset('bootstrap1/bower_components/morrisjs/morris.min.js')}}"></script>
 		
+		<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
 		<script src="{{asset('bootstrap1/js/breadcrumbs.js')}}"></script>
 
 		<script src="{{asset('bootstrap1/dist/js/sb-admin-2.js')}}"></script>
@@ -85,7 +103,7 @@
 		<script src="{{asset('bootstrap1/bower_components/bootstrap/dist/js/jquery.dataTables.min.js')}}"></script>
 		
 		<script src="{{asset('bootstrap1/bower_components/bootstrap/dist/js/dataTables.bootstrap.min.js')}}"></script>
-
+		
         {% endblock %}
         {% block js %}{% endblock %}
     </body>

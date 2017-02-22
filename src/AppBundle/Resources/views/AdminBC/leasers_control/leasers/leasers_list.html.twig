@@ -40,10 +40,7 @@
             		Название компании
             	</th>
             	<th  tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 185px;">
-            		Занимает Этаж(и)
-            	</th>
-            	<th tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 149px;">
-            		Занимает Офис(ы) 
+            		Статус пользоваетеля
             	</th>
             	<th tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" style="width: 120px;">
             		Действия:
@@ -51,29 +48,65 @@
             </tr>
         	</thead>
         <tbody>
-        	{% for qvLeaser in qvLeasers %}
-            <tr role="row">
+                {% for qvUser in qvUsers %}
+                {% if qvUser.disabled != 1 %} 
+            <tr role="row" id="tr_user">
             	<td >{{ loop.index }}</td>
-                <td class="center"><a href="{{ path('leasers_show', {'id':qvLeaser.id})}}">
-                	{{ qvLeaser.bin }}
+                <td class="center"><a href="{{ path('leasers_show', {'id':qvUser.id})}}">
+                	{{ qvUser.leaser.bin }}
                 </td></a>
-                <td class="center"><a href="{{ path('leasers_show', {'id':qvLeaser.id})}}">
-                	{{ qvLeaser.name }}
+                <td class="center"><a href="{{ path('leasers_show', {'id':qvUser.id})}}">
+                	{{ qvUser.leaser.name }}
                 </a></td>
-                <td class="center">{{ qvLeaser.countS }}</td>
-                <td class="center">{{ qvLeaser.countf }}</td>
+                <td class="center">Активен
+                    <div class="btn btn-xs">
+                    <a class="btn btn-success btn-xs" href="{{ path('user_disabled', { 'qvUser':qvUser.id }) }}">
+                        <i class="fa fa-check"></i>
+                    </a>
+                </div>
+                </td>
+            
                 <td>
                     <div class="btn-group">
-	               <a class="btn btn-default btn-infotext" href="{{ path('leasers_show', { 'id': qvLeaser.id }) }}" data-title="Информация об учетной записи пользователя">
+	               <a class="btn btn-default btn-infotext" href="{{ path('leasers_show', { 'id': qvUser.id }) }}" data-title="Информация об учетной записи пользователя">
                         <i class="fa fa-eye"></i>
 		          </a> &nbsp; 
 		          
-                  <a class="btn btn-default btn-infotext" href="{{ path('leasers_edit', { 'id': qvLeaser.id }) }}" data-title="Изменить или удалить информацию о пользователе">
+                  <a class="btn btn-default btn-infotext" href="{{ path('leasers_edit', { 'id': qvUser.id }) }}" data-title="Изменить или удалить информацию о пользователе">
                     <i class="fa fa-edit"></i>
 		          </a>
               </div>
 				</td>
             </tr>
+        {% else %}
+           <tr role="row" class="disabled">
+                <td >{{ loop.index }}</td>
+                <td class="center"><a href="{{ path('leasers_show', {'id':qvUser.id})}}">
+                    {{ qvUser.leaser.bin }}
+                </td></a>
+                <td class="center"><a href="{{ path('leasers_show', {'id':qvUser.id})}}">
+                    {{ qvUser.leaser.name }}
+                </a></td>
+                <td class="center">
+                     <div class="btn btn-xs">Отключен
+                          <a name="enable_btn" class="btn btn-danger btn-xs enabled" href="{{ path('user_enabled', { 'qvUser':qvUser.id }) }}">
+                        <i class="fa fa-lock"></i>
+                    </a>
+                    </div>
+                </td>
+                <td>
+                    <div class="btn-group">
+                   <a class="btn btn-default btn-infotext" href="{{ path('leasers_show', { 'id': qvUser.id }) }}" data-title="Информация об учетной записи пользователя">
+                        <i class="fa fa-eye"></i>
+                  </a> &nbsp; 
+                  
+                  <a class="btn btn-default btn-infotext" href="{{ path('leasers_edit', { 'id': qvUser.id }) }}" data-title="Изменить или удалить информацию о пользователе">
+                    <i class="fa fa-edit"></i>
+                  </a>
+              </div>
+                </td>
+            </tr>
+        {% endif %}
 			{% endfor %}
         </tbody>
     </table>
@@ -86,6 +119,7 @@
 </div>
 <!-- /.table-responsive -->
 </div>
+
 <!-- /#page-wrapper -->
 {% endblock %}
 {% block js %}
@@ -94,4 +128,5 @@
     $('#LeaserdataTables').DataTable();
 });
 </script>
+ 
 {% endblock %}

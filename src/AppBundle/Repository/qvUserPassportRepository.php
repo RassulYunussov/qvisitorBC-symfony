@@ -43,5 +43,13 @@ class qvUserPassportRepository extends \Doctrine\ORM\EntityRepository
 		return $result;
 	}
 
+		public function findUserByPassport($passport) {
+		return $this->getEntityManager()
+		            ->createQuery(
+			'SELECT user.id, user.login, user.password, user.disabled FROM AppBundle:qvUserPassport passport 
+					LEFT JOIN passport.user user 
+    					WHERE passport.id = :id'
+		)->setParameter('id', $passport)->getResult();
+	}
 
 }
