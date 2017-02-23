@@ -24,9 +24,10 @@
 			<tr>
                 <td>Офис(ы)</td>
             	
-					<td>{% for sector in qvcontr %}
-								{{ sector.name }}							
-						{% endfor %}
+					<td>
+					{% for a in qvModalContract.sectors %}
+						{{ a.name }}
+					{% endfor %}
 					</td>
 			</tr>
 			<tr>

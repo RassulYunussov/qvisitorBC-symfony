@@ -15,7 +15,7 @@
                         <a class="btn btn-default" href="{{ path('main_page') }}">
                         <i class="fa fa-home"></i>Главная
                         </a>
-                        <a class="btn btn-default" href="{{ path('buildings_list')}}">Управление зданиями
+                        <a class="btn btn-default" href="{{ path('buildings_show', {'qvBuilding': qvBuilding.id})}}">Управление зданиями
                         </a>
                     </div>
 					{% endblock %}
@@ -51,14 +51,7 @@
 											<td>
                                         {{ qvCheckpoint.building }}
                                             </td>
-                                            <td>
-                                                {% for security in security %}
-                                             {{ security.firstname}}
-                                             {{   security.lastname }}
-                                             {{ security.patronimic }},<br>
-                                                {%endfor%}
-                                            </td>
-											</tr>
+                                            </tr>
                                             </tr>
 											<tr>
 											<td></td>

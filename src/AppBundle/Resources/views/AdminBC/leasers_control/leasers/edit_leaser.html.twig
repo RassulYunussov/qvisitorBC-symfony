@@ -25,7 +25,7 @@
                <h1 class="page-header">Изменение информации об арендаторе</h1>
                 <!-- /.col-lg-12 -->
             </div>
-		 <style>
+<style>
    li {
     list-style-type: none; /* Убираем маркеры */
    }
@@ -33,78 +33,41 @@
     margin-left: 0; /* Отступ слева в браузере IE и Opera */
     padding-left: 0; /* Отступ слева в браузере Firefox, Safari, Chrome */
    }
-  </style>
+</style>
 </div>
 <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Пожалуйста, выберите действие.
+                            Внесите изменения
                         </div>
                         <!-- .panel-heading -->
     <div class="panel-body">
-    	<div class="panel-group" id="accordion">
-        	<div class="panel panel-default">
-            	<div class="panel-heading">
-                	<h4 class="panel-title">
-    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" class="collapsed">Изменить информацию о компании</a>
-	</h4>
-</div>
-<div id="collapseOne" class="panel-collapse collapse" aria-expanded="true" style="height: 0px;">
-<div class="panel-body">                                          
 	<div class="form-group has-warning">
 		<div class="form-margin">		
 			{{ form_start(edit_form) }}
 			{{form_widget(edit_form)}}
             {{form_widget(edit_form._token)}}
 			<br>
+            <div class="text-right form-margin">  
         <button class="btn btn-default" type="submit" name="save"> Сохранить </button>
-        <a class="btn btn-default" href="{{ path('leasers_list') }}">Отменить</a>
+        <a class="btn btn-default" href="{{ path('leasers_list') }}">Отменить</a><br> 
 			{{ form_end(edit_form) }}
-</div>
+
 	{{  form_start(delete_form) }}
+    <br>
 			<button class="btn btn-default" type="submit">
 				Удалить
 			</button>
 		{{ form_end(delete_form) }}				
+    </div>
 </div>
 </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed" aria-expanded="false">Изменить информацию о владельце </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseTwo" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                        <div class="panel-body">
-
-<div class="col-lg-6" >
-	<div class="form-group has-warning">
-		<div class="form-margin">		
-			{{ form_start(edit_form2) }}
-			{{form_widget(edit_form2)}}
-			<br>
-        <button class="btn btn-default" type="submit" name="save"> Сохранить </button>
-        <a class="btn btn-default" href="{{ path('leasers_list') }}">Отменить</a>
-			{{ form_end(edit_form2) }}
-	</div>
-</div>	
 </div>
 </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- .panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-</div>    <!-- /.row -->
-        <!-- /#page-wrapper -->   
-            {% endblock %}
+</div>
+</div>
+</div>
+<!-- .panel-body -->
+<!-- /#page-wrapper -->   
+{% endblock %}

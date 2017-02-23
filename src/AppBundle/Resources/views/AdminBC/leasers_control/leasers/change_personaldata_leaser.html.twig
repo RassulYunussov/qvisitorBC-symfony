@@ -1,0 +1,63 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+
+{% block title %}
+    Личный кабинет администратора
+{% endblock %}
+
+{% block body %}
+     <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    {% block breadcrumb %}
+                        <div id="breadcrumbs" class="btn-group btn-breadcrumb">
+                                <br>
+                                <a class="btn btn-default" href="{{ path('main_page') }}">
+                                    <i class="fa fa-home"></i>
+                                        Главная
+                                </a>
+                                <a class="btn btn-default" href="{{ path('leasers_list') }}">Управление арендаторами</a>
+                                <a class="btn btn-default" href="{{path('leasers_show', {'id':qvLeaser.id})}}">
+                                    Просмотр информации об арендаторах
+                                </a>
+                    </div>
+                    {% endblock %}
+                                            
+               <h1 class="page-header">Изменение информации об арендаторе</h1>
+                <!-- /.col-lg-12 -->
+            </div>
+         <style>
+   li {
+    list-style-type: none; /* Убираем маркеры */
+   }
+   ul {
+    margin-left: 0; /* Отступ слева в браузере IE и Opera */
+    padding-left: 0; /* Отступ слева в браузере Firefox, Safari, Chrome */
+   }
+  </style>
+</div>
+<div class="row">
+                <div class="col-lg-8">
+<div class="panel panel-default">
+        <div class="panel-body">
+<div class="col-lg-8" >
+	<div class="form-group has-warning">
+		<div class="form-margin">		
+			{{ form_start(edit_form2) }}
+			{{form_widget(edit_form2)}}
+            {{form_widget(edit_form2._token)}}
+			<br>
+        <button class="btn btn-default" type="submit" name="save"> Сохранить </button>
+        <a class="btn btn-default" href="{{ path('leasers_list') }}">Отменить</a>
+			{{ form_end(edit_form2) }}
+	</div>
+</div>	
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
+        
+                                
