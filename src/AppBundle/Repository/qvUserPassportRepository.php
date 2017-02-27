@@ -49,7 +49,7 @@ class qvUserPassportRepository extends \Doctrine\ORM\EntityRepository
 			'SELECT user.id, user.login, user.password, user.disabled FROM AppBundle:qvUserPassport passport 
 					LEFT JOIN passport.user user 
     					WHERE passport.id = :id'
-		)->setParameter('id', $passport)->getResult();
+		)->setParameter('id', $passport)->getSingleResult();
 	}
 
 }
