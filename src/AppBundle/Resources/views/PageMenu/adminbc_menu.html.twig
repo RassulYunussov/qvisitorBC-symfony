@@ -13,21 +13,51 @@
 				
 {{ render(controller('AppBundle:UserProfile:profileMenu')) }}
 		
-				<div class="navbar-default sidebar" role="navigation">
-					<div class="sidebar-nav navbar-collapse">
-						<ul class="nav" id="side-menu">
-		<li>
-		 <a href="{{path('leasers_list')}}"><i class="fa fa-dashboard fa-child"></i> Управление арендаторами</a>
-        </li>
-		
-		<li>
-		 <a href="{{path('buildings_list')}}"><i class="fa fa-dashboard fa-building-o"></i> Управление зданиями</a>
-		</li>
-		
-		<li>
-		 <a href="{{path('security_list')}}"><i class="fa fa-eye"></i> Управление охраной</a>
-		</li>			
-						</ul>
+<div class="navbar-default sidebar" role="navigation">
+	<div class="sidebar-nav navbar-collapse">
+		<ul class="nav" id="side-menu">
+			<li>
+			 <a href="{{path('leasers_list')}}"><i class="fa fa-dashboard fa-child"></i> Управление арендаторами</a>
+	        </li>
+			
+			<li>
+			 <a href="{{path('buildings_list')}}"><i class="fa fa-dashboard fa-building-o"></i> Управление зданиями</a>
+			</li>
+			
+			<li>
+			 <a href="{{path('security_list')}}"><i class="fa fa-eye"></i> Управление охраной</a>
+			</li>
+			
+			<li class="">
+                    <a href="#"><i class="fa fa-bar-chart-o"></i>  Аналитика  <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse"   aria-expanded="false" style="height: 0px;">
+                        <li>
+                            <a href="{{path('attendance')}}">
+                            	<i class="fa fa-hand-o-right"></i> Посещаемость БЦ
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{path('attendece-visitors')}}">
+                            	<i class="fa fa-hand-o-right"></i> Доля посетителей по арендаторам
+                            	  
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{path('visitorsbyorders')}}">
+                            	<i class="fa fa-hand-o-right"></i> 
+                            	Посетители по заявкам и без заявок в разрезе КПП
+                            	  
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{path('dependenceVisitors')}}"> 	<i class="fa fa-hand-o-right"></i> 
+                            	График зависимости посетителей от количетсва секторов  
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+		</ul>
 					</div>
 				</div>
 			</nav>

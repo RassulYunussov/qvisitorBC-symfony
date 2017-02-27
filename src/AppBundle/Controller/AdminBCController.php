@@ -470,7 +470,6 @@ class AdminBCController extends Controller
         ));
     }
 
-
      /**
      *@Route("/bybuildings", name="floors")
      *@Method("GET")
@@ -520,7 +519,6 @@ class AdminBCController extends Controller
             return new Response($buildings);
         }
     }
-
 
      /**
      * Finds and displays a qvContract entity.
@@ -1495,6 +1493,112 @@ $security = $query->getResult();
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * @Route("/analytics/attendance", name = "attendance")
+     * @Method("GET")
+     */
+    public function AnalyticsAttendanceAction()
+    {
+            $em = $this->getDoctrine()->getManager();
+            $bc = $em->getRepository('AppBundle:qvBusinessCenter')->findAll();
+
+            return $this->render('AppBundle:AdminBC:Analytics/attendance.html.twig', array(
+                'bc'=>$bc
+        ));
+    }
+     /**
+     *@Route("/", name="ajax-attendance")
+     *@Method("GET")
+     */
+
+    public function indexAttendanceAjaxAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+            $buildingId = $request->get('id',1);
+            $em = $this->getDoctrine()->getManager();
+            $qvfloors=$em->getRepository('AppBundle:qvFloor')->findByBuildingId($buildingId);
+            $serializer = $this->get('serializer');
+            $floors = $serializer->serialize($qvfloors, 'json');
+            return new Response($floors);
+        }
+    }
+      /**
+     * @Route("/analytics/visitors", name = "attendece-visitors")
+     * @Method("GET")
+     */
+    public function AnalyticsAttendanceVisitorsAction()
+    {
+            return $this->render('AppBundle:AdminBC:Analytics/visitorsByLeasers.html.twig', array(
+        ));
+    }
+     /**
+     *@Route("/", name="ajax-attendance-visitors")
+     *@Method("GET")
+     */
+
+    public function indexAttendanceVisitorsAjaxAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+            $buildingId = $request->get('id',1);
+            $em = $this->getDoctrine()->getManager();
+            $qvfloors=$em->getRepository('AppBundle:qvFloor')->findByBuildingId($buildingId);
+            $serializer = $this->get('serializer');
+            $floors = $serializer->serialize($qvfloors, 'json');
+            return new Response($floors);
+        }
+    }
+       /**
+     * @Route("/analytics/visitorsbyorders", name = "visitorsbyorders")
+     * @Method("GET")
+     */
+    public function AnalyticsVisitorsByOrdersAction()
+    {
+            return $this->render('AppBundle:AdminBC:Analytics/visitorsByOrders.html.twig', array(
+        ));
+    }
+     /**
+     *@Route("/add", name="ajax-attendance-visitors")
+     *@Method("GET")
+     */
+
+    public function indexVisitorsByOrdersAjaxAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+            $buildingId = $request->get('id',1);
+            $em = $this->getDoctrine()->getManager();
+            $qvfloors=$em->getRepository('AppBundle:qvFloor')->findByBuildingId($buildingId);
+            $serializer = $this->get('serializer');
+            $floors = $serializer->serialize($qvfloors, 'json');
+            return new Response($floors);
+        }
+    }
+
+       /**
+     * @Route("/analytics/dependenceVisitors", name = "dependenceVisitors")
+     * @Method("GET")
+     */
+    public function AnalyticsDependenceVisitorsAction()
+    {
+            return $this->render('AppBundle:AdminBC:Analytics/visitorsAndSectors.html.twig', array(
+        ));
+    }
+     /**
+     *@Route("/", name="ajax-attendance-visitors")
+     *@Method("GET")
+     */
+
+    public function indexDependenceVisitorsAjaxAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+            $buildingId = $request->get('id',1);
+            $em = $this->getDoctrine()->getManager();
+            $qvfloors=$em->getRepository('AppBundle:qvFloor')->findByBuildingId($buildingId);
+            $serializer = $this->get('serializer');
+            $floors = $serializer->serialize($qvfloors, 'json');
+            return new Response($floors);
+        }
     }
 }
     

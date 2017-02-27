@@ -28,26 +28,89 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <!-- Nav tabs -->
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a href="#home" data-toggle="tab">Активность арендаторов</a>
-                                </li>
-                                <li><a href="#profile" data-toggle="tab">Использование системы</a>
-                                </li>
-                               </ul>
-
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-                                <div class="tab-pane fade in active" id="home">
-		   <h4>Активность арендаторов</h4>
-									<div id="container" style="height: 400px"></div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 demo">
+                         <a href="{{path('attendance')}}">Посещаемость БЦ
+                            <div class="demo-container">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 image-container">
+                                    <img class="lazy img-thumbnail" data-original="/media/com_demo/images/highcharts/line-ajax-default.svg" alt="Ajax loaded data, clickable points" src="http://www.highcharts.com/media/com_demo/images/highcharts/spline-irregular-time-default.svg" style="">
                                 </div>
-                                <div class="tab-pane fade" id="profile">
-                                    <h4>Использование системы</h4>
-									<div id="system" style="min-width: 70%; height: 70%; margin: 0 auto"></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 footer-container"><h4>Посещаемость БЦ</h4>
                                 </div>
-                               
+                                <div class="clearfix"></div>
                             </div>
-                        </div>
+                        </a>
+                    </div>
+                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 demo">
+                         <a href="{{path('attendece-visitors')}}">Доля посетителей по арендаторам
+                            <div class="demo-container">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 image-container">
+                                    <img class="lazy img-thumbnail" data-original="/media/com_demo/images/highcharts/line-ajax-default.svg" alt="Ajax loaded data, clickable points" src="http://www.highcharts.com/media/com_demo/images/highcharts/pie-drilldown-default.svg" style="">
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 footer-container"><h4>Доля посетителей по арендаторам</h4>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 demo">
+                         <a href="{{path('visitorsbyorders')}}">            Посетители по заявкам и без заявок в разрезе КПП
+                            <div class="demo-container">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 image-container">
+                                    <img class="lazy img-thumbnail" data-original="/media/com_demo/images/highcharts/line-ajax-default.svg" alt="Ajax loaded data, clickable points" src="http://www.highcharts.com/media/com_demo/images/highcharts/column-basic-default.svg" style="">
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 footer-container"><h4>Посетители по заявкам и без заявок в разрезе КПП</h4>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 demo">
+                         <a href="{{path('dependenceVisitors')}}">            
+                    График зависимости посетителей от количетсва секторов
+                            <div class="demo-container">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 image-container">
+                                    <img class="lazy img-thumbnail" data-original="/media/com_demo/images/highcharts/line-ajax-default.svg" alt="Ajax loaded data, clickable points" src="http://www.highcharts.com/media/com_demo/images/highcharts/bubble-default.svg" style="">
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 footer-container"><h4>
+                    График зависимости посетителей от количетсва секторов
+                    </h4>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                                
+                            {#<!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="leaser-active">
+		   <h4>Грфафик посещаемости БЦ</h4>
+									<div id="container1" style="height: 400px">
+                                       <div id="chart_1" class="chart">
+                                           
+                                       </div> 
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="using-system">
+                                    <h4>Доля посетителей по арендаторам</h4>
+									<div id="container2" style="min-width: 70%; height: 70%; margin: 0 auto">
+                                    <div id="chart_2" class="chart"></div>                           
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="visitors-kpp">
+                                    <h4>
+                               График зависимости посетителей от количетсва секторов</h4>
+                                    <div id="container3" style="min-width: 70%; height: 70%; margin: 0 auto">
+                                    <div id="chart_3" class="chart"></div>                           
+                                    </div>
+                                </div><div class="tab-pane fade" id="visitors-kpp">
+                                    <h4>Посетители по заявкам и без заявок в разрезе КПП</h4>
+                                    <div id="container3" style="min-width: 70%; height: 70%; margin: 0 auto">
+                                    <div id="chart_3" class="chart"></div>                           
+                                    </div>
+                                </div>
+                            </div>
+                        </div>#}
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
@@ -55,8 +118,8 @@
 	   </div>
 				
 <!-- two different charts -->
-<div id="chart_1" class="chart"></div>
-<div id="chart_2" class="chart"></div>
+
+
 	</div>
 </div></div>
 {% endblock %}
@@ -65,9 +128,9 @@
 {% block js %}
     <script src="{{asset('bootstrap1/js/admin-highchart.js')}}"></script>
     <script src="{{asset('bootstrap1/js/2admin-highchart.js')}}"></script>
+    <script src="{{asset('bootstrap1/js/column-highchart.js')}}"></script>
+    <script src="{{asset('bootstrap1/js/bubbles-highchart.js')}}"></script>
 {{parent()}}
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/highcharts-3d.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
 
 {% endblock %}

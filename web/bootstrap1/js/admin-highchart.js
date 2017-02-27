@@ -1,9 +1,23 @@
-Highcharts.chart('container', {
+var $n = null;
+function loadBC(){
+    $.ajax({
+        type: "GET",
+        url: "{{ path('bc')}}",
+        success: function(bc){
+        $.each(JSON.parse(bc),function(k,v){
+        $n = "Lotos";       
+        });
+        }
+    });
+}
+
+Highcharts.chart('container1', {
     chart: {
         type: 'spline'
     },
+    
     title: {
-        text: 'Snow depth at Vikjafjellet, Norway'
+        text: 'Посещаемость БЦ - ' + $n
     },
     subtitle: {
         text: 'Irregular time data in Highcharts JS'
