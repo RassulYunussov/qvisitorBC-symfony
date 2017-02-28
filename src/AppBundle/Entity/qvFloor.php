@@ -14,6 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class qvFloor
 {
+	public function __construct() {
+		$this->sectors = new ArrayCollection();
+	}
+	
+	
     /**
      * @var integer
      *
@@ -39,6 +44,15 @@ class qvFloor
      * })
      */
     private $building;
+    
+    // ...
+    /**
+     * One Floor has Many Sectors.
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\qvSector", mappedBy="floor")
+     */
+    private $sectors;
+    // ...
+    
 
 
     public function __toString()
@@ -102,5 +116,10 @@ class qvFloor
     public function getBuilding()
     {
         return $this->building;
+    }
+    
+    public function getSectors()
+    {
+    	return $this->sectors;
     }
 }

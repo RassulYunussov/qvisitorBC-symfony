@@ -945,10 +945,9 @@ $security = $query->getResult();
 
         $count = $em->getRepository('AppBundle:qvFloor')->countFloorInBuild($qvBuilding);
       
-        $floors = $em->getRepository('AppBundle:qvFloor')->findFlooorByBuild($qvBuilding);
+        $floors = $em->getRepository('AppBundle:qvFloor')->findFloorsByBuild($qvBuilding);
  
-        $sectorlist = $em->getRepository('AppBundle:qvSector')->findAll ();
-              
+            
         $check = $em->getRepository('AppBundle:qvCheckpoint')
         ->findByBuildingId($qvBuilding);
 
@@ -968,7 +967,6 @@ $security = $query->getResult();
             'qvBuilding' => $qvBuilding,
             'count' => $count,
             'floors' => $floors,
-            'sectorlist' => $sectorlist,
             'check' => $check,
             'usp' => $usp,  
             'delete_form' => $deleteForm->createView(),

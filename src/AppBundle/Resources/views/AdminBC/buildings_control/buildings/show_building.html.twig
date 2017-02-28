@@ -65,15 +65,7 @@
 </div>
 
 {% else %} #}
- Сектора - {% for sector in sectorlist %}
- 
-{% if sector.floor == floor.name %}
- <a href="{{path('sectors_edit', {'qvBuilding': qvBuilding.id, 'qvFloor': sector.floor.id, 'id': sector.id }) }}">
-{{  sector.name }}, 
-</a>	
-{% endif %}
-{% endfor %}
-
+{{ floor.sectors|join(',') }} 
 </td> 
 
 </tr>{% endfor %}
