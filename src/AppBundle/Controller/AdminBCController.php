@@ -89,15 +89,16 @@ class AdminBCController extends Controller
        $qvUser = new qvUser();
         $qvUserPassport = new qvUserPassport();
         $em = $this->getDoctrine()->getManager();
-
+        $em->getConnection()->beginTransaction(); 
+try {
          $data = array();
 
          $form = $this->createFormBuilder($data)
             ->add('name', TextType::class, array(
-                'label'=>'Имя',
+                'label'=>'Название компании',
                 'attr' => array('class'=>'form-control form-input')))
             ->add('bin', NumberType::class, array(
-                'label'=>'БИН пользователя',
+                'label'=>'БИН',
                 'attr' => array('class'=>'form-control form-input')))
             ->add('login', TextType::class, array(
                 'label'=>'Логин',
@@ -137,7 +138,7 @@ class AdminBCController extends Controller
           
            $em = $this->getDoctrine()->getManager();
 
-           $myrole = $em->getRepository('AppBundle:qvRole')->findOneById('3');
+             $myrole = $em->createQuery('SELECT role from AppBundle:qvRole role WHERE role.code = :name')->setParameter('name', 'ROLE_LEASER')->getSingleResult();
            $encoder = $this->container->get('security.password_encoder');
            $data = $form->getData();
             
@@ -166,9 +167,14 @@ class AdminBCController extends Controller
             
             $em->persist($qvUserPassport);
             $em->flush();
-
+             $em->getConnection()->commit();
             return $this->redirectToRoute('leasers_list', array());
         }
+    }
+    catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
+}
         return $this->render('AppBundle:AdminBC:leasers_control/leasers/create_leaser.html.twig', array(
             'qvLeaser' => $qvLeaser,
             'qvUser' => $qvUser,
@@ -183,11 +189,17 @@ class AdminBCController extends Controller
      */
     public function showLeaserAction(qvLeaser $qvLeaser)
     {
-        $deleteForm = $this->createDeleteLeaserForm($qvLeaser);
+        
         $em = $this->getDoctrine()->getManager();
         $em1 = $this->getDoctrine()->getEntityManager();
 
+
+         $pquery = $em1->createQuery('SELECT p FROM AppBundle:qvUserPassport p LEFT JOIN p.user u LEFT JOIN u.leaser l WHERE l.id = :id')->setParameter('id', $qvLeaser);
+        $qvUserPassport = $pquery->getSingleResult();
+
         $qvUser = $em->getRepository('AppBundle:qvUser')->findLeaser($qvLeaser);
+
+        $deleteForm = $this->createDeleteLeaserForm($qvUser, $qvUserPassport, $qvLeaser);
         
         $queryContract = $em1->createQuery(
             'SELECT cnr from AppBundle:qvContract cnr WHERE cnr.leaser = :name'
@@ -206,6 +218,7 @@ class AdminBCController extends Controller
         return $this->render('AppBundle:AdminBC:leasers_control/leasers/show_leaser.html.twig', array(
             'contracts' => $contracts,
             'qvUser'=>$qvUser,
+            'qvUserPassport'=>$qvUserPassport,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -218,11 +231,10 @@ class AdminBCController extends Controller
      */
     public function editLeaserAction(Request $request, qvLeaser $qvLeaser)
     {
-     
-     $deleteForm = $this->createDeleteLeaserForm($qvLeaser);
      $emm = $this->getDoctrine()->getEntityManager();
      $em = $this->getDoctrine()->getManager();
-     
+     $em->getConnection()->beginTransaction(); 
+try {
      $qvUser = $em->getRepository('AppBundle:qvUser')->findLeaser($qvLeaser);
 
         $res = $qvUser->getDisabled();
@@ -249,18 +261,22 @@ class AdminBCController extends Controller
     
             $em->persist($qvLeaser);            
             $em->flush();
-
+            $em->getConnection()->commit();
             return $this->redirectToRoute('leasers_list', array('id' => $qvLeaser->getId()));
         }
+    }
+        }
+        catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
+}
         return $this->render('AppBundle:AdminBC:leasers_control/leasers/edit_leaser.html.twig', array(
             'qvUserPassport' => $qvUserPassport,
             'qvLeaser'=>$qvLeaser,
             'qvUser'=>$qvUser,
             'res'=>$res,
         'edit_form' => $editForm->createView(),
-        'delete_form' => $deleteForm->createView(),
         ));
-    }
 }
 
  
@@ -273,9 +289,11 @@ class AdminBCController extends Controller
     public function changePersonalDataLeaserAction(Request $request, qvLeaser $qvLeaser)
     {
      
-     $deleteForm = $this->createDeleteLeaserForm($qvLeaser);
+     //$deleteForm = $this->createDeleteLeaserForm($qvLeaser);
      $emm = $this->getDoctrine()->getEntityManager();
      $em = $this->getDoctrine()->getManager();
+     $em->getConnection()->beginTransaction(); 
+try {
     $qvUser = $em->getRepository('AppBundle:qvUser')->findLeaser($qvLeaser);
         $res = $qvUser->getDisabled();
         if($res == 1)
@@ -313,8 +331,14 @@ class AdminBCController extends Controller
 
             $em->persist($qvUserPassport);
             $em->flush();
-
+            $em->getConnection()->commit();
         return $this->redirectToRoute('leasers_list', array('id' => $qvLeaser->getId()));
+    }
+}
+}
+    catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
         }
 
         return $this->render('AppBundle:AdminBC:leasers_control/leasers/change_personaldata_leaser.html.twig', array(
@@ -322,9 +346,8 @@ class AdminBCController extends Controller
             'qvLeaser'=>$qvLeaser,
             'qvUser'=>$qvUser,
         'edit_form2' => $editForm2->createView(),
-        'delete_form' => $deleteForm->createView(),
+       // 'delete_form' => $deleteForm->createView(),
         ));
-    }
 }
     /**
      * Displays a form to edit an existing qvLeaser entity.
@@ -373,25 +396,41 @@ class AdminBCController extends Controller
         else if ($code == 'ROLE_CHECKPOINT')
             return $this->redirectToRoute('security_list');
     }   
-    
+
     /**
      * Deletes a qvLeaser entity.
-     * @Route("/leasers/leaser/{id}/delete", name="leasers_delete")
+     * @Route("/leasers/leaser/{qvUser}/{qvUP}/{qvLeaser}/delete", name="leasers_delete")
      * @Method("DELETE")
      */
     public function deleteLeaserAction(Request $request, qvLeaser $qvLeaser)
     {
-        $form = $this->createDeleteLeaserForm($qvLeaser);
+        $em = $this->getDoctrine()->getManager();
+        $emm = $this->getDoctrine()->getEntityManager();
+        $em->getConnection()->beginTransaction(); 
+try {
+        $qvUser = $em->getRepository('AppBundle:qvUser')->findLeaser($qvLeaser);
+         $pquery = $emm->createQuery('SELECT p FROM AppBundle:qvUserPassport p LEFT JOIN p.user u LEFT JOIN u.leaser l WHERE l.id = :id')->setParameter('id', $qvLeaser);
+        $qvUserPassport = $pquery->getSingleResult();
+
+        $form = $this->createDeleteLeaserForm($qvUser, $qvUserPassport, $qvLeaser);
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
+            $em->remove($qvUser);
             $em->remove($qvLeaser);
+            $em->remove($qvUserPassport);
             $em->flush();
-        }
-    return $this->redirectToRoute('leasers_list', array('id' => $qvLeaser->getId()
-        ));
-    }
-    
+            $em->getConnection()->commit();
+    return $this->redirectToRoute('leasers_list', array());
+}
+}
+catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
+}
+}
+
    
     /**
      * Creates a form to delete a qvLeaser entity.
@@ -400,10 +439,10 @@ class AdminBCController extends Controller
         *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteLeaserForm(qvLeaser $qvLeaser)
+    private function createDeleteLeaserForm(qvUser $qvUser,qvUserPassport $qvUserPassport, qvLeaser $qvLeaser)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('leasers_delete', array('id' => $qvLeaser->getId())))
+            ->setAction($this->generateUrl('leasers_delete', array('qvUser' => $qvUser->getId(),'qvUP' => $qvUserPassport->getId(), 'qvLeaser' => $qvLeaser->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;
@@ -653,8 +692,7 @@ class AdminBCController extends Controller
      * @Method({"GET", "POST"})
      */
 
-    public function deleteAction(Request $request, qvContract $qvContract, 
-        qvLeaser $qvLeaser)
+    public function deleteAction(Request $request, qvContract $qvContract, qvLeaser $qvLeaser)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($qvContract);
@@ -1177,7 +1215,8 @@ $security = $query->getResult();
         $data = array();
 
         $em = $this->getDoctrine()->getManager();
-        
+        $em->getConnection()->beginTransaction(); 
+try {
         $form = $this->createFormBuilder($data)
         ->add('name', TextType::class, array(
             'label'=>'Название сектора',
@@ -1195,9 +1234,15 @@ $security = $query->getResult();
 
             $em->persist($qvSector);
             $em->flush();
+            $em->getConnection()->commit();
             return $this->redirectToRoute('floors_show', array('qvBuilding' => $qvBuilding->getId(), 'id' => $qvFloor->getId()));
-        }
-
+ 
+}
+} catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
+}
+        
         return $this->render('AppBundle:AdminBC:buildings_control/sectors/create_sector.html.twig', array(
             'qvSector' => $qvSector,
             'qvFloor' => $qvFloor,
@@ -1302,10 +1347,17 @@ $security = $query->getResult();
     public function deleteSectorShowAction(Request $request, qvBuilding $qvBuilding, qvFloor $qvFloor, qvSector $qvSector)
     {
         $em = $this->getDoctrine()->getManager();
+        $em->getConnection()->beginTransaction(); 
+try {
         $em->remove($qvSector);
         $em->flush();
         return $this->redirectToRoute('floors_show', array('qvBuilding'=>$qvBuilding->getId(), 'id'=>$qvFloor->getId()));
-    }
+     $em->getConnection()->commit();
+} catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
+}
+}
 
      /**
      * Lists all qvUserPassport entities.
@@ -1348,7 +1400,8 @@ $security = $query->getResult();
         $qvUserPassport = new qvUserPassport();
 
         $em = $this->getDoctrine()->getManager();
-
+        $em->getConnection()->beginTransaction(); 
+        try {
          $data = array();
 
          $form = $this->createFormBuilder($data)
@@ -1389,7 +1442,8 @@ $security = $query->getResult();
           
            $em = $this->getDoctrine()->getManager();
 
-           $myrole = $em->getRepository('AppBundle:qvRole')->findOneById(4);
+           $myrole = $em->createQuery('SELECT role from AppBundle:qvRole role WHERE role.code = :name')->setParameter('name', 'ROLE_CHECKPOINT')->getSingleResult();
+
 
            $data = $form->getData();
             $encoder = $this->container->get('security.password_encoder');
@@ -1411,9 +1465,14 @@ $security = $query->getResult();
             
             $em->persist($qvUserPassport);
             $em->flush();
-
+            $em->getConnection()->commit();
             return $this->redirectToRoute('security_list', array());
         }
+    }
+            catch (Exception $e){
+                $em->getConnection()->rollBack();
+                throw $e;
+            }
         return $this->render('AppBundle:AdminBC:checkpoints_control/security_man/new.html.twig', array(
             //'qvUserPassport' => $qvUserPassport,
             //'qvUser' => $qvUser,
@@ -1425,19 +1484,20 @@ $security = $query->getResult();
 
     /**
      * Finds and displays a qvUserPassport entity.
-     * @Route("/security/{id}/show", name="show_security")
+     * @Route("/{qvUser}/security/{id}/show", name="show_security")
      * @Method("GET")
      */
-    public function showSecurityAction(qvUserPassport $qvUserPassport, $id)
+    public function showSecurityAction(qvUser $qvUser,qvUserPassport $qvUserPassport, $id)
     {
         $em = $this->getDoctrine()->getManager();
-        $deleteForm = $this->createDeleteSecurityForm($qvUserPassport);
- $qvUser = new qvUser();
-        $role = new qvRole();
-        $role->setCode('ROLE_CHECKPOINT');
-        $user = $em->getRepository('AppBundle:qvUserPassport')->findUserByPassport($qvUserPassport);
-        $qvUser->setDisabled($user['disabled']);
-        $qvUser->setRole($role);
+        //$qvUser = new qvUser();
+        //$user = $em->getRepository('AppBundle:qvUserPassport')->findUserByPassport($qvUserPassport);
+        
+        $deleteForm = $this->createDeleteSecurityForm($qvUser, $qvUserPassport);
+       // $role = new qvRole();
+        //$role->setCode('ROLE_CHECKPOINT');
+        //$qvUser->setDisabled($user['disabled']);
+        //$qvUser->setRole($role);
         $res = $qvUser->getDisabled();
         if($res == 1)
         {
@@ -1446,7 +1506,8 @@ $security = $query->getResult();
     else{
         return $this->render('AppBundle:AdminBC:checkpoints_control/security_man/show.html.twig', array(
             'qvUserPassport' => $qvUserPassport,
-            'qvUser' => $qvUser,
+            'qsvUser' => $qvUser,
+            //'user'=>$user,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -1454,21 +1515,15 @@ $security = $query->getResult();
     /**
      * Displays a form to edit an existing qvUserPassport entity.
      *
-     * @Route("/security/{id}/edit", name="edit_security")
+     * @Route("/{qvUser}/security/{id}/edit", name="edit_security")
      * @Method({"GET", "POST"})
      */
-    public function editSecurityAction(Request $request, qvUserPassport $qvUserPassport)
+    public function editSecurityAction(Request $request, qvUser $qvUser, qvUserPassport $qvUserPassport)
     {
-        $deleteForm = $this->createDeleteSecurityForm($qvUserPassport);
+       // $deleteForm = $this->createDeleteSecurityForm($qvUserPassport);
           $em = $this->getDoctrine()->getManager();
-        
-          $qvUser = new qvUser();
-        $role = new qvRole();
-        $role->setCode('ROLE_CHECKPOINT');
-
-        $user = $em->getRepository('AppBundle:qvUserPassport')->findUserByPassport($qvUserPassport);
-        $qvUser->setDisabled($user['disabled']);
-        $qvUser->setRole($role);
+        $em->getConnection()->beginTransaction(); // suspend auto-commit
+try {
         $res = $qvUser->getDisabled();
         if($res == 1)
         {
@@ -1476,53 +1531,78 @@ $security = $query->getResult();
         }
     else{
         $editForm = $this->createFormBuilder($qvUserPassport)
-        ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
-            ->add('patronimic', TextType::class)
+            ->add('firstname', TextType::class, array(
+                 'label'=> 'Имя',
+                 'attr' => array('class'=>'form-control form-input')))
+            ->add('lastname',  TextType::class, array(
+                 'label'=> 'Фамилия',
+                 'attr' => array('class'=>'form-control form-input')))
+            ->add('patronimic', TextType::class,array(
+                 'label'=> 'Отчество',
+                 'attr' => array('class'=>'form-control form-input')))
             ->add('birthdate', BirthdayType::class, array(
                 'placeholder' => array(
                     'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-                )
-            )
-        )
+                ),
+                 'label'=> 'Дата рождения',
+                 'attr' => array('class'=>'form-control form-input')))
             ->add('gender',  EntityType::class, array(
-                'class' => 'AppBundle\Entity\qvGender')
+                'class' => 'AppBundle\Entity\qvGender',
+                'attr'=> array('class'=>'form-control'),
+                'label'=>'Пол',)
             )
             ->getForm();
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {  
+            
             $em->flush();
-
-            return $this->redirectToRoute('security_list', array('id' => $qvUserPassport->getId()));
-        }
-
+            $em->getConnection()->commit();
+            
+            return $this->redirectToRoute('security_list', array('id' => $qvUserPassport->getId()));       
+}    
+} 
+}
+    catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
+}
+            
         return $this->render('AppBundle:AdminBC:checkpoints_control/security_man/edit.html.twig', array(
             'qvUserPassport' => $qvUserPassport,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+           // 'delete_form' => $deleteForm->createView(),
         ));
     }
-}
     /**
      * Deletes a qvUserPassport entity.
      *
-     * @Route("/security/{id}/delete", name="delete_security")
+     * @Route("/{qvUser}/security/{id}/delete", name="delete_security")
      * @Method("DELETE")
      */
-    public function deleteSecurityAction(Request $request, qvUserPassport $qvUserPassport)
+    public function deleteSecurityAction(Request $request, qvUser $qvUser, qvUserPassport $qvUserPassport)
     {
-        $form = $this->createDeleteSecurityForm($qvUserPassport);
+        $em = $this->getDoctrine()->getManager();
+        $em->getConnection()->beginTransaction(); 
+        try {
+        $form = $this->createDeleteSecurityForm($qvUser,$qvUserPassport);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+        
+            $em->remove($qvUser);
+            $em->flush();
             $em->remove($qvUserPassport);
             $em->flush();
-        }
-
+             $em->getConnection()->commit();
+         }
+     }
+    catch (Exception $e) {
+            $em->getConnection()->rollBack();
+    throw $e;
+}
         return $this->redirectToRoute('security_list');
-    }
+ }
 
     /**
      * Creates a form to delete a qvUserPassport entity.
@@ -1531,10 +1611,10 @@ $security = $query->getResult();
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteSecurityForm(qvUserPassport $qvUserPassport)
+    private function createDeleteSecurityForm(qvUser $qvUser, qvUserPassport $qvUserPassport)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('delete_security', array('id' => $qvUserPassport->getId())))
+            ->setAction($this->generateUrl('delete_security', array('qvUser'=>$qvUser->getId(),'id' => $qvUserPassport->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;

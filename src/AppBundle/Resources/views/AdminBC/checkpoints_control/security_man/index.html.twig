@@ -57,28 +57,28 @@
     <tr >
         <td>
             <a href="{{ path('show_security', 
-                {'id': qvUserPassport.id }) }}">
+                {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id }) }}">
                     {{ qvUserPassport.firstname }}
             </a>
         </td>
         
         <td>
             <a href="{{ path('show_security', 
-            {'id': qvUserPassport.id}) }}">
+            {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id}) }}">
                 {{ qvUserPassport.lastname }}
             </a>
         </td>
         
         <td>
             <a href="{{ path('show_security', 
-                {'id': qvUserPassport.id}) }}">
+                {'qvUser':qvUserPassport.user,'id': qvUserPassport.id}) }}">
                     {{ qvUserPassport.patronimic }}
             </a>
         </td>
         
         <td>
             <a href="{{ path('show_security', 
-                {'id': qvUserPassport.id}) }}">
+                {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id}) }}">
                 {% if qvUserPassport.birthdate %}
                     {{ qvUserPassport.birthdate|date('Y-m-d') }}
                 {% endif %} 
@@ -95,11 +95,11 @@
 
         <td class="center">
             <div class="btn-group">
-                <a class="btn btn-infotext btn-default" href="{{ path('show_security', { 'id': qvUserPassport.id }) }}" data-title = "Посмотреть"> 
+                <a class="btn btn-infotext btn-default" href="{{ path('show_security', { 'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id }) }}" data-title = "Посмотреть"> 
                     <i class="fa fa-eye"></i>
                 </a> 
 
-                <a href="{{ path('edit_security', { 'id': qvUserPassport.id }) }}" class="btn btn-default btn-infotext" data-title = "Изменить или удалить">
+                <a href="{{ path('edit_security', {'qvUser':qvUserPassport.user.id, 'id': qvUserPassport.id }) }}" class="btn btn-default btn-infotext" data-title = "Изменить">
                     <i class="fa fa-edit"></i> 
                 </a>
             </div>
@@ -109,28 +109,28 @@
         <tr class="disabled">
         <td>
             <a href="{{ path('show_security', 
-                {'id': qvUserPassport.id }) }}">
+                {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id }) }}">
                     {{ qvUserPassport.firstname }}
             </a>
         </td>
         
         <td>
             <a href="{{ path('show_security', 
-            {'id': qvUserPassport.id}) }}">
+            {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id}) }}">
                 {{ qvUserPassport.lastname }}
             </a>
         </td>
         
         <td>
             <a href="{{ path('show_security', 
-                {'id': qvUserPassport.id}) }}">
+                {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id}) }}">
                     {{ qvUserPassport.patronimic }}
             </a>
         </td>
         
         <td>
             <a href="{{ path('show_security', 
-                {'id': qvUserPassport.id}) }}">
+                {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id}) }}">
                 {% if qvUserPassport.birthdate %}
                     {{ qvUserPassport.birthdate|date('Y-m-d') }}
                 {% endif %} 
@@ -147,11 +147,11 @@
 
         <td class="center">
             <div class="btn-group">
-                <a class="btn btn-infotext btn-default" href="{{ path('show_security', { 'id': qvUserPassport.id }) }}" data-title = "Посмотреть"> 
+                <a class="btn btn-infotext btn-default" href="{{ path('show_security', {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id }) }}" data-title = "Посмотреть"> 
                     <i class="fa fa-eye"></i>
                 </a> 
 
-                <a href="{{ path('edit_security', { 'id': qvUserPassport.id }) }}" class="btn btn-default btn-infotext" data-title = "Изменить или удалить">
+                <a href="{{ path('edit_security', {'qvUser':qvUserPassport.user.id, 'id': qvUserPassport.id }) }}" class="btn btn-default btn-infotext" data-title = "Изменить">
                     <i class="fa fa-edit"></i> 
                 </a>
             </div>

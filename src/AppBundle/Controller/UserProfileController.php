@@ -53,6 +53,9 @@ class UserProfileController extends Controller
          $data = array();
          
          $form = $this->createFormBuilder($data)
+            ->add('old_password', PasswordType::class, array(
+                'label'=> 'Старый пароль',
+                'attr'=> array('class'=>'form-control')))
             ->add('password', RepeatedType::class, array(
                 'type'=> PasswordType::class,
                 'invalid_message'=>'Пароли должны совпадать',
@@ -62,8 +65,9 @@ class UserProfileController extends Controller
                 'first_options'  => array('label' => 'Пароль', 'attr' => array('class'=>'form-control form-input')),
                 'second_options' => array('label' => 'Повторите пароль', 'attr' => array('class'=>'form-control form-input'))
                     ))
-            ->getForm()
-        ;
+            ->getForm();
+
+
         $form->handleRequest($request);
 
        if ($form->isSubmitted() && $form->isValid()) {
@@ -72,6 +76,8 @@ class UserProfileController extends Controller
             $data = $form->getData();
             $myrole = $qvUser->getRole();
             $mypass = $encoder->encodePassword($qvUser, $data['password']);
+            //$oldpass = $em->getRepository('AppBundle:qvUser')->find($qvUser);
+            //$encode_oldpass = 
             $qvUser->setPassword($mypass);
             $qvUser->setRole($myrole);
             $qvUser->setDisabled('false');
@@ -81,6 +87,7 @@ class UserProfileController extends Controller
         }   
             return $this->render('AppBundle:UserProfile:changepass.html.twig', array(
                 'form'=>$form->createView(),
+              //  'oldpass'=>$oldpass,
                 ));
         }
 

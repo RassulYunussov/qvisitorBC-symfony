@@ -17,26 +17,24 @@
                             Управление зданиями</a>
                     <a class="btn btn-default" href="{{ path('checkpoints_list') }}">Управление охраной</a>
                     <br>
+                </div>
                 {% endblock %}
 <br>
                 <h1 class="page-header">Изменение информации об охране </h1>
-                <!-- /.col-lg-12 -->
             </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <!-- /.col-lg-12 -->
             <div class="form-group">
-                    <div id="qv_checkpoint">
-                     {#{{form_start(edit_form)}}#}
-{% endfor %}
-<div class="form-input" align="right">
-     <input class="btn btn-default btn-sm" type="submit" value="Изменить" />
-            <a class="btn btn-default btn-sm" href="{{ path('checkpoints_list') }}">Отменить</a>
-     
+                {{form_start(edit_form)}}
+                {{form_widget(edit_form)}}
+                    <div class="form-group" align="right"><br>
+                    <input class="btn btn-default btn-sm" type="submit" value="Изменить" />
+                    <a class="btn btn-default btn-sm" href="{{ path('security_list') }}">Отменить</a>
     {{ form_end(edit_form) }}
 
-            {{ form_start(delete_form) }}
-                <input type="submit" class="btn btn-default btn-sm" value="Удалить">
-            {{ form_end(delete_form) }}
-    </div>
-                </div>
+    </div></div></div>
                 <div>
 <!-- /.col-lg-6-->
 </div>

@@ -30,7 +30,7 @@
       </div>
       <!-- /.col-lg-12 -->
   </div>
-  <div class="col-lg-4">
+  <div class="col-lg-6">
     <div class="form-group">
         <div id="qv_contract">
           {{ form_start(form) }}
@@ -55,10 +55,18 @@
                         {{ form_label(form.enddate) }}
                         {{ form_errors(form.enddate) }}
                         {{ form_widget(form.enddate, {'attr': {'class':'form-control'}}) }}
+                        <br>
+                        <button type="button" onclick="$('#myModal .modal-dialog').load();" class="btn btn-sm btn-success" data-toggle="modal" data-target="#myModal">
+                            <i class="fa fa-plus"></i>
+                            Добавить сектора             
+                        </button>
+                    
+                        <input type="reset" id="reset_btn" class="btn btn-sm btn-default">
                     </td>
                 </tr>
+
                 <tr>
-                    <td class="col-md-3">
+                    <td class="col-md-3"><br>
                         <label id="label-form-sectors">Вы выбрали, следующие сектора: </label>
                         {{ form_errors(form.sectors) }}
                         {{form_widget(form.sectors, {'attr': {'class': 'form-control'}}) }}
@@ -69,18 +77,6 @@
         <br>
         <table>
             <tbody>        
-                <tr class="col-md-3">
-                    <td>
-                        <button type="button" onclick="$('#myModal .modal-dialog').load();" class="btn btn-sm btn-success" data-toggle="modal" data-target="#myModal">
-                            <i class="fa fa-plus"></i>
-                            Добавить сектора             
-                        </button>
-                    </td>
-                    <td>   &nbsp; </td>
-                      <td>
-                        <input type="reset" id="reset_btn" class="btn btn-sm btn-default">
-                    </td>
-                </tr>
                 <tr><td>&nbsp;</td></tr>
                 <tr class="text-right">
                     <td class="col-md-3">
@@ -120,58 +116,59 @@
             <br>
                 <div>
                 
-                    <label for="form_buildings" class="required">
+                    {#<label for="form_buildings" class="required">
                         Здания
                     </label>
-                    
-                    <select id="form_buildings" name="form[buildings]" class="form-control form-input">
-                    </select>
+                    #}
+                    <div id="form_buildings" name="form[buildings]" class="">
+                    </div>
                 </div>
                 
-                <div>
+                <div>{#}
                     <label for="form_floors" class="required">
                         Этажи
                     </label>
-                    
-                    <select id="form_floors" name="form[floors]" class="form-control form-input">     
-                    </select>
+                    #}
+                    <div id="form_floors" name="form[floors]" class="">     
+                    </div>
                 </div>
                 
                 <div>
                     <label for="form_sector" class="required">
                        Выберите необходимые сектора:
                     </label>
-                    <div class="text_demoBlock form-group" id="form_sector" name="form[sector][]" required="required">
+                    <div class="" id="form_sector" name="form[sector][]" required="required">
                     </div>
- <style>
+ {#<style>
 .text_demoBlock {
 padding-bottom:20px; /*отступ снизу*/
 width:100%; /*указываем общую ширину блока с колонками*/
 text-align:justify; /*выравнивание текста внутри колонок*/
-column-count: 3; /*количество колонок, на которое хотим разбить текст*/
--moz-column-count: 3; /*для мозилы*/
--webkit-column-count: 3; /*для webkit браузеров*/
+column-count: 2; /*количество колонок, на которое хотим разбить текст*/
+-moz-column-count: 2; /*для мозилы*/
+-webkit-column-count: 2; /*для webkit браузеров*/
 column-gap: 40px; /*отступ между колонками*/
 -moz-column-gap: 40px;
 -webkit-column-gap: 40px;
-column-rule: 1px solid #000; /*если требуется по дизайну, разделяем колонки линией*/
--moz-column-rule: 1px solid #000;
--webkit-column-rule: 1px solid #000;
+column-rule: 0.1px solid #000; /*если требуется по дизайну, разделяем колонки линией*/
+-moz-column-rule: 0.1px solid #000;
+-webkit-column-rule: 0.1px solid #000;
 }
 </style>
+#}
 </div>
                 
 <table align="right">
     <tbody>
         <tr>
             <td>
-                <button class="btn btn-default" type="submit" id='save'>    Выбрать
+                <button class="btn btn-default" type="submit" id='save'>    Закончить
                 </button>
             </td>
             
             <td>
                 <button type="button" id="cancel" class="btn btn-default">
-                    Отменить
+                    Назад
                 </button>
             </td>
         </tr>
@@ -206,7 +203,7 @@ column-rule: 1px solid #000; /*если требуется по дизайну, 
                     url: "{{ path('buildings')}}",
                     success: function(buildings){
                         $.each(JSON.parse(buildings),function(k,v){
-                            $('#form_buildings').append('<option value="'+v.id+'">'+v.name+'</option>')
+                            $('#form_buildings').append('<div class="checkbox"><label> <input type="checkbox" value="'+v.id+'" name="'+v.name+'"/>Здание - '+v.name+'</label></div>')
                         });
                     }
                 });
@@ -224,16 +221,16 @@ column-rule: 1px solid #000; /*если требуется по дизайну, 
                     data: {'id':buildingId},
                     success: function(data){
                         $.each(JSON.parse(data),function(k,v){
-                            $('#form_floors').append('<option value="'+v.id+'">'+v.name+'</option>')
+                            $('#form_floors').append('<div class="checkbox"><label> <input type="checkbox" value="'+v.id+'" name="'+v.name+'"/>Этаж - '+v.name+'</label></div>')
                         });
                     }
                 });
             }
 
             $(function (){
-                loadFloors($('#form_buildings option:selected').val());
+                loadFloors($('#form_buildings :checked').val());
                 $('#form_buildings').change(function(){
-                    loadFloors($('#form_buildings option:selected').val());
+                    loadFloors($('#form_buildings :checked').val());
                 });
             });
         </script>
@@ -254,9 +251,9 @@ column-rule: 1px solid #000; /*если требуется по дизайну, 
                 });
             }
             $(function (){
-                loadSectors($('#form_floors option:selected').val());
+                loadSectors($('#form_floors :checked').val());
                 $('#form_floors').change(function(){
-                    loadSectors($('#form_floors option:selected').val());
+                    loadSectors($('#form_floors :checked').val());
                 });
             });
         </script>
@@ -278,6 +275,7 @@ column-rule: 1px solid #000; /*если требуется по дизайну, 
                     $('#form_buildings').show();
                     $('label[for="form_buildings"]').show();
                     $('#myModalLabel').text('Выбор здания');
+                    $('input:checkbox').removeAttr('checked');
                 };
 
                 var cancelFloorChange = function(){
@@ -288,9 +286,10 @@ column-rule: 1px solid #000; /*если требуется по дизайну, 
                     $('label[for="form_sector"]').hide();
                     $('#form_floors').show();
                     $('label[for="form_floors"]').show();
-                    $('#myModalLabel').text('Выбрано здание - ' + $build);
+                    $('#myModalLabel').text($build);
                     $('#cancel').show();
                     $('#cancel').on('click', cancelBuildingChange);
+                    $('input:checkbox').removeAttr('checked');
                 };
 
                 $('#form_sectors').replaceWith('<select multiple="true" class="form-control form-inline form-margin" id="form_sectors"></select>');
@@ -299,39 +298,37 @@ column-rule: 1px solid #000; /*если требуется по дизайну, 
                 $('#form_sectors').hide();
                 $('#form_floors').hide(); 
                 $('#cancel').hide();
+                $('#save').hide();
                 $('label[for="form_floors"]').hide();
                 $('#form_sector').hide();
                 $('label[for="form_sector"]').hide();
 
-                $('#form_buildings').prepend($ ('<option value="0"></option>'));
-                $("#form_buildings [value='0']").attr("selected", "selected");
+                //$('#form_buildings').prepend($ ('<option value="0"></option>'));
+                //$("#form_buildings [value='0']").attr("selected", "selected");
 
                 $('#form_buildings').change(function()
                 {
-                    $('#myModalLabel').text('Выбрано здание - ' + $build);
-                    $('#form_floors').prepend($ ('<option value="0"></option>'));
-                    $("#form_floors [value='0']").attr("selected", "selected");
+                  //  $('#form_floors').prepend($ ('<option value="0"></option>'));
+                    //$("#form_floors [value='0']").attr("selected", "selected");
                     
-                    $('label[for="form_buildings"]').hide('fast');
+                    $('label[for="form_buildings"]').hide();
                     $('#form_buildings').hide('fast', function(){
-                    $build = $('#form_buildings option:selected').text();
-                    $('#myModalLabel').text('Выбрано здание - ' + $build);
+                    $build = $('input:checked').attr('name');
+                    $('input:checkbox').removeAttr('checked');
+                    $('#myModalLabel').text($build);
                     });
-
-                    $('#form_floors').show('slow');
-                    $('label[for="form_floors"]').show('slow');
-
+                    $('#form_floors').show();
+                    $('label[for="form_floors"]').show();
                     $('#cancel').show();
                     $('#cancel').on('click', cancelBuildingChange);
-
                 });
 
                 $('#form_floors').change(function()
                 {      
                     $('label[for="form_floors"]').hide();
                     $('#form_floors').hide('fast', function(){
-                        var $floor = $('#form_floors option:selected').text();
-                        $('#myModalLabel').text('Выбрано здание - ' + $build + ' / Этаж - ' + $floor);
+                        var $floor = $('input:checked').attr('name');
+                        $('#myModalLabel').text($build + ' / Этаж - ' + $floor);
                     });
                     
                     $('#save').show();
@@ -347,7 +344,7 @@ column-rule: 1px solid #000; /*если требуется по дизайну, 
                     var valuename = [];
                     var valueid = [];
                     
-                    $('#form_sector :checked').each(function()
+                      $('#form_sector :checked').each(function()
                     {
                         valueid.push($(this).val());
                         valuename.push($(this).attr('name'));
@@ -363,6 +360,7 @@ column-rule: 1px solid #000; /*если требуется по дизайну, 
                             valueid = [];
                             valuename = [];
                             $('#myModal').modal('hide');
+                            $('input:checkbox').removeAttr('checked');
                     });
                     return false;
                 });

@@ -41,7 +41,7 @@ Highcharts.chart('container2', {
         type: 'pie'
     },
     title: {
-        text: 'Browser market shares January, 2015 to May, 2015'
+        text: 'График посещаемости арендаторов'
     },
     tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -63,25 +63,25 @@ Highcharts.chart('container2', {
         name: 'Brands',
         colorByPoint: true,
         data: [{
-            name: 'Microsoft Internet Explorer',
-            y: 56.33
+            name: 'Microsoft',
+            y: 51.33
         }, {
-            name: 'Chrome',
+            name: 'Google',
             y: 24.03,
             sliced: true,
             selected: true
         }, {
-            name: 'Firefox',
+            name: 'Mozilla',
             y: 10.38
         }, {
-            name: 'Safari',
+            name: 'Apple',
             y: 4.77
         }, {
-            name: 'Opera',
-            y: 0.91
+            name: 'Yahoo',
+            y: 2.91
         }, {
-            name: 'Proprietary or Undetectable',
-            y: 0.2
+            name: 'Huawei',
+            y: 3.2
         }]
     }]
 });
