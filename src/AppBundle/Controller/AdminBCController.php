@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Ob\HighchartsBundle\Highcharts\Highchart;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -50,9 +51,52 @@ class AdminBCController extends Controller
      * @Method("GET")
      */
     public function adminbcAction()
-    {
-            return $this->render('AppBundle:AdminBC:index.html.twig', array(
-        ));
+    {    $em = $this->getDoctrine()->getManager();
+    
+    $currentDate = new \Datetime("UTC");
+
+    $monthdate = date("Y-m-d", mktime(0, 0, 0, date('m'), date('d') - 30, date('Y')));
+    $month = '30';
+    /*$maxVisitors = $this->getDoctrine()->getEntityManager()->
+    createQuery('SELECT COUNT(e.visitor) FROM AppBundle:qvEntrance e WHERE e.entrancedate <  :currentdate or e.entrancedate =  :currentdate and e.entrancedate > :monthdate or e.entrancedate = :monthdate')->setParameters(array('currentdate'=> $currentDate, 'monthdate'=>($monthdate)))->getSingleScalarResult();
+    */      
+    $result = array();
+
+    $emm = $this->getDoctrine()->getEntityManager();
+            $query = $emm->createQuery('SELECT count(e) AS rank, SUBSTRING(e.entrancedate, 0, 12) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e WHERE month <=  :currentdate and month >= :monthdate GROUP BY month order by month')->setParameters(array('currentdate'=> $currentDate->format('Y-m-d'), 'monthdate'=>$monthdate));
+            $data = $query->getResult();
+
+            $query2 = $emm->createQuery('SELECT e.id as num, e.entrancedate as day FROM AppBundle:qvEntrance e WHERE e.entrancedate <=  :currentdate group by e.entrancedate')->setParameter('currentdate', $currentDate);
+            $dates = $query2->getResult();
+         //   var_dump($data);    
+                
+    // Chart
+        foreach ($data as $i) {
+            $a = array($i['rank'], intval($i['visitorscount']));
+            array_push($result, $a);
+            }
+     $series = array(
+        array("name" => "Количество посетителей", "data" => $result)
+    );
+
+    $ob = new Highchart();
+    $ob->chart->renderTo('attendanceBC');  // The #id of the div where to render the chart
+    //$ob->chart->type('spline');
+    $ob->title->text('График посещаемости БЦ');
+    $ob->xAxis->type('date');
+    $ob->xAxis->title(array('text'  => "Период времени"));
+    $ob->xAxis->data(array(array("data"=>$dates)));
+    $ob->xAxis->dateTimeLabelFormats(array('month'=> '%e. %b', 'year'=> '%b'));
+
+    $ob->yAxis->title(array('text'  => "Количество посетителей"));
+    $ob->series($series);
+
+    return $this->render('AppBundle:AdminBC:index.html.twig', array(
+        'chart' => $ob,
+        'data' => $result,
+        'currentDate'=>$currentDate,
+        'monthdate'=>$monthdate,
+    ));
     }
           
      /**
@@ -1618,60 +1662,65 @@ try {
         ;
     }
 
-    /**
-     * @Route("/analytics/attendance", name = "attendance")
-     * @Method("GET")
-     */
-    public function AnalyticsAttendanceAction()
-    {
-            $em = $this->getDoctrine()->getManager();
-            $bc = $em->getRepository('AppBundle:qvBusinessCenter')->findAll();
-
-            return $this->render('AppBundle:AdminBC:Analytics/attendance.html.twig', array(
-                'bc'=>$bc
-        ));
-    }
-     /**
-     *@Route("/", name="ajax-attendance")
-     *@Method("GET")
-     */
-
-    public function indexAttendanceAjaxAction(Request $request)
-    {
-        if($request->isXmlHttpRequest()) {
-            $buildingId = $request->get('id',1);
-            $em = $this->getDoctrine()->getManager();
-            $qvfloors=$em->getRepository('AppBundle:qvFloor')->findByBuildingId($buildingId);
-            $serializer = $this->get('serializer');
-            $floors = $serializer->serialize($qvfloors, 'json');
-            return new Response($floors);
-        }
-    }
       /**
      * @Route("/analytics/visitors", name = "attendece-visitors")
      * @Method("GET")
      */
     public function AnalyticsAttendanceVisitorsAction()
-    {
-            return $this->render('AppBundle:AdminBC:Analytics/visitorsByLeasers.html.twig', array(
-        ));
-    }
-     /**
-     *@Route("/", name="ajax-attendance-visitors")
-     *@Method("GET")
-     */
+    {   
+    $em = $this->getDoctrine()->getManager();
+    
+    $currentDate = new \Datetime("UTC");
 
-    public function indexAttendanceVisitorsAjaxAction(Request $request)
-    {
-        if($request->isXmlHttpRequest()) {
-            $buildingId = $request->get('id',1);
-            $em = $this->getDoctrine()->getManager();
-            $qvfloors=$em->getRepository('AppBundle:qvFloor')->findByBuildingId($buildingId);
-            $serializer = $this->get('serializer');
-            $floors = $serializer->serialize($qvfloors, 'json');
-            return new Response($floors);
-        }
+    $monthdate = date("Y-m-d", mktime(0, 0, 0, date('m'), date('d') - 30, date('Y')));
+    $month = '30';
+    
+    $result = array();
+
+    $emm = $this->getDoctrine()->getEntityManager();
+            $query = $emm->createQuery('SELECT count(e) AS rank, SUBSTRING(e.entrancedate, 0, 12) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e WHERE month <=  :currentdate and month >= :monthdate GROUP BY month order by month')->setParameters(array('currentdate'=> $currentDate->format('Y-m-d'), 'monthdate'=>$monthdate));
+            $data = $query->getResult();
+
+            $query2 = $emm->createQuery('SELECT e.id as num, e.entrancedate as day FROM AppBundle:qvEntrance e WHERE e.entrancedate <=  :currentdate group by e.entrancedate')->setParameter('currentdate', $currentDate);
+            $dates = $query2->getResult();
+         //   var_dump($data);    
+                
+    // Chart
+        foreach ($data as $i) {
+            $a = array($i['rank'], intval($i['visitorscount']));
+            array_push($result, $a);
+            }
+     $series = array(
+        array("name" => "Количество посетителей", "data" => $result)
+    );
+
+   $ob = new Highchart();
+$ob->chart->renderTo('container');
+$ob->title->text('Browser market shares at a specific website in 2010');
+$ob->plotOptions->pie(array(
+    'allowPointSelect'  => true,
+    'cursor'    => 'pointer',
+    'dataLabels'    => array('enabled' => false),
+    'showInLegend'  => true
+));
+$data = array(
+    array('Firefox', 45.0),
+    array('IE', 26.8),
+    array('Chrome', 12.8),
+    array('Safari', 8.5),
+    array('Opera', 6.2),
+    array('Others', 0.7),
+);
+$ob->series(array(array('type' => 'pie','name' => 'Browser share', 'data' => $data)));
+
+     return $this->render('AppBundle:AdminBC:Analytics/visitorsByLeasers.html.twig', array(
+        'chart' => $ob,
+        'data' => $result,
+        'currentDate'=>$currentDate,
+        'monthdate'=>$monthdate,
+    ));
     }
+  
        /**
      * @Route("/analytics/visitorsbyorders", name = "visitorsbyorders")
      * @Method("GET")
@@ -1681,23 +1730,7 @@ try {
             return $this->render('AppBundle:AdminBC:Analytics/visitorsByOrders.html.twig', array(
         ));
     }
-     /**
-     *@Route("/add", name="ajax-attendance-visitors")
-     *@Method("GET")
-     */
-
-    public function indexVisitorsByOrdersAjaxAction(Request $request)
-    {
-        if($request->isXmlHttpRequest()) {
-            $buildingId = $request->get('id',1);
-            $em = $this->getDoctrine()->getManager();
-            $qvfloors=$em->getRepository('AppBundle:qvFloor')->findByBuildingId($buildingId);
-            $serializer = $this->get('serializer');
-            $floors = $serializer->serialize($qvfloors, 'json');
-            return new Response($floors);
-        }
-    }
-
+  
        /**
      * @Route("/analytics/dependenceVisitors", name = "dependenceVisitors")
      * @Method("GET")
@@ -1707,21 +1740,61 @@ try {
             return $this->render('AppBundle:AdminBC:Analytics/visitorsAndSectors.html.twig', array(
         ));
     }
-     /**
-     *@Route("/", name="ajax-attendance-visitors")
-     *@Method("GET")
+  
+ /**
+     * @Route("/analytics/attendance", name = "attendance")
+     * @Method("GET")
      */
 
-    public function indexDependenceVisitorsAjaxAction(Request $request)
-    {
-        if($request->isXmlHttpRequest()) {
-            $buildingId = $request->get('id',1);
-            $em = $this->getDoctrine()->getManager();
-            $qvfloors=$em->getRepository('AppBundle:qvFloor')->findByBuildingId($buildingId);
-            $serializer = $this->get('serializer');
-            $floors = $serializer->serialize($qvfloors, 'json');
-            return new Response($floors);
-        }
-    }
+public function chartAction()
+{
+    $em = $this->getDoctrine()->getManager();
+    
+    $currentDate = new \Datetime("UTC");
+
+    $monthdate = date("Y-m-d", mktime(0, 0, 0, date('m'), date('d') - 30, date('Y')));
+    $month = '30';
+    /*$maxVisitors = $this->getDoctrine()->getEntityManager()->
+    createQuery('SELECT COUNT(e.visitor) FROM AppBundle:qvEntrance e WHERE e.entrancedate <  :currentdate or e.entrancedate =  :currentdate and e.entrancedate > :monthdate or e.entrancedate = :monthdate')->setParameters(array('currentdate'=> $currentDate, 'monthdate'=>($monthdate)))->getSingleScalarResult();
+    */      
+    $result = array();
+
+    $emm = $this->getDoctrine()->getEntityManager();
+            $query = $emm->createQuery('SELECT count(e) AS rank, SUBSTRING(e.entrancedate, 0, 12) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e WHERE month <=  :currentdate and month >= :monthdate GROUP BY month order by month')->setParameters(array('currentdate'=> $currentDate->format('Y-m-d'), 'monthdate'=>$monthdate));
+            $data = $query->getResult();
+
+            $query2 = $emm->createQuery('SELECT e.id as num, e.entrancedate as day FROM AppBundle:qvEntrance e WHERE e.entrancedate <=  :currentdate group by e.entrancedate')->setParameter('currentdate', $currentDate);
+            $dates = $query2->getResult();
+         //   var_dump($data);    
+                
+    // Chart
+        foreach ($data as $i) {
+            $a = array($i['rank'], intval($i['visitorscount']));
+            array_push($result, $a);
+            }
+     $series = array(
+        array("name" => "Количество посетителей", "data" => $result)
+    );
+
+    $ob = new Highchart();
+    $ob->chart->renderTo('container');  // The #id of the div where to render the chart
+    //$ob->chart->type('spline');
+    $ob->title->text('График посещаемости БЦ');
+    $ob->xAxis->type('date');
+    $ob->xAxis->title(array('text'  => "Период времени"));
+    $ob->xAxis->data(array(array("data"=>$dates)));
+    $ob->xAxis->dateTimeLabelFormats(array('month'=> '%e. %b', 'year'=> '%b'));
+    
+
+    $ob->yAxis->title(array('text'  => "Количество посетителей"));
+    $ob->series($series);
+
+    return $this->render('AppBundle:AdminBC:Analytics/attendance.html.twig', array(
+        'chart' => $ob,
+        'data' => $result,
+        'currentDate'=>$currentDate,
+        'monthdate'=>$monthdate,
+    ));
+}
 }
     

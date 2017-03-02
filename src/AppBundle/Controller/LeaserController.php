@@ -179,7 +179,7 @@ class LeaserController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $user = $this->get('security.token_storage')->getToken()->getUser()->getId();
-        $qvVisitors=$em->getRepository('AppBundle:qvVisitor')->getVisitor($user);
+        $qvVisitors=$em->getRepository('AppBundle:qvVisitor')->find($user);
         $editForm = $this->createFormBuilder($qvOrder)
             ->add('sdate', DateType::class, array(
                 'label'=>'Дата открытия заявки',

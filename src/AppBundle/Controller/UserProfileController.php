@@ -51,7 +51,7 @@ class UserProfileController extends Controller
         {
          $em = $this->getDoctrine()->getManager();
          $data = array();
-         
+         $oldpass = $qvUser->getPassword();
          $form = $this->createFormBuilder($data)
             ->add('old_password', PasswordType::class, array(
                 'label'=> 'Старый пароль',
@@ -76,8 +76,7 @@ class UserProfileController extends Controller
             $data = $form->getData();
             $myrole = $qvUser->getRole();
             $mypass = $encoder->encodePassword($qvUser, $data['password']);
-            //$oldpass = $em->getRepository('AppBundle:qvUser')->find($qvUser);
-            //$encode_oldpass = 
+            
             $qvUser->setPassword($mypass);
             $qvUser->setRole($myrole);
             $qvUser->setDisabled('false');
@@ -87,7 +86,7 @@ class UserProfileController extends Controller
         }   
             return $this->render('AppBundle:UserProfile:changepass.html.twig', array(
                 'form'=>$form->createView(),
-              //  'oldpass'=>$oldpass,
+                'oldpass'=>$oldpass,
                 ));
         }
 

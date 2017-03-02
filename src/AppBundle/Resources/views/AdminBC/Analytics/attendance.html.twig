@@ -16,14 +16,20 @@
                     </div>
 					{% endblock %}
 				
-               <h1 class="page-header">Раздел Аналитики</h1>
+               <h1 class="page-header">Раздел Аналитики </h1>
+            <h4>
+               Текущая дата{{currentDate|date('Y-m-d h:m:s')}}
+               <br>Месяц назад {{monthdate|date('Y-m-d h:m:s')}}
+               </h4>
+               <h2>
+                </h2>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
     <div class="row">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div id="container1">
+                    <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto">
                     </div>
                 </div>
             </div>
@@ -32,7 +38,11 @@
 {% endblock %}
 
 {% block js %}
-<script>
+  
+<script type="text/javascript">
+    {{ chart(chart) }}
+</script>
+{#<script>
 Highcharts.chart('container1', {
     chart: {
         type: 'spline'
@@ -48,7 +58,7 @@ Highcharts.chart('container1', {
     xAxis: {
         type: 'datetime',
         dateTimeLabelFormats: { // don't display the dummy year
-            month: '%d. %m',
+            month: '%d. %m ',
             year: '%y'
         },
         title: {
@@ -60,11 +70,17 @@ Highcharts.chart('container1', {
             text: 'Количество посетителей'
         },
         min: 0,
-        max: 600
+        max: {{maxVisitors}},
+        plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+        }]
     },
     tooltip: {
         headerFormat: '<b>{series.name}</b><br>',
-        pointFormat: '{point.x:%e. %b}: {point.y:.2f} m'
+        pointFormat: '{point.x:%e. %b}: {point.y:.2f} m',
+        valueSuffix: '\xB0C'
     },
 
     plotOptions: {
@@ -76,27 +92,17 @@ Highcharts.chart('container1', {
     },  
     series: [{
         name: 'Посещаемость',
-        data: [
-            [Date.UTC(2017, 1, 1), 100],
-            [Date.UTC(2017, 1, 2), 252],
-            [Date.UTC(2017, 1, 3), 291],
-            [Date.UTC(2017, 1, 4), 338],
-            [Date.UTC(2017, 1, 5), 486],
-            [Date.UTC(2017, 1, 6), 284],
-            [Date.UTC(2017, 1, 7), 477],
-            [Date.UTC(2017, 1, 8), 199],
-            [Date.UTC(2017, 1, 9), 422],
-            [Date.UTC(2017, 1, 10), 502],
-            [Date.UTC(2017, 1, 11), 312],
-            [Date.UTC(2017, 1, 12), 452],
-            [Date.UTC(2017, 1, 13), 378],
-            [Date.UTC(2017, 1, 14), 266],
-            [Date.UTC(2017, 1, 15), 505],
-            [Date.UTC(2017, 1, 16), 337],
-            [Date.UTC(2017, 1, 17), 215],
-            [Date.UTC(2017, 1, 18), 134]
-        ]
-    }]
-});
-      </script>
+        data: [ 
+        {% set i = 0 %}
+          {% for ar in arraydate %}
+          {% for dat in data %}
+         [ {{ar|date('m-d')}}, {{data[i]}}],  
+          {% endfor %}            
+          {% set i = i+1   %}
+      {% endfor %}
+    ],
+}
+]});
+      </script>#}
+
 {% endblock %}
