@@ -517,6 +517,7 @@ catch (Exception $e) {
         $em = $this->getDoctrine()->getManager();
             
         $qvContract = new qvContract();
+        $contr = new qvContract();
         $data = array();
 
         $form = $this->createFormBuilder($data)
@@ -547,7 +548,7 @@ catch (Exception $e) {
                 'expanded' => 'true',
                 'required' => 'true',
                 'label' => false,
-                'attr' => array('class' => 'form-control type_date-inline'),
+                'attr' => array('class' => 'form-control'),
                 ))
         ->getForm()
             ;
@@ -555,19 +556,28 @@ catch (Exception $e) {
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $qvContract->setName($data['name']);
-            $qvContract->setStartdate($data['startdate']);
-            $qvContract->setEnddate($data['enddate']);
-            $qvContract->setLeaser($qvLeaser);
             
             foreach ($data['sectors'] as $sector) {
             $qvContract->addSectors($sector);
         }
+            $qvContract->setName($data['name']);
+            $qvContract->setStartdate($data['startdate']);
+            $qvContract->setEnddate($data['enddate']);
+            $qvContract->setLeaser($qvLeaser);   
             
+            $check_sector = array();
+            $check_sector = $qvContract->getSectors();
+            if(!$check_sector)
+            {
+                return $this->redirectToRoute('main_page');
+            }
+            else
+            {
             $em->persist($qvContract);
             $em->flush();
             return $this->redirectToRoute('leasers_show', array('id'=>$qvLeaser->getId()));
         }
+    }
         return $this->render('AppBundle:AdminBC:leasers_control/contracts/create_contract.html.twig', array(
             'qvContract' => $qvContract,
             'qvLeaser'=> $qvLeaser,
@@ -1678,40 +1688,31 @@ try {
     $result = array();
 
     $emm = $this->getDoctrine()->getEntityManager();
-            $query = $emm->createQuery('SELECT count(e) AS rank, SUBSTRING(e.entrancedate, 0, 12) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e WHERE month <=  :currentdate and month >= :monthdate GROUP BY month order by month')->setParameters(array('currentdate'=> $currentDate->format('Y-m-d'), 'monthdate'=>$monthdate));
+            $query = $emm->createQuery('SELECT l.name AS rank, SUBSTRING(e.entrancedate, 0, 12) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e JOIN e.user u JOIN u.leaser l WHERE month <=  :currentdate and month >= :monthdate GROUP BY l')->setParameters(array('currentdate'=> $currentDate->format('Y-m-d'), 'monthdate'=>$monthdate));
             $data = $query->getResult();
-
-            $query2 = $emm->createQuery('SELECT e.id as num, e.entrancedate as day FROM AppBundle:qvEntrance e WHERE e.entrancedate <=  :currentdate group by e.entrancedate')->setParameter('currentdate', $currentDate);
-            $dates = $query2->getResult();
-         //   var_dump($data);    
-                
-    // Chart
+          
+             // Chart
         foreach ($data as $i) {
             $a = array($i['rank'], intval($i['visitorscount']));
             array_push($result, $a);
             }
-     $series = array(
-        array("name" => "Количество посетителей", "data" => $result)
-    );
 
    $ob = new Highchart();
 $ob->chart->renderTo('container');
-$ob->title->text('Browser market shares at a specific website in 2010');
+$ob->title->text('Доля посетителей по арендаторам');
 $ob->plotOptions->pie(array(
     'allowPointSelect'  => true,
     'cursor'    => 'pointer',
-    'dataLabels'    => array('enabled' => false),
-    'showInLegend'  => true
+    'dataLabels'    => array('enabled' => true),
+    'showInLegend'  => true,
+    'format' => '{point.name}: {point.y:1f}%'
 ));
-$data = array(
-    array('Firefox', 45.0),
-    array('IE', 26.8),
-    array('Chrome', 12.8),
-    array('Safari', 8.5),
-    array('Opera', 6.2),
-    array('Others', 0.7),
-);
-$ob->series(array(array('type' => 'pie','name' => 'Browser share', 'data' => $data)));
+$ob->tooltip->headerFormat('<span style="font-size:11px">{series.name}</span><br>');
+$ob->tooltip->pointFormat('<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>');
+
+
+
+$ob->series(array(array('type' => 'pie','name' => 'Посетители', 'data' => $result)));
 
      return $this->render('AppBundle:AdminBC:Analytics/visitorsByLeasers.html.twig', array(
         'chart' => $ob,
