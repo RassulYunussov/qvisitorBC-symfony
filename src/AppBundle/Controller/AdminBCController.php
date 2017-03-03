@@ -91,8 +91,108 @@ class AdminBCController extends Controller
     $ob->yAxis->title(array('text'  => "Количество посетителей"));
     $ob->series($series);
 
+     $qvEntrance = array();
+        $hotEntrance = array();
+        $dates = array();
+        $dates = [
+            'Январь',
+            'Февраль',
+            'Март',
+            'Апрель',
+            'Май',
+            'Июнь',
+            'Июль',
+            'Август',
+            'Сентябрь',
+            'Октябрь',
+            'Ноябрь',
+            'Декабрь'];
+
+        $emm = $this->getDoctrine()->getEntityManager();
+        $query = $emm->createQuery(
+            'SELECT count(e) AS rank, SUBSTRING(e.entrancedate, 6, 2) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e GROUP BY month order by month');
+        $data = $query->getResult();
+        
+        $query2 = $emm->createQuery('SELECT count(he) AS rank, SUBSTRING(he.entrancedate, 6, 2) as month, COUNT(he.id) AS hvisitorscount FROM AppBundle:qvHotEntrance he GROUP BY month order by month');
+        $data2 = $query2->getResult();    
+
+        foreach ($data2 as $i) {
+            $a = array($i['rank'], intval($i['hvisitorscount']));
+            array_push($hotEntrance, $a);
+            }
+        foreach ($data as $i) {
+            $a = array($i['rank'], intval($i['visitorscount']));
+            array_push($qvEntrance, $a);
+            }
+        
+        $series1 = array(
+            array("name" => "Количество посетителей по заявкам", 'data' => $qvEntrance),
+            array("name" => "Количество посетителей без заявки", 'data' => $hotEntrance)
+        );
+
+        $ob1 = new Highchart();
+        
+        $ob1->chart->renderTo('container3');
+        $ob1->chart->type('column');
+        $ob1->title->text('Посетители по заявкам и без заявок в разрезе КПП');
+        $ob1->xAxis->categories($dates);    
+        $ob1->xAxis->title(array('text'  => "Период времени"));
+        $ob1->xAxis->dateTimeLabelFormats(array('month'=> '%e. %b', 'year'=> '%b'));
+        $ob1->yAxis->title(array('text'  => "Всего посетителей"));
+        $ob1->series($series1);
+
+        $currentDate = new \Datetime("UTC");
+
+    $monthdate = date("Y-m-d", mktime(0, 0, 0, date('m'), date('d') - 30, date('Y')));
+    $month = '30';
+    
+    $result = array();
+
+    $emm = $this->getDoctrine()->getEntityManager();
+            $query = $emm->createQuery('SELECT l.name AS rank, SUBSTRING(e.entrancedate, 0, 12) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e JOIN e.user u JOIN u.leaser l WHERE month <=  :currentdate and month >= :monthdate GROUP BY l')->setParameters(array('currentdate'=> $currentDate->format('Y-m-d'), 'monthdate'=>$monthdate));
+            $data = $query->getResult();
+          
+             // Chart
+        foreach ($data as $i) {
+            $a = array($i['rank'], intval($i['visitorscount']));
+            array_push($result, $a);
+            }
+
+   $ob2 = new Highchart();
+$ob2->chart->renderTo('container2');
+$ob2->title->text('Доля посетителей по арендаторам');
+$ob2->plotOptions->pie(array(
+    'allowPointSelect'  => true,
+    'cursor'    => 'pointer',
+    'dataLabels'    => array('enabled' => true),
+    'showInLegend'  => true,
+    'format' => '{point.name}: {point.y:1f}%'
+));
+$ob2->tooltip->headerFormat('<span style="font-size:11px">{series.name}</span><br>');
+$ob2->tooltip->pointFormat('<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>');
+
+$ob2->series(array(array('type' => 'pie','name' => 'Посетители', 'data' => $result)));
+
+ $series3 = array(
+                array("name" => "Data Serie Name",
+                            "data" => '[[1372425426000 ,15 ],[1373426510000 ,20 ],[1373427726000 ,30 ], [1374447726000 ,50 ]]',
+            ));
+            $ob3 = new Highchart();
+            $ob3->chart->renderTo('container4');  // The #id of the div where to render the chart
+            //$ob3->chart->type('spline');
+            $ob3->title->text('Chart Title');
+            $ob3->xAxis->title(array('text'  => "Horizontal axis title"));
+            $ob3->xAxis->type('datetime');
+            $ob3->xAxis->dateTimeLabelFormats(array('month'=> '%e. %b', 'year'=> '%b'));
+            $ob3->yAxis->title(array('text'  => "Vertical axis title"));
+            $ob3->yAxis->min('0');
+            $ob3->series($series3);
+
     return $this->render('AppBundle:AdminBC:index.html.twig', array(
         'chart' => $ob,
+        'chart1' => $ob1,
+        'chart2' => $ob2,
+        'chart3' => $ob3,
         'data' => $result,
         'currentDate'=>$currentDate,
         'monthdate'=>$monthdate,
