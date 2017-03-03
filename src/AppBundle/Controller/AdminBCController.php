@@ -1728,8 +1728,63 @@ $ob->series(array(array('type' => 'pie','name' => 'Посетители', 'data'
      */
     public function AnalyticsVisitorsByOrdersAction()
     {
-            return $this->render('AppBundle:AdminBC:Analytics/visitorsByOrders.html.twig', array(
-        ));
+        $em = $this->getDoctrine()->getManager();
+        
+        $qvEntrance = array();
+        $hotEntrance = array();
+        $dates = array();
+        $dates = [
+            'Январь',
+            'Февраль',
+            'Март',
+            'Апрель',
+            'Май',
+            'Июнь',
+            'Июль',
+            'Август',
+            'Сентябрь',
+            'Октябрь',
+            'Ноябрь',
+            'Декабрь'];
+
+        $emm = $this->getDoctrine()->getEntityManager();
+        $query = $emm->createQuery(
+            'SELECT count(e) AS rank, SUBSTRING(e.entrancedate, 6, 2) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e GROUP BY month order by month');
+        $data = $query->getResult();
+        
+        $query2 = $emm->createQuery('SELECT count(he) AS rank, SUBSTRING(he.entrancedate, 6, 2) as month, COUNT(he.id) AS hvisitorscount FROM AppBundle:qvHotEntrance he GROUP BY month order by month');
+        $data2 = $query2->getResult();    
+
+        foreach ($data2 as $i) {
+            $a = array($i['rank'], intval($i['hvisitorscount']));
+            array_push($hotEntrance, $a);
+            }
+        foreach ($data as $i) {
+            $a = array($i['rank'], intval($i['visitorscount']));
+            array_push($qvEntrance, $a);
+            }
+        
+        $series = array(
+            array("name" => "Количество посетителей по заявкам", 'data' => $qvEntrance),
+            array("name" => "Количество посетителей без заявки", 'data' => $hotEntrance)
+        );
+
+        $ob = new Highchart();
+        
+        $ob->chart->renderTo('container3');
+        $ob->chart->type('column');
+        $ob->title->text('Посетители по заявкам и без заявок в разрезе КПП');
+        $ob->xAxis->categories($dates);    
+        $ob->xAxis->title(array('text'  => "Период времени"));
+        $ob->xAxis->dateTimeLabelFormats(array('month'=> '%e. %b', 'year'=> '%b'));
+        $ob->yAxis->title(array('text'  => "Всего посетителей"));
+        $ob->series($series);
+
+        return $this->render('AppBundle:AdminBC:Analytics/visitorsByOrders.html.twig', array(
+        'chart' => $ob,
+        'data' => $qvEntrance,
+    ));
+           
     }
   
        /**
@@ -1738,6 +1793,7 @@ $ob->series(array(array('type' => 'pie','name' => 'Посетители', 'data'
      */
     public function AnalyticsDependenceVisitorsAction()
     {
+
             return $this->render('AppBundle:AdminBC:Analytics/visitorsAndSectors.html.twig', array(
         ));
     }
@@ -1784,7 +1840,7 @@ public function chartAction()
     $ob->xAxis->type('date');
     $ob->xAxis->title(array('text'  => "Период времени"));
     $ob->xAxis->data(array(array("data"=>$dates)));
-    $ob->xAxis->dateTimeLabelFormats(array('month'=> '%e. %b', 'year'=> '%b'));
+    $ob->xAxis->dateTimeLabelFormats(array('month'=> '%b \'%y', 'year'=> '%Y'));
     
 
     $ob->yAxis->title(array('text'  => "Количество посетителей"));

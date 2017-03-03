@@ -32,8 +32,11 @@
 {% endblock %}
 
 {% block js %}
-<script>
-Highcharts.chart('container3', {
+    <script>
+    {{chart(chart)}}
+    </script>
+{#<script>
+/*Highcharts.chart('container3', {
     chart: {
         type: 'column'
     },
@@ -45,50 +48,91 @@ Highcharts.chart('container3', {
     },
     xAxis: {
         categories: [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec'
+            'Январь',
+            'Февраль',
+            'Март',
+            'Апрель',
+            'Май',
+            'Июнь',
+            'Июль',
+            'Август',
+            'Сентябрь',
+            'Октябрь',
+            'Ноябрь',
+            'Декабрь'
         ],
         crosshair: true
     },
     yAxis: {
         min: 0,
         title: {
-            text: 'Rainfall (mm)'
+            text: 'Количество посетителей'
         }
     },
     tooltip: {
         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+            '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
         footerFormat: '</table>',
         shared: true,
         useHTML: true
     },
     plotOptions: {
         column: {
-            pointPadding: 0.2,
+            pointPadding: 0.3,
             borderWidth: 0
         }
     },
-    series: [{
-        name: 'КПП1',
-        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+     series: []
+});*/
+/*var r;
+    function loadBuildings(){
+        $.ajax({
+            type: "GET",
+            url: "{{ path('ajaxVisitors')}}",
+                    success: function(visitors){
+                        $.each(JSON.parse(visitors),function(k,v){
+                        $r = v;
+                        console.log($r);
+                        });
+                    }
+                });
+            }
 
-    }, {
-        name: 'КПП2',
-        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
-
-    }]
-});
-</script>
+            $(function (){
+                loadBuildings();
+            });
+*//*
+$(document).ready(function() {
+  var options = {
+                chart: {
+                    renderTo: 'container3',
+                    type: 'column'
+                },
+                title: {
+                    text: 'Tiny Tool Monthly Sales'                 
+                },
+                subtitle: {
+                    text: '2014 Q1-Q2'
+                },
+                xAxis: {
+                    categories: []
+                },
+                yAxis: {
+                    title: {
+                        text: 'Sales'
+                    }
+                },
+                series: [{}]
+            };
+    
+    var url =  "{{ path('ajaxVisitors') }}";
+    $.getJSON(url,  function(data) {
+        options.series[0].data = data;
+        //options.series[0].name = data;
+        var chart = new Highcharts.Chart(options);
+        console.log(options);
+    });
+});*/
+</script>#}
 {% endblock %}
