@@ -4,7 +4,7 @@
 .buildpath
 .project
 .settings
-.phpinfo
+.phpintel
 /app/data/*
 /app/config/parameters.yml
 /build/
