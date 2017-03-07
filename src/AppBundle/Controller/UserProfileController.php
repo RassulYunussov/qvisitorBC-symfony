@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\CustomSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\Proxy\SessionHandlerProxy;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -50,8 +51,10 @@ class UserProfileController extends Controller
         public function changepasswordAction(Request $request, qvUser $qvUser)
         {
          $em = $this->getDoctrine()->getManager();
+         $decoder = $this->container->get('security.password_encoder');
          $data = array();
          $oldpass = $qvUser->getPassword();
+         $o = $decoder->encodePassword($qvUser, 'adminushka');
          $form = $this->createFormBuilder($data)
             ->add('old_password', PasswordType::class, array(
                 'label'=> 'Старый пароль',
@@ -71,24 +74,39 @@ class UserProfileController extends Controller
         $form->handleRequest($request);
 
        if ($form->isSubmitted() && $form->isValid()) {
-            
+            $em->getConnection()->beginTransaction(); 
+            try {
             $encoder = $this->container->get('security.password_encoder');
             $data = $form->getData();
             $myrole = $qvUser->getRole();
-            $mypass = $encoder->encodePassword($qvUser, $data['password']);
             
-            $qvUser->setPassword($mypass);
+            $checkpass = $encoder->encodePassword($qvUser, $data['old_password']);
+            //if ($oldpass == $checkpass)
+            {
+            $newpass = $encoder->encodePassword($qvUser, $data['password']);
+            
+            $qvUser->setPassword($newpass);
             $qvUser->setRole($myrole);
             $qvUser->setDisabled('false');
 
             $em->flush();
             return $this->redirectToRoute('main_page', array());
-        }   
+        }
+       // else 
+         //   return new Response('<html><body><h1>Старый пароль введен неправильно! Попробуйте заново!</h1></body></html>');
+    }
+    catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
+    }
+}
             return $this->render('AppBundle:UserProfile:changepass.html.twig', array(
                 'form'=>$form->createView(),
+                //'checkpass'=>$checkpass,
                 'oldpass'=>$oldpass,
-                ));
-        }
+                'o'=>$o,
+                ));       
+    }
 
     /**
      * @Route("/userprofile", name="userprofile")

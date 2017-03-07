@@ -19,6 +19,7 @@
 					{% endblock %}
 				
                <h1 class="page-header">Здесь вы можете сменить свой пароль</h1>
+               <p>{{oldpass}}  + {{o}}</p>
                 </div>
                 <!-- /.col-lg-12 -->
 				<div class="row">
@@ -74,17 +75,18 @@
     });
 	</script>
 	<script>
-  jQuery("#checkPassword").on("change", function(){
-   if(this.checked) {
-      jQuery("#form_old_password").attr("type", "text");
+  $(document).ready(function(){
+	$("#checkPassword").on("change", function(){
+   		if(this.checked) {
+      $("#form_old_password").attr("type", "text");
     } else {
-      jQuery("#form_old_password").attr("type", "password");
+      $("#form_old_password").attr("type", "password");
     }
-  });
-  $('#oldpass').append('<label><input type="checkbox" id="checkPassword"> Проверить пароль</label>');
+  })
+});
+  $('#oldpass').append('<label><input type="checkbox" id="checkPassword"> Показать пароль</label>');
   $(document).ready(function(){
     $( document ).on( 'focus', ':input', function(){
-        $( this ).attr( 'autocomplete', 'off' );
     });
 });
 </script>
