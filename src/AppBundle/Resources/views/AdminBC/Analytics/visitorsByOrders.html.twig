@@ -3,7 +3,6 @@
 {% block title %}Личный кабинет администратора{% endblock %}
 
 {% block body %}
-	<link href="css/main.css" rel="stylesheet" type="text/css">
 	 <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
@@ -22,8 +21,16 @@
             </div>
              <div class="row">
             <div class="panel panel-default">
+                <div class="panel panel-heading">
+                    <form  name="select_kpp">
+                        <select name="buildings" id="builds">
+                        </select>
+                        <select name="checkpoints" id="lchecks">
+                        </select>               
+                    </form> 
+                </div>
                 <div class="panel-body">
-                    <div id='container3'>
+                    <div id='container'>
                     </div>
                 </div>
             </div>
@@ -32,11 +39,49 @@
 {% endblock %}
 
 {% block js %}
-    <script>
-    {{chart(chart)}}
-    </script>
-{#<script>
-/*Highcharts.chart('container3', {
+<script>
+$(document).ready(function() {
+function loadBuildings(){
+    $('#builds').empty();
+    $.ajax({
+    type: "GET",
+    url: "{{ path('buildings')}}",
+    success: function(buildings){
+    $.each(JSON.parse(buildings),function(k,v){
+    $('#builds').append('<option value="'+v.id+'">'+v.name+'</option>');
+    });
+    }
+    });
+    }
+  $(function (){
+        loadBuildings();
+    });
+
+function loadCheckpoints(buildingId){
+    $('#lchecks').empty();
+    $.ajax({
+        type: "GET",
+        url: "{{ path('Allcheckpoints')}}",
+        data: {'id':buildingId},
+        success: function(data){
+$.each(JSON.parse(data),function(k,v){
+$('#lchecks').append('<option value="'+v.id+'">'+v.name+'</option>');
+});
+}
+});
+}
+$(function (){
+    loadCheckpoints($('#builds option:selected').val());
+    $('#builds').change(function(){
+        loadCheckpoints($('#builds option:selected').val());
+    });
+});
+function getSelectedElement(){
+    var elem = $('#builds option:selected').val();
+    console.log(elem);
+}
+function attendencebyOrders(qvEntrance, HotEntrance) {
+Highcharts.chart('container', {
     chart: {
         type: 'column'
     },
@@ -48,7 +93,7 @@
     },
     xAxis: {
         categories: [
-            'Январь',
+           'Январь',
             'Февраль',
             'Март',
             'Апрель',
@@ -72,67 +117,43 @@
     tooltip: {
         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
         footerFormat: '</table>',
         shared: true,
         useHTML: true
     },
     plotOptions: {
         column: {
-            pointPadding: 0.3,
+            pointPadding: 0.2,
             borderWidth: 0
         }
     },
-     series: []
-});*/
-/*var r;
-    function loadBuildings(){
-        $.ajax({
-            type: "GET",
-            url: "{{ path('ajaxVisitors')}}",
-                    success: function(visitors){
-                        $.each(JSON.parse(visitors),function(k,v){
-                        $r = v;
-                        console.log($r);
-                        });
-                    }
-                });
-            }
+    series: [{
+        name:'По заявкам',
+        data: qvEntrance
+    },
+    {
+         name:'Без заявок',
+        data: HotEntrance
+    }
+    ]
+});
+}
 
-            $(function (){
-                loadBuildings();
-            });
-*//*
-$(document).ready(function() {
-  var options = {
-                chart: {
-                    renderTo: 'container3',
-                    type: 'column'
-                },
-                title: {
-                    text: 'Tiny Tool Monthly Sales'                 
-                },
-                subtitle: {
-                    text: '2014 Q1-Q2'
-                },
-                xAxis: {
-                    categories: []
-                },
-                yAxis: {
-                    title: {
-                        text: 'Sales'
-                    }
-                },
-                series: [{}]
-            };
-    
-    var url =  "{{ path('ajaxVisitors') }}";
-    $.getJSON(url,  function(data) {
-        options.series[0].data = data;
-        //options.series[0].name = data;
-        var chart = new Highcharts.Chart(options);
-        console.log(options);
+function drawGraph(){
+    var checkpointId = getSelectedElement();
+        $.ajax({
+            type: 'POST',
+            url: "{{path('attendance_by_orders')}}",
+            data: {'checkpoint':'1'},
+            dataType: 'json',
+            success: function(resultEntrance){
+            $.each(JSON.parse(data),function(k,v){
+            console.log(v);
     });
-});*/
-</script>#}
+}
+});
+    }
+});
+</script>
 {% endblock %}

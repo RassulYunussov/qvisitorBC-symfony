@@ -115,20 +115,11 @@
             <form name="form" method="post">
             <br>
                 <div>
-                
-                    {#<label for="form_buildings" class="required">
-                        Здания
-                    </label>
-                    #}
                     <div id="form_buildings" name="form[buildings]" class="">
                     </div>
                 </div>
                 
-                <div>{#}
-                    <label for="form_floors" class="required">
-                        Этажи
-                    </label>
-                    #}
+                <div>
                     <div id="form_floors" name="form[floors]" class="">     
                     </div>
                 </div>
@@ -191,10 +182,6 @@ column-rule: 0.1px solid #000; /*если требуется по дизайну
 <!-- /.modal-content -->
 </div>
 </div>
-
-<!-- /.modal-dialog -->
-        <script src="{{asset('bootstrap1/bower_components/jquery/dist/jquery.min.js')}}"></script>
-
         <script> 
             function loadBuildings(){
                 $('#form_buildings').empty();

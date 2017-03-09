@@ -40,7 +40,11 @@
 
 {% block js %}
 <script type="text/javascript">
- $(document).ready(function(){
+$(document).ready(function(){
+var dat = new Date();
+dat.setDate(-30);
+document.getElementById("bd").valueAsDate = dat;
+document.getElementById("ed").valueAsDate = new Date(); 
 function LeasersData (data) {
    Highcharts.chart('container', {
     chart: {
@@ -69,26 +73,29 @@ function LeasersData (data) {
         }
     },
     series: [{
-        name: 'Посетители',
+        name: '',
         colorByPoint: true,
         data: data,
     }]
 });
 }
-$('#date_send').submit(function() {
-           var arr = [];
-           $date_begin = ($('#bd').val());
-           $date_end = ($('#ed').val());
-            $.ajax({
-                type: 'POST',
-                url: "{{path('leasers-attendance')}}",
-                data: {dateBegin:$date_begin, dateEnd:$date_end},
-                dataType: 'json',
-                success: function(res){ 
-                    console.log(res);
-                    LeasersData(res);
+function drawGraph()
+{
+    $date_begin = ($('#bd').val());
+    $date_end = ($('#ed').val());
+        $.ajax({
+            type: 'POST',
+            url: "{{path('attendance_day')}}",
+            data: {dateBegin:$date_begin, dateEnd:$date_end},
+            dataType: 'json',
+            success: function(res){ 
+            LeasersData(res);
         }
     });
+}
+drawGraph();
+$('#date_send').submit(function() {
+    drawGraph();
     return false;
 });
 });

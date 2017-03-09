@@ -66,71 +66,13 @@
             <div class="text-right panel-footer"><button id="back" class="btn btn-primary">Назад</button></div>
         </div>
                 </div>      
-
-                            <!-- Nav tabs -->
-                     {#       <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 demo">
-                         <a href="{{path('attendance')}}">
-                            <div class="demo-container">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 image-container">
-                                    <img class="lazy img-thumbnail" data-original="{{asset('bootstrap1/images/spline-irregular-time-default.svg') }}" alt="Ajax loaded data, clickable points" src="{{asset('bootstrap1/images/spline-irregular-time-default.svg')}}" style="">
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 footer-container"><h4>Посещаемость БЦ</h4>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 demo">
-                         <a href="{{path('attendece-visitors')}}">
-                            <div class="demo-container">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 image-container">
-                                    <img class="lazy img-thumbnail" data-original="{{asset('bootstrap1/images/pie-drilldown-default.svg') }}" alt="Ajax loaded data, clickable points" src="{{asset('bootstrap1/images/pie-drilldown-default.svg') }}" style="">
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 footer-container"><h4>Доля посетителей по арендаторам</h4>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 demo">
-                         <a href="{{path('visitorsbyorders')}}">
-                            <div class="demo-container">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 image-container">
-                                    <img class="lazy img-thumbnail" data-original="{{asset('bootstrap1/images/column-basic-default.svg') }}" alt="Ajax loaded data, clickable points" src="{{asset('bootstrap1/images/column-basic-default.svg')}}" style="">
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 footer-container"><h4>Посетители по заявкам и без заявок в разрезе КПП</h4>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 demo">
-                         <a href="{{path('dependenceVisitors')}}">
-                            <div class="demo-container">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 image-container">
-                                    <img class="lazy img-thumbnail" data-original="{{asset('bootstrap1/images/bubble-default.svg') }}" alt="Ajax loaded data, clickable points" src="{{asset('bootstrap1/images/bubble-default.svg') }}" style="">
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 footer-container"><h4>
-                    График зависимости посетителей от количетсва секторов
-                    </h4>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                        <!-- /.panel-body -->
-                    </div>#}
-                    <!-- /.panel -->
      
 {% endblock %}
 
 
 {% block js %}
 <script type="text/javascript">
-    {{ chart(chart) }}
-    {{ chart(chart1)}}
-    {{ chart(chart2)}}
-    {{ chart(chart3)}}
+    
 </script>
 
 <script>

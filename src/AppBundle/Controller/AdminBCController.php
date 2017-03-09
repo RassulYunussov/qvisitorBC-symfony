@@ -1778,76 +1778,37 @@ try {
      * @Method("GET")
      */
     public function AnalyticsAttendanceVisitorsAction()
-    {   
-   /* $em = $this->getDoctrine()->getManager();
-    
-    $currentDate = new \Datetime("UTC");
-    $monthdate = date("Y-m-d", mktime(0, 0, 0, date('m'), date('d') - 30, date('Y')));
-    $month = '30';
-    $result = array();
-
-    $emm = $this->getDoctrine()->getEntityManager();
-    $query = $emm->createQuery('SELECT l.name AS rank, SUBSTRING(e.entrancedate, 0, 12) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e JOIN e.user u JOIN u.leaser l WHERE month <=  :currentdate and month >= :monthdate GROUP BY l')->setParameters(array('currentdate'=> $currentDate->format('Y-m-d'), 'monthdate'=>$monthdate));
-            $data = $query->getResult();
-          
-             // Chart
-    foreach ($data as $i) {
-    $a = array($i['rank'], intval($i['visitorscount']));
-    array_push($result, $a);
+    { 
+     return $this->render('AppBundle:AdminBC:Analytics/visitorsByLeasers.html.twig', array());
     }
 
-    $ob = new Highchart();
-    $ob->chart->renderTo('container');
-    $ob->title->text('Доля посетителей по арендаторам');
-    $ob->plotOptions->pie(array(
-        'allowPointSelect'  => true,
-        'cursor'    => 'pointer',
-        'dataLabels'    => array('enabled' => true),
-        'showInLegend'  => true,
-        'format' => '{point.name}: {point.y:1f}%'
-    ));
-    $ob->tooltip->headerFormat('<span style="font-size:11px">{series.name}</span><br>');
-    $ob->tooltip->pointFormat('<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>');
 
+    /**
+     *@Route("/allcheckpoints", name="Allcheckpoints")
+     *@Method("GET")
+     */
 
-
-    $ob->series(array(array('type' => 'pie','name' => 'Посетители', 'data' => $result)));
-*/
-     return $this->render('AppBundle:AdminBC:Analytics/visitorsByLeasers.html.twig', array(
-     //   'chart' => $ob,
-       // 'data' => $result,
-        //'currentDate'=>$currentDate,
-        //'monthdate'=>$monthdate,
-    ));
+    public function indexAjaxCheckpointsAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+            $buildingId = $request->get('id',1);
+            $em = $this->getDoctrine()->getManager();
+            $qvCheckpoints=$em->getRepository('AppBundle:qvCheckpoint')->findByBuildingId($buildingId);
+            $serializer = $this->get('serializer');
+            $checkpoints = $serializer->serialize($qvCheckpoints, 'json');
+            return new Response($checkpoints);
+        }
     }
-  
-       /**
+
+    /**
      * @Route("/analytics/visitorsbyorders", name = "visitorsbyorders")
      * @Method("GET")
      */
     public function AnalyticsVisitorsByOrdersAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        
-        $qvEntrance = array();
-        $hotEntrance = array();
-        $dates = array();
-        $dates = [
-            'Январь',
-            'Февраль',
-            'Март',
-            'Апрель',
-            'Май',
-            'Июнь',
-            'Июль',
-            'Август',
-            'Сентябрь',
-            'Октябрь',
-            'Ноябрь',
-            'Декабрь'];
+        $checkpoints = $this->getDoctrine()->getManager()->getRepository('AppBundle:qvCheckpoint')->findAll();
 
-        $emm = $this->getDoctrine()->getEntityManager();
-        $query = $emm->createQuery(
+      /*  $query = $emm->createQuery(
             'SELECT count(e) AS rank, SUBSTRING(e.entrancedate, 6, 2) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e GROUP BY month order by month');
         $data = $query->getResult();
         
@@ -1867,27 +1828,15 @@ try {
             array("name" => "Количество посетителей по заявкам", 'data' => $qvEntrance),
             array("name" => "Количество посетителей без заявки", 'data' => $hotEntrance)
         );
-
-        $ob = new Highchart();
-        
-        $ob->chart->renderTo('container3');
-        $ob->chart->type('column');
-        $ob->title->text('Посетители по заявкам и без заявок в разрезе КПП');
-        $ob->xAxis->categories($dates);    
-        $ob->xAxis->title(array('text'  => "Период времени"));
-        $ob->xAxis->dateTimeLabelFormats(array('month'=> '%e. %b', 'year'=> '%b'));
-        $ob->yAxis->title(array('text'  => "Всего посетителей"));
-        $ob->series($series);
-
+*/
         return $this->render('AppBundle:AdminBC:Analytics/visitorsByOrders.html.twig', array(
-        'chart' => $ob,
-        'data' => $qvEntrance,
+        'checkpoints'=>$checkpoints,
     ));
            
     }
   
        /**
-     * @Route("/analytics/dependenceVisitors", name = "dependenceVisitors")
+     * @Route("/analytics/dependencebyVisitors", name = "dependencebyVisitors")
      * @Method("GET")
      */
     public function AnalyticsDependenceVisitorsAction()
@@ -1902,56 +1851,13 @@ try {
      */
 public function chartAction()
 {
-    /*$request->getPathInfo();
-    //$em = $this->getDoctrine()->getManager();
-    //$emm = $this->getDoctrine()->getEntityManager();
-    //$currentDate = new \DateTime("UTC");
-    //$monthdate = date("Y-m-d", mktime(0, 0, 0, date('m'), date('d') - 30, date('Y')));
-    $result = array();
-    $bc = $em->getRepository('AppBundle:qvBusinessCenter')->findOneById('1');
-    $bc1=$bc->getName();
-    
-    $begin_date = $request->get('begin_date');
-    $end_date = $request->get('end_date');
-    
-    $query = $emm->createQuery('SELECT count(e) AS rank, SUBSTRING(e.entrancedate, 0, 12) as day, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e WHERE day <=  :currentdate and day >= :monthdate GROUP BY day order by day')->setParameters(array('currentdate'=>$begin_date, 'monthdate'=>$end_date));
-        $data = $query->getResult();
-        
-    // Chart
-        foreach ($data as $i) {
-            $a = array($i['rank'], intval($i['visitorscount']));
-            array_push($result, $a);
-            }
-     $series = array(
-        array("name" => "Количество посетителей", "data" => $result)
-    );
-
-    $ob = new Highchart();
-    $ob->chart->renderTo('container');  // The #id of the div where to render the chart
-    //$ob->chart->type('spline');
-    $ob->title->text('График посещаемости '.$bc1);
-    $ob->xAxis->type('date');
-    $ob->xAxis->title(array('text'  => "Период времени"));
-    $ob->xAxis->dateTimeLabelFormats(array('month'=> '%b \'%y', 'year'=> '%Y'));
-    
-
-    $ob->yAxis->title(array('text'  => "Количество посетителей"));
-    $ob->series($series);
-*/
-    return $this->render('AppBundle:AdminBC:Analytics/attendance.html.twig', array(
-  //      'chart' => $ob,
-    //    'data' => $data,
-      //  'bc'=>$bc,
-        //'currentDate'=>$currentDate,
-        //'monthdate'=>$monthdate,
-    ));
+    return $this->render('AppBundle:AdminBC:Analytics/attendance.html.twig', array());
 }
 
- /**
+    /**
      *@Route("/byattendance", name="attendance_day")
      *@Method({"GET", "POST"})
      */
-
     public function indexAttendanceAjaxAction(Request $request)
     {
         if($request->isXmlHttpRequest()) {
@@ -1981,7 +1887,6 @@ public function chartAction()
      *@Route("/byleasers", name="leasers-attendance")
      *@Method({"GET", "POST"})
      */
-
     public function indexLeasersAttendanceAjaxAction(Request $request)
     {
         if($request->isXmlHttpRequest()) {
@@ -2001,6 +1906,44 @@ public function chartAction()
         $serializer = $this->get('serializer');
         $res = $serializer->serialize($result, 'json');
         return new Response($res);
+        }
+    }
+
+    /**
+     *@Route("/byattendanceofOrders", name="attendance_by_orders")
+     *@Method({"GET", "POST"})
+     */
+    public function indexAttendanceByOrdersAjaxAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+        $checkpoint = $request->get('checkpoint',1);
+        $dataEntrance = array();
+        $dataHotEntrance = array();
+        $qvEntrance = array();
+        $HotEntrance = array();
+        $em = $this->getDoctrine()->getEntityManager();
+       
+        $queryEntrance=$em->createQuery('SELECT count(e) AS rank, SUBSTRING(e.entrancedate, 6, 2) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e WHERE e.checkpoint = :name GROUP BY month order by month')->setParameter('name', '2');
+        $dataEntrance = $queryEntrance->getResult();
+        
+        $queryHotEntrance = $em->createQuery('SELECT count(he) AS rank, SUBSTRING(he.entrancedate, 6, 2) as month, COUNT(he.id) AS hvisitorscount FROM AppBundle:qvHotEntrance he WHERE he.checkpoint = :name GROUP BY month order by month')->setParameter('name', '2');
+        $dataHotEntrance = $queryHotEntrance->getResult();    
+
+        foreach ($dataHotEntrance as $i) {
+            $a = array($i['rank'], intval($i['hvisitorscount']));
+            array_push($qvEntrance, $a);
+            }
+        foreach ($dataEntrance as $i) {
+            $a = array($i['month'], intval($i['visitorscount']));
+            array_push($qvEntrance, $a);
+            }
+
+        $serializer = $this->get('serializer');
+
+        $resultEntrance = $serializer->serialize($qvEntrance,'json');
+        //$resultHotEntrance = $serializer->serialize($HotEntrance, 'json');
+        
+        return new Response($resultEntrance);
         }
     }
 }

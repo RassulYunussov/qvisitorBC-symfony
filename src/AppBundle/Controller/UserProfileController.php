@@ -51,10 +51,7 @@ class UserProfileController extends Controller
         public function changepasswordAction(Request $request, qvUser $qvUser)
         {
          $em = $this->getDoctrine()->getManager();
-         $decoder = $this->container->get('security.password_encoder');
          $data = array();
-         $oldpass = $qvUser->getPassword();
-         $o = $decoder->encodePassword($qvUser, 'adminushka');
          $form = $this->createFormBuilder($data)
             ->add('old_password', PasswordType::class, array(
                 'label'=> 'Старый пароль',
@@ -70,7 +67,6 @@ class UserProfileController extends Controller
                     ))
             ->getForm();
 
-
         $form->handleRequest($request);
 
        if ($form->isSubmitted() && $form->isValid()) {
@@ -79,32 +75,22 @@ class UserProfileController extends Controller
             $encoder = $this->container->get('security.password_encoder');
             $data = $form->getData();
             $myrole = $qvUser->getRole();
-            
-            $checkpass = $encoder->encodePassword($qvUser, $data['old_password']);
-            //if ($oldpass == $checkpass)
-            {
+
             $newpass = $encoder->encodePassword($qvUser, $data['password']);
             
             $qvUser->setPassword($newpass);
             $qvUser->setRole($myrole);
             $qvUser->setDisabled('false');
-
             $em->flush();
             return $this->redirectToRoute('main_page', array());
-        }
-       // else 
-         //   return new Response('<html><body><h1>Старый пароль введен неправильно! Попробуйте заново!</h1></body></html>');
     }
     catch (Exception $e) {
     $em->getConnection()->rollBack();
     throw $e;
     }
 }
-            return $this->render('AppBundle:UserProfile:changepass.html.twig', array(
+        return $this->render('AppBundle:UserProfile:changepass.html.twig', array(
                 'form'=>$form->createView(),
-                //'checkpass'=>$checkpass,
-                'oldpass'=>$oldpass,
-                'o'=>$o,
                 ));       
     }
 
