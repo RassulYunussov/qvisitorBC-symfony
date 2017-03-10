@@ -288,7 +288,7 @@ class CheckpointController extends Controller
 
             return $this->render('AppBundle:Checkpoint:selectvisitor.html.twig', array(
                     'qvVisitors' => $qvVisitors,
-
+                    'qvOrder'=>$qvOrder,
                     'form' => $form->createView(),
             ));
         }

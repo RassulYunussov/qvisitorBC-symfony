@@ -30,15 +30,6 @@
 			</div>
 			
 				
-			
-			<div class="row">
-                <div class="col-lg-12">
-						<div class="form-group input-group">
-                            <input type="text" class="form-control" placeholder="Найти">
-                            <span class="input-group-btn"><button class="btn btn-default" type="button"><i class="fa fa-search"></i></button></span>
-                        </div>
-				</div>
-            </div>
                 <!-- /.row -->
            
 			<div class="row">
@@ -70,7 +61,7 @@
                                           <td>  {% for qvVisitor in qvOrder.visitors %}
 										
                                         {{qvVisitor.lastname}} {{qvVisitor.firstname}} {{qvVisitor.patronimic}} </br>{% endfor %}</td>
-                                        <td><button onclick="$('#myModal .modal-dialog').load('{{path('select-visitor', {'qvOrder': qvOrder.id})}}');" class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal">Зарегистрировать</button><a href="{{path('test',{'qvOrder': qvOrder.id})}}" class="btn btn-danger">тест, без модального окна РАБОТАЕТ</a></td>
+                                        <td><button onclick="$('#VisitorForm').attr('action','{{path('select-visitor', {'qvOrder': qvOrder.id})}}')  ;$('#myModal .modal-dialog').load('{{ path('select-visitor', {'qvOrder': qvOrder.id}) }}');" class="btn btn-sm btn-default" data-toggle="modal" data-load-url="remote.html" data-target="#myModal">Зарегистрировать</button><a href="{{path('test',{'qvOrder': qvOrder.id})}}" class="btn btn-danger">тест, без модального окна РАБОТАЕТ</a></td>
                                         </tr>
                                     
                                         {% endfor %}

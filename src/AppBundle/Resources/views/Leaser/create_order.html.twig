@@ -65,7 +65,7 @@
                                     {{ form_label(form.ordertype) }}
                                      {{ form_errors(form.ordertype) }}
                                      {{ form_widget(form.ordertype, {'attr': {'class':'form-control'}}) }}</div>
-                                <div style="display:block">{{ form_label(form.visitors) }}
+                                <div style="display:none">{{ form_label(form.visitors) }}
                                      {{ form_errors(form.visitors) }}
                                      {{ form_widget(form.visitors) }}</div>
                                 <div  class="td-padding" id='visitors-input'>
@@ -141,7 +141,7 @@
                                                             </thead>
                                                             <tbody id="visitors">
                                                                 {%for visitor in visitors%}
-                                                                <tr value="{{visitor.id}}" data-dismiss="modal" name="{{visitor.firstname}}">
+                                                                <tr value="{{visitor.id}}" data-dismiss="modal" name="{{visitor.lastname}} {{visitor.firstname}} {{visitor.patronimic}}">
                                                                 <td >{{visitor.lastname}}</td>
                                                                 <td >{{visitor.firstname}}</td>
                                                                 <td  >{{visitor.patronimic}}</td>

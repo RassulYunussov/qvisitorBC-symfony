@@ -63,7 +63,7 @@ class LeaserController extends Controller
     public function showOrdersAction()
     {
     	$em = $this->getDoctrine()->getManager();
-        $qvOrders=$em->getRepository('AppBundle:qvOrder')->findAll();
+        $qvOrders = $em->getRepository('AppBundle:qvOrder')->findActiveOrders();
         return $this->render('AppBundle:Leaser:orders_list.html.twig', array(
         		'qvOrders'=>$qvOrders,
         ));
@@ -129,7 +129,8 @@ class LeaserController extends Controller
                 'attr' =>array(
                     'class'=> 'btn btn-default',
                     'data-toggle'=> 'modal',
-                    'data-target'=>'#myModal'), ))
+                    'data-target'=>'#myModal',
+                    'onclick'=>"$('#myModal .modal-dialog').load('{{path('new_visitor')}}');"), ))
             ->getForm()
         ;
     
@@ -228,7 +229,8 @@ class LeaserController extends Controller
                 'attr' =>array(
                     'class'=> 'btn btn-default',
                     'data-toggle'=> 'modal',
-                    'data-target'=>'#myModal'), ))
+                    'data-target'=>'#myModal'
+                    ), ))
             ->getForm()
         ;
     
