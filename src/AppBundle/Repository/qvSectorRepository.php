@@ -51,4 +51,12 @@ public function findBuildById($id)
         ->createQuery("SELECT c from AppBundle:qvSector c LEFT JOIN c.floor f where f.id = :fId")
         ->setParameter("fId", $floorId)->getArrayResult();
     }
+     public function findByName($sector)
+    {
+        return $this->getEntityManager()
+        ->createQuery("SELECT s from AppBundle:qvSector s where s.name = :name")
+        ->setParameter("name", $sector)->getResult();
+    }
+
+
 }

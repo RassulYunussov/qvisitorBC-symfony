@@ -56,39 +56,35 @@
     {% if qvUserPassport.user.disabled == 0 %} 
     <tr >
         <td>
-            <a href="{{ path('show_security', 
-                {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id }) }}">
+            <a href="{{ path('show_security', {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id }) }}">
                     {{ qvUserPassport.firstname }}
             </a>
         </td>
         
         <td>
-            <a href="{{ path('show_security', 
-            {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id}) }}">
+            <a href="{{ path('show_security', {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id}) }}">
                 {{ qvUserPassport.lastname }}
             </a>
         </td>
         
         <td>
-            <a href="{{ path('show_security', 
-                {'qvUser':qvUserPassport.user,'id': qvUserPassport.id}) }}">
+            <a href="{{ path('show_security', {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id}) }}">
                     {{ qvUserPassport.patronimic }}
             </a>
         </td>
         
         <td>
-            <a href="{{ path('show_security', 
-                {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id}) }}">
+            <a href="{{ path('show_security', {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id}) }}">
                 {% if qvUserPassport.birthdate %}
                     {{ qvUserPassport.birthdate|date('Y-m-d') }}
                 {% endif %} 
             </a>
         </td>
         
-        <td class="center">Активен
-            <div class="btn btn-xs">
-                <a name="enable_btn" class="btn btn-success btn-xs enabled" href="{{ path('user_disabled', { 'qvUser':qvUserPassport.user.id }) }}">
-                        <i class="fa fa-lock"></i>
+        <td class="center">
+            <div class="btn btn-xs btn-infotext" data-title="Активен">
+                <a class="btn btn-success btn-xs enabled" href="{{ path('user_disabled', { 'qvUser':qvUserPassport.user.id }) }}">
+                        <i class="fa fa-check"></i>
                 </a>
             </div>
         </td>
@@ -138,9 +134,9 @@
         </td>
         
         <td class="center">
-            <div class="btn btn-xs">Отключен
-                <a name="enable_btn" class="btn btn-danger btn-xs enabled" href="{{ path('user_enabled', { 'qvUser':qvUserPassport.user.id }) }}">
-                        <i class="fa fa-lock"></i>
+            <div class="btn btn-xs btn-infotext" data-title="Отключен">
+                <a class="btn btn-danger btn-xs enabled" href="{{ path('user_enabled', { 'qvUser':qvUserPassport.user.id }) }}">
+                <i class="fa fa-lock"></i>
                 </a>
             </div>
         </td>

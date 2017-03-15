@@ -1,51 +1,10 @@
-{% extends 'AppBundle::base.html.twig' %}
 
-{% block title %}Личный кабинет администратора{% endblock %}
-
-{% block body %}
-	 <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                	{% block breadcrumb %}
-					  <div id="breadcrumbs" class="btn-group btn-breadcrumb">
-                        <br>
-                        <a class="btn btn-default" href="{{ path('main_page') }}">
-                        <i class="fa fa-home"></i>Главная
-                        </a>
-                    </div>
-					{% endblock %}
-				
-               <h1 class="page-header">Раздел Аналитики</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-             <div class="row">
-            <div class="panel panel-default">
-                <div class="panel panel-heading">
-                    <form  name="select_kpp">
-                        <select name="buildings" id="builds">
-                        </select>
-                        <select name="checkpoints" id="lchecks">
-                        </select>               
-                    </form> 
-                </div>
-                <div class="panel-body">
-                    <div id='container'>
-                    </div>
-                </div>
-            </div>
-    </div>
-</div>
-{% endblock %}
-
-{% block js %}
-<script>
 $(document).ready(function() {
 function loadBuildings(){
     $('#builds').empty();
     $.ajax({
     type: "GET",
-    url: "{{ path('buildings')}}",
+    url: "/adminbc/bybuildings",
     success: function(buildings){
     $.each(JSON.parse(buildings),function(k,v){
     $('#builds').append('<option value="'+v.id+'">'+v.name+'</option>');
@@ -61,7 +20,7 @@ function loadCheckpoints(buildingId){
     $('#lchecks').empty();
     $.ajax({
         type: "GET",
-        url: "{{ path('Allcheckpoints')}}",
+        url: "/adminbc/allcheckpoints",
         data: {'id':buildingId},
         success: function(data){
 $.each(JSON.parse(data),function(k,v){
@@ -78,12 +37,11 @@ $(function (){
         $("#lchecks :first").attr("selected", "selected");
         var ch = $('#lchecks :first').val();
         drawGraph(ch);
-        console.log("CH =  " + ch); 
     });
 });
 
 function attendencebyOrders(qvEntrance, HotEntrance) {
-Highcharts.chart('container', {
+Highcharts.chart('container3', {
     chart: {
         type: 'column'
     },
@@ -143,14 +101,13 @@ Highcharts.chart('container', {
 }
 
 $('#lchecks').change(function(){
-    checkpointId = ($('#lchecks :selected').val());
+    var checkpointId = ($('#lchecks :selected').val());
     drawGraph(checkpointId);
-    console.log("Lchecks change Text = " + checkpointId); 
 });
 function drawGraph(checkpointId){
          $.ajax({
             type: 'POST',
-            url: "{{path('attendance_by_orders')}}",
+            url: "/adminbc/byattendanceofOrders",
             data: {'checkpoint': checkpointId},
             dataType: 'json',
             success: function(res){
@@ -161,5 +118,3 @@ function drawGraph(checkpointId){
     }
 drawGraph();
 });
-</script>
-{% endblock %}

@@ -197,7 +197,6 @@ class qvContract
     public function addSectors(\AppBundle\Entity\qvSector $sectors)
     {
         $this->sectors[] = $sectors;
-
         return $this;
     }
 

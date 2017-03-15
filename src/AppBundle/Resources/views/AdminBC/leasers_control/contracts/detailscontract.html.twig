@@ -32,7 +32,11 @@
 			</tr>
 			<tr>
 				<td>Статус договора</td>
-				<td></td>
+				<td>{% if qvModalContract.enddate|date('Y-m-d') < "now"|date("Y-m-d")%}
+					Не действителен
+				{% else %}
+				Действителен
+				{% endif %}</td>
 			</tr>
 			
 			<tr>

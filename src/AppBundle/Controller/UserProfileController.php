@@ -52,6 +52,7 @@ class UserProfileController extends Controller
         {
          $em = $this->getDoctrine()->getManager();
          $data = array();
+         $bd_old_pass = $qvUser->getPassword();
          $form = $this->createFormBuilder($data)
             ->add('old_password', PasswordType::class, array(
                 'label'=> 'Старый пароль',
@@ -75,6 +76,9 @@ class UserProfileController extends Controller
             $encoder = $this->container->get('security.password_encoder');
             $data = $form->getData();
             $myrole = $qvUser->getRole();
+            $old_pass = $encoder->encodePassword($qvUser, $data['old_password']);
+            if ($old_pass == $bd_old_pass)
+            {
 
             $newpass = $encoder->encodePassword($qvUser, $data['password']);
             
@@ -83,6 +87,8 @@ class UserProfileController extends Controller
             $qvUser->setDisabled('false');
             $em->flush();
             return $this->redirectToRoute('main_page', array());
+        }
+        else return new Response($bd_old_pass);
     }
     catch (Exception $e) {
     $em->getConnection()->rollBack();
