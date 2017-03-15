@@ -68,7 +68,7 @@
           </button>
         </div>
         <div class="form-margin">
-          {{ form_label(form, null, {
+          {{ form_label(form.sectors, null, {
           'label': 'Вы выбрали, следующие сектора:'
         })  }}
         {{ form_errors(form.sectors) }}
@@ -239,6 +239,7 @@
 
       $('#myModalLabel').text('Выбор здания');
       $('#form_sectors').empty();
+
       var cancelBuildingChange = function(){
         $('#form_floors').hide();
         $('label[for="form_floors"]').hide();
@@ -267,8 +268,8 @@
 
                 //$('#form_sectors').replaceWith('<select multiple="true" class="form-control form-inline form-margin" id="form_sectors"></select>');
                 $('#save').hide();
-                $('#label-form-sectors').show();//hide();
-                $('#form_sectors').show();//$('#form_sectors').hide();
+                $('label[for="form_sectors"]').hide();
+                $('#form_sectors').hide();
                 $('#form_floors').hide(); 
                 $('#cancel').hide();
                 $('#save').hide();
@@ -321,7 +322,7 @@
                     for (key in valueid){ 
                       $('#form_sectors').append('<option value="'+ valueid[key] +'"> '+valuename[key]+' </option>');
                     }
-                    $('#label-form-sectors').show();
+                    $('label[for="form_sectors"]').show();
                     $('#form_sectors').show();
 
                     $('#form_sectors option').each(function()

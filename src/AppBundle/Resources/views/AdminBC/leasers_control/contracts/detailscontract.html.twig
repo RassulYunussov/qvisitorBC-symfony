@@ -26,7 +26,7 @@
             	
 					<td>
 					{% for a in qvModalContract.sectors %}
-						{{ a.name }}
+						{{a.name}}{% if not loop.last %},{% endif %}
 					{% endfor %}
 					</td>
 			</tr>

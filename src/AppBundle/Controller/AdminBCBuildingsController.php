@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -271,8 +272,7 @@ class AdminBCBuildingsController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            return $this->redirectToRoute('buldings_show', array('qvBuilding' => 
-                $qvBuilding->getId()));
+            return $this->redirectToRoute('buildings_show', array('qvBuilding'=>$qvBuilding->getId()));
         }
         return $this->render('AppBundle:AdminBC:buildings_control/floors/edit_floor.html.twig', array(
             'qvFloor' => $qvFloor,

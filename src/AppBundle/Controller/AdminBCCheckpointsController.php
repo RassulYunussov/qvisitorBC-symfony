@@ -104,20 +104,19 @@ $security = $query->getResult();
     public function showCheckpointAction(qvCheckpoint $qvCheckpoint, qvBuilding $qvBuilding)
     {
     $deleteForm = $this->createDeleteCheckpointForm($qvCheckpoint);
-        
+        $currentDate = new \DateTime();
         $roles = $this->getDoctrine()->getManager()->getRepository('AppBundle:qvUser');
 
            $em = $this->getDoctrine()->getEntityManager();
             $query = $em->createQuery(
-                'SELECT passport.firstname, passport.lastname, passport.patronimic FROM AppBundle:qvUserPassport passport JOIN passport.user pu WHERE pu.role = :name'
-)->setParameter('name', '4');
-$security = $query->getResult();
+                'SELECT count(e) FROM AppBundle:qvEntrance e JOIN e.checkpoint ch WHERE ch.id = :id and (SUBSTRING(e.entrancedate, 0, 12)) = :currentdate'
+)->setParameters(array('id'=> $qvCheckpoint, 'currentdate'=>$currentDate->format('Y-m-d')));
+$countVisitors = $query->getSingleScalarResult();
       
-
         return $this->render('AppBundle:AdminBC:checkpoints_control/show_checkpoint.html.twig', array(
         'qvCheckpoint' => $qvCheckpoint,
         'qvBuilding' => $qvBuilding,
-        'security' => $security,
+        'countVisitors' => $countVisitors,
         'delete_form' => $deleteForm->createView(),
         ));
     }
