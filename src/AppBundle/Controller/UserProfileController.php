@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\CustomSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\Proxy\SessionHandlerProxy;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -65,8 +66,10 @@ class UserProfileController extends Controller
         {
          $em = $this->getDoctrine()->getManager();
          $data = array();
-         
          $form = $this->createFormBuilder($data)
+            ->add('old_password', PasswordType::class, array(
+                'label'=> 'Старый пароль',
+                'attr'=> array('class'=>'form-control')))
             ->add('password', RepeatedType::class, array(
                 'type'=> PasswordType::class,
                 'invalid_message'=>'Пароли должны совпадать',
@@ -76,27 +79,34 @@ class UserProfileController extends Controller
                 'first_options'  => array('label' => 'Пароль', 'attr' => array('class'=>'form-control form-input')),
                 'second_options' => array('label' => 'Повторите пароль', 'attr' => array('class'=>'form-control form-input'))
                     ))
-            ->getForm()
-        ;
+            ->getForm();
+
         $form->handleRequest($request);
 
        if ($form->isSubmitted() && $form->isValid()) {
-            
+            $em->getConnection()->beginTransaction(); 
+            try {
             $encoder = $this->container->get('security.password_encoder');
             $data = $form->getData();
             $myrole = $qvUser->getRole();
-            $mypass = $encoder->encodePassword($qvUser, $data['password']);
-            $qvUser->setPassword($mypass);
+
+            $newpass = $encoder->encodePassword($qvUser, $data['password']);
+            
+            $qvUser->setPassword($newpass);
             $qvUser->setRole($myrole);
             $qvUser->setDisabled('false');
-
             $em->flush();
             return $this->redirectToRoute('main_page', array());
-        }   
-            return $this->render('AppBundle:UserProfile:changepass.html.twig', array(
+    }
+    catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
+    }
+}
+        return $this->render('AppBundle:UserProfile:changepass.html.twig', array(
                 'form'=>$form->createView(),
-                ));
-        }
+                ));       
+    }
 
     /**
      * @Route("/userprofile", name="userprofile")

@@ -1,7 +1,7 @@
 <?php
 
 namespace AppBundle\Controller;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -32,6 +32,7 @@ use AppBundle\Form\qvVisitorType;
 
 /**
  * @Route("/leaser")
+ * @Security("has_role('ROLE_LEASER')")
  */
 
 class LeaserController extends Controller
@@ -133,7 +134,41 @@ class LeaserController extends Controller
                     'onclick'=>"$('#myModal .modal-dialog').load('{{path('new_visitor')}}');"), ))
             ->getForm()
         ;
-    
+        
+        $arr = array();
+        $visitorform = $this->createFormBuilder($arr)
+            ->add('lastname', TextType::class,array(
+                'label'=>'Фамилия',
+                'attr'   =>  array(
+                'class'   => 'form-margin form-control')))
+            ->add('firstname', TextType::class,array(
+                'label'=>'Имя',
+                'attr'   =>  array(
+                'class'   => 'form-margin form-control')))
+            ->add('patronimic', TextType::class,array(
+                'label'=>'Отчество',
+                'attr'   =>  array(
+                'class'   => 'form-margin form-control')))
+            ->add('birthdate', BirthdayType::class, array(
+                'label'=>'Дата рождения',
+                'widget'=>'single_text',
+                'attr'   =>  array(
+                'class'   => 'form-margin type_date-inline form-control')))
+            ->add('gender',EntityType::class, array(
+                'class' => 'AppBundle:qvGender',
+                'query_builder' => function (qvGenderRepository $er) {
+                        return $er->createQueryBuilder('u')
+                        ->orderBy('u.name', 'ASC');
+                },
+                'choice_label' => 'name',
+                'label'=>'Пол',
+                'attr'   =>  array(
+                'class'   => 'form-control form-margin form-control')))
+            ->getForm()
+            ;
+
+
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -165,7 +200,8 @@ class LeaserController extends Controller
         
         return $this->render('AppBundle:Leaser:create_order.html.twig', array(
             'form' => $form->createView(),
-            'visitors'=>$qvVisitors
+            'visitors'=>$qvVisitors,
+            'visitorform'=>$visitorform->createView()
         ));
     }
 
@@ -179,7 +215,7 @@ class LeaserController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $user = $this->get('security.token_storage')->getToken()->getUser()->getId();
-        $qvVisitors=$em->getRepository('AppBundle:qvVisitor')->getVisitor($user);
+        $qvVisitors=$em->getRepository('AppBundle:qvVisitor')->find($user);
         $editForm = $this->createFormBuilder($qvOrder)
             ->add('sdate', DateType::class, array(
                 'label'=>'Дата открытия заявки',

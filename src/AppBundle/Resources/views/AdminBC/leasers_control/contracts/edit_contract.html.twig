@@ -51,7 +51,7 @@
                                 {{ form_widget(edit_form.enddate, {'attr': {'class':'form-control'}}) }}
                             </td>
                         </tr>
-                        <tr>
+                        {#<tr>
                             <td class="col-md-4">
                                 {{ form_label(edit_form.buildings) }}
                                 {{ form_errors(edit_form.buildings) }}
@@ -63,12 +63,14 @@
                                 {{ form_errors(edit_form.floors) }}
                                 {{ form_widget(edit_form.floors, {'attr': {'class':'form-control'}}) }}
                             </td>
-                        </tr>
+                        </tr>#}
                         <tr>
                             <td class="col-md-4">
                                 {{ form_label(edit_form.sectors) }}
                                 {{ form_errors(edit_form.sectors) }}
                                 {{ form_widget(edit_form.sectors, {'attr': {'class':'form-control'}}) }}
+                                {{form_widget(edit_form._token)}}
+
                             </td>
                         </tr>
                     </tbody>

@@ -39,28 +39,36 @@
                                     
                                     <tbody>
                                  <tr>
-                <th>Фамилия</th>
+                <td><th>Фамилия</th></td>
                 <td>{{ qvUserPassport.firstname }}</td> </tr>
                                  <tr>
-                <th>Иям</th>
+                <td><th>Имя</th></td>
                 <td>{{ qvUserPassport.lastname }}</td>
             </tr>
             <tr>
-                <th>Отчество</th>
+                <td><th>Отчество</th></td>
                 <td>{{ qvUserPassport.patronimic }}</td>
             </tr>
              <tr>
-                <th>Дата рождения</th>
+                <td><th>Дата рождения</th></td>
 
-                <td>{% if qvUserPassport.birthdate %}{{ qvUserPassport.birthdate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if qvUserPassport.birthdate %}{{ qvUserPassport.birthdate|date('Y-m-d') }}{% endif %}</td>
             </tr>
+        </tbody></table>
+
+    <table class="table">  
+        <tbody>
             <tr>
-            <td>
-                
-            </td>
-            <td align="right"><br>
-                <a href="{{ path('edit_security', { 'id': qvUserPassport.id }) }}" class="btn btn-circle btn-default btn-lg" data-title = "Редактировать"> <i class = "fa fa-pencil"></i>         
+                <td class="col-lg-4">&nbsp;</td>
+                <td class="col-lg-1 form-inline form-control-static"><br>
+                <a href="{{ path('edit_security', {'qvUser':qvUserPassport.user.id, 'id': qvUserPassport.id }) }}" class="btn btn-default">Редактировать
                 </a>
+            </td>
+            <td class="col-lg-1"><br>
+                {{ form_start(delete_form) }}
+                <button type="submit" class="btn btn-default"> Удалить
+                    </button>
+            {{ form_end(delete_form) }}
             </td>
             </tr>
             </tbody>

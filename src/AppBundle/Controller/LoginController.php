@@ -45,4 +45,12 @@ class LoginController extends Controller
         return $this->redirect('/login');
 	
 	}
+
+	/**
+	 * @Route("/user/locked", name="user_locked")
+	 */
+	public function ShowLockedPageAction(Request $request)
+	{
+		return $this->render('AppBundle:AdminBC:Error.html.twig', array());
+	}
 }

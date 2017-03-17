@@ -10,4 +10,11 @@ namespace AppBundle\Repository;
  */
 class qvUserRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function findLeaser($qvLeaser) {
+		return $this->getEntityManager()
+		            ->createQuery(
+			'SELECT u FROM AppBundle:qvUser u
+    			WHERE u.leaser = :id'
+		)->setParameter('id', $qvLeaser)->getSingleResult();
+	}
 }

@@ -6,7 +6,11 @@
    {{ include('AppBundle:Checkpoint:pagemenu.html.twig') }}
  {% endblock %}
 
+{% block stylesheets %}
+{{parent()}}
 
+  <link href="{{ asset('bootstrap1/dist/css/select2.min.css')}}" rel="stylesheet" type="text/css">
+{% endblock %}
 
  {% block body %}
 
@@ -57,6 +61,7 @@
               {{ form_label(form.documentnumber) }}
               {{ form_errors(form.documentnumber) }}
               {{ form_widget(form.documentnumber, {'attr': {'class':'form-control'}}) }}
+              {{form_widget(form._token)}}
             </div>
 
           </div></div>
@@ -95,11 +100,13 @@
               {{ form_label(form.leaser) }}
               {{ form_errors(form.leaser) }}
               {{ form_widget(form.leaser, {'attr': {'class':'form-control'}}) }}
+              {{form_widget(form._token)}}      
             </div>
           </div></div>
         </div>
-        <div>
-         {{ form_widget(form)}}</div>
+        <div>             
+         {{ form_widget(form)}}
+       {{form_widget(form._token)}}</div>
          <div class="col-lg-6">
            <input type="submit" class="btn btn-primary" value="Зарегистрировать" />
            <a class="btn btn-default" href="hotentrance">Отмена</a></div>
@@ -110,6 +117,7 @@
      </div>
    {% endblock %}
    {% block js %}
+    <script src="{{asset('bootstrap1/dist/js/select2.min.js')}}"></script>
     <script type="text/javascript">
       $(document).ready(function() {
         $("#form_leaser").select2();

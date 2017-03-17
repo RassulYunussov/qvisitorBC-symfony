@@ -72,7 +72,8 @@
                                     <label>Посетители</label>
                                 </div>
                                 <div class="text-right">{{ form_label(form.select) }}
-                                     {{ form_widget(form.select) }}</div>
+                                     {{ form_widget(form.select) }}
+                                 {{form_widget(form._token)}}</div>
                                      <div class="td-padding">
                                 <input type="submit" class="btn btn-primary" value="Создать" />
                                 <a class="btn btn-default" href="{{path('show_orders')}}">Отмена</a></div>
@@ -150,10 +151,18 @@
                                                             </tbody>
                                                         </table>
                                                     </div>
+                                                    <div id="visitor-form" style = 'display:none'>
+                    {{form_start(visitorform)}}
+                    {{ form_widget(visitorform) }}
+                    {{form_widget(visitorform._token)}}
+                        <input type="submit" class="btn btn-primary" value="Создать" />
+                    {{form_end(visitorform)}}
+                </div>
                                                 </div>
+                                                
                                                 <div class="modal-footer">
                                                     <a  class="btn btn-sm btn-default" href="{{path('new_visitor')}}">111</a>
-
+                                                    <button class="btn btn-sm btn-default" id="visitor-button">fom</button>
                                                     <button onclick="$('#newVisitorModal .modal-dialog').load('{{path('new_visitor')}}');" class="btn btn-sm btn-default" data-toggle="modal" data-target="#newVisitorModal" data-dismiss="modal">Создать</button>
 
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
@@ -169,6 +178,13 @@
 
             {% endblock %}
             {% block js %}
+                <script>
+                $(function(){
+                    $('#visitor-button').on('click', function(){
+                        $('#visitor-form').css('display', 'block');
+                    });
+                });
+                </script>
                 <script> 
 $(function (){
 
@@ -188,10 +204,6 @@ $(function (){
             $("#form_visitors option[value='" + $(this).attr('value') + "']").prop("selected", true);
             console.log($(this).attr('value'));
             array.push($(this).attr('value'));}
-
-
-
-    
     console.log(array);
     });  
 

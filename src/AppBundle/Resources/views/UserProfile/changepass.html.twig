@@ -25,13 +25,18 @@
 					<div class="col-lg-6">
 						<div class="panel panel-default">
 							<div class="panel-heading">
+								Заполните данную форму
 							</div>
 							<div class="panel-body">
 								<div class="row">
 									<div class="col-lg-6">
-										
 									{{form_start(form)}}
-									{{form_row(form.password)}}
+								<div id="oldpass" class="form-inline">
+									{{form_row(form.old_password, {'attr':{'class': 'form-inline form-control'}})}}
+								</div>
+									{{form_row(form.password.first) }}
+									{{form_row(form.password.second) }}
+									
 <br><input type="submit" name="Save" value="Изменить" class="btn btn-default btn-xs">
 <a href="main_page" class="btn btn-default btn-xs">Отменить </a>
 									{{form_end(form)}}
@@ -50,7 +55,6 @@
 					</div>
 					<!-- /.col-lg-12 -->
 				</div>
-	
 	</div>
 	</div>
 {% endblock %}
@@ -69,4 +73,20 @@
         });
     });
 	</script>
+	<script>
+  $(document).ready(function(){
+	$("#checkPassword").on("change", function(){
+   		if(this.checked) {
+      $("#form_old_password").attr("type", "text");
+    } else {
+      $("#form_old_password").attr("type", "password");
+    }
+  })
+});
+  $('#oldpass').append('<label><input type="checkbox" id="checkPassword"> Показать пароль</label>');
+  $(document).ready(function(){
+    $( document ).on( 'focus', ':input', function(){
+    });
+});
+</script>
 {% endblock %}

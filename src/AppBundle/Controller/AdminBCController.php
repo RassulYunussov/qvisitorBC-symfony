@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -11,11 +12,13 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Ob\HighchartsBundle\Highcharts\Highchart;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use AppBundle\Entity\qvLeaser;
 use AppBundle\Form\qvNewLeaserType;
@@ -33,14 +36,14 @@ use AppBundle\Entity\qvUserPassport;
 use AppBundle\Form\qvUserPassportType;
 use AppBundle\Entity\qvUser;
 use AppBundle\Form\qvUserType;
-use AppBundle\Entity\UserAccount;
+use AppBundle\Entity\qvRole;
 use AppBundle\Form\UserAccountType;
 
 /**
  * AdminBCController 
  * 
  * @Route("/adminbc")
- * 
+ * @Security("has_role('ROLE_ADMIN')")
  */
 class AdminBCController extends Controller
 {
@@ -49,9 +52,152 @@ class AdminBCController extends Controller
      * @Method("GET")
      */
     public function adminbcAction()
-    {
-            return $this->render('AppBundle:AdminBC:index.html.twig', array(
-        ));
+    {    $em = $this->getDoctrine()->getManager();
+    
+    $currentDate = new \Datetime("UTC");
+
+    $monthdate = date("Y-m-d", mktime(0, 0, 0, date('m'), date('d') - 30, date('Y')));
+    $month = '30';
+    /*$maxVisitors = $this->getDoctrine()->getEntityManager()->
+    createQuery('SELECT COUNT(e.visitor) FROM AppBundle:qvEntrance e WHERE e.entrancedate <  :currentdate or e.entrancedate =  :currentdate and e.entrancedate > :monthdate or e.entrancedate = :monthdate')->setParameters(array('currentdate'=> $currentDate, 'monthdate'=>($monthdate)))->getSingleScalarResult();
+    */      
+    $result = array();
+
+    $emm = $this->getDoctrine()->getEntityManager();
+            $query = $emm->createQuery('SELECT count(e) AS rank, SUBSTRING(e.entrancedate, 0, 12) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e WHERE month <=  :currentdate and month >= :monthdate GROUP BY month order by month')->setParameters(array('currentdate'=> $currentDate->format('Y-m-d'), 'monthdate'=>$monthdate));
+            $data = $query->getResult();
+
+            $query2 = $emm->createQuery('SELECT e.id as num, e.entrancedate as day FROM AppBundle:qvEntrance e WHERE e.entrancedate <=  :currentdate group by e.entrancedate')->setParameter('currentdate', $currentDate);
+            $dates = $query2->getResult();
+         //   var_dump($data);    
+                
+    // Chart
+        foreach ($data as $i) {
+            $a = array($i['rank'], intval($i['visitorscount']));
+            array_push($result, $a);
+            }
+     $series = array(
+        array("name" => "Количество посетителей", "data" => $result)
+    );
+
+    $ob = new Highchart();
+    $ob->chart->renderTo('attendanceBC');  // The #id of the div where to render the chart
+    //$ob->chart->type('spline');
+    $ob->title->text('График посещаемости БЦ');
+    $ob->xAxis->type('date');
+    $ob->xAxis->title(array('text'  => "Период времени"));
+    $ob->xAxis->data(array(array("data"=>$dates)));
+    $ob->xAxis->dateTimeLabelFormats(array('month'=> '%e. %b', 'year'=> '%b'));
+
+    $ob->yAxis->title(array('text'  => "Количество посетителей"));
+    $ob->series($series);
+
+     $qvEntrance = array();
+        $hotEntrance = array();
+        $dates = array();
+        $dates = [
+            'Январь',
+            'Февраль',
+            'Март',
+            'Апрель',
+            'Май',
+            'Июнь',
+            'Июль',
+            'Август',
+            'Сентябрь',
+            'Октябрь',
+            'Ноябрь',
+            'Декабрь'];
+
+        $emm = $this->getDoctrine()->getEntityManager();
+        $query = $emm->createQuery(
+            'SELECT count(e) AS rank, SUBSTRING(e.entrancedate, 6, 2) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e GROUP BY month order by month');
+        $data = $query->getResult();
+        
+        $query2 = $emm->createQuery('SELECT count(he) AS rank, SUBSTRING(he.entrancedate, 6, 2) as month, COUNT(he.id) AS hvisitorscount FROM AppBundle:qvHotEntrance he GROUP BY month order by month');
+        $data2 = $query2->getResult();    
+
+        foreach ($data2 as $i) {
+            $a = array($i['rank'], intval($i['hvisitorscount']));
+            array_push($hotEntrance, $a);
+            }
+        foreach ($data as $i) {
+            $a = array($i['rank'], intval($i['visitorscount']));
+            array_push($qvEntrance, $a);
+            }
+        
+        $series1 = array(
+            array("name" => "Количество посетителей по заявкам", 'data' => $qvEntrance),
+            array("name" => "Количество посетителей без заявки", 'data' => $hotEntrance)
+        );
+
+        $ob1 = new Highchart();
+        
+        $ob1->chart->renderTo('container3');
+        $ob1->chart->type('column');
+        $ob1->title->text('Посетители по заявкам и без заявок в разрезе КПП');
+        $ob1->xAxis->categories($dates);    
+        $ob1->xAxis->title(array('text'  => "Период времени"));
+        $ob1->xAxis->dateTimeLabelFormats(array('month'=> '%e. %b', 'year'=> '%b'));
+        $ob1->yAxis->title(array('text'  => "Всего посетителей"));
+        $ob1->series($series1);
+
+        $currentDate = new \Datetime("UTC");
+
+    $monthdate = date("Y-m-d", mktime(0, 0, 0, date('m'), date('d') - 30, date('Y')));
+    $month = '30';
+    
+    $result = array();
+
+    $emm = $this->getDoctrine()->getEntityManager();
+            $query = $emm->createQuery('SELECT l.name AS rank, SUBSTRING(e.entrancedate, 0, 12) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e JOIN e.user u JOIN u.leaser l WHERE month <=  :currentdate and month >= :monthdate GROUP BY l')->setParameters(array('currentdate'=> $currentDate->format('Y-m-d'), 'monthdate'=>$monthdate));
+            $data = $query->getResult();
+          
+             // Chart
+        foreach ($data as $i) {
+            $a = array($i['rank'], intval($i['visitorscount']));
+            array_push($result, $a);
+            }
+
+   $ob2 = new Highchart();
+$ob2->chart->renderTo('container2');
+$ob2->title->text('Доля посетителей по арендаторам');
+$ob2->plotOptions->pie(array(
+    'allowPointSelect'  => true,
+    'cursor'    => 'pointer',
+    'dataLabels'    => array('enabled' => true),
+    'showInLegend'  => true,
+    'format' => '{point.name}: {point.y:1f}%'
+));
+$ob2->tooltip->headerFormat('<span style="font-size:11px">{series.name}</span><br>');
+$ob2->tooltip->pointFormat('<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>');
+
+$ob2->series(array(array('type' => 'pie','name' => 'Посетители', 'data' => $result)));
+
+ $series3 = array(
+                array("name" => "Data Serie Name",
+                            "data" => '[[1372425426000 ,15 ],[1373426510000 ,20 ],[1373427726000 ,30 ], [1374447726000 ,50 ]]',
+            ));
+            $ob3 = new Highchart();
+            $ob3->chart->renderTo('container4');  // The #id of the div where to render the chart
+            //$ob3->chart->type('spline');
+            $ob3->title->text('Chart Title');
+            $ob3->xAxis->title(array('text'  => "Horizontal axis title"));
+            $ob3->xAxis->type('datetime');
+            $ob3->xAxis->dateTimeLabelFormats(array('month'=> '%e. %b', 'year'=> '%b'));
+            $ob3->yAxis->title(array('text'  => "Vertical axis title"));
+            $ob3->yAxis->min('0');
+            $ob3->series($series3);
+
+    return $this->render('AppBundle:AdminBC:index.html.twig', array(
+        'chart' => $ob,
+        'chart1' => $ob1,
+        'chart2' => $ob2,
+        'chart3' => $ob3,
+        'data' => $result,
+        'currentDate'=>$currentDate,
+        'monthdate'=>$monthdate,
+    ));
     }
           
      /**
@@ -62,8 +208,16 @@ class AdminBCController extends Controller
     public function leasersAction()
     {
         $em = $this->getDoctrine()->getManager();
+
         $qvLeasers = $em->getRepository('AppBundle:qvLeaser')->getLeasersDetailedRaw();
+
+        $qvUsers = $em->createQuery(
+            'SELECT u FROM AppBundle:qvUser u  JOIN u.role r 
+            where r.code = :code and u.leaser is not null')->setParameter('code', "ROLE_LEASER")->getResult();
+
+        
         return $this->render('AppBundle:AdminBC:leasers_control/leasers/leasers_list.html.twig', array(
+        'qvUsers' => $qvUsers,
         'qvLeasers' => $qvLeasers
         ));
     }
@@ -80,15 +234,16 @@ class AdminBCController extends Controller
        $qvUser = new qvUser();
         $qvUserPassport = new qvUserPassport();
         $em = $this->getDoctrine()->getManager();
-
+        $em->getConnection()->beginTransaction(); 
+try {
          $data = array();
 
          $form = $this->createFormBuilder($data)
             ->add('name', TextType::class, array(
-                'label'=>'Имя',
+                'label'=>'Название компании',
                 'attr' => array('class'=>'form-control form-input')))
             ->add('bin', NumberType::class, array(
-                'label'=>'БИН пользователя',
+                'label'=>'БИН',
                 'attr' => array('class'=>'form-control form-input')))
             ->add('login', TextType::class, array(
                 'label'=>'Логин',
@@ -110,27 +265,16 @@ class AdminBCController extends Controller
             ->add('patronimic', TextType::class, array(
                 'label'=>'Отчество',
                 'attr' => array('class'=>'form-control form-input')))
-            ->add('birthdate', BirthdayType::class,  array(
-                'label'=>'Дата Рождения',
-                'widget' => 'single_text', 
-                'format' =>'dd/MM/yyyy',
-                'placeholder' => 'Укажите дату в формате дд/мм/гггг',
-                'html5' => false,
+            ->add('birthdate', BirthdayType::class, array(
+                'label'=> 'Дата рождения',
+                'widget'=>'single_text',
                 'attr' => array(
-                    'class' => 'form-control')
-                ))
+                'class'=>'form-control form-input')))
             ->add('gender',  EntityType::class, array(
                 'label'=>'Выберите пол',
                 'class' => 'AppBundle\Entity\qvGender',
                 'attr' => array('class'=>'form-control form-input')
             ))
-          //  ->add('save', ButtonType::class,  array(
-          //  'label' => 'Сохранить',
-            //'attr' => array('class' => 'btn btn-default'),
-           // ))
-            //->add('cancel', ButtonType::class,  array(
-            //'label' => 'Отменить',
-            //'attr' => array('class' => 'btn btn-default',
             ->getForm()
         ;
         $form->handleRequest($request);
@@ -139,7 +283,7 @@ class AdminBCController extends Controller
           
            $em = $this->getDoctrine()->getManager();
 
-           $myrole = $em->getRepository('AppBundle:qvRole')->findOneById('3');
+             $myrole = $em->createQuery('SELECT role from AppBundle:qvRole role WHERE role.code = :name')->setParameter('name', 'ROLE_LEASER')->getSingleResult();
            $encoder = $this->container->get('security.password_encoder');
            $data = $form->getData();
             
@@ -153,6 +297,7 @@ class AdminBCController extends Controller
             $mypass = $encoder->encodePassword($qvUser, $data['password']);
             $qvUser->setPassword($mypass);
             $qvUser->setRole($myrole);
+            $qvUser->setLeaser($qvLeaser);
             $qvUser->setDisabled('false');
 
             $em->persist($qvUser);
@@ -167,9 +312,14 @@ class AdminBCController extends Controller
             
             $em->persist($qvUserPassport);
             $em->flush();
-
+             $em->getConnection()->commit();
             return $this->redirectToRoute('leasers_list', array());
         }
+    }
+    catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
+}
         return $this->render('AppBundle:AdminBC:leasers_control/leasers/create_leaser.html.twig', array(
             'qvLeaser' => $qvLeaser,
             'qvUser' => $qvUser,
@@ -184,23 +334,36 @@ class AdminBCController extends Controller
      */
     public function showLeaserAction(qvLeaser $qvLeaser)
     {
-        $deleteForm = $this->createDeleteLeaserForm($qvLeaser);
-        $em = $this->getDoctrine()->getManager();
         
-         $em1 = $this->getDoctrine()->getEntityManager();
-         $queryContract = $em->createQuery(
-            'SELECT cnr.name, cnr.id from AppBundle:qvContract cnr WHERE cnr.leaser = :name'
+        $em = $this->getDoctrine()->getManager();
+        $em1 = $this->getDoctrine()->getEntityManager();
+
+
+         $pquery = $em1->createQuery('SELECT p FROM AppBundle:qvUserPassport p LEFT JOIN p.user u LEFT JOIN u.leaser l WHERE l.id = :id')->setParameter('id', $qvLeaser);
+        $qvUserPassport = $pquery->getSingleResult();
+
+        $qvUser = $em->getRepository('AppBundle:qvUser')->findLeaser($qvLeaser);
+
+        $deleteForm = $this->createDeleteLeaserForm($qvUser, $qvUserPassport, $qvLeaser);
+        
+        $queryContract = $em1->createQuery(
+            'SELECT cnr from AppBundle:qvContract cnr WHERE cnr.leaser = :name'
             )->setParameter('name', $qvLeaser);
-            $contracts = $queryContract->getResult();
+        $contracts = $queryContract->getResult();
             if (!$contracts)
             {
         $contracts = 'Не найдено ни одного контракта';
             }
-        $qvContract = $em->getRepository('AppBundle:qvContract')->findOneByLeaser($qvLeaser);
+        $res = $qvUser->getDisabled();
+        if($res == 1)
+        {
+            return $this->render('AppBundle:AdminBC:error.html.twig', array('qvUser'=>$qvUser));
+        }
+        else
         return $this->render('AppBundle:AdminBC:leasers_control/leasers/show_leaser.html.twig', array(
-            'qvLeaser' => $qvLeaser,
-            'qvContract' => $qvContract,
             'contracts' => $contracts,
+            'qvUser'=>$qvUser,
+            'qvUserPassport'=>$qvUserPassport,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -208,105 +371,211 @@ class AdminBCController extends Controller
     /**
      * Displays a form to edit an existing qvLeaser entity.
         *
-     * @Route("/leasers/leaser/{id}/edit", name="leasers_edit")
+     * @Route("/leasers/company_leaser/{id}/edit", name="company_edit")
      * @Method({"GET", "POST"})
      */
     public function editLeaserAction(Request $request, qvLeaser $qvLeaser)
     {
-        $deleteForm = $this->createDeleteLeaserForm($qvLeaser);
-        
-        $data = array();
-        $qvUserPassport = new qvUserPassport();
-        $qvUser = new qvUser();
-        $qvLeaser = new qvLeaser();
-         $editForm = $this->createFormBuilder($data)
-            ->add('name', TextType::class, array(
-                'label'=>'Название компании',
-                'attr' => array('class'=>'form-control form-input')))
-            ->add('bin', NumberType::class, array(
-                'label'=>'БИН пользователя',
-                'attr' => array('class'=>'form-control form-input')))
-            ->add('firstname', TextType::class, array(
-                'label'=>'Фамилия',
-                'attr' => array('class'=>'form-control form-input')))
-            ->add('lastname', TextType::class, array(
-                'label'=>'Имя',
-                'attr' => array('class'=>'form-control form-input')))
-            ->add('patronimic', TextType::class, array(
-                'label'=>'Отчество',
-                'attr' => array('class'=>'form-control form-input')))
-            ->add('birthdate', BirthdayType::class,  array(
-                'label'=>'Дата Рождения',
-                'widget' => 'single_text', 
-                'format' =>'dd/MM/yyyy',
-                'placeholder' => 'Укажите дату в формате дд/мм/гггг',
-                'html5' => false,
-                'attr' => array(
-                    'class' => 'form-control')
-                ))
-            ->add('gender',  EntityType::class, array(
-                'label'=>'Выберите пол',
-                'class' => 'AppBundle\Entity\qvGender',
-                'attr' => array('class'=>'form-control form-input')
-            ))
-            
-            ->getForm()
-        ;
-        
-        $editForm->handleRequest($request);
+     $emm = $this->getDoctrine()->getEntityManager();
+     $em = $this->getDoctrine()->getManager();
+     $em->getConnection()->beginTransaction(); 
+try {
+     $qvUser = $em->getRepository('AppBundle:qvUser')->findLeaser($qvLeaser);
 
-       if ($editForm->isSubmitted() && $editForm->isValid()) {
+        $res = $qvUser->getDisabled();
+        if($res == 1)
+        {
+            return $this->render('AppBundle:AdminBC:error.html.twig', array('qvUser'=>$qvUser));
+        }
+    else{
+    $pquery = $emm->createQuery('SELECT p FROM AppBundle:qvUserPassport p LEFT JOIN p.user u LEFT JOIN u.leaser l WHERE l.id = :id')->setParameter('id', $qvLeaser);
+
+    $qvUserPassport = $pquery->getSingleResult();
     
-           $em = $this->getDoctrine()->getManager();
+     $editForm = $this->createFormBuilder($qvLeaser)
+     ->add('name', TextType::class, array(
+        'label'=>'Название компании',
+        'attr'=> array('class'=>'form-control form-input')))
+     ->add('bin', TextType::class, array(
+        'label'=>'BIN',
+        'attr'=> array('class'=>'form-control form-input')))
+     ->getForm();
 
-           $myrole = $em->getRepository('AppBundle:qvRole')->findOneByName('ROLE_LEASER');
-
-           $data = $editForm->getData();
-            
-            $qvLeaser->SetName($data['name']);
-            $qvLeaser->SetBin($data['bin']);
-            
-            $em->persist($qvLeaser);
+        $editForm->handleRequest($request);
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+    
+            $em->persist($qvLeaser);            
             $em->flush();
-
-            $qvUserPassport->setFirstname($data['firstname']);
-            $qvUserPassport->setLastname($data['lastname']);
-            $qvUserPassport->setPatronimic($data['patronimic']);
-            $qvUserPassport->setBirthdate($data['birthdate']);
-            $qvUserPassport->setGender($data['gender']);
-            $qvUserPassport->setUser($qvUser);
-
-            $em->persist($qvLeaser);
-            $em->flush();
-
+            $em->getConnection()->commit();
             return $this->redirectToRoute('leasers_list', array('id' => $qvLeaser->getId()));
         }
-        return $this->render('AppBundle:AdminBC:leasers_control/leasers/edit_leaser.html.twig', array(
-        'qvLeaser' => $qvLeaser,
-        'qvUserPassport' => $qvUserPassport,
-        'edit_form' => $editForm->createView(),
-        'delete_form' => $deleteForm->createView(),
-        ));
     }
-    
+        }
+        catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
+}
+        return $this->render('AppBundle:AdminBC:leasers_control/leasers/edit_leaser.html.twig', array(
+            'qvUserPassport' => $qvUserPassport,
+            'qvLeaser'=>$qvLeaser,
+            'qvUser'=>$qvUser,
+            'res'=>$res,
+        'edit_form' => $editForm->createView(),
+        ));
+}
+
+ 
+    /**
+     * Displays a form to edit an existing qvLeaser entity.
+        *
+     * @Route("/leasers/leaser/{id}/editpersonaldata", name="leaser_change")
+     * @Method({"GET", "POST"})
+     */
+    public function changePersonalDataLeaserAction(Request $request, qvLeaser $qvLeaser)
+    {
+     
+     //$deleteForm = $this->createDeleteLeaserForm($qvLeaser);
+     $emm = $this->getDoctrine()->getEntityManager();
+     $em = $this->getDoctrine()->getManager();
+     $em->getConnection()->beginTransaction(); 
+try {
+    $qvUser = $em->getRepository('AppBundle:qvUser')->findLeaser($qvLeaser);
+        $res = $qvUser->getDisabled();
+        if($res == 1)
+        {
+            return $this->render('AppBundle:AdminBC:error.html.twig', array('qvUser'=>$qvUser));
+        }
+    else{
+    $pquery = $emm->createQuery('SELECT p FROM AppBundle:qvUserPassport p LEFT JOIN p.user u LEFT JOIN u.leaser l WHERE l.id = :id')->setParameter('id', $qvLeaser);
+
+    $qvUserPassport = $pquery->getSingleResult();
+
+    $editForm2 = $this->createFormBuilder($qvUserPassport)
+     ->add('firstname', TextType::class, array(
+        'label'=>'Фамилия',
+        'attr'=> array('class'=>'form-control form-input')))
+     ->add('lastname', TextType::class, array(
+        'label'=>'Имя',
+        'attr'=> array('class'=>'form-control form-input')))
+     ->add('patronimic', TextType::class, array(
+        'label'=>'Отчество',
+        'attr'=> array('class'=>'form-control form-input')))
+     ->add('birthdate', BirthdayType::class, array(
+    'placeholder' => array(
+        'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+    ), 'label' => 'Дата рождения', 'attr'=>array('class'=>'form-control')
+))
+     ->add('gender', EntityType::class, array(
+        'class'=>'AppBundle:qvGender',
+        'label'=>'Пол',
+        'attr'=> array('class'=>'form-control form-input')))
+     ->getForm();
+
+        $editForm2->handleRequest($request);
+        if ($editForm2->isSubmitted() && $editForm2->isValid()) {
+
+            $em->persist($qvUserPassport);
+            $em->flush();
+            $em->getConnection()->commit();
+        return $this->redirectToRoute('leasers_list', array('id' => $qvLeaser->getId()));
+    }
+}
+}
+    catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
+        }
+
+        return $this->render('AppBundle:AdminBC:leasers_control/leasers/change_personaldata_leaser.html.twig', array(
+            'qvUserPassport' => $qvUserPassport,
+            'qvLeaser'=>$qvLeaser,
+            'qvUser'=>$qvUser,
+        'edit_form2' => $editForm2->createView(),
+       // 'delete_form' => $deleteForm->createView(),
+        ));
+}
+    /**
+     * Displays a form to edit an existing qvLeaser entity.
+     * @ParamConverter("qvUser", class="AppBundle:qvUser")
+     * @Route("/user/{qvUser}/disabled", name="user_disabled")
+     * @Method({"GET", "POST"})
+     */
+    public function DisabledUserAction(Request $request, qvUser $qvUser)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $qvUser = $em->getRepository('AppBundle:qvUser')->find($qvUser);
+        $role = $qvUser->getRole();
+        $code = $role->getCode();
+
+        $qvUser->setDisabled(1);
+        $em->merge($qvUser);
+        $em->flush();
+          if($code == 'ROLE_LEASER')
+            return $this->redirectToRoute('leasers_list');
+        else if ($code == 'ROLE_CHECKPOINT')
+            return $this->redirectToRoute('security_list');
+    }   
+
+      /**
+     * Displays a form to edit an existing qvLeaser entity.
+     * @ParamConverter("qvUser", class="AppBundle:qvUser")
+     * @Route("/user/{qvUser}/enabled", name="user_enabled")
+     * @Method({"GET", "POST"})
+     */
+    public function EnabledUserAction(Request $request, qvUser $qvUser)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $qvUser = $em->getRepository('AppBundle:qvUser')->find($qvUser);
+        $role = $qvUser->getRole();
+        $code = $role->getCode();
+
+        $qvUser->setDisabled(0);
+        $em->merge($qvUser);
+        $em->flush();
+        
+
+        if($code == 'ROLE_LEASER')
+            return $this->redirectToRoute('leasers_list');
+        else if ($code == 'ROLE_CHECKPOINT')
+            return $this->redirectToRoute('security_list');
+    }   
+
     /**
      * Deletes a qvLeaser entity.
-     * @Route("/leasers/leaser/{id}/delete", name="leasers_delete")
+     * @Route("/leasers/leaser/{qvUser}/{qvUP}/{qvLeaser}/delete", name="leasers_delete")
      * @Method("DELETE")
      */
     public function deleteLeaserAction(Request $request, qvLeaser $qvLeaser)
     {
-        $form = $this->createDeleteLeaserForm($qvLeaser);
+        $em = $this->getDoctrine()->getManager();
+        $emm = $this->getDoctrine()->getEntityManager();
+        $em->getConnection()->beginTransaction(); 
+try {
+        $qvUser = $em->getRepository('AppBundle:qvUser')->findLeaser($qvLeaser);
+         $pquery = $emm->createQuery('SELECT p FROM AppBundle:qvUserPassport p LEFT JOIN p.user u LEFT JOIN u.leaser l WHERE l.id = :id')->setParameter('id', $qvLeaser);
+        $qvUserPassport = $pquery->getSingleResult();
+
+        $form = $this->createDeleteLeaserForm($qvUser, $qvUserPassport, $qvLeaser);
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
+            $em->remove($qvUser);
             $em->remove($qvLeaser);
+            $em->remove($qvUserPassport);
             $em->flush();
-        }
-    return $this->redirectToRoute('leasers_list', array('id' => $qvLeaser->getId()
-        ));
-    }
-    
+            $em->getConnection()->commit();
+    return $this->redirectToRoute('leasers_list', array());
+}
+}
+catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
+}
+}
+
    
     /**
      * Creates a form to delete a qvLeaser entity.
@@ -315,10 +584,10 @@ class AdminBCController extends Controller
         *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteLeaserForm(qvLeaser $qvLeaser)
+    private function createDeleteLeaserForm(qvUser $qvUser,qvUserPassport $qvUserPassport, qvLeaser $qvLeaser)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('leasers_delete', array('id' => $qvLeaser->getId())))
+            ->setAction($this->generateUrl('leasers_delete', array('qvUser' => $qvUser->getId(),'qvUP' => $qvUserPassport->getId(), 'qvLeaser' => $qvLeaser->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;
@@ -349,6 +618,7 @@ class AdminBCController extends Controller
         $em = $this->getDoctrine()->getManager();
             
         $qvContract = new qvContract();
+        $contr = new qvContract();
         $data = array();
 
         $form = $this->createFormBuilder($data)
@@ -371,30 +641,15 @@ class AdminBCController extends Controller
                 'format' =>'dd/MM/yyyy',
                 'html5' => false,
                 'attr' => array(
-                    'class' => 'form-control type_date-inline'),
+                'class' => 'form-control type_date-inline'),
                 'placeholder' => 'Укажите дату в формате дд/мм/гггг',
                 ))
-
-          ->add('buildings', EntityType::class, array(
-                'class' => 'AppBundle\Entity\qvBuilding',
-                'attr' => array(
-                    'class' => 'form-control form-input'),
-                'label'=>'Здания',
-               // 'multiple' =>'true',
-                ))
-          ->add('floors', EntityType::class, array(
-                'class' => 'AppBundle\Entity\qvFloor',
-                'attr' => array(
-                    'class' => 'form-control form-input'),
-                'label'=>'Этажи',
-                //'multiple' =>'true',
-                ))
-          ->add('sectors', EntityType::class, array(
-                'class' => 'AppBundle\Entity\qvSector',
-                'attr' => array(
-                    'class' => 'form-control form-input'),
-                'label'=>'Сектора',
-                'multiple' =>'true',
+            ->add('sectors', ChoiceType::class, array(
+                'multiple'=>'true',
+                'expanded' => 'true',
+                'required' => 'true',
+                'label' => false,
+                'attr' => array('class' => 'form-control'),
                 ))
         ->getForm()
             ;
@@ -402,19 +657,28 @@ class AdminBCController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            $qvContract->setName($data['name']);
-            $qvContract->setStartdate($data['startdate']);
-            $qvContract->setEnddate($data['enddate']);
-            $qvContract->setLeaser($qvLeaser);
+            
             foreach ($data['sectors'] as $sector) {
             $qvContract->addSectors($sector);
         }
+            $qvContract->setName($data['name']);
+            $qvContract->setStartdate($data['startdate']);
+            $qvContract->setEnddate($data['enddate']);
+            $qvContract->setLeaser($qvLeaser);   
             
-
+            $check_sector = array();
+            $check_sector = $qvContract->getSectors();
+            if(!$check_sector)
+            {
+                return $this->redirectToRoute('main_page');
+            }
+            else
+            {
             $em->persist($qvContract);
             $em->flush();
             return $this->redirectToRoute('leasers_show', array('id'=>$qvLeaser->getId()));
         }
+    }
         return $this->render('AppBundle:AdminBC:leasers_control/contracts/create_contract.html.twig', array(
             'qvContract' => $qvContract,
             'qvLeaser'=> $qvLeaser,
@@ -422,18 +686,17 @@ class AdminBCController extends Controller
         ));
     }
 
-
      /**
      *@Route("/bybuildings", name="floors")
      *@Method("GET")
      */
 
-    public function indexSectorAjaxAction(Request $request)
+    public function indexFloorsAjaxAction(Request $request)
     {
         if($request->isXmlHttpRequest()) {
-            $floorId = $request->get('id',1);
+            $buildingId = $request->get('id',1);
             $em = $this->getDoctrine()->getManager();
-            $qvfloors=$em->getRepository('AppBundle:qvFloor')->findByBuildingId($floorId);
+            $qvfloors=$em->getRepository('AppBundle:qvFloor')->findByBuildingId($buildingId);
             $serializer = $this->get('serializer');
             $floors = $serializer->serialize($qvfloors, 'json');
             return new Response($floors);
@@ -445,7 +708,7 @@ class AdminBCController extends Controller
      *@Method("GET")
      */
 
-    public function indexFloorsAjaxAction(Request $request)
+    public function indexSectorsAjaxAction(Request $request)
     {
         if($request->isXmlHttpRequest()) {
             $floorId = $request->get('id',2);
@@ -457,6 +720,21 @@ class AdminBCController extends Controller
         }
     }
 
+    /**
+     *@Route("/bymybuildings", name="buildings")
+     *@Method("GET")
+     */
+     public function indexBuildingsAjaxAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+            //$buildAll = $request->get();
+            $em = $this->getDoctrine()->getManager();
+            $qvbuildings=$em->getRepository('AppBundle:qvBuilding')->findAll();
+            $serializer = $this->get('serializer');
+            $buildings = $serializer->serialize($qvbuildings, 'json');
+            return new Response($buildings);
+        }
+    }
 
      /**
      * Finds and displays a qvContract entity.
@@ -468,6 +746,7 @@ class AdminBCController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $deleteForm = $this->createDeleteContractForm($qvContract);
+        
         $qvContracts = $em->getRepository('AppBundle:qvContract')->findOneByLeaser($qvLeaser);
 
         $onecontr = $em->getRepository('AppBundle:qvContract')->findOneById($qvContract);
@@ -491,11 +770,9 @@ class AdminBCController extends Controller
             $em = $this->getDoctrine()->getManager();
              
             $qvModalContract = $em->getRepository('AppBundle:qvContract')->findOneBy(array('id'=>$id));
-            $qvcontr = $em->getRepository('AppBundle:qvSector')->findSectorByContract($id);
             
             return $this->render('AppBundle:AdminBC:leasers_control/contracts/detailscontract.html.twig', array(
                     'qvModalContract' => $qvModalContract,
-                    'qvcontr' => $qvcontr,
             ));
         }
     }
@@ -511,10 +788,11 @@ class AdminBCController extends Controller
         $deleteForm = $this->createDeleteContractForm($qvContract);
          $em = $this->getDoctrine()->getManager();
             
-        //$qvContract = new qvContract();
+        $qvContr = $em->getRepository('AppBundle:qvContract')->find($qvContract);
+
         $data = array();
 
-        $editForm = $this->createFormBuilder($data)
+        $editForm = $this->createFormBuilder($qvContr)
         ->add('name', TextType::class, array(
             'label'=>'Номер контракта',
             'attr'=>array('class'=>'form-control form-input')))
@@ -537,35 +815,6 @@ class AdminBCController extends Controller
                     'class' => 'form-control type_date-inline'),
                 'placeholder' => 'Укажите дату в формате дд/мм/гггг',
                 ))
-
-          ->add('buildings', EntityType::class, array(
-                'class' => 'AppBundle\Entity\qvBuilding',
-                'attr' => array(
-                    'class' => 'form-control form-input'),
-                'label'=>'Здания',
-               // 'multiple' =>'true',
-                ))
-          ->add('floors', EntityType::class, array(
-                'class' => 'AppBundle\Entity\qvFloor',
-                'attr' => array(
-                    'class' => 'form-control form-input'),
-                'label'=>'Этажи',
-                //'multiple' =>'true',
-                ))
-           ->add('buildings', EntityType::class, array(
-                'class' => 'AppBundle\Entity\qvBuilding',
-                'attr' => array(
-                    'class' => 'form-control form-input'),
-                'label'=>'Здания',
-               // 'multiple' =>'true',
-                ))
-          ->add('floors', EntityType::class, array(
-                'class' => 'AppBundle\Entity\qvFloor',
-                'attr' => array(
-                    'class' => 'form-control form-input'),
-                'label'=>'Этажи',
-                //'multiple' =>'true',
-                ))
           ->add('sectors', EntityType::class, array(
                 'class' => 'AppBundle\Entity\qvSector',
                 'attr' => array(
@@ -577,18 +826,7 @@ class AdminBCController extends Controller
             ;
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $data = $editForm->getData();
-
-            $qvContract->setName($data['name']);
-            $qvContract->setStartdate($data['startdate']);
-            $qvContract->setEnddate($data['enddate']);
-            $qvContract->setLeaser($qvLeaser);
-            foreach ($data['sectors'] as $sector) {
-            $qvContract->addSectors($sector);
-        }
-            
-
-            $em->persist($qvContract);
+          
             $em->flush();
             return $this->redirectToRoute('leasers_show', array('id'=>$qvLeaser->getId()));
         }
@@ -609,14 +847,14 @@ class AdminBCController extends Controller
      * @Method({"GET", "POST"})
      */
 
-    public function deleteAction(Request $request, qvContract $qvContract, 
-        qvLeaser $qvLeaser)
+    public function deleteAction(Request $request, qvContract $qvContract, qvLeaser $qvLeaser)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($qvContract);
         $em->flush();
         return $this->redirectToRoute('leasers_show', array('id'=>$qvLeaser->getId()));
     }
+
     /**
      * Deletes a qvContract entity.
      * @Route("/contract/{id}/delete", name="contracts_delete")
@@ -631,8 +869,9 @@ class AdminBCController extends Controller
             $em->remove($qvContract);
             $em->flush();
         }
-        return $this->redirectToRoute('contracts_list');
+        return $this->redirectToRoute('leasers_list');
     }
+
     /**
      * Creates a form to delete a qvContract entity.
      *
@@ -810,7 +1049,7 @@ $security = $query->getResult();
         $em = $this->getDoctrine()->getManager();
         
         $qvBuildings = $em->getRepository('AppBundle:qvBuilding')->findAll();
-        
+
         return $this->render('AppBundle:AdminBC:buildings_control/buildings/buildings_list.html.twig', array(
             'qvBuildings' => $qvBuildings,
         ));
@@ -861,10 +1100,9 @@ $security = $query->getResult();
 
         $count = $em->getRepository('AppBundle:qvFloor')->countFloorInBuild($qvBuilding);
       
-        $floors = $em->getRepository('AppBundle:qvFloor')->findFlooorByBuild($qvBuilding);
+        $floors = $em->getRepository('AppBundle:qvFloor')->findFloorsByBuild($qvBuilding);
  
-        $sectorlist = $em->getRepository('AppBundle:qvSector')->findAll();
-              
+            
         $check = $em->getRepository('AppBundle:qvCheckpoint')
         ->findByBuildingId($qvBuilding);
 
@@ -884,7 +1122,6 @@ $security = $query->getResult();
             'qvBuilding' => $qvBuilding,
             'count' => $count,
             'floors' => $floors,
-            'sectorlist' => $sectorlist,
             'check' => $check,
             'usp' => $usp,  
             'delete_form' => $deleteForm->createView(),
@@ -1042,8 +1279,8 @@ $security = $query->getResult();
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            return $this->redirectToRoute('floors_show', array('qvBuilding' => 
-                $qvBuilding->getId(), 'id' => $qvFloor->getId()));
+            return $this->redirectToRoute('buldings_show', array('qvBuilding' => 
+                $qvBuilding->getId()));
         }
         return $this->render('AppBundle:AdminBC:buildings_control/floors/edit_floor.html.twig', array(
             'qvFloor' => $qvFloor,
@@ -1054,11 +1291,11 @@ $security = $query->getResult();
     }
     /**
      * Deletes a qvFloor entity.
-     *
+     * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
      * @Route("/floors/{id}/delete", name="floors_delete")
      * @Method("DELETE")
      */
-    public function deleteFloorAction(Request $request, qvFloor $qvFloor)
+    public function deleteFloorAction(Request $request, qvFloor $qvFloor, qvBuilding $qvBuilding)
     {
         $form = $this->createDeleteFloorForm($qvFloor);
         $form->handleRequest($request);
@@ -1067,8 +1304,9 @@ $security = $query->getResult();
             $em->remove($qvFloor);
             $em->flush();
         }
-        return $this->redirectToRoute('buildings_list');
+        return $this->redirectToRoute('buildings_show', array('qvBuilding'=>$qvBuilding->getId()));
     }
+
     /**
      * Creates a form to delete a qvFloor entity.
      *
@@ -1083,6 +1321,22 @@ $security = $query->getResult();
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+
+    /**
+     * Deletes a qvFloor entity.
+     * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
+     * @Route("/{qvBuilding}/floor/{qvFloor}/delete", name="floor_deleting")
+     * @Method({"GET", "POST"})
+     */
+
+    public function deleteFloorShowAction(Request $request, qvBuilding $qvBuilding, qvFloor $qvFloor)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($qvFloor);
+        $em->flush();
+        return $this->redirectToRoute('buildings_show', array('qvBuilding'=>$qvBuilding->getId()));
     }
  /**
      * Lists all qvSector entities.
@@ -1114,7 +1368,8 @@ $security = $query->getResult();
         $data = array();
 
         $em = $this->getDoctrine()->getManager();
-        
+        $em->getConnection()->beginTransaction(); 
+try {
         $form = $this->createFormBuilder($data)
         ->add('name', TextType::class, array(
             'label'=>'Название сектора',
@@ -1132,10 +1387,15 @@ $security = $query->getResult();
 
             $em->persist($qvSector);
             $em->flush();
-            return $this->redirectToRoute('sectors_show', array('qvBuilding' => 
-                $qvBuilding->getId(), 'qvFloor' => $qvFloor->getId(),'id' => $qvSector->getId()));
-        }
-
+            $em->getConnection()->commit();
+            return $this->redirectToRoute('floors_show', array('qvBuilding' => $qvBuilding->getId(), 'id' => $qvFloor->getId()));
+ 
+}
+} catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
+}
+        
         return $this->render('AppBundle:AdminBC:buildings_control/sectors/create_sector.html.twig', array(
             'qvSector' => $qvSector,
             'qvFloor' => $qvFloor,
@@ -1153,7 +1413,7 @@ $security = $query->getResult();
      */
     public function showSectorAction(qvSector $qvSector, qvBuilding $qvBuilding, qvFloor $qvFloor)
     {
-        $deleteForm = $this->createDeleteSectorForm($qvSector);
+        $deleteForm = $this->createDeleteSectorForm($qvSector, $qvBuilding, $qvFloor);
         $em = $this->getDoctrine()->getManager();
         return $this->render('AppBundle:AdminBC:buildings_control/sectors/show_sector.html.twig', array(
             'qvSector' => $qvSector,
@@ -1166,13 +1426,13 @@ $security = $query->getResult();
      * Displays a form to edit an existing qvSector entity.
      *
      * @Route("/building/{qvBuilding}/floor/{qvFloor}/sector/{id}/edit", name="sectors_edit")
-     * @ParamConverter("qvFloor", class="AppBundle:qvFloor")
      * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
+     * @ParamConverter("qvFloor", class="AppBundle:qvFloor")
      * @Method({"GET", "POST"})
      */
-    public function editSectorAction(Request $request, qvSector $qvSector, qvFloor $qvFloor, qvBuilding $qvBuilding)
+    public function editSectorAction(Request $request, qvSector $qvSector, qvBuilding $qvBuilding, qvFloor $qvFloor)
     {
-        $deleteForm = $this->createDeleteSectorForm($qvSector);
+        $deleteForm = $this->createDeleteSectorForm($qvSector, $qvBuilding, $qvFloor);
          $em = $this->getDoctrine()->getManager();
         $editForm = $this->createFormBuilder($qvSector)
         ->add('name', TextType::class, array(
@@ -1183,9 +1443,8 @@ $security = $query->getResult();
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em->flush();
-            return $this->redirectToRoute('sectors_show', 
-                array('qvBuilding' => $qvBuilding->getId(), 'qvFloor' => 
-                    $qvFloor->getId(),'id' => $qvSector->getId()));
+            return $this->redirectToRoute('floors_show', 
+               array('qvBuilding' => $qvBuilding->getId(), 'id' => $qvFloor->getId()));
         }
         return $this->render('AppBundle:AdminBC:buildings_control/sectors/edit_sector.html.twig', array(
             'qvSector' => $qvSector,
@@ -1197,36 +1456,61 @@ $security = $query->getResult();
     }
     /**
      * Deletes a qvSector entity.
-     *
-     * @Route("/sector/{id}/delete", name="sectors_delete")
-    * @Method("DELETE")
-     */
-    public function deleteSectorAction(Request $request, qvSector $qvSector)
+     * @Route("/{qvBuilding}/{qvFloor}/sector/{id}/delete", name="sectors_delete")
+     * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
+     * @ParamConverter("qvFloor", class="AppBundle:qvFloor")
+     * @Method("DELETE")
+    */
+    public function deleteSectorAction(Request $request, qvSector $qvSector, qvBuilding $qvBuilding, qvFloor $qvFloor)
     {
-        $form = $this->createDeleteSectorForm($qvSector);
+        $form = $this->createDeleteSectorForm($qvSector, $qvBuilding, $qvFloor);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($qvSector);
             $em->flush();
         }
-        return $this->redirectToRoute('buildings_list');
+        return $this->redirectToRoute('floors_show', array('qvBuilding' => $qvBuilding->getId(), 'id' => $qvFloor->getId()));
     }
     /**
      * Creates a form to delete a qvSector entity.
      *
      * @param qvSector $qvSector The qvSector entity
-     *
+     * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
+     * @ParamConverter("qvFloor", class="AppBundle:qvFloor")
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteSectorForm(qvSector $qvSector)
+    private function createDeleteSectorForm(qvSector $qvSector,qvBuilding $qvBuilding, qvFloor $qvFloor)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('sectors_delete', array('id' => $qvSector->getId())))
+            ->setAction($this->generateUrl('sectors_delete', array('qvBuilding' => $qvBuilding->getId(), 'qvFloor' => $qvFloor->getId(), 'id' => $qvSector->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;
     }
+
+      /**
+     * Deletes a qvSector entity.
+     * @ParamConverter("qvBuilding", class="AppBundle:qvBuilding")
+     * @ParamConverter("qvFloor", class="AppBundle:qvFloor")
+     * @Route("/{qvBuilding}/floor/{qvFloor}/{qvSector}/delete", name="sector_deleting")
+     * @Method({"GET", "POST"})
+     */
+
+    public function deleteSectorShowAction(Request $request, qvBuilding $qvBuilding, qvFloor $qvFloor, qvSector $qvSector)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->getConnection()->beginTransaction(); 
+try {
+        $em->remove($qvSector);
+        $em->flush();
+        return $this->redirectToRoute('floors_show', array('qvBuilding'=>$qvBuilding->getId(), 'id'=>$qvFloor->getId()));
+     $em->getConnection()->commit();
+} catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
+}
+}
 
      /**
      * Lists all qvUserPassport entities.
@@ -1236,19 +1520,23 @@ $security = $query->getResult();
      */
      public function indexSecurityAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $qvUserPassports = $em->getRepository('AppBundle:qvUserPassport')->findAll();
-        
+        $em1 = $this->getDoctrine()->getManager();
         $em = $this->getDoctrine()->getEntityManager();
+        
+        $qvUsers = $em->createQuery(
+            'SELECT u  FROM AppBundle:qvUser u JOIN u.role r 
+            where r.code = :code')->setParameter('code', "ROLE_CHECKPOINT")->getResult();
+
+        
+        
             $query = $em->createQuery(
-                'SELECT passport.id, passport   .firstname, passport.lastname, passport.patronimic, passport.birthdate FROM AppBundle:qvUserPassport passport JOIN passport.user pu WHERE pu.role = :name'
-                    )->setParameter('name', '4');
+                'SELECT passport FROM AppBundle:qvUserPassport passport JOIN passport.user pu join pu.role r WHERE r.code = :name'
+                    )->setParameter('name', 'ROLE_CHECKPOINT');
 
             $usp = $query->getResult();
 
         return $this->render('AppBundle:AdminBC:checkpoints_control/security_man/index.html.twig', array(
-            'qvUserPassports' => $qvUserPassports,
+            'qvUser' => $qvUsers,
             'usp' => $usp,
         ));
     }
@@ -1265,24 +1553,40 @@ $security = $query->getResult();
         $qvUserPassport = new qvUserPassport();
 
         $em = $this->getDoctrine()->getManager();
-
+        $em->getConnection()->beginTransaction(); 
+        try {
          $data = array();
 
          $form = $this->createFormBuilder($data)
-            ->add('login', TextType::class)
-            ->add('password', PasswordType::class)
-            ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
-            ->add('patronimic', TextType::class)
+            ->add('login', TextType::class, array(
+                'label'=>'Логин',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('password', RepeatedType::class, array(
+                'type'=> PasswordType::class,
+                'invalid_message'=>'Пароли должны совпадать',
+                'options' => array('attr' => array('class' => 'password-field')),
+                'required' => true,
+                'first_options'  => array('label' => 'Пароль', 'attr' => array('class'=>'form-control form-input')),
+                'second_options' => array('label' => 'Повторите пароль', 'attr' => array('class'=>'form-control form-input'))))
+            ->add('firstname', TextType::class , array(
+                'label'=> 'Имя',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('lastname', TextType::class, array(
+                'label'=> 'Фамилия',
+                'attr' => array('class'=>'form-control form-input')))
+            ->add('patronimic', TextType::class, array(
+                'label'=> 'Отчество',
+                'attr' => array('class'=>'form-control form-input')))
             ->add('birthdate', BirthdayType::class, array(
-                'placeholder' => array(
-                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-                )
-            )
-        )
+                'label'=> 'Дата рождения',
+                'widget'=>'single_text',
+                'attr' => array(
+                'class'=>'form-control form-input')))
             ->add('gender',  EntityType::class, array(
-                'class' => 'AppBundle\Entity\qvGender')
-            )
+                'label'=> 'Пол',
+                'class' => 'AppBundle\Entity\qvGender',
+                'attr' => array('class'=>'form-control form-input')))
+            
             ->getForm()
         ;
         $form->handleRequest($request);
@@ -1291,7 +1595,8 @@ $security = $query->getResult();
           
            $em = $this->getDoctrine()->getManager();
 
-           $myrole = $em->getRepository('AppBundle:qvRole')->findOneById(4);
+           $myrole = $em->createQuery('SELECT role from AppBundle:qvRole role WHERE role.code = :name')->setParameter('name', 'ROLE_CHECKPOINT')->getSingleResult();
+
 
            $data = $form->getData();
             $encoder = $this->container->get('security.password_encoder');
@@ -1313,9 +1618,14 @@ $security = $query->getResult();
             
             $em->persist($qvUserPassport);
             $em->flush();
-
+            $em->getConnection()->commit();
             return $this->redirectToRoute('security_list', array());
         }
+    }
+            catch (Exception $e){
+                $em->getConnection()->rollBack();
+                throw $e;
+            }
         return $this->render('AppBundle:AdminBC:checkpoints_control/security_man/new.html.twig', array(
             //'qvUserPassport' => $qvUserPassport,
             //'qvUser' => $qvUser,
@@ -1327,78 +1637,125 @@ $security = $query->getResult();
 
     /**
      * Finds and displays a qvUserPassport entity.
-     *
-     * @Route("/security/{id}/show", name="show_security")
+     * @Route("/{qvUser}/security/{id}/show", name="show_security")
      * @Method("GET")
      */
-    public function showSecurityAction(qvUserPassport $qvUserPassport)
+    public function showSecurityAction(qvUser $qvUser,qvUserPassport $qvUserPassport, $id)
     {
-        $deleteForm = $this->createDeleteSecurityForm($qvUserPassport);
-
+        $em = $this->getDoctrine()->getManager();
+        //$qvUser = new qvUser();
+        //$user = $em->getRepository('AppBundle:qvUserPassport')->findUserByPassport($qvUserPassport);
+        
+        $deleteForm = $this->createDeleteSecurityForm($qvUser, $qvUserPassport);
+       // $role = new qvRole();
+        //$role->setCode('ROLE_CHECKPOINT');
+        //$qvUser->setDisabled($user['disabled']);
+        //$qvUser->setRole($role);
+        $res = $qvUser->getDisabled();
+        if($res == 1)
+        {
+            return $this->render('AppBundle:AdminBC:error.html.twig', array('qvUser'=>$qvUser));
+        }
+    else{
         return $this->render('AppBundle:AdminBC:checkpoints_control/security_man/show.html.twig', array(
             'qvUserPassport' => $qvUserPassport,
+            'qsvUser' => $qvUser,
+            //'user'=>$user,
             'delete_form' => $deleteForm->createView(),
         ));
     }
-
+}
     /**
      * Displays a form to edit an existing qvUserPassport entity.
      *
-     * @Route("/security/{id}/edit", name="edit_security")
+     * @Route("/{qvUser}/security/{id}/edit", name="edit_security")
      * @Method({"GET", "POST"})
      */
-    public function editSecurityAction(Request $request, qvUserPassport $qvUserPassport)
+    public function editSecurityAction(Request $request, qvUser $qvUser, qvUserPassport $qvUserPassport)
     {
-        $deleteForm = $this->createDeleteSecurityForm($qvUserPassport);
+       // $deleteForm = $this->createDeleteSecurityForm($qvUserPassport);
           $em = $this->getDoctrine()->getManager();
+        $em->getConnection()->beginTransaction(); // suspend auto-commit
+try {
+        $res = $qvUser->getDisabled();
+        if($res == 1)
+        {
+            return $this->render('AppBundle:AdminBC:error.html.twig', array('qvUser'=>$qvUser));
+        }
+    else{
         $editForm = $this->createFormBuilder($qvUserPassport)
-        ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
-            ->add('patronimic', TextType::class)
+            ->add('firstname', TextType::class, array(
+                 'label'=> 'Имя',
+                 'attr' => array('class'=>'form-control form-input')))
+            ->add('lastname',  TextType::class, array(
+                 'label'=> 'Фамилия',
+                 'attr' => array('class'=>'form-control form-input')))
+            ->add('patronimic', TextType::class,array(
+                 'label'=> 'Отчество',
+                 'attr' => array('class'=>'form-control form-input')))
             ->add('birthdate', BirthdayType::class, array(
                 'placeholder' => array(
                     'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-                )
-            )
-        )
+                ),
+                 'label'=> 'Дата рождения',
+                 'attr' => array('class'=>'form-control form-input')))
             ->add('gender',  EntityType::class, array(
-                'class' => 'AppBundle\Entity\qvGender')
+                'class' => 'AppBundle\Entity\qvGender',
+                'attr'=> array('class'=>'form-control'),
+                'label'=>'Пол',)
             )
             ->getForm();
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {  
+            
             $em->flush();
-
-            return $this->redirectToRoute('security_list', array('id' => $qvUserPassport->getId()));
-        }
-
+            $em->getConnection()->commit();
+            
+            return $this->redirectToRoute('security_list', array('id' => $qvUserPassport->getId()));       
+}    
+} 
+}
+    catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
+}
+            
         return $this->render('AppBundle:AdminBC:checkpoints_control/security_man/edit.html.twig', array(
             'qvUserPassport' => $qvUserPassport,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+           // 'delete_form' => $deleteForm->createView(),
         ));
     }
-
     /**
      * Deletes a qvUserPassport entity.
      *
-     * @Route("/security/{id}/delete", name="delete_security")
+     * @Route("/{qvUser}/security/{id}/delete", name="delete_security")
      * @Method("DELETE")
      */
-    public function deleteSecurityAction(Request $request, qvUserPassport $qvUserPassport)
+    public function deleteSecurityAction(Request $request, qvUser $qvUser, qvUserPassport $qvUserPassport)
     {
-        $form = $this->createDeleteSecurityForm($qvUserPassport);
+        $em = $this->getDoctrine()->getManager();
+        $em->getConnection()->beginTransaction(); 
+        try {
+        $form = $this->createDeleteSecurityForm($qvUser,$qvUserPassport);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+        
+            $em->remove($qvUser);
+            $em->flush();
             $em->remove($qvUserPassport);
             $em->flush();
-        }
-
+             $em->getConnection()->commit();
+         }
+     }
+    catch (Exception $e) {
+            $em->getConnection()->rollBack();
+    throw $e;
+}
         return $this->redirectToRoute('security_list');
-    }
+ }
 
     /**
      * Creates a form to delete a qvUserPassport entity.
@@ -1407,13 +1764,187 @@ $security = $query->getResult();
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteSecurityForm(qvUserPassport $qvUserPassport)
+    private function createDeleteSecurityForm(qvUser $qvUser, qvUserPassport $qvUserPassport)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('delete_security', array('id' => $qvUserPassport->getId())))
+            ->setAction($this->generateUrl('delete_security', array('qvUser'=>$qvUser->getId(),'id' => $qvUserPassport->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+      /**
+     * @Route("/analytics/visitors", name = "attendece-visitors")
+     * @Method("GET")
+     */
+    public function AnalyticsAttendanceVisitorsAction()
+    { 
+     return $this->render('AppBundle:AdminBC:Analytics/visitorsByLeasers.html.twig', array());
+    }
+
+
+    /**
+     *@Route("/allcheckpoints", name="Allcheckpoints")
+     *@Method("GET")
+     */
+
+    public function indexAjaxCheckpointsAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+            $buildingId = $request->get('id',1);
+            $em = $this->getDoctrine()->getManager();
+            $qvCheckpoints=$em->getRepository('AppBundle:qvCheckpoint')->findByBuildingId($buildingId);
+            $serializer = $this->get('serializer');
+            $checkpoints = $serializer->serialize($qvCheckpoints, 'json');
+            return new Response($checkpoints);
+        }
+    }
+
+    /**
+     * @Route("/analytics/visitorsbyorders", name = "visitorsbyorders")
+     * @Method("GET")
+     */
+    public function AnalyticsVisitorsByOrdersAction()
+    {
+        $checkpoints = $this->getDoctrine()->getManager()->getRepository('AppBundle:qvCheckpoint')->findAll();
+
+      /*  $query = $emm->createQuery(
+            'SELECT count(e) AS rank, SUBSTRING(e.entrancedate, 6, 2) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e GROUP BY month order by month');
+        $data = $query->getResult();
+        
+        $query2 = $emm->createQuery('SELECT count(he) AS rank, SUBSTRING(he.entrancedate, 6, 2) as month, COUNT(he.id) AS hvisitorscount FROM AppBundle:qvHotEntrance he GROUP BY month order by month');
+        $data2 = $query2->getResult();    
+
+        foreach ($data2 as $i) {
+            $a = array($i['rank'], intval($i['hvisitorscount']));
+            array_push($hotEntrance, $a);
+            }
+        foreach ($data as $i) {
+            $a = array($i['rank'], intval($i['visitorscount']));
+            array_push($qvEntrance, $a);
+            }
+        
+        $series = array(
+            array("name" => "Количество посетителей по заявкам", 'data' => $qvEntrance),
+            array("name" => "Количество посетителей без заявки", 'data' => $hotEntrance)
+        );
+*/
+        return $this->render('AppBundle:AdminBC:Analytics/visitorsByOrders.html.twig', array(
+        'checkpoints'=>$checkpoints,
+    ));
+           
+    }
+  
+       /**
+     * @Route("/analytics/dependencebyVisitors", name = "dependencebyVisitors")
+     * @Method("GET")
+     */
+    public function AnalyticsDependenceVisitorsAction()
+    {
+        return $this->render('AppBundle:AdminBC:Analytics/visitorsAndSectors.html.twig', array(
+        ));
+    }
+  
+ /**
+     * @Route("/analytics/attendance", name ="attendance")
+     * @Method("GET")
+     */
+public function chartAction()
+{
+    return $this->render('AppBundle:AdminBC:Analytics/attendance.html.twig', array());
+}
+
+    /**
+     *@Route("/byattendance", name="attendance_day")
+     *@Method({"GET", "POST"})
+     */
+    public function indexAttendanceAjaxAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+        $bd = $_POST['dateBegin'];
+        $ed = $_POST['dateEnd'];
+        $data = array();
+        $result = array();
+        $cat = array();
+        $em = $this->getDoctrine()->getEntityManager();
+        $query=$em->createQuery('SELECT count(e) AS rank, SUBSTRING(e.entrancedate, 0, 12) as day, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e WHERE day >=  :firstdate and day <= :seconddate GROUP BY day order by day')->setParameters(array('firstdate'=>$bd, 'seconddate'=>$ed));
+        $data = $query->getResult();
+          foreach ($data as $i) {
+            $UTC = new \DateTimeZone("UTC");
+            $newTZ = new \DateTimeZone("Asia/Almaty");
+            $d = new \DateTime($i['day'], $UTC);
+            $d->setTimezone( $newTZ );
+            $d = $d->format('Y-m-d');
+            $a = array($d, intval($i['visitorscount']));
+            array_push($result, $a);
+            }
+        $serializer = $this->get('serializer');
+        $res = $serializer->serialize($result, 'json');
+        return new Response($res);
+        }
+    }
+    /**
+     *@Route("/byleasers", name="leasers-attendance")
+     *@Method({"GET", "POST"})
+     */
+    public function indexLeasersAttendanceAjaxAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+        $bd = $_POST['dateBegin'];
+        $ed = $_POST['dateEnd'];
+        $data = array();
+        $result = array();
+        $em = $this->getDoctrine()->getEntityManager();
+
+    $query = $em->createQuery('SELECT l.name AS rank, SUBSTRING(e.entrancedate, 0, 12) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e JOIN e.user u JOIN u.leaser l WHERE month >= :firstdate and month <= :seconddate GROUP BY l')->setParameters(array('firstdate'=> $bd, 'seconddate'=>$ed));
+        $data = $query->getResult();
+          
+        foreach ($data as $i) {
+            $a = array($i['rank'], intval($i['visitorscount']));
+            array_push($result, $a);
+        }
+        $serializer = $this->get('serializer');
+        $res = $serializer->serialize($result, 'json');
+        return new Response($res);
+        }
+    }
+
+    /**
+     *@Route("/byattendanceofOrders", name="attendance_by_orders")
+     *@Method({"GET", "POST"})
+     */
+    public function indexAttendanceByOrdersAjaxAction(Request $request)
+    {
+        if($request->isXmlHttpRequest()) {
+        $checkpoint = $request->get('checkpoint',1);
+        $dataEntrance = array();
+        $dataHotEntrance = array();
+        $qvEntrance = array();
+        $HotEntrance = array();
+        $em = $this->getDoctrine()->getEntityManager();
+       
+        $queryEntrance=$em->createQuery('SELECT count(e) AS rank, SUBSTRING(e.entrancedate, 6, 2) as month, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e WHERE e.checkpoint = :name GROUP BY month order by month')->setParameter('name', '2');
+        $dataEntrance = $queryEntrance->getResult();
+        
+        $queryHotEntrance = $em->createQuery('SELECT count(he) AS rank, SUBSTRING(he.entrancedate, 6, 2) as month, COUNT(he.id) AS hvisitorscount FROM AppBundle:qvHotEntrance he WHERE he.checkpoint = :name GROUP BY month order by month')->setParameter('name', '2');
+        $dataHotEntrance = $queryHotEntrance->getResult();    
+
+        foreach ($dataHotEntrance as $i) {
+            $a = array($i['rank'], intval($i['hvisitorscount']));
+            array_push($qvEntrance, $a);
+            }
+        foreach ($dataEntrance as $i) {
+            $a = array($i['month'], intval($i['visitorscount']));
+            array_push($qvEntrance, $a);
+            }
+
+        $serializer = $this->get('serializer');
+
+        $resultEntrance = $serializer->serialize($qvEntrance,'json');
+        //$resultHotEntrance = $serializer->serialize($HotEntrance, 'json');
+        
+        return new Response($resultEntrance);
+        }
     }
 }
     

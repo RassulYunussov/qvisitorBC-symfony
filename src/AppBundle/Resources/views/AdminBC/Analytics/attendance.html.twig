@@ -1,0 +1,121 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}Личный кабинет администратора{% endblock %}
+
+{% block body %}
+	 <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                	{% block breadcrumb %}
+					  <div id="breadcrumbs" class="btn-group btn-breadcrumb">
+                        <br>
+                        <a class="btn btn-default" href="{{ path('main_page') }}">
+                        <i class="fa fa-home"></i>Главная
+                        </a>
+                    </div>
+					{% endblock %}
+				
+               <h1 class="page-header">Раздел Аналитики </h1>
+           {# <h4>
+               Текущая дата{{currentDate|date('Y-m-d h:m:s')}}
+               <br>Месяц назад {{monthdate|date('Y-m-d h:m:s')}}#}
+               <div id="control">
+                   
+               </div>
+               </h4>
+               <h2>
+                </h2>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+    <div class="row">
+            <div class="panel panel-default">
+                <div class="panel panel-heading">
+                    <form id="date_send">
+                    Укажите период:
+                    С <input type="date" id="bd" name="begin_date">
+                    По <input type="date" id="ed" name="end_date"> 
+                <button type="submit" class="btn btn-default btn-md">Показать</button>
+                    </form>
+                </div>
+                <div class="panel-body">
+                    <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto">
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+
+<script type="text/javascript">
+$(document).ready(function(){
+var dat = new Date();
+dat.setDate(-30);
+document.getElementById("bd").valueAsDate = dat;
+document.getElementById("ed").valueAsDate = new Date(); 
+function visitorData(item) {
+  Highcharts.chart('container', {
+    chart: {
+        type: 'spline'
+    },
+    title: {
+        text: 'График посещаемости БЦ'
+    },
+    subtitle: {
+        text: 'Рекомендуется указывать период, равный 1 календарному месяцу (30 дней)'
+    },
+    xAxis: {
+        type: 'datetime',
+        title: {
+            text: 'Период времени'
+        }
+    },
+    yAxis: {
+        title: {
+            text: 'Количество посетителей'
+        },
+        min: 0
+    },
+    tooltip: {
+        headerFormat: '<b>{series.name}</b><br>',
+        pointFormat: '{point.x:%e. %b}: {point.y:.2f}'
+    },
+
+    plotOptions: {
+        spline: {
+            marker: {
+                enabled: true
+            }
+        }
+    },
+    series: [{   
+        name: 'Посещаемость',
+        data: item,
+        }],
+});
+}
+function drawGraph(){
+    $date_begin = ($('#bd').val());
+    $date_end = ($('#ed').val());
+        $.ajax({
+            type: 'POST',
+            url: "{{path('attendance_day')}}",
+            data: {dateBegin:$date_begin, dateEnd:$date_end},
+            dataType: 'json',
+            success: function(res){
+            visitorData(res);
+        }
+    });
+}
+
+drawGraph();
+
+  $('#date_send').submit(function(){
+    drawGraph();
+    return false;
+});
+});
+</script>
+{% endblock %}

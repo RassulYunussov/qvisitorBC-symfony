@@ -25,52 +25,45 @@
         </div>
         <!-- /.row -->
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="panel panel-default">
-              {#  <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Информация об арендаторе
-                </div>#}
-                <!-- /.panel-heading -->
-
                 <div class="panel-body">			
                     <div class="table-responsive">
                         <table class="table">
                             <tbody>
-                                <tr>
+                                <tr class="col-lg-8">
                                     <th>
-                                        Id
-                                    </th>
-                                    <td>
-                                        {{ qvLeaser.id }}
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <th>
-                                        Название компании арендатора
+                                        Название компании - арендатора
                                     </th>
 
                                     <td>
-                                        {{ qvLeaser.name }}
+                                        {{ qvUser.leaser.name }}
                                     </td>
                                 </tr>
 
-                                <tr>
+                                <tr class="col-lg-8">
                                     <th>
                                         Bin
                                     </th>
                                     <td>
-                                     {{ qvLeaser.bin }}
+                                     {{ qvUser.leaser.bin }}
                                  </td>
                              </tr>
-                             <tr>
-                                <td>
-                                </td>
-
-                                <td align="right"><br>
-                                    <a href="{{ path('leasers_edit', { 'id': qvLeaser.id }) }}" class="btn btn-circle btn-default btn-lg" data-title = " Редактировать"> 
-                                        <i class="fa fa-pencil"></i>
+                             <tr class="text-left col-lg-8">
+                            <td><br>
+                            <a href="{{ path('company_edit', { 'id': qvUser.leaser.id }) }}" class="btn btn-default"> Изменить информацию о компании
+                                    </a></td>
+                                    <td>    <br>
+                            <a href="{{ path('leaser_change', {'id': qvUser.leaser.id }) }}" class="btn btn-default">Изменить информацию об арендаторе 
                                     </a>
+                                </td>
+                                <td><br>
+                                    {{form_start(delete_form)}}
+                                        <button type="submit" class="btn btn-default">Удалить арендатора</button>
+                                    {{form_end(delete_form) }}
+                                     {#<a href="{{ path('leasers_delete', {'qvUser':qvUser.id, 'qvUP':qvUserPassport.id,'qvLeaser': qvUser.leaser.id }) }}" class="btn btn-default">Удалить арендатора 
+                                    
+                                    </a>#}
                                 </td>
                             </tr>
                         </tbody>
@@ -79,7 +72,7 @@
             </div>
         </div>
     </div>
-        <div class="col-lg-6">
+        <div class="col-lg-8">
             <div class="panel panel-info">
                 <div class="panel-heading">
                     Информация о контрактах данного арендатора
@@ -87,40 +80,40 @@
                 
                 <div class="panel-body">
                         <div class="form-group"> 
-                        {% if qvContract is empty %}
+                        {% if contracts is empty %}
                             <p class="text-info">
                                 Контракты отсутствуют! 
                             </p>
                             <p>
                                 Вы можете создать - 
-                                <a class="btn btn-success btn-xs" href="{{ path('contracts_create', {'qvLeaser':qvLeaser.id}) }}">
+                                <a class="btn btn-default" href="{{ path('contracts_create', {'qvLeaser':qvUser.leaser.id}) }}">
                                     Новый контракт
                                 </a>
                             </p>
                         {% else %}
                             <table>
                                 <tbody>
-                                    {% for contracts in qvContract %}
+                                    {% for contracts in contracts %}
                                         <tr>
                                             <td>
                                                 {{  loop.index  }} Контракт - &nbsp;
                                             </td>
 
                                             <td>
-                                                <button data-title="Просмотр" onclick="$('#myModal .modal-dialog').load('{{ path('contracts_modal', { 'id':contracts.id }) }}');" class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal">
+                                                <button data-title="Просмотр" onclick="$('#myModal .modal-dialog').load('{{ path('contracts_modal', { 'id':contracts.id }) }}');" class="btn btn-sm btn-default btn-infotext" data-toggle="modal" data-target="#myModal">
                                                     {{  contracts.name }}
                                                 </button>
                                             </td>
 
                                             <td>
-                                                <a data-title="Изменить" href="{{ path("contracts_edit", {'qvLeaser':qvLeaser.id,'id':contracts.id}) }}" class="btn btn-default btn-circle text-right">
-                                                    <i class="fa fa-pencil"></i>
+                                                <a data-title="Изменить" href="{{ path("contracts_edit", {'qvLeaser':qvUser.leaser.id,'id':contracts.id}) }}" class="btn btn-default btn-infotext">
+                                                <i class="fa fa-pencil"></i>
                                                 </a>
                                             </td>
 
                                             <td>
-                                                <a data-title="Удалить" href="{{ path("contract_deleting", {'qvLeaser':qvLeaser.id,'id':contracts.id}) }}" class="btn btn-default btn-circle">
-                                                    <i class="fa fa-times"></i>
+                                                <a data-title="Удалить" href="{{ path("contract_deleting", {'qvLeaser':qvUser.leaser.id,'id':contracts.id}) }}" class="btn btn-default btn-infotext">
+                                             <i class="text-center fa fa-times"></i>
                                                 </a>
                                             </td>
                                         </tr>
@@ -130,8 +123,8 @@
                         </div>
                     </div>            		
                     <div class="panel-footer text-right">
-                            <a class="btn btn-success btn-xs" href="{{ path('contracts_create', {'qvLeaser':qvLeaser.id}) }}">
-                                Новый контракт
+                            <a class="btn btn-success" href="{{ path('contracts_create', {'qvLeaser':qvUser.leaser.id}) }}">
+                                Добавить новый контракт
                             </a>
                     </div>
             {% endif %}

@@ -22,27 +22,55 @@
 					<h1 class="page-header">Добавление нового арендатора</h1>
 					<!-- /.col-lg-12 -->
 				</div>
-				
-				<div class="col-lg-4" >
+			</div>
+			<div class="row">
+				{{ form_start(form)}}
+				<div class="col-lg-6">
+					<div class="panel panel-default">
+					<div class="panel-heading">
+						Учетные данные
+					</div>
+				<div class="panel-body">
 					<div class="form-group has-success">
-						{{ form_start(form)}}		
-						{{ form_widget(form) }}
-						
-						<div class="form-inline form-input">
+						{{form_row(form.name)}}
+						{{form_row(form.bin)}}
+						{{form_row(form.login)}}
+						{{form_widget(form.password)}}
+
+						<div class="form-margin">&nbsp;</div>
+						<div class="form-margin">&nbsp;</div>
+					</div>
+				</div>
+			</div>
+		</div>
+				<div class="col-lg-6">
+					<div class="panel panel-default">
+				<div class="panel-heading">
+						Персональные данные
+					</div>
+				<div class="panel-body">
+					<div class="form-group has-success">
+						{{form_row(form.firstname)}}
+						{{form_row(form.lastname)}}
+						{{form_row(form.patronimic)}}
+						{{form_row(form.gender)}}
+						{{form_row(form.birthdate)}}
+					<div class="form-inline form-input text-right"><br>
 							<button type="submit" class="btn btn-default btn-sm">
 								Создать
 							</button>
 							<a href="{{ path('leasers_list') }}" class="btn btn-default btn-sm">
 								Отменить
 							</a>
-							{{ form_end(form) }}
-						</div>
-					</div>
-					<!-- /.row -->
 				</div>
 			</div>
-			<!-- /#page-wrapper -->
 		</div>
+	</div>
+	</div>
+			<!-- /#page-wrapper -->
+			{{form_end(form)}}
+		</div>
+	</div>
 	{% endblock %}
 
 	{% block js %}

@@ -30,7 +30,6 @@ class qvUserPassportRepository extends \Doctrine\ORM\EntityRepository {
 		$result = $statement->fetchAll();
 		return $result;
 	}
-
 	public function findUserpassportByOrder($qvOrder) {
 		$conn      = $this->getEntityManager()->getConnection();
 		$statement = $conn->prepare('SELECT qvuserpassport.id, qvuserpassport.userid,qvuserpassport.lastname, qvuserpassport.firstname, qvuserpassport.patronimic from 							qvuserpassport
@@ -38,8 +37,25 @@ class qvUserPassportRepository extends \Doctrine\ORM\EntityRepository {
 									left join qvorder on qvorder.userid = qvuser.id
 									where qvorder.id = ?');
 		$statement->bindValue(1, $qvOrder->getId());
+	}
+	public function findUserpassportByLeaser($qvLeaser) {
+		$conn      = $this->getEntityManager()->getConnection();
+		$statement = $conn->prepare('SELECT qvuserpassport.id, qvuserpassport.userid,qvuserpassport.lastname, qvuserpassport.firstname, qvuserpassport.patronimic from 							qvuserpassport
+									left join qvuser on qvuser.id = qvuserpassport.userid
+									left join qvleaser on qvuser.leaserid = qvuser.leaserid
+									where qvuser.leaserid = ?');
+		$statement->bindValue(1, $qvLeaser->getId());
 		$statement->execute();
 		$result = $statement->fetchAll();
 		return $result;
+	}
+
+	public function findUserByPassport($passport) {
+		return $this->getEntityManager()
+		            ->createQuery(
+			'SELECT user.id, user.login, user.password, user.disabled FROM AppBundle:qvUserPassport passport
+					LEFT JOIN passport.user user
+    					WHERE passport.id = :id'
+		)->setParameter('id', $passport)->getSingleResult();
 	}
 }

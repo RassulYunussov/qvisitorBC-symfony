@@ -1,0 +1,159 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}Личный кабинет администратора{% endblock %}
+
+{% block body %}
+	 <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                	{% block breadcrumb %}
+					  <div id="breadcrumbs" class="btn-group btn-breadcrumb">
+                        <br>
+                        <a class="btn btn-default" href="{{ path('main_page') }}">
+                        <i class="fa fa-home"></i>Главная
+                        </a>
+                    </div>
+					{% endblock %}
+				
+               <h1 class="page-header">Раздел Аналитики</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+             <div class="row">
+            <div class="panel panel-default">
+                <div class="panel panel-heading">
+                    <form  name="select_kpp">
+                        <select name="buildings" id="builds">
+                        </select>
+                        <select name="checkpoints" id="lchecks">
+                        </select>               
+                    </form> 
+                </div>
+                <div class="panel-body">
+                    <div id='container'>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+$(document).ready(function() {
+function loadBuildings(){
+    $('#builds').empty();
+    $.ajax({
+    type: "GET",
+    url: "{{ path('buildings')}}",
+    success: function(buildings){
+    $.each(JSON.parse(buildings),function(k,v){
+    $('#builds').append('<option value="'+v.id+'">'+v.name+'</option>');
+    });
+    }
+    });
+    }
+  $(function (){
+        loadBuildings();
+    });
+
+function loadCheckpoints(buildingId){
+    $('#lchecks').empty();
+    $.ajax({
+        type: "GET",
+        url: "{{ path('Allcheckpoints')}}",
+        data: {'id':buildingId},
+        success: function(data){
+$.each(JSON.parse(data),function(k,v){
+$('#lchecks').append('<option value="'+v.id+'">'+v.name+'</option>');
+});
+}
+});
+}
+$(function (){
+    loadCheckpoints($('#builds option:selected').val());
+    $('#builds').change(function(){
+        loadCheckpoints($('#builds option:selected').val());
+    });
+});
+function getSelectedElement(){
+    var elem = $('#builds option:selected').val();
+    console.log(elem);
+}
+function attendencebyOrders(qvEntrance, HotEntrance) {
+Highcharts.chart('container', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'График - посещаемости по заявкам и без заявок'
+    },
+    subtitle: {
+        text: 'В разрезе КПП'
+    },
+    xAxis: {
+        categories: [
+           'Январь',
+            'Февраль',
+            'Март',
+            'Апрель',
+            'Май',
+            'Июнь',
+            'Июль',
+            'Август',
+            'Сентябрь',
+            'Октябрь',
+            'Ноябрь',
+            'Декабрь'
+        ],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Количество посетителей'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name:'По заявкам',
+        data: qvEntrance
+    },
+    {
+         name:'Без заявок',
+        data: HotEntrance
+    }
+    ]
+});
+}
+
+function drawGraph(){
+    var checkpointId = getSelectedElement();
+        $.ajax({
+            type: 'POST',
+            url: "{{path('attendance_by_orders')}}",
+            data: {'checkpoint':'1'},
+            dataType: 'json',
+            success: function(resultEntrance){
+            $.each(JSON.parse(data),function(k,v){
+            console.log(v);
+    });
+}
+});
+    }
+});
+</script>
+{% endblock %}

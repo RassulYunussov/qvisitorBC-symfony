@@ -29,12 +29,13 @@ class qvFloorRepository extends \Doctrine\ORM\EntityRepository
 			)->setParameter('name', $build)->getSingleScalarResult();
       }
 
-    public function findFlooorByBuild($qvBuilding){
+    public function findFloorsByBuild($qvBuilding){
     	return $this->getEntityManager()
     	->createQuery(
-            'SELECT fl.name, fl.id from AppBundle:qvFloor fl 
-            WHERE fl.building = :name'
-            )->setParameter('name', $qvBuilding)->getResult();
+            'SELECT fl,s from AppBundle:qvFloor fl
+    			LEFT JOIN fl.sectors s
+            WHERE fl.building = :building'
+            )->setParameter('building', $qvBuilding)->getResult();
     }
 
      public function findSectorByFloor($qvFloor){

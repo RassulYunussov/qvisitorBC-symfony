@@ -64,14 +64,15 @@
                                      {{ form_errors(edit_form.ordertype) }}
                                      {{ form_widget(edit_form.ordertype, {'attr': {'class':'form-control'}}) }}</div>
 
-                                <div style="display:none">{{ form_label(edit_form.visitors) }}
+                                <div style="display:block">{{ form_label(edit_form.visitors) }}
                                      {{ form_errors(edit_form.visitors) }}
                                      {{ form_widget(edit_form.visitors) }}</div>
                                 <div  class="td-padding" id='visitors-input'>
                                     <label>Посетители</label>
                                 </div>
                                 <div class="text-right">{{ form_label(edit_form.select) }}
-                                     {{ form_widget(edit_form.select) }}</div>
+                                     {{ form_widget(edit_form.select) }}{{form_widget(edit_form._token)}}
+                                 </div>
                                      <div class="td-padding">
                                 <input type="submit" class="btn btn-primary" value="Создать" />
                                 <a class="btn btn-default" href="{{path('show_orders')}}">Отмена</a></div>

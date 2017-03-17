@@ -18,7 +18,7 @@
                     </div>
                 {% endblock %}
 
-                <h1 class="page-header">Управление зданиями</h1>
+                <h1 class="page-header">Управление охраной</h1>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
@@ -43,50 +43,130 @@
                                             <th>
                                                 Дата рождения
                                             </th>
-
+                                            <th>
+                                                Статус
+                                            </th>
                                             <th>
                                                 Действия
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                              {% for qvUserPassport in  usp %}
-                                            <tr >
-                                                <td>
-                                                    <a href="{{ path('show_security', { 'id': qvUserPassport.id }) }}">
-                                                        {{ qvUserPassport.firstname }}
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ path('show_security', {'id': qvUserPassport['id']}) }}">          
-                                                        {{ qvUserPassport.lastname }}
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                   <a href="{{ path('show_security', {'id': qvUserPassport['id']}) }}" 
-                                                   >
-                                                   {{ qvUserPassport.patronimic }}
-                                               </a>
-                                           </td>
-                                           <td>
-                                               <a href="{{ path('show_security', {'id': qvUserPassport['id']}) }}">
-                                                {% if qvUserPassport.birthdate %}
-                                                  {{ qvUserPassport.birthdate|date('Y-m-d') }}
-                                              {% endif %} 
-                                          </a>
-                                      </td>
+{% for qvUserPassport in  usp %}
+    {% if qvUserPassport.user.disabled == 0 %} 
+    <tr >
+        <td>
+            <a href="{{ path('show_security', 
+                {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id }) }}">
+                    {{ qvUserPassport.firstname }}
+            </a>
+        </td>
+        
+        <td>
+            <a href="{{ path('show_security', 
+            {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id}) }}">
+                {{ qvUserPassport.lastname }}
+            </a>
+        </td>
+        
+        <td>
+            <a href="{{ path('show_security', 
+                {'qvUser':qvUserPassport.user,'id': qvUserPassport.id}) }}">
+                    {{ qvUserPassport.patronimic }}
+            </a>
+        </td>
+        
+        <td>
+            <a href="{{ path('show_security', 
+                {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id}) }}">
+                {% if qvUserPassport.birthdate %}
+                    {{ qvUserPassport.birthdate|date('Y-m-d') }}
+                {% endif %} 
+            </a>
+        </td>
+        
+        <td class="center">Активен
+            <div class="btn btn-xs">
+                <a name="enable_btn" class="btn btn-success btn-xs enabled" href="{{ path('user_disabled', { 'qvUser':qvUserPassport.user.id }) }}">
+                        <i class="fa fa-lock"></i>
+                </a>
+            </div>
+        </td>
 
-                                      <td class="center">
-                                        <div class="btn-group">
-                                            <a class="btn btn-circle btn-default" href="{{ path('show_security', { 'id': qvUserPassport.id }) }}" data-title = "Посмотреть"> 
-                                                <i class="fa fa-check"></i> </a> &nbsp; &nbsp;
-                                                <a href="{{ path('edit_security', { 'id': qvUserPassport.id }) }}" class="btn btn-default btn-circle" data-title = "Изменить или удалить"> <i class="fa fa-pencil"></i> </a>
-                                            </div>
-                                        </td>
-                                    </tr>   
-                                {% endfor %} 
-                                    </tbody>
-                                </table>
+        <td class="center">
+            <div class="btn-group">
+                <a class="btn btn-infotext btn-default" href="{{ path('show_security', { 'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id }) }}" data-title = "Посмотреть"> 
+                    <i class="fa fa-eye"></i>
+                </a> 
+
+                <a href="{{ path('edit_security', {'qvUser':qvUserPassport.user.id, 'id': qvUserPassport.id }) }}" class="btn btn-default btn-infotext" data-title = "Изменить">
+                    <i class="fa fa-edit"></i> 
+                </a>
+            </div>
+        </td>
+    </tr>
+    {% else %}  
+        <tr class="disabled">
+        <td>
+            <a href="{{ path('show_security', 
+                {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id }) }}">
+                    {{ qvUserPassport.firstname }}
+            </a>
+        </td>
+        
+        <td>
+            <a href="{{ path('show_security', 
+            {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id}) }}">
+                {{ qvUserPassport.lastname }}
+            </a>
+        </td>
+        
+        <td>
+            <a href="{{ path('show_security', 
+                {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id}) }}">
+                    {{ qvUserPassport.patronimic }}
+            </a>
+        </td>
+        
+        <td>
+            <a href="{{ path('show_security', 
+                {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id}) }}">
+                {% if qvUserPassport.birthdate %}
+                    {{ qvUserPassport.birthdate|date('Y-m-d') }}
+                {% endif %} 
+            </a>
+        </td>
+        
+        <td class="center">
+            <div class="btn btn-xs">Отключен
+                <a name="enable_btn" class="btn btn-danger btn-xs enabled" href="{{ path('user_enabled', { 'qvUser':qvUserPassport.user.id }) }}">
+                        <i class="fa fa-lock"></i>
+                </a>
+            </div>
+        </td>
+
+        <td class="center">
+            <div class="btn-group">
+                <a class="btn btn-infotext btn-default" href="{{ path('show_security', {'qvUser':qvUserPassport.user.id,'id': qvUserPassport.id }) }}" data-title = "Посмотреть"> 
+                    <i class="fa fa-eye"></i>
+                </a> 
+
+                <a href="{{ path('edit_security', {'qvUser':qvUserPassport.user.id, 'id': qvUserPassport.id }) }}" class="btn btn-default btn-infotext" data-title = "Изменить">
+                    <i class="fa fa-edit"></i> 
+                </a>
+            </div>
+        </td>
+    </tr>
+{% endif %}
+    {% endfor %} 
+</tbody>
+</table>
+<br>
+<div class="text-right">
+<a class="btn btn-success" href="{{ path('new_security')}}">
+    Добавить охранника
+</a>
+</div>
                             </div>
                             <!-- /.table-responsive -->
                         </div>

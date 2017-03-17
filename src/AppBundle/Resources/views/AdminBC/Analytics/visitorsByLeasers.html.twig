@@ -1,0 +1,103 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}Личный кабинет администратора{% endblock %}
+
+{% block body %}
+	 <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                	{% block breadcrumb %}
+					  <div id="breadcrumbs" class="btn-group btn-breadcrumb">
+                        <br>
+                        <a class="btn btn-default" href="{{ path('main_page') }}">
+                        <i class="fa fa-home"></i>Главная
+                        </a>
+                    </div>
+					{% endblock %}
+		   
+               <h1 class="page-header">Раздел Аналитики</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+   <div class="row">
+            <div class="panel panel-default">
+                <div class="panel panel-heading">
+                    <form id="date_send">
+                    Укажите период:
+                    С <input type="date" id="bd" name="begin_date"> 
+                    По <input type="date" id="ed" name="end_date"> 
+                <button type="submit" class="btn btn-default btn-md">Показать</button>
+                    </form>
+                </div>
+                <div class="panel-body">
+                    <div id='container'>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+$(document).ready(function(){
+var dat = new Date();
+dat.setDate(-30);
+document.getElementById("bd").valueAsDate = dat;
+document.getElementById("ed").valueAsDate = new Date(); 
+function LeasersData (data) {
+   Highcharts.chart('container', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Доля посетителей по каждому арендатору'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                }
+            }
+        }
+    },
+    series: [{
+        name: '',
+        colorByPoint: true,
+        data: data,
+    }]
+});
+}
+function drawGraph()
+{
+    $date_begin = ($('#bd').val());
+    $date_end = ($('#ed').val());
+        $.ajax({
+            type: 'POST',
+            url: "{{path('attendance_day')}}",
+            data: {dateBegin:$date_begin, dateEnd:$date_end},
+            dataType: 'json',
+            success: function(res){ 
+            LeasersData(res);
+        }
+    });
+}
+drawGraph();
+$('#date_send').submit(function() {
+    drawGraph();
+    return false;
+});
+});
+</script>
+{% endblock %}

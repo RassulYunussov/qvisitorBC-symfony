@@ -28,7 +28,9 @@
         <div class="form-group">
             <div id="qv_checkpoint">
                 {{ form_start(form) }}
-                {{ form_row(form.name) }}    
+                {{ form_row(form.name) }} 
+                {{form_widget(form._token)}}
+   
     <br>
     <div class="form-inline form-input">
                 <button type="submit" class="btn btn-default btn-sm">

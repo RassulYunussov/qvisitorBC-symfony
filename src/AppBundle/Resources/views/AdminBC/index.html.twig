@@ -20,54 +20,73 @@
                 </div>
                 <!-- /.col-lg-12 -->
        <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-12" id="div1">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             Аналитика
                         </div>
                         <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a href="#home" data-toggle="tab">Активность арендаторов</a>
-                                </li>
-                                <li><a href="#profile" data-toggle="tab">Использование системы</a>
-                                </li>
-                               </ul>
-
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-                                <div class="tab-pane fade in active" id="home">
-		   <h4>Активность арендаторов</h4>
-									<div id="container" style="height: 400px"></div>
-                                </div>
-                                <div class="tab-pane fade" id="profile">
-                                    <h4>Использование системы</h4>
-									<div id="system" style="min-width: 70%; height: 70%; margin: 0 auto"></div>
-                                </div>
-                               
-                            </div>
+                <div class="panel-body">
+                    <div class="col-lg-6">
+                        <div class="panel panel-default" id="attendanceBC">   
                         </div>
-                        <!-- /.panel-body -->
+                          <div class="text-right"><a href="{{path('attendance')}}" class="btn btn-default btn-sm">Подробнее</a></div>
                     </div>
-                    <!-- /.panel -->
+                    <div class="col-lg-6">
+                    <div class="panel panel-default" id="container2"> 
+                    </div>
+                    <div class="text-right"><a href="{{path('attendece-visitors')}}" class="btn btn-default btn-sm">Подробнее</a></div>
+                        
+                    </div>
+              </div>
+                <div class="text-right panel-footer"><button id="next" class="btn btn-primary">Далее</button></div>
                 </div>
-	   </div>
-				
-<!-- two different charts -->
-<div id="chart_1" class="chart"></div>
-<div id="chart_2" class="chart"></div>
-	</div>
-</div></div>
+                </div>
+
+
+ <div class="col-lg-12" id="div2">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Аналитика
+                        </div>
+                        <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="col-lg-6">
+                        <div class="panel panel-default" id="container3">
+                        </div>
+                        <div class="text-right panel-footer"><a href="{{path('visitorsbyorders')}}" class="btn btn-default btn-sm">Подробнее</a></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="panel panel-default" id="container4">
+                        </div>
+                        <div class="text-right panel-footer"><a href="{{path('dependenceVisitors')}}" class="btn btn-default btn-sm">Подробнее</a></div>
+                        
+                    </div>
+                </div>
+            <div class="text-right panel-footer"><button id="back" class="btn btn-primary">Назад</button></div>
+        </div>
+                </div>      
+     
 {% endblock %}
 
 
 {% block js %}
-    <script src="{{asset('bootstrap1/js/admin-highchart.js')}}"></script>
-    <script src="{{asset('bootstrap1/js/2admin-highchart.js')}}"></script>
-{{parent()}}
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/highcharts-3d.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script type="text/javascript">
+    
+</script>
 
+<script>
+$('#div2').hide();
+    $(document).ready(function($) {
+        $('#next').on('click', function(){
+            $('#div1').hide();
+            $('#div2').show();
+        });
+        $('#back').on('click', function(){
+            $('#div2').hide();
+            $('#div1').show();
+        });
+    });
+</script>
+   
 {% endblock %}

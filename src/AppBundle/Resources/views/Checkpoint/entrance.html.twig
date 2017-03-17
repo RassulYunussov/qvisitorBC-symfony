@@ -33,7 +33,6 @@
                         <div class="panel-body">
                             <div class="row">
 								<div class="col-lg-8">
-									<h5>Всего: </h5>
 								</div>
 								<div class="col-lg-4 text-right">
 									<a href="entrance-registration" class="btn btn-info form-margin"><i class="fa fa-plus"></i> Зарегистрировать</a>
@@ -45,7 +44,6 @@
                                         <tr>
                                             <th>Время</th>
                                             <th>ФИО</th>
-                                            <th>Пропуск</th>
                                             <th>Действия</th>
                                         </tr>
                                     </thead>
@@ -54,82 +52,10 @@
 										<tr>
                                         <td>{{qvEntrance.entrancedate|date('Y-m-d H:i') }}</td>
                                         <td><a href="{{path('visitor_info', {'id':qvEntrance.visitor.id})}}">{{qvEntrance.visitor.lastname}} {{qvEntrance.visitor.firstname}} {{qvEntrance.visitor.patronimic}}</a></td>
-                                        <td></td>
                                         <td>
-											<button class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal">Просмотр</button>
+											<button onclick="$('#myModal .modal-dialog').load('{{path('entrance-details', {id: qvEntrance.id})}}');" class="btn btn-sm btn-default" data-toggle="modal" data-target="#myModal">Просмотр</button>
 											<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 												<div class="modal-dialog">
-													<div class="modal-content">
-														<div class="modal-header">
-															<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-															<h4 class="modal-title" id="myModalLabel">Информация по посетителю</h4>
-														</div>
-														<div class="modal-body">
-															<div class="panel-body">
-																<div class="col-lg-8">
-																	<div class="table-responsive">
-																		<table class="table table-hover">
-																			<thead>
-																				<tr>
-																					<th>Иванов Иван</th>
-																				</tr>
-																			</thead>
-																			<tbody>
-																				<tr>
-																					<td class="td-bkground">Дата рождения</td>
-																					<td>12.10.1984</td>
-																				</tr>
-																				<tr>
-																					<td class="td-bkground">Пол</td>
-																					<td>Мужской</td>
-																				</tr>
-																				<tr>
-																					<td class="td-bkground">Номер заявки</td>
-																					<td>1</td>
-																				</tr>
-																			</tbody>
-																		</table>
-																	</div>
-																	<div class="table-responsive">
-																		<table class="table table-hover">
-																			<thead>
-																				<tr>
-																					<th>Документ</th>
-																				</tr>
-																			</thead>
-																			<tbody>
-																				<tr>
-																					<td class="td-bkground">Тип документа</td>
-																					<td>Удосттоверение</td>
-																				</tr>
-																				<tr>
-																					<td class="td-bkground">Номер документа</td>
-																					<td>852749638</td>
-																				</tr>
-																				<tr>
-																					<td class="td-bkground">Дата выдачи</td>
-																					<td>18.10.1996</td>
-																				</tr>
-																				<tr>
-																					<td class="td-bkground">Срок действия</td>
-																					<td>19.11.2016</td>
-																				</tr>
-																			</tbody>
-																		</table>
-																	</div>
-																</div>
-																<div class="col-lg-4">
-																<img src="{{ asset('bootstrap1/123.jpg')}}" alt="User Avatar" width="150" height="200">
-																</div>
-																<!-- /.table-responsive -->
-															</div>
-															<!-- /.panel-body -->
-														</div>
-														<div class="modal-footer">
-															<button type="button" class="btn btn-default" data-dismiss="modal">Готово</button>
-														</div>
-													</div>
-																			<!-- /.modal-content -->
 												</div>
 																		<!-- /.modal-dialog -->
 											</div>

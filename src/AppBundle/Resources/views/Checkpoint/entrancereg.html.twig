@@ -40,11 +40,6 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div class="row">
-								<div class="col-lg-8">
-									<h5>Всего: </h5>
-								</div>
-							</div>
 							<div class="dataTable_wrapper">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
@@ -59,9 +54,9 @@
                                             <tr>
                                         <td>{{qvOrder.id}}</td>
                                           <td>  {% for qvVisitor in qvOrder.visitors %}
-										
                                         {{qvVisitor.lastname}} {{qvVisitor.firstname}} {{qvVisitor.patronimic}} </br>{% endfor %}</td>
-                                        <td><button onclick="$('#VisitorForm').attr('action','{{path('select-visitor', {'qvOrder': qvOrder.id})}}')  ;$('#myModal .modal-dialog').load('{{ path('select-visitor', {'qvOrder': qvOrder.id}) }}');" class="btn btn-sm btn-default" data-toggle="modal" data-load-url="remote.html" data-target="#myModal">Зарегистрировать</button><a href="{{path('test',{'qvOrder': qvOrder.id})}}" class="btn btn-danger">тест, без модального окна РАБОТАЕТ</a></td>
+                                        <td><button onclick="$('#VisitorForm').attr('action','{{path('select-vis', {'qvOrder': qvOrder.id})}}')  ;$('#myModal .modal-dialog').load('{{ path('select-vis', {'qvOrder': qvOrder.id}) }}');" class="btn btn-sm btn-default" data-toggle="modal" data-load-url="remote.html" data-target="#myModal">Зарегистрировать</button>
+
                                         </tr>
                                     
                                         {% endfor %}
@@ -75,7 +70,6 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-
  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog"></div></div>
 		</div>

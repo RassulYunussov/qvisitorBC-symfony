@@ -15,11 +15,8 @@ class PageMenuController extends Controller
      */
     public function menuAction()
     {
-    	//$session = $this->getRequest()->getSession();
     if($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY'))
-    //if($session->has('login_gda_CMS'))
     {
-       
     	if($this->get('security.authorization_checker')->isGranted('ROLE_LEASER'))
 		return $this->render('AppBundle:PageMenu:leaser_menu.html.twig', array(
         ));

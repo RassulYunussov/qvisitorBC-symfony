@@ -17,37 +17,38 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Пожалуйста выберите рабочее место</h3>
                     </div>
-						                    <div class="panel-body">
-						                    	<div class="col-md-12">
-						                        {{form_start(form)}}
-						                        <table>
-						                        	<tbody>
-						                        		<tr>
-						                        			<td class="col-md-3">
-						              		   		{{ form_label(form.building) }}
-												    {{ form_errors(form.building) }}
-												    {{ form_widget(form.building, {'attr': {'class':'form-control'}}) }}
-												</td>
-												<td class="col-md-3">
-						              		   		{{ form_label(form.checkpoint) }}
-												    {{ form_errors(form.checkpoint) }}
-												    {{ form_widget(form.checkpoint, {'attr': {'class':'form-control'}}) }}
-												</td></tr></tbody></table>
-											    <br>
-											    <div class="form-inline form-input col-md-12 text-right btn-pdn">
-											                <button type="submit" class="btn btn-primary btn-md">
-						                   				 Подтвердить
-									                </button>
-									                {{ form_end(form) }}
-														 </div>
-									                </div>
-						            		</div>
-        </div></div>
+			<div class="panel-body">
+			<div class="col-md-12">
+			{{form_start(form)}}
+			<table>
+			<tbody>
+			<tr>
+			<td class="col-md-3">
+			{{ form_label(form.building) }}
+			{{ form_errors(form.building) }}
+			{{ form_widget(form.building, {'attr': {'class':'form-control'}}) }}
+			</td>
+			<td class="col-md-3">
+			{{ form_label(form.checkpoint) }}
+			{{ form_errors(form.checkpoint) }}
+			{{ form_widget(form.checkpoint, {'attr': {'class':'form-control'}}) }}
+			</td></tr></tbody></table>
+			<br>
+			<div class="form-inline form-input col-md-12 text-right btn-pdn">
+			<button type="submit" class="btn btn-primary btn-md">
+			Подтвердить
+			</button>
+			{{ form_end(form) }}
+			</div>
+			</div>
+			</div>
+        </div>
+    </div>
 </div>
 
-		<script src="{{asset('bootstrap1/bower_components/jquery/dist/jquery.min.js')}}"></script>
-
-<script> 
+{% endblock %}
+	{% block js %}
+	    <script> 
 function loadCheckpoints(buildingId){
 	$('#form_checkpoint').empty();
 	$.ajax({
@@ -55,11 +56,10 @@ function loadCheckpoints(buildingId){
         url: "{{ path('checkpoints')}}",
         data: {'id':buildingId},
         success: function(data){
-		        	$.each(JSON.parse(data),function(k,v){
-								        		$('#form_checkpoint').append('<option value="'+v.id+'">'+v.name+'</option>')
-								        	});
-		       	 }
-    });
+$.each(JSON.parse(data),function(k,v){
+$('#form_checkpoint').append('<option value="'+v.id+'">'+v.name+'</option>')
+});		       	 }
+});
 }
 $(function (){
 	loadCheckpoints($('#form_building option:selected').val());
@@ -68,4 +68,4 @@ $(function (){
 				});
 });
 </script>
-{% endblock %}
+	{% endblock %}

@@ -18,6 +18,7 @@
 							<a class="btn btn-default" href="{{ path('buildings_show',{'qvBuilding':qvBuilding.id}) }}">{{ qvBuilding.name }}
                         </a>
 								<a class="btn btn-default" href="{{ path('buildings_show',{'qvBuilding':qvBuilding.id}) }}">Управление этажами</a>
+							<a class="btn btn-default" href="{{ path('floors_show',{'qvBuilding':qvBuilding.id, 'id':qvFloor.id}) }}">Этаж - {{qvFloor.name}}</a>
 						</div>
 				{% endblock %}
 
@@ -33,6 +34,8 @@
 							<div class="col-md-6">
                 {{ form_start(form) }}
             {{ form_row(form.name) }}
+            {{form_widget(form._token)}}
+
     <br>
     <div class="form-inline form-input">
     	<table>
