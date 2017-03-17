@@ -3,7 +3,6 @@
 {% block title %}Личный кабинет администратора{% endblock %}
 
 {% block body %}
-	<link href="css/main.css" rel="stylesheet" type="text/css">
 	 <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
@@ -16,7 +15,8 @@
                     </div>
 					{% endblock %}
 				
-               <h1 class="page-header">Личный кабинет администратора</h1>
+               <h1 class="page-header">Личный кабинет администратора
+                </h1>
                 </div>
                 <!-- /.col-lg-12 -->
        <div class="row">
@@ -28,11 +28,21 @@
                         <!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="col-lg-6">
-                        <div class="panel panel-default" id="attendanceBC">   
+                        <div class="panel-heading">
+                        <form id="date_send" style="display:none;">
+                    Укажите период:
+                    С <input type="date" id="bd" name="begin_date">
+                    По <input type="date" id="ed" name="end_date"> 
+                <button type="submit" class="btn btn-default btn-md">Показать</button>
+                    </form>
                         </div>
-                          <div class="text-right"><a href="{{path('attendance')}}" class="btn btn-default btn-sm">Подробнее</a></div>
+                        <div class="panel panel-default" id="container1">
+                        </div>
+                        <div class="text-right"><a href="{{path('attendance')}}" class="btn btn-default btn-sm">Подробнее</a></div>
                     </div>
                     <div class="col-lg-6">
+                         <div class="panel-heading">
+                        </div>
                     <div class="panel panel-default" id="container2"> 
                     </div>
                     <div class="text-right"><a href="{{path('attendece-visitors')}}" class="btn btn-default btn-sm">Подробнее</a></div>
@@ -44,37 +54,54 @@
                 </div>
 
 
- <div class="col-lg-12" id="div2">
-                    <div class="panel panel-default">
+                <div class="col-lg-12" id="div2">
+                    <div class="panel panel-default" >
                         <div class="panel-heading">
                             Аналитика
                         </div>
+
                         <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <div class="col-lg-6">
-                        <div class="panel panel-default" id="container3">
+                    <div class="col-lg-8">
+                        <div class="panel panel-default">
+                        <div class="panel-heading">
+                        <form  name="select_kpp">
+                        <select name="buildings" id="builds">
+                        </select>
+                        <select name="checkpoints" id="lchecks">
+                        </select>               
+                    </form> 
                         </div>
-                        <div class="text-right panel-footer"><a href="{{path('visitorsbyorders')}}" class="btn btn-default btn-sm">Подробнее</a></div>
-                    </div>
-                    <div class="col-lg-6">
+                        <div class="panel-body">
+                            <div id="container3">
+                        </div>
+                        <div class="text-right panel-footer"><a href="{{path('visitorsbyorders')}}" class="btn btn-default btn-sm">Подробнее</a></div></div>
+                    </div></div>
+                    {#<div class="col-lg-6">
+                        <div class="panel-heading">
+                        </div>
                         <div class="panel panel-default" id="container4">
                         </div>
-                        <div class="text-right panel-footer"><a href="{{path('dependenceVisitors')}}" class="btn btn-default btn-sm">Подробнее</a></div>
+                        <div class="text-right panel-footer"><a href="{{path('dependencebyVisitors')}}" class="btn btn-default btn-sm">Подробнее</a></div>
                         
-                    </div>
+                    </div>#}    
                 </div>
             <div class="text-right panel-footer"><button id="back" class="btn btn-primary">Назад</button></div>
         </div>
-                </div>      
+                </div>  </div>    </div></div>
      
 {% endblock %}
 
 
 {% block js %}
-<script type="text/javascript">
-    
+<script src="{{asset('bootstrap1/js/AnalyticsforMainPage/attendance.js')}}">
 </script>
-
+<script src="{{asset('bootstrap1/js/AnalyticsforMainPage/attendancebyleasers.js')}}">
+</script>
+<script src="{{asset('bootstrap1/js/AnalyticsforMainPage/dependencebyVisitors.js')}}">
+</script>
+<script src="{{asset('bootstrap1/js/AnalyticsforMainPage/attendance.js')}}">
+</script>
 <script>
 $('#div2').hide();
     $(document).ready(function($) {

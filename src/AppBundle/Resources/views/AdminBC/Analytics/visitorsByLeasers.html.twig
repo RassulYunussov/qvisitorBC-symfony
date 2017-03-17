@@ -85,11 +85,12 @@ function drawGraph()
     $date_end = ($('#ed').val());
         $.ajax({
             type: 'POST',
-            url: "{{path('attendance_day')}}",
+            url: "{{path('leasers-attendance')}}",
             data: {dateBegin:$date_begin, dateEnd:$date_end},
             dataType: 'json',
             success: function(res){ 
             LeasersData(res);
+            console.log(res);
         }
     });
 }

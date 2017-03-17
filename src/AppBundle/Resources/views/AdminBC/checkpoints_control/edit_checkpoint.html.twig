@@ -15,7 +15,7 @@
                         </a>
                         <a class="btn btn-default" href="{{ path('buildings_list') }}">
                         	Управление зданиями</a>
-					<a class="btn btn-default" href="\adminbc\checkpoint\{{ qvCheckpoint.id }}\show">Просмотр информации о КПП</a>
+					<a class="btn btn-default" href="{{path('checkpoints_show',{'id':qvCheckpoint.id, 'qvBuilding':qvBuilding.id})}}">Просмотр информации о КПП</a>
 					<br>
 				{% endblock %}
 <br>

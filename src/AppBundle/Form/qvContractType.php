@@ -18,27 +18,19 @@ class qvContractType extends AbstractType
     {
         $builder
             ->add('name')
-             ->add('startdate', DateTimeType::class, array(
+           ->add('startdate', DateType::class, array(
     'widget' => 'single_text',
-
-    // do not render as type="date", to avoid HTML5 date pickers
-    'html5' => false,
-
-    // add a class that can be selected in JavaScript
     'attr' => ['class' => 'js-datepicker'],
+    'attr' => array(
+                'class' => 'type_date-inline form-margin'),
 ))
-             ->add('enddate', DateTimeType::class, array(
+  
+           ->add('enddate', DateType::class, array(
     'widget' => 'single_text',
-
-    // do not render as type="date", to avoid HTML5 date pickers
-    'html5' => false,
-
-    // add a class that can be selected in JavaScript
     'attr' => ['class' => 'js-datepicker'],
-))
-           
-            
-            ->add('leaser')
+    'attr' => array(
+                'class' => 'type_date-inline form-margin'),
+))          ->add('leaser')
             ->add('sectors')
             ;
     }

@@ -65,9 +65,9 @@
                 	{{ qvUser.leaser.name }}
                     </a>
                 </td>
-                <td class="center">Активен
-                    <div class="btn btn-xs">
-                    <a class="btn btn-success btn-xs" href="{{ path('user_disabled', { 'qvUser':qvUser.id }) }}">
+                <td class="center">
+                    <div class="btn btn-xs btn-infotext" data-title="Активен">
+                    <a class="btn btn-success btn-xs enabled" href="{{ path('user_disabled', { 'qvUser':qvUser.id }) }}">
                         <i class="fa fa-check"></i>
                     </a>
                     </div>
@@ -94,8 +94,8 @@
                     {{ qvUser.leaser.name }}
                 </a></td>
                 <td class="center">
-                     <div class="btn btn-xs">Отключен
-                          <a name="enable_btn" class="btn btn-danger btn-xs enabled" href="{{ path('user_enabled', { 'qvUser':qvUser.id }) }}">
+                     <div class="btn btn-xs btn-infotext" data-title="Отключен">
+                          <a class="btn btn-danger btn-xs enabled" href="{{ path('user_enabled', { 'qvUser':qvUser.id }) }}">
                         <i class="fa fa-lock"></i>
                     </a>
                     </div>

@@ -3,285 +3,272 @@
 {% block title %}Личный кабинет администратора{% endblock %}
 
 
-    {% block body %}
+  {% block body %}
 
-      <div id="page-wrapper">
-        <div class="row">
-            <div class="col-lg-12">
-                {% block breadcrumb %}
-                 <div id="breadcrumbs" class="btn-group btn-breadcrumb">
-                  <br>
-                  <a class="btn btn-default" href="{{ path('main_page') }}">
-                      <i class="fa fa-home"></i>
-                      Главная
-                  </a>
-                  <a class="btn btn-default" href="{{ path('leasers_list') }}">
-                      Управление арендаторами
-                  </a>
-                  <a class="btn btn-default" href="{{ path('contracts_list') }}">
-                    Управление контрактами                  
-                </a>
-            </div>
+    <div id="page-wrapper">
+      <div class="row">
+        <div class="col-lg-12">
+          {% block breadcrumb %}
+           <div id="breadcrumbs" class="btn-group btn-breadcrumb">
+            <br>
+            <a class="btn btn-default" href="{{ path('main_page') }}">
+              <i class="fa fa-home"></i>
+              Главная
+            </a>
+            <a class="btn btn-default" href="{{ path('leasers_list') }}">
+              Управление арендаторами
+            </a>
+            <a class="btn btn-default" href="{{ path('contracts_list') }}">
+              Управление контрактами                  
+            </a>
+          </div>
         {% endblock %}
         <div class="page-header">
-          <h2>Арендатор - {{qvLeaser.name}} </h2>
-          <h3 class="text-justify">Создание нового контракта</h3>
-          
+          <h2>Арендатор - {{qvLeaser.name}} </h2> 
+        </div>
+        <!-- /.col-lg-12 -->
       </div>
-      <!-- /.col-lg-12 -->
-  </div>
-  <div class="col-lg-6">
-    <div class="form-group">
-        <div id="qv_contract">
-          {{ form_start(form) }}
-          <table align="center">
-            <tbody>
-                <tr>
-                    <td class="col-md-3">
-                        {{ form_label(form.name) }}
-                        {{ form_errors(form.name) }}
-                        {{ form_widget(form.name, {'attr': {'class':'form-control'}}) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-3">
-                        {{ form_label(form.startdate) }}
-                        {{ form_errors(form.startdate) }}
-                        {{ form_widget(form.startdate, {'attr': {'class':'form-control'}}) }}
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-3">
-                        {{ form_label(form.enddate) }}
-                        {{ form_errors(form.enddate) }}
-                        {{ form_widget(form.enddate, {'attr': {'class':'form-control'}}) }}
-                        <br>
-                        <button type="button" onclick="$('#myModal .modal-dialog').load();" class="btn btn-sm btn-success" data-toggle="modal" data-target="#myModal">
-                            <i class="fa fa-plus"></i>
-                            Добавить сектора             
-                        </button>
-                    
-                        <input type="reset" id="reset_btn" class="btn btn-sm btn-default">
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="col-md-3"><br>
-                        <label id="label-form-sectors">Вы выбрали, следующие сектора: </label>
-                        {{ form_errors(form.sectors) }}
-                        {{form_widget(form.sectors, {'attr': {'class': 'form-control'}}) }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <br>
-        <table>
-            <tbody>        
-                <tr><td>&nbsp;</td></tr>
-                <tr class="text-right">
-                    <td class="col-md-3">
-                        <input class="btn btn-default" type="submit" value="Создать" />
-                        <a class="btn btn-default" href="{{ path('leasers_show', {'id':qvLeaser.id}) }}">Отменить</a>
-                    </td>
-                </tr>
-                {{form_end(form)}}
-            </tbody>
-        </table>
-        <br>
     </div>
+<div class="row">
+      <div class="col-lg-10">
+        <div class="form-group">
+          {{ form_start(form) }}
+          <div class="col-lg-8">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <p>Создание нового контракта</p>
+              </div>
+              <div class="panel-body">
+                <div class="form-margin">
+                  {{ form_label(form.name, null, {
+                  'label': 'Номер контракта'
+                })  }}
+                {{ form_errors(form.name) }}
+                {{ form_widget(form.name, {'attr': {'class':'form-control'}}) }}
+              </div>
+              <div class="form-margin">
+                {{ form_label(form.startdate, null, {
+                'label': 'Дата начала',
+              })  }}
+              {{ form_errors(form.startdate) }}
+              {{ form_widget(form.startdate) }}
+            </div>
+            <div class="form-margin">
+              {{ form_label(form.enddate, null, {
+              'label': 'Дата окончания',
+            })  }}
+            {{ form_errors(form.enddate) }}
+            {{ form_widget(form.enddate) }}
+          </div>
+
+          <div class="text-left">
+           <button type="button" onclick="$('#myModal .modal-dialog').load();" class="btn btn-sm btn-success" data-toggle="modal" data-target="#myModal">
+            <i class="fa fa-plus"></i>
+            Добавить сектора             
+          </button>
+        </div>
+        <div class="form-margin">
+          {{ form_label(form.sectors, null, {
+          'label': 'Вы выбрали, следующие сектора:'
+        })  }}
+        {{ form_errors(form.sectors) }}
+        {{ form_widget(form.sectors, {'attr': {'class':'form-control'}}) }}
+        {{form_widget(form._token)}}
+      </div>
+      <div class="form-inline text-right">
+        <input type="submit" class="btn btn-default" value="Создать" />
+        <a class="btn btn-default" href="{{ path('leasers_show', {'id':qvLeaser.id}) }}">Отменить</a></div>
+      </div></div>
+    </div>
+    {{ form_end(form) }}
+  </div>
 </div>
-<!-- /.col-lg-6-->
-</div>
-<!-- /.row -->
 </div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <!-- Modal -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="myModalLabel">
+  <div class="modal-dialog">
+    <!-- Modal -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title" id="myModalLabel">
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel-body">
+          <div class="col-lg-12">
 
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="panel-body">
-                    <div class="col-lg-12">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <tbody> 
+                  <tr>
+                    <form name="form" method="post">
+                      <br>
+                      <div>
+                        <div id="form_buildings" name="form[buildings]" class="">
+                        </div>
+                      </div>
 
-<div class="table-responsive">
-    <table class="table table-hover">
-        <tbody> 
-            <tr>
-            <form name="form" method="post">
-            <br>
-                <div>
-                    <div id="form_buildings" name="form[buildings]" class="">
-                    </div>
-                </div>
-                
-                <div>
-                    <div id="form_floors" name="form[floors]" class="">     
-                    </div>
-                </div>
-                
-                <div>
-                    <label for="form_sector" class="required">
-                       Выберите необходимые сектора:
-                    </label>
-                    <div class="" id="form_sector" name="form[sector][]" required="required">
-                    </div>
- {#<style>
-.text_demoBlock {
-padding-bottom:20px; /*отступ снизу*/
-width:100%; /*указываем общую ширину блока с колонками*/
-text-align:justify; /*выравнивание текста внутри колонок*/
-column-count: 2; /*количество колонок, на которое хотим разбить текст*/
--moz-column-count: 2; /*для мозилы*/
--webkit-column-count: 2; /*для webkit браузеров*/
-column-gap: 40px; /*отступ между колонками*/
--moz-column-gap: 40px;
--webkit-column-gap: 40px;
-column-rule: 0.1px solid #000; /*если требуется по дизайну, разделяем колонки линией*/
--moz-column-rule: 0.1px solid #000;
--webkit-column-rule: 0.1px solid #000;
-}
-</style>
-#}
-</div>
-                
-<table align="right">
-    <tbody>
-        <tr>
-            <td>
-                <button class="btn btn-default" type="submit" id='save'>    Закончить
-                </button>
-            </td>
-            
-            <td>
-                <button type="button" id="cancel" class="btn btn-default">
-                    Назад
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
-    </form>
-        </tr>
-            </tbody>
-                </table>
-            </div>
-        <!-- /.panel-body -->
+                      <div>
+                        <div id="form_floors" name="form[floors]" class="">     
+                        </div>
+                      </div>
+
+                      <div>
+                        <label for="form_sector" class="required">
+                         Выберите необходимые сектора:
+                       </label>
+                       <div class="" id="form_sector" name="form[sector][]" required="required">
+                       </div>
+                     </div>
+
+                     <table align="right">
+                      <tbody>
+                        <tr>
+                          <td>
+                            <button class="btn btn-default" type="submit" id='save'>    Закончить
+                            </button>
+                          </td>
+
+                          <td>
+                            <button type="button" id="cancel" class="btn btn-default">
+                              Назад
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </form>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- /.panel-body -->
         </div>
-    </div>
+      </div>
 {#  <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">
             Закрыть
         </button>
-    </div>#}
+      </div>#}
+    </div>
+  </div>
 </div>
+</div>
+
 <!-- /.modal-content -->
+<style>
+  input[type=radio]{
+    display: none;
+  }
+  ul.select-sector{
+    text-decoration: underline;
+    cursor: pointer;
+    color: #630b74; /* Цвет ссылки */
+  }
+</style>
 </div>
-</div>
-        <script> 
-            function loadBuildings(){
-                $('#form_buildings').empty();
-                $.ajax({
-                    type: "GET",
-                    url: "{{ path('buildings')}}",
-                    success: function(buildings){
-                        $.each(JSON.parse(buildings),function(k,v){
-                            $('#form_buildings').append('<div class="checkbox"><label> <input type="checkbox" value="'+v.id+'" name="'+v.name+'"/>Здание - '+v.name+'</label></div>')
-                        });
-                    }
-                });
-            }
+<!-- /#page-wrapper -->   
+{% endblock %}
+{% block js %}
+  <script> 
+    $(document).ready(function() {
+      var build;
+      $('label[for="qv_contract_leaser"]').hide();
+      $('#qv_contract_leaser').hide();
+      $('#qv_contract_leaser').attr({
+        disabled: 'true'
+      });
 
-            $(function (){
-                loadBuildings();
+      function loadBuildings(){
+        $('#form_buildings').empty();
+        $.ajax({
+          type: "GET",
+          url: "{{ path('buildings')}}",
+          success: function(buildings){
+            $.each(JSON.parse(buildings),function(k,v){
+              $('#form_buildings').append('<div class=""><label><ul class="select-sector"><li><input type="radio" value="'+v.id+'" name="'+v.name+'"/>'+v.name+'</li></ul></label></div>');
             });
+          }
+        });
+      }
 
-            function loadFloors(buildingId){
-                $('#form_floors').empty();
-                $.ajax({
-                    type: "GET",
-                    url: "{{ path('floors')}}",
-                    data: {'id':buildingId},
-                    success: function(data){
-                        $.each(JSON.parse(data),function(k,v){
-                            $('#form_floors').append('<div class="checkbox"><label> <input type="checkbox" value="'+v.id+'" name="'+v.name+'"/>Этаж - '+v.name+'</label></div>')
-                        });
-                    }
-                });
-            }
+      $(function (){
+        loadBuildings();
+      });
 
-            $(function (){
-                loadFloors($('#form_buildings :checked').val());
-                $('#form_buildings').change(function(){
-                    loadFloors($('#form_buildings :checked').val());
-                });
+      function loadFloors(buildingId){
+        $('#form_floors').empty();
+        $.ajax({
+          type: "GET",
+          url: "{{ path('floors')}}",
+          data: {'id':buildingId},
+          success: function(data){
+            $.each(JSON.parse(data),function(k,v){
+              $('#form_floors').append('<div class=""><label><ul class="select-sector"><li><input type="radio" value="'+v.id+'" name="'+v.name+'"/>Этаж - '+v.name+'</li></ul></label></div>')
             });
-        </script>
+          }
+        });
+      }
 
-        <script type="text/javascript">
+      $(function(){
+        loadFloors($('#form_buildings :checked').val());
+        $('#form_buildings').change(function(){
+          loadFloors($('#form_buildings :checked').val());
+        });
+      });
 
-            function loadSectors(floorId){
-                $('#form_sector').empty();
-                $.ajax({
-                    type: "GET",
-                    url: "{{ path('sectors')}}",
-                    data: {'id':floorId},
-                    success: function(data){
-                        $.each(JSON.parse(data),function(k,v){
-                            $('#form_sector').append('<div class="checkbox"><label> <input type="checkbox" value="'+v.id+'" name="'+v.name+'"/>Сектор - '+v.name+'</label></div>');
-                        });
-                    }
-                });
-            }
-            $(function (){
-                loadSectors($('#form_floors :checked').val());
-                $('#form_floors').change(function(){
-                    loadSectors($('#form_floors :checked').val());
-                });
+      function loadSectors(floorId){
+        $('#form_sector').empty();
+        $.ajax({
+          type: "GET",
+          url: "{{ path('sectors')}}",
+          data: {'id':floorId},
+          success: function(data){
+            $.each(JSON.parse(data),function(k,v){
+              $('#form_sector').append('<div class=""><label> <input type="checkbox" value="'+v.id+'" name="'+v.name+'"/>Сектор - '+v.name+'</label></div>');
             });
-        </script>
+          }
+        });
+      }
+      $(function (){
+        loadSectors($('#form_floors :checked').val());
+        $('#form_floors').change(function(){
+          loadSectors($('#form_floors :checked').val());
+        });
+      });
 
+      $('#myModalLabel').text('Выбор здания');
+      $('#form_sectors').empty();
 
-        <script>
-            $(document).ready(function()
-            {
-                $('#myModalLabel').text('Выбор здания');
-                var $build;
+      var cancelBuildingChange = function(){
+        $('#form_floors').hide();
+        $('label[for="form_floors"]').hide();
+        $('#cancel').hide();
+        $('#form_sector').hide();
+        $('label[for="form_sector"]').hide();
+        $('#form_buildings').show();
+        $('label[for="form_buildings"]').show();
+        $('#myModalLabel').text('Выбор здания');
+        $('input:radio').removeAttr('checked');
+        $('#save').hide();
+      };
 
-                var cancelBuildingChange = function(){
-                    $('#form_floors').hide();
-                    $('label[for="form_floors"]').hide();
-                    $('#form_buildings').prop('selectedIndex', 0); 
-                    $('#cancel').hide();
-                    $('#form_sector').hide();
-                    $('label[for="form_sector"]').hide();
-                    $('#form_buildings').show();
-                    $('label[for="form_buildings"]').show();
-                    $('#myModalLabel').text('Выбор здания');
-                    $('input:checkbox').removeAttr('checked');
-                };
+      var cancelFloorChange = function(){
+        $('#form_buildings').hide();
+        $('label[for="form_buildings"]').hide();
+        $('#form_sector').hide();
+        $('label[for="form_sector"]').hide();
+        $('#form_floors').show();
+        $('label[for="form_floors"]').show();
+        $('#myModalLabel').text(build);
+        $('#cancel').show();
+        $('#cancel').on('click', cancelBuildingChange);
+        $('input:radio').removeAttr('checked');
+      };
 
-                var cancelFloorChange = function(){
-                    $('#form_buildings').hide();
-                    $('label[for="form_buildings"]').hide();
-                    $('#form_floors').prop('selectedIndex', 0);
-                    $('#form_sector').hide();
-                    $('label[for="form_sector"]').hide();
-                    $('#form_floors').show();
-                    $('label[for="form_floors"]').show();
-                    $('#myModalLabel').text($build);
-                    $('#cancel').show();
-                    $('#cancel').on('click', cancelBuildingChange);
-                    $('input:checkbox').removeAttr('checked');
-                };
-
-                $('#form_sectors').replaceWith('<select multiple="true" class="form-control form-inline form-margin" id="form_sectors"></select>');
+                //$('#form_sectors').replaceWith('<select multiple="true" class="form-control form-inline form-margin" id="form_sectors"></select>');
                 $('#save').hide();
-                $('#label-form-sectors').hide();
+                $('label[for="form_sectors"]').hide();
                 $('#form_sectors').hide();
                 $('#form_floors').hide(); 
                 $('#cancel').hide();
@@ -290,70 +277,67 @@ column-rule: 0.1px solid #000; /*если требуется по дизайну
                 $('#form_sector').hide();
                 $('label[for="form_sector"]').hide();
 
-                //$('#form_buildings').prepend($ ('<option value="0"></option>'));
-                //$("#form_buildings [value='0']").attr("selected", "selected");
-
                 $('#form_buildings').change(function()
                 {
-                  //  $('#form_floors').prepend($ ('<option value="0"></option>'));
-                    //$("#form_floors [value='0']").attr("selected", "selected");
-                    
-                    $('label[for="form_buildings"]').hide();
-                    $('#form_buildings').hide('fast', function(){
-                    $build = $('input:checked').attr('name');
-                    $('input:checkbox').removeAttr('checked');
-                    $('#myModalLabel').text($build);
-                    });
-                    $('#form_floors').show();
-                    $('label[for="form_floors"]').show();
-                    $('#cancel').show();
-                    $('#cancel').on('click', cancelBuildingChange);
+                  $('label[for="form_buildings"]').hide();
+                  $('#form_buildings').hide('fast', function(){
+                    build = $('input:checked').attr('name');
+                    $('input:radio').removeAttr('checked');
+                    $('#myModalLabel').text(build);
+                  });
+                  $('#form_floors').show();
+                  $('label[for="form_floors"]').show();
+                  $('#cancel').show();
+                  $('#cancel').on('click', cancelBuildingChange);
                 });
 
                 $('#form_floors').change(function()
                 {      
-                    $('label[for="form_floors"]').hide();
-                    $('#form_floors').hide('fast', function(){
-                        var $floor = $('input:checked').attr('name');
-                        $('#myModalLabel').text($build + ' / Этаж - ' + $floor);
-                    });
-                    
-                    $('#save').show();
-                    
-                    $('#form_sector').show();
-                    $('label[for="form_sector"]').show();
-                    
-                    $('#cancel').show();
-                    $('#cancel').on('click', cancelFloorChange);
+                  $('label[for="form_floors"]').hide();
+                  $('#form_floors').hide('fast', function(){
+                    var floor = $('input:checked').attr('name');
+                    $('#myModalLabel').text(build + ' / Этаж - ' + floor);
+                  });
+
+                  $('#save').show();
+
+                  $('#form_sector').show();
+                  $('label[for="form_sector"]').show();
+
+                  $('#cancel').show();
+                  $('#cancel').on('click', cancelFloorChange);
                 });
 
+
                 $('#save').on('click', function(){
-                    var valuename = [];
-                    var valueid = [];
-                    
-                      $('#form_sector :checked').each(function()
+                  var valuename = [];
+                  var valueid = [];
+                  var n = {{qvLeaser.id}};
+                  $("#my_select [value=n]").attr("selected", "selected");
+                  console.log(n);
+                  $('#form_sector :checked').each(function()
+                  {
+                    valueid.push($(this).val());
+                    valuename.push($(this).attr('name'));
+                    for (key in valueid){ 
+                      $('#form_sectors').append('<option value="'+ valueid[key] +'"> '+valuename[key]+' </option>');
+                    }
+                    $('label[for="form_sectors"]').show();
+                    $('#form_sectors').show();
+
+                    $('#form_sectors option').each(function()
                     {
-                        valueid.push($(this).val());
-                        valuename.push($(this).attr('name'));
-                        for (key in valueid){ 
-                            $('#form_sectors').append('<option value="'+ valueid[key] +'"> '+valuename[key]+' </option>');}
-                            $('#label-form-sectors').show();
-                            $('#form_sectors').show();
-                            
-                            $('#form_sectors :selected').each(function()
-                            {
-                                this.selected=true;
-                            });
-                            valueid = [];
-                            valuename = [];
-                            $('#myModal').modal('hide');
-                            $('input:checkbox').removeAttr('checked');
+                      this.selected=true;
                     });
-                    return false;
+                    valueid = [];
+                    valuename = [];
+                    $('#myModal').modal('hide');
+                    $('input:checkbox').removeAttr('checked');
+                  });
+                  cancelFloorChange();
+                  cancelBuildingChange();
+                  return false;
                 });
-            });
+              });
 </script>
-</div>  
-</div> 
-<!-- /#page-wrapper -->   
 {% endblock %}

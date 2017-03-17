@@ -26,13 +26,17 @@
             	
 					<td>
 					{% for a in qvModalContract.sectors %}
-						{{ a.name }}
+						{{a.name}}{% if not loop.last %},{% endif %}
 					{% endfor %}
 					</td>
 			</tr>
 			<tr>
 				<td>Статус договора</td>
-				<td></td>
+				<td>{% if qvModalContract.enddate|date('Y-m-d') < "now"|date("Y-m-d")%}
+					Не действителен
+				{% else %}
+				Действителен
+				{% endif %}</td>
 			</tr>
 			
 			<tr>
