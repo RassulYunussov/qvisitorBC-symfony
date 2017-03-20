@@ -15,7 +15,7 @@ class qvOrderRepository extends \Doctrine\ORM\EntityRepository
 		return $this->getEntityManager()
         ->createQuery(
           'SELECT c from AppBundle:qvOrder c 
-          WHERE c.edate > CURRENT_DATE() AND c.closetime > CURRENT_TIME()'
+          WHERE c.edate > CURRENT_DATE()'//' AND c.closetime > CURRENT_TIME()'
             )->getResult();
 	}
 }

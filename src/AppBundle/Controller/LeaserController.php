@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use AppBundle\Entity\qvOrder;
 use AppBundle\Entity\qvLeaser;
 use AppBundle\Entity\qvUser;
@@ -76,6 +78,7 @@ class LeaserController extends Controller
      */
     public function createOrderAction(Request $request)
     {
+
         $em = $this->getDoctrine()->getManager();
         $data = array();
 
@@ -126,12 +129,39 @@ class LeaserController extends Controller
                 'multiple'  => true
             ])
            ->add('select', ButtonType::class, array(
-                    'label'=>'Выбрать', 
+                    'label'=>'Добавить', 
                 'attr' =>array(
                     'class'=> 'btn btn-default',
                     'data-toggle'=> 'modal',
                     'data-target'=>'#myModal',
                     'onclick'=>"$('#myModal .modal-dialog').load('{{path('new_visitor')}}');"), ))
+           ->add('lastnames', CollectionType::class, array(
+                'entry_type' => TextType::class,
+                'allow_add' => true,
+                'prototype'=>true,
+            ))
+           ->add('firstnames', CollectionType::class, array(
+                'entry_type' => TextType::class,
+                'allow_add' => true,
+                'prototype'=>true,
+            ))
+           ->add('patronimics', CollectionType::class, array(
+                'entry_type' => TextType::class,
+                'allow_add' => true,
+                'prototype'=>true,
+            ))
+           ->add('birthdates', CollectionType::class, array(
+                'entry_type' => BirthdayType::class,
+                'allow_add' => true,
+                'prototype'=>true,
+                'entry_options'=>array(
+                    'widget'=>'single_text',)
+            ))
+           ->add('genders', CollectionType::class, array(
+                'entry_type' => TextType::class,
+                'allow_add' => true,
+                'prototype'=>true,
+            ))
             ->getForm()
         ;
         
@@ -192,10 +222,60 @@ class LeaserController extends Controller
                $qvOrder->addVisitors($visitor);
                 }
 
+            $lastnames = array();
+            $firstnames = array();
+            $patronimics = array();
+            $birthdates = array();
+            $genders = array();
+
+
+
+            $j=0;
+            foreach ($data['lastnames'] as $i) {
+                $lastnames[$j] = $i;
+                $j=$j+1;
+            }
+            $j=0;
+            foreach ($data['firstnames'] as $i) {
+                $firstnames[$j] = $i;
+                $j=$j+1;
+            }
+            $j=0;
+            foreach ($data['patronimics'] as $i) {
+                $patronimics[$j] = $i;
+                $j=$j+1;
+            }
+            $j=0;
+            foreach ($data['birthdates'] as $i) {
+                $birthdates[$j] = $i;
+                $j=$j+1;
+            }
+            $j=0;
+            foreach ($data['genders'] as $i) {
+                $genders[$j] = $i;
+                $j=$j+1;
+            }
+
+            for($i = 0; $i<count($data['lastnames']); $i++)
+            {
+                $newVisitor = new qvVisitor();
+
+                $newVisitor->setLastname($lastnames[$i]);
+                $newVisitor->setFirstname($firstnames[$i]);
+                $newVisitor->setPatronimic($patronimics[$i]);
+                $newVisitor->setBirthdate($birthdates[$i]);
+                $qvGender = $em->getRepository('AppBundle:qvGender')->findOneBy(array('id'=>$genders[$i]));
+                $newVisitor->setGender($qvGender);
+                $em->persist($newVisitor);
+                $em->flush();
+                $qvOrder->addVisitors($newVisitor);
+
+            }
+            
             $em->persist($qvOrder);
             $em->flush();
 
-    return $this->redirectToRoute('show_orders');
+    return new Response("hello"); //$this->redirectToRoute('show_orders');
 }
         
         return $this->render('AppBundle:Leaser:create_order.html.twig', array(
@@ -394,5 +474,6 @@ class LeaserController extends Controller
 
     	}
     }
+
 
 }

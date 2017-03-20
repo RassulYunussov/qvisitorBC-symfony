@@ -127,7 +127,7 @@ class CheckpointController extends Controller
         $qvVisitors = array();
         $em = $this->getDoctrine()->getManager();
         $qvEntrances = $em->getRepository('AppBundle:qvEntrance')->findCurrentEntrance();
-        return $this->render('AppBundle:Checkpoint:entrance.html.twig', array( 
+        return $this->render('AppBundle:Checkpoint:entrance/entrance.html.twig', array( 
                 'qvEntrances'=>$qvEntrances
                ));
     }
@@ -145,7 +145,7 @@ class CheckpointController extends Controller
             $qvEntrance = $em->getRepository('AppBundle:qvEntrance')->findOneBy(array('id'=>$id));
             
             $visitorDoc = $em->getRepository('AppBundle:qvVisitorDoc')->findOneBy(array('id'=>$qvEntrance->getVisitor()->getId()));
-            return $this->render('AppBundle:Checkpoint:entrance_info.html.twig', array(
+            return $this->render('AppBundle:Checkpoint:entrance/entrance_info.html.twig', array(
                     'qvEntrance' => $qvEntrance,
                     'visitorDoc' => $visitorDoc
             ));
@@ -161,7 +161,7 @@ class CheckpointController extends Controller
     {
     	$em = $this->getDoctrine()->getManager();
         $qvOrders = $em->getRepository('AppBundle:qvOrder')->findActiveOrders();
-    	return $this->render('AppBundle:Checkpoint:entrancereg.html.twig', array(
+    	return $this->render('AppBundle:Checkpoint:entrance/entrancereg.html.twig', array(
             'qvOrders'=>$qvOrders,
     	));
     }
@@ -178,7 +178,7 @@ class CheckpointController extends Controller
     	
     	$qvHotEntrances = $em->getRepository('AppBundle:qvHotEntrance')->findCurrentHotEntrance();
     	
-    	return $this->render('AppBundle:Checkpoint:hotentrance.html.twig', array(
+    	return $this->render('AppBundle:Checkpoint:hotentrance/hotentrance.html.twig', array(
     			'qvHotEntrances' => $qvHotEntrances,
     	));
     	
@@ -194,23 +194,10 @@ class CheckpointController extends Controller
     public function selectVisitorModalAction(Request $request, $qvOrder)
     {
     if($request->isXmlHttpRequest()) {
-        $data = array();
             $em = $this->getDoctrine()->getManager();
-            $form = $this->createFormBuilder($data)
-                ->add('visitors', EntityType::class, [
-                'class'     => 'AppBundle:qvVisitor',
-                'query_builder' => function (qvVisitorRepository $repo) use ($qvOrder) {
-                    return $repo->createQueryBuilder('f')
-                        ->innerJoin('f.orders', 'o')
-                        ->where('o.id = :id')
-                        ->setParameter('id', $qvOrder);
-                },
-                'multiple'  => true,
-                'expanded'=> true
-            ])
-                ->getForm();
+            
             $qvVisitors = $em->getRepository('AppBundle:qvVisitor')->findVisitorByOrder($qvOrder);
-            return $this->render('AppBundle:Checkpoint:selectvisitor.html.twig', array(
+            return $this->render('AppBundle:Checkpoint:entrance/selectvisitor.html.twig', array(
                     'qvVisitors' => $qvVisitors,
                     'qvOrder'=>$qvOrder,
                     
@@ -268,7 +255,7 @@ class CheckpointController extends Controller
     		 
     		$qvHotEntrance = $em->getRepository('AppBundle:qvHotEntrance')->findOneBy(array('id'=>$id));
     		
-    		return $this->render('AppBundle:Checkpoint:hotentrancedetails.html.twig', array(
+    		return $this->render('AppBundle:Checkpoint:hotentrance/hotentrancedetails.html.twig', array(
     				'qvHotEntrance' => $qvHotEntrance,
     		));
     	}
@@ -354,7 +341,7 @@ class CheckpointController extends Controller
     return $this->redirectToRoute('hotentranc', array());
 }
 
-        return $this->render('AppBundle:Checkpoint:hotentrancereg.html.twig', array(
+        return $this->render('AppBundle:Checkpoint:hotentrance/hotentrancereg.html.twig', array(
             
             'data' => $data,
             'form' => $form->createView(),
@@ -375,7 +362,7 @@ class CheckpointController extends Controller
         $qvEntrances = $em->getRepository('AppBundle:qvEntrance')->findEntrancesByVisitor($qvVisitor);
         if (count($qvEntrances) == 0) {
             $message = "У данного человека нет посещений";
-             return $this->render('AppBundle:Checkpoint:visitor_info_error.html.twig', array(
+             return $this->render('AppBundle:Checkpoint:visitor/visitor_info_error.html.twig', array(
             'qvVisitor'=>$qvVisitor,
             'message'=>$message));
         }
@@ -385,7 +372,7 @@ class CheckpointController extends Controller
             $qvUserPassport = $em->getRepository('AppBundle:qvUserPassport')->findUserpassportByEntrance($qvEntrance);
 
         }
-        return $this->render('AppBundle:Checkpoint:visitor_info.html.twig', array(
+        return $this->render('AppBundle:Checkpoint:visitor/visitor_info.html.twig', array(
             'qvVisitor'=>$qvVisitor,
             'qvEntrances'=>$qvEntrances,
             'qvUserPassport'=>$qvUserPassport));
@@ -407,7 +394,7 @@ class CheckpointController extends Controller
             $qvUserPassport = $em->getRepository('AppBundle:qvUserPassport')->findUserpassportByOrder($qvOrder);
         }
         
-        return $this->render('AppBundle:Checkpoint:orders_list.html.twig', array(
+        return $this->render('AppBundle:Checkpoint:visitor/orders_list.html.twig', array(
             'qvOrders' => $qvOrders,
             'qvUserPassport' => $qvUserPassport
             ));

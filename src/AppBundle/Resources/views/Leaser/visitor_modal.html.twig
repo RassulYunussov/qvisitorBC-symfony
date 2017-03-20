@@ -1,48 +1,46 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Список Ваших посетителей</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-12">
+                    <div class="form-group input-group">
+                        <input type="text" class="form-control" placeholder="Найти">
+                        <span class="input-group-btn"><button class="btn btn-default" type="button"><i class="fa fa-search"></i></button></span>
+                    </div>
+            </div>
+        </div>
+        <div class="dataTable_wrapper">
+            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <thead>
+                    <tr>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Отчество</th>
+                    </tr>
+                </thead>
+                <tbody id="visitors">
+                    {%for visitor in visitors%}
+                    <tr value="{{visitor.id}}" data-dismiss="modal" name="{{visitor.firstname}}">
+                    <td >{{visitor.lastname}}</td>
+                    <td >{{visitor.firstname}}</td>
+                    <td  >{{visitor.patronimic}}</td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+        <div style="display:none">
+            
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a  class="btn btn-sm btn-default" href="{{path('new_visitor')}}">111</a>
 
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                    <h4 class="modal-title" id="myModalLabel">Список Ваших посетителей</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="row">
-                                                        <div class="col-lg-12">
-                                                                <div class="form-group input-group">
-                                                                    <input type="text" class="form-control" placeholder="Найти">
-                                                                    <span class="input-group-btn"><button class="btn btn-default" type="button"><i class="fa fa-search"></i></button></span>
-                                                                </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="dataTable_wrapper">
-                                                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Фамилия</th>
-                                                                    <th>Имя</th>
-                                                                    <th>Отчество</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="visitors">
-                                                                {%for visitor in visitors%}
-                                                                <tr value="{{visitor.id}}" data-dismiss="modal" name="{{visitor.firstname}}">
-                                                                <td >{{visitor.lastname}}</td>
-                                                                <td >{{visitor.firstname}}</td>
-                                                                <td  >{{visitor.patronimic}}</td>
-                                                                </tr>
-                                                                {%endfor%}
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <div style="display:none">
-                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <a  class="btn btn-sm btn-default" href="{{path('new_visitor')}}">111</a>
+        <button onclick="$('#newVisitorModal .modal-dialog').load('{{path('new_visitor')}}');" class="btn btn-sm btn-default" data-toggle="modal" data-target="#newVisitorModal" data-dismiss="modal">Создать</button>
 
-                                                    <button onclick="$('#newVisitorModal .modal-dialog').load('{{path('new_visitor')}}');" class="btn btn-sm btn-default" data-toggle="modal" data-target="#newVisitorModal" data-dismiss="modal">Создать</button>
-
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-                                                </div>
-                                            </div>
-                                    
+    <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+    </div>
+</div>
