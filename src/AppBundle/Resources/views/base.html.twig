@@ -24,41 +24,7 @@
 	
 	<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
-	<style type="text/css">
-	.btn-infotext{
-		color: #2c442a;
-	}
-			.btn-infotext {
-				display: inline-block; /* Строчно-блочный элемент */
-				position: relative; /* Относительное позиционирование */
-			}
-			.btn-infotext:hover::after {
-				content: attr(data-title); /* Выводим текст */
-				position: absolute; /* Относительное позиционирование */
-				right: 10%; top: 100%; /* Положение подсказки */
-				z-index: 1; /* Отображаем подсказку поверх других элементов */
-				background: rgba(255,255,230,0.9); /* Полупрозрачный цвет фона */
-				font-family: Arial, sans-serif; /* Гарнитура шрифта */
-				font-size: 10px; /* Размер текста подсказки */
-				padding: 3px 5px; /* Поля */
-				border: 0.5px solid #333; /* Параметры рамки */
-			}
-			.label-hide{
-				display: none;
-			}
-	</style>
-	 <style>
-        .disabled  {
-        	background: #d8d3d3;
-        	pointer-events: none;
-            cursor: default;
-        	color: #9f7070;	
-        }
-       .enabled {
-		    pointer-events: auto;
-    		cursor: pointer;
-}
-        </style>
+	<link href="{{ asset('bootstrap1/dist/css/data-titleForButtons.css')}}" rel="stylesheet" type="text/css">
 
 	{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />

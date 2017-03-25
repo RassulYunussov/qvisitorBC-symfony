@@ -2,50 +2,56 @@
 
 {% block title %}Смена пароля{% endblock %}
 
-{% block body %}
-	<link href="css/main.css" rel="stylesheet" type="text/css">
-	
-	 <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                	{% block breadcrumb %}
-                		<br>
-					<div id="breadcrumbs" class="btn-group btn-breadcrumb">
-						<a class="btn btn-default" href="{{ path('main_page') }}">
-							<i class="fa fa-home"></i>
-						</a>
-						<a  class="btn btn-default" href="{{ path('userprofile') }}">Профиль пользователя</a>
-					</div>
+	{% block body %}
+		<div id="page-wrapper">
+			<div class="row">
+				<div class="col-lg-12">
+					{% block breadcrumb %}
+						<br>
+						<div id="breadcrumbs" class="btn-group btn-breadcrumb">
+							<a class="btn btn-default" href="{{ path('main_page') }}">
+								<i class="fa fa-home"></i>
+							</a>
+							<a  class="btn btn-default" href="{{ path('userprofile') }}">Профиль пользователя</a>
+						</div>
 					{% endblock %}
-				
-               <h1 class="page-header">Здесь вы можете сменить свой пароль</h1>
-                </div>
-                <!-- /.col-lg-12 -->
-				<div class="row">
-					<div class="col-lg-6">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								Заполните данную форму
-							</div>
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-lg-6">
-									{{form_start(form)}}
-								<div id="oldpass" class="form-inline">
-									{{form_row(form.old_password, {'attr':{'class': 'form-inline form-control'}})}}
-								</div>
-									{{form_row(form.password.first) }}
-									{{form_row(form.password.second) }}
-									
-<br><input type="submit" name="Save" value="Изменить" class="btn btn-default btn-xs">
-<a href="main_page" class="btn btn-default btn-xs">Отменить </a>
-									{{form_end(form)}}
-									</div>
+
+					<h1 class="page-header">Здесь вы можете сменить свой пароль</h1>
+					<h2>
+						{% for flashMessage in app.session.flashbag.get('success') %}
+							<div class="success text-success">{{ flashMessage }}</div>
+						{% endfor %}
+					</h2>
+				</div>
+				<!-- /.col-lg-12 -->
+
+<div class="row">
+	<div class="col-lg-8">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Заполните данную форму
+			</div>
+				<div class="panel-body">
+					<div class="row">
+						{{form_start(form)}}
+							<div id="oldpass" class="col-lg-8">
+								{{form_label(form.oldPassword)}} <br>
+								{{form_widget(form.oldPassword)}}
+								<label>
+									<input type="checkbox" id="checkPassword"> 
+										Показать пароль
+								</label>
+										{{form_widget(form.newPassword)}}
+										<br>
+										<div class="text-right">
+											<input type="submit" name="Save" value="Изменить" class="btn btn-default btn-md">
+											<a href="main_page" class="btn btn-default btn-md">
+												Отменить
+											</a>
+										</div>
+										{{form_end(form)}}
 									<!-- /.col-lg-6 (nested) -->
-									
-										
 									</div>
-									<!-- /.col-lg-6 (nested) -->
 								</div>
 								<!-- /.row (nested) -->
 							</div>
@@ -55,38 +61,33 @@
 					</div>
 					<!-- /.col-lg-12 -->
 				</div>
-	</div>
-	</div>
-{% endblock %}
-{% block js %}
-	<script>
-		 $(document).ready(function() {
-        $('#form_password_second').change(function() {
-            var pass = $("#form_password_first").val();
-            var pass_rep = $("#form_password_second").val();
+			</div>
+		</div>
+	{% endblock %}
+	{% block js %}
+		<script>
+			$(document).ready(function() {
+				$('#form_password_second').change(function() {
+					var pass = $("#form_password_first").val();
+					var pass_rep = $("#form_password_second").val();
 
-            if (pass != pass_rep) {
-                $("#form_password_second").css('border', 'red 2px solid');
-              	alert('Введенные пароли не совпадают! Пожалуйста, попробуйте еще раз.');	
-    }else {     $("#form_password_second").css('border', '#3c763d 1px solid');}
+					if (pass != pass_rep) {
+						$("#form_password_second").css('border', 'red 2px solid');
+						alert('Введенные пароли не совпадают! Пожалуйста, попробуйте еще раз.');	
+					}else {     $("#form_password_second").css('border', '#3c763d 1px solid');}
 
-        });
-    });
-	</script>
-	<script>
-  $(document).ready(function(){
-	$("#checkPassword").on("change", function(){
-   		if(this.checked) {
-      $("#form_old_password").attr("type", "text");
-    } else {
-      $("#form_old_password").attr("type", "password");
-    }
-  })
-});
-  $('#oldpass').append('<label><input type="checkbox" id="checkPassword"> Показать пароль</label>');
-  $(document).ready(function(){
-    $( document ).on( 'focus', ':input', function(){
-    });
-});
-</script>
-{% endblock %}
+				});
+			});
+		</script>
+		<script>
+			$(document).ready(function(){
+				$("#checkPassword").on("change", function(){
+					if(this.checked) {
+						$("#form_oldPassword").attr("type", "text");
+					} else {
+						$("#form_oldPassword").attr("type", "password");
+					}
+				});
+			});
+		</script>
+	{% endblock %}

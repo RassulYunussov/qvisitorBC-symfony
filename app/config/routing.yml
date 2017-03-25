@@ -3,7 +3,7 @@ app:
     type:     annotation
 leaser_registration:
     path:     /leasers/create
-    defaults: { _controller: AppBundle:AdminBCController:leasers/create }
+    defaults: { _controller: AppBundle:AdminBCControllers:AdminBCController/leasers/create }
 
 
     

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\AdminBCControllers;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -40,7 +40,7 @@ use AppBundle\Entity\qvRole;
  * @Security("has_role('ROLE_ADMIN')")
  */
 
-class AdminBCBuildingsController extends Controller
+class BuildingsController extends Controller
 {
 	 /**
      * Lists all qvBuilding entities.

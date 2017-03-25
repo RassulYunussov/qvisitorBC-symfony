@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 
 class qvUserPhotoType extends AbstractType
 {
@@ -16,7 +18,7 @@ class qvUserPhotoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('photo')
+            ->add('photo', FileType::class, array('label' => 'Ваше фото'))
             ->add('photodate', DateTimeType::class, array(
     'placeholder' => array(
         'year' => 'Year', 'month' => 'Month', 'day' => 'Day',

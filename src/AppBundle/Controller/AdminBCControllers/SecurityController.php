@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\AdminBCControllers;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -37,7 +37,7 @@ use AppBundle\Entity\qvRole;
  * @Route("/adminbc/security")
  * @Security("has_role('ROLE_ADMIN')")
  */
-class AdminBCSecurityController extends Controller
+class SecurityController extends Controller
 {
 	 /**
      * Lists all qvUserPassport entities.

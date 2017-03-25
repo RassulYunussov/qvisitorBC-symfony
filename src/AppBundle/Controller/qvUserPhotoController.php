@@ -6,6 +6,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use AppBundle\Entity\qvUserPhoto;
 use AppBundle\Form\qvUserPhotoType;
 
@@ -42,11 +45,29 @@ class qvUserPhotoController extends Controller
     public function newAction(Request $request)
     {
         $qvUserPhoto = new qvUserPhoto();
-        $form = $this->createForm('AppBundle\Form\qvUserPhotoType', $qvUserPhoto);
+        
+        $form = $this->createForm(qvUserPhotoType::class, $qvUserPhoto);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+             // $file stores the uploaded jpeg file
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+            $file = $qvUserPhoto->getPhoto();
+
+              // Generate a unique name for the file before saving it
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+               // Move the file to the directory where brochures are stored
+                $file->move(
+                $this->getParameter('images_directory'),
+                $fileName
+            );
+
+            // Update the 'brochure' property to store the PDF file name
+            // instead of its contents
+            $qvUserPhoto->setPhoto($fileName);
+
             $em->persist($qvUserPhoto);
             $em->flush();
 
@@ -84,7 +105,7 @@ class qvUserPhotoController extends Controller
     public function editAction(Request $request, qvUserPhoto $qvUserPhoto)
     {
         $deleteForm = $this->createDeleteForm($qvUserPhoto);
-        $editForm = $this->createForm('AppBundle\Form\qvUserPhotoType', $qvUserPhoto);
+        $editForm = $this->createForm(qvUserPhotoType::class, $qvUserPhoto);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

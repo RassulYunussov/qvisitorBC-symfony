@@ -92,7 +92,7 @@ function visitorData(item) {
     },
     series: [{   
         name: 'Посещаемость',
-        data: item,
+        data: item
         }],
 });
 }
@@ -105,7 +105,13 @@ function drawGraph(){
             data: {dateBegin:$date_begin, dateEnd:$date_end},
             dataType: 'json',
             success: function(res){
-            visitorData(res);
+            var series = { data: []};
+             $.each(res, function(key, val) {
+                        var d = val[0].split("-");
+                        var x = Date.UTC(d[0],d[1],d[2]);
+                        series.data.push([x,val[1]]);
+                    });
+            visitorData(series.data);
         }
     });
 }

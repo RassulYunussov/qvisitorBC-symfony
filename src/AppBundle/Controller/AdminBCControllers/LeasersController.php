@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\AdminBCControllers;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -33,14 +33,14 @@ use AppBundle\Entity\qvRole;
 
 
 /**
- * AdminBCController 
+ * LeasersController 
  * 
  * @Route("/adminbc/leasers")
  * @Security("has_role('ROLE_ADMIN')")
  */
-class AdminBCLeasersController extends Controller
+class LeasersController extends Controller
 {
-	    /**
+	/**
      * @Route("/listOfLeasers", name="leasers_list")
      * 
      * @Method("GET")
