@@ -66,11 +66,18 @@ class LeaserController extends Controller
     public function showOrdersAction()
     {
     	$em = $this->getDoctrine()->getManager();
-        $qvOrders = $em->getRepository('AppBundle:qvOrder')->findActiveOrders();
+        $qvOrders = $em->getRepository('AppBundle:qvOrder')->findActiveOrdersForLeaser();
         return $this->render('AppBundle:Leaser:orders_list.html.twig', array(
         		'qvOrders'=>$qvOrders,
         ));
     }
+
+
+
+
+
+
+
 
     /**
      * @Route("/orders/create-order", name="create_order")

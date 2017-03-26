@@ -25,7 +25,7 @@ $(document).ready(function(){
               }
         })
         if (i == 0){
-        $('#visitors-input').append('<div class="visitor  form-margin2 form-group input-group"><input id="'+$(this).attr('value')+'" type="text" disabled="true" class="form-control" value="'+$(this).attr('name')+'"/><span class="input-group-btn"  id="'+$(this).attr('value')+'"><button onclick="a();" class="btn btn-default" id="oldDelete" type="button"><i class="fa fa-times"></i></button></span></div>');
+        $('#visitors-input').append('<div class="visitor  form-margin2 form-group input-group"><input id="'+$(this).attr('value')+'" type="text" disabled="true" class="form-control" value="'+$(this).attr('name')+'"/><span class="input-group-btn"  id="'+$(this).attr('value')+'"><button onclick="a(this);" class="btn btn-default" id="oldDelete" type="button"><i class="fa fa-times"></i></button></span></div>');
 
             $("#form_visitors option[value='" + $(this).attr('value') + "']").prop("selected", true);
             console.log($(this).attr('value'));
@@ -53,7 +53,7 @@ $(document).ready(function(){
         var g_prototype = $('#form_genders').data('prototype');
         var gForm = g_prototype.replace(/__name__/g, index);
 
-        $('#new_visitors_tb').append('<tr><td>'+lnForm+'</td><td>'+fnForm+'</td><td>'+pForm+'</td><td>'+bdForm+'</td><td>'+gForm+'</td><td><input id="gender-'+index+'"></td><td><button onclick="b();" id="delete-td" type="button"><i class="fa fa-times"></i></button></td></tr>')
+        $('#new_visitors_tb').append('<tr><td>'+lnForm+'</td><td>'+fnForm+'</td><td>'+pForm+'</td><td>'+bdForm+'</td><td>'+gForm+'</td><td><input id="gender-'+index+'"></td><td><button onclick="b(this);" id="delete-td" type="button"><i class="fa fa-times"></i></button></td></tr>')
 
         $('#form_lastnames_'+index+'').attr('readonly', 'readonly');
         $('#form_lastnames_'+index+'').attr('value',$('#lastname').val());
@@ -84,11 +84,11 @@ $(document).ready(function(){
 
 });
 
-function a(){
-        $("#form_visitors option[value='" + $('#oldDelete').parent().attr('id') + "']").prop("selected", false);
+function a(object){
+        $("#form_visitors option[value='" + $(object).parent().attr('id') + "']").prop("selected", false);
     console.log($('#oldDelete').parent().attr('id'));
-    $('#oldDelete').parent().parent().remove();
+$(object).parent().parent().remove();
 };
-function b() {
-    $('#delete-td').parent().parent().remove();
+function b(object) {
+    $(object).parent().parent().remove();
 };

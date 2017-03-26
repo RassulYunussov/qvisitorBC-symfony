@@ -16,8 +16,7 @@
 					<div id="bc1" class="btn-group btn-breadcrumb">
 						<br>
                         <a class="btn btn-default" href="{{path('home')}}"><i class="fa fa-home"></i></a>
-						<a class="btn btn-default" href="{{path('entrance')}}">Посетители</a>
-						<a class="btn btn-default" href="{{path('entrance_registration')}}">Регистрация посетителя</a>
+						<a class="btn btn-default" href="{{path('orders_list')}}">Заявки</a>
 						
 					</div>
 					{% endblock %}
@@ -25,7 +24,7 @@
 			</div>
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Регистрация посетителя</h1>
+                    <h1 class="page-header">Активные заявки</h1>
 				</div>
 			</div>
 			
@@ -35,9 +34,6 @@
 			<div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>Список заявок</h4>
-                        </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
 							<div class="dataTable_wrapper">
@@ -45,6 +41,7 @@
                                     <thead>
                                         <tr>
                                             <th>Номер заявки</th>
+                                            <th>Объект визита (Название компании)</th>
                                             <th>ФИО</th>
                                             <th>Действия</th>
                                         </tr>
@@ -53,6 +50,8 @@
                                         {% for qvOrder in qvOrders %}
                                             <tr>
                                         <td>{{qvOrder.id}}</td>
+
+                                        <td>{{qvOrder.user.leaser.name}}</td>
                                           <td>  {% for qvVisitor in qvOrder.visitors %}
                                         {{qvVisitor.lastname}} {{qvVisitor.firstname}} {{qvVisitor.patronimic}} </br>{% endfor %}</td>
                                         <td><button onclick="$('#VisitorForm').attr('action','{{path('select-vis', {'qvOrder': qvOrder.id})}}')  ;$('#myModal .modal-dialog').load('{{ path('select-vis', {'qvOrder': qvOrder.id}) }}');" class="btn btn-sm btn-default" data-toggle="modal" data-load-url="remote.html" data-target="#myModal">Зарегистрировать</button>

@@ -160,7 +160,7 @@ class CheckpointController extends Controller
     public function entranceRegPageLoadAction(Request $request)
     {
     	$em = $this->getDoctrine()->getManager();
-        $qvOrders = $em->getRepository('AppBundle:qvOrder')->findActiveOrders();
+        $qvOrders = $em->getRepository('AppBundle:qvOrder')->findActiveOrdersForCheckpoint();
     	return $this->render('AppBundle:Checkpoint:entrance/entrancereg.html.twig', array(
             'qvOrders'=>$qvOrders,
     	));
@@ -387,17 +387,10 @@ class CheckpointController extends Controller
     public function ordersListAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $qvUserPassport = array();
-        $qvOrders = $em->getRepository('AppBundle:qvOrder')->findActiveOrders();
-        foreach ($qvOrders as $qvOrder) 
-        {
-            $qvUserPassport = $em->getRepository('AppBundle:qvUserPassport')->findUserpassportByOrder($qvOrder);
-        }
-        
-        return $this->render('AppBundle:Checkpoint:visitor/orders_list.html.twig', array(
-            'qvOrders' => $qvOrders,
-            'qvUserPassport' => $qvUserPassport
-            ));
+        $qvOrders = $em->getRepository('AppBundle:qvOrder')->findActiveOrdersForCheckpoint();
+        return $this->render('AppBundle:Checkpoint:entrance/entrancereg.html.twig', array(
+            'qvOrders'=>$qvOrders,
+        ));
     }
 
 }
