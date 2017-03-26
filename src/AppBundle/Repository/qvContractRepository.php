@@ -36,4 +36,13 @@ class qvContractRepository extends \Doctrine\ORM\EntityRepository
            WHERE leaser.id = :id'
             )->setParameter('id', $qvLeaser)->getResult();
     }
+
+    public function findOneByContract($id)
+  {
+        return $this->getEntityManager()
+        ->createQuery(
+          'SELECT contract from AppBundle:qvContract contract 
+           WHERE contract.id = :id'
+            )->setParameter('id', $id)->getSingleResult();
+    }
 }

@@ -27,8 +27,7 @@ class PageMenuController extends Controller
 		return $this->render('AppBundle:PageMenu:admin_menu.html.twig', array(
         ));
 		if($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))
-		return $this->render('AppBundle:PageMenu:adminbc_menu.html.twig', array(
-        ));
+		return $this->render('AppBundle:PageMenu:adminbc_menu.html.twig', array());
 	}
 		else if($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_ANONYMOUS')) {
 			return $this->redirectToRoute('/login');

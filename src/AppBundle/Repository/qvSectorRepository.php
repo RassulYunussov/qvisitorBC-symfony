@@ -45,6 +45,23 @@ public function findBuildById($id)
     return $result;
     }
 
+
+ public function findSectorsByContract($id){
+      $conn = $this->getEntityManager()->getConnection();
+    $statement = $conn->prepare('Select qvsector.id, qvsector.name, qvsector.floorid
+     from qvsector 
+              left join rf_contract_sector on rf_contract_sector.sectorid = qvsector.id
+             
+              left join qvcontract on qvcontract.id = rf_contract_sector.contractid
+             
+                    where qvcontract.id = ?
+                    group by qvsector.id');
+    $statement->bindValue(1, $id);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    return $result;
+    }
+
      public function findByFloorId($floorId)
     {
         return $this->getEntityManager()

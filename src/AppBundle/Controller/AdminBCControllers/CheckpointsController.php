@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\AdminBCControllers;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -37,7 +37,7 @@ use AppBundle\Entity\qvRole;
  * @Security("has_role('ROLE_ADMIN')")
  */
 
-class AdminBCCheckpointsController extends Controller
+class CheckpointsController extends Controller
 {
 	 /**
  * @Route("/checkpoints_control", name="checkpoints_list")

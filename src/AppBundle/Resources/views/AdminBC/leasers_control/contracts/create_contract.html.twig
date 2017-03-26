@@ -18,7 +18,7 @@
             <a class="btn btn-default" href="{{ path('leasers_list') }}">
               Управление арендаторами
             </a>
-            <a class="btn btn-default" href="{{ path('contracts_list') }}">
+            <a class="btn btn-default" href="{{ path('leasers_show', {'id':qvLeaser.id}) }}">
               Управление контрактами                  
             </a>
           </div>
@@ -29,7 +29,7 @@
         <!-- /.col-lg-12 -->
       </div>
     </div>
-<div class="row">
+    <div class="row">
       <div class="col-lg-10">
         <div class="form-group">
           {{ form_start(form) }}
@@ -69,14 +69,27 @@
         </div>
         <div class="form-margin">
           {{ form_label(form.sectors, null, {
-          'label': 'Вы выбрали, следующие сектора:'
+          'label': '',
         })  }}
+
         {{ form_errors(form.sectors) }}
         {{ form_widget(form.sectors, {'attr': {'class':'form-control'}}) }}
+        <br>
+        <div id="actions_form_sector">
+          <button type="button" id='del' class="btn btn-primary btn-sm">
+            <i class="fa fa-minus"></i>  Удалить сектор
+          </button>
+
+          <button type="button" id='check_choose' class="btn btn-warning btn-sm">
+            <i class="fa fa-check"></i>  Подтвердить выбор
+          </button>
+        </div>   
+
+       
         {{form_widget(form._token)}}
       </div>
       <div class="form-inline text-right">
-        <input type="submit" class="btn btn-default" value="Создать" />
+        <input type="submit" id="button_create_contract" class="btn btn-default" value="Создать" />
         <a class="btn btn-default" href="{{ path('leasers_show', {'id':qvLeaser.id}) }}">Отменить</a></div>
       </div></div>
     </div>
@@ -173,11 +186,12 @@
   <script> 
     $(document).ready(function() {
       var build;
+      var idfloor;
+      var idbuild;
+      var arr = [];
       $('label[for="qv_contract_leaser"]').hide();
-      $('#qv_contract_leaser').hide();
-      $('#qv_contract_leaser').attr({
-        disabled: 'true'
-      });
+      $('#actions_form_sector').hide();
+
 
       function loadBuildings(){
         $('#form_buildings').empty();
@@ -225,7 +239,17 @@
           data: {'id':floorId},
           success: function(data){
             $.each(JSON.parse(data),function(k,v){
-              $('#form_sector').append('<div class=""><label> <input type="checkbox" value="'+v.id+'" name="'+v.name+'"/>Сектор - '+v.name+'</label></div>');
+              var exist = false;
+               for(i in arr)
+                {
+                  if(arr[i] == v.id)
+                  {
+                    exist = true;
+                    break;
+                  }
+                }
+                if (!exist)
+                $('#form_sector').append('<div class=""><label> <input type="checkbox" value="'+v.id+'" name="'+v.name+'"/>Сектор - '+v.name+'</label></div>');
             });
           }
         });
@@ -265,79 +289,98 @@
         $('#cancel').on('click', cancelBuildingChange);
         $('input:radio').removeAttr('checked');
       };
+      $('#save').hide();
+      $('label[for="form_sectors"]').hide();
+      $('#form_sectors').hide();
+      $('#form_floors').hide(); 
+      $('#cancel').hide();
+      $('#save').hide();
+      $('label[for="form_floors"]').hide();
+      $('#form_sector').hide();
+      $('label[for="form_sector"]').hide();
+      $('#form_buildings').change(function()
+      {
+        $('label[for="form_buildings"]').hide();
+        $('#form_buildings').hide('fast', function(){
+          build = $('input:checked').attr('name');
+          idbuild = build;//$('input:checked').val();
+          $('input:radio').removeAttr('checked');
+          $('#myModalLabel').text(build);
+        });
+        $('#form_floors').show();
+        $('label[for="form_floors"]').show();
+        $('#cancel').show();
+        $('#cancel').on('click', cancelBuildingChange);
+      });
 
-                //$('#form_sectors').replaceWith('<select multiple="true" class="form-control form-inline form-margin" id="form_sectors"></select>');
-                $('#save').hide();
-                $('label[for="form_sectors"]').hide();
-                $('#form_sectors').hide();
-                $('#form_floors').hide(); 
-                $('#cancel').hide();
-                $('#save').hide();
-                $('label[for="form_floors"]').hide();
-                $('#form_sector').hide();
-                $('label[for="form_sector"]').hide();
+      $('#form_floors').change(function()
+      {      
+        $('label[for="form_floors"]').hide();
+        $('#form_floors').hide('fast', function(){
+          var floor = $('input:checked').attr('name');
+          $('#myModalLabel').text(build + ' / Этаж - ' + floor);
+          idfloor = floor;
+        });
 
-                $('#form_buildings').change(function()
-                {
-                  $('label[for="form_buildings"]').hide();
-                  $('#form_buildings').hide('fast', function(){
-                    build = $('input:checked').attr('name');
-                    $('input:radio').removeAttr('checked');
-                    $('#myModalLabel').text(build);
-                  });
-                  $('#form_floors').show();
-                  $('label[for="form_floors"]').show();
-                  $('#cancel').show();
-                  $('#cancel').on('click', cancelBuildingChange);
-                });
+        $('#save').show();
 
-                $('#form_floors').change(function()
-                {      
-                  $('label[for="form_floors"]').hide();
-                  $('#form_floors').hide('fast', function(){
-                    var floor = $('input:checked').attr('name');
-                    $('#myModalLabel').text(build + ' / Этаж - ' + floor);
-                  });
+        $('#form_sector').show();
+        $('label[for="form_sector"]').show();
 
-                  $('#save').show();
-
-                  $('#form_sector').show();
-                  $('label[for="form_sector"]').show();
-
-                  $('#cancel').show();
-                  $('#cancel').on('click', cancelFloorChange);
-                });
+        $('#cancel').show();
+        $('#cancel').on('click', cancelFloorChange);
+      });
 
 
-                $('#save').on('click', function(){
-                  var valuename = [];
-                  var valueid = [];
+      $('#save').on('click', function(){
+        var valuename = [];
+        var valueid = [];
+                  $('#button_create_contract').prop("disabled", true);
                   var n = {{qvLeaser.id}};
-                  $("#my_select [value=n]").attr("selected", "selected");
-                  console.log(n);
-                  $('#form_sector :checked').each(function()
-                  {
-                    valueid.push($(this).val());
-                    valuename.push($(this).attr('name'));
-                    for (key in valueid){ 
-                      $('#form_sectors').append('<option value="'+ valueid[key] +'"> '+valuename[key]+' </option>');
-                    }
-                    $('label[for="form_sectors"]').show();
-                    $('#form_sectors').show();
 
-                    $('#form_sectors option').each(function()
-                    {
-                      this.selected=true;
-                    });
-                    valueid = [];
-                    valuename = [];
-                    $('#myModal').modal('hide');
-                    $('input:checkbox').removeAttr('checked');
+                $('#form_sector :checked').each(function()
+                {
+                  valueid.push($(this).val());
+                  valuename.push($(this).attr('name'));                  
+
+                  for (key in valueid)
+                  {
+                    $('#form_sectors').append('<option value="'+valueid[key] +'"> ' +idbuild+ ' этаж № ' +idfloor+ ', сектор '+valuename[key]+' </option>'); 
+                  }
+                 /* var sel =  $('#form_sectors option').get();
+                  sel = jQuery.unique(sel);
+                  console.log(sel);
+                  $('#form_sectors').empty();
+                  $('#form_sectors').append(sel);
+                */
+                $('label[for="form_sectors"]').text('Вы выбрали следующие сектора:');
+                $('label[for="form_sectors"]').show();
+                $('#form_sectors').show();
+                $('#actions_form_sector').show();
+                $('label[for="form_sectors"]').show();
+
+                $('#check_choose').on('click', function(){
+                  $('#button_create_contract').prop("disabled",false);
+                  $('#form_sectors option').each(function()
+                  {
+                    this.selected=true;
                   });
-                  cancelFloorChange();
-                  cancelBuildingChange();
-                  return false;
+                });                    
+
+                $('#del').on('click', function(){
+                  $('#form_sectors :selected').remove();
                 });
+                arr.push(valueid);
+                console.log(arr);
+                valueid = [];
+                valuename = [];
+                $('#myModal').modal('hide');
+                $('input:checkbox').removeAttr('checked');
               });
+                cancelFloorChange();
+                cancelBuildingChange();
+                return false;
+              });
+            });
 </script>
 {% endblock %}
