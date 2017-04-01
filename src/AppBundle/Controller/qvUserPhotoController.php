@@ -45,7 +45,7 @@ class qvUserPhotoController extends Controller
     public function newAction(Request $request)
     {
         $qvUserPhoto = new qvUserPhoto();
-        
+        $user = $this->get('security.token_storage')->getToken()->getUser();
         $form = $this->createForm(qvUserPhotoType::class, $qvUserPhoto);
         $form->handleRequest($request);
 
@@ -56,7 +56,7 @@ class qvUserPhotoController extends Controller
             $file = $qvUserPhoto->getPhoto();
 
               // Generate a unique name for the file before saving it
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $fileName = $user->getId().'.'.$file->guessExtension();
 
                // Move the file to the directory where brochures are stored
                 $file->move(

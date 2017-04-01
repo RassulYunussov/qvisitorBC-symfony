@@ -25,7 +25,6 @@ class qvUserPhotoType extends AbstractType
         'hour' => 'Hour', 'minute' => 'Minute', 'second' => 'Second',
     )
 ))
-            ->add('user')
         ;
     }
     

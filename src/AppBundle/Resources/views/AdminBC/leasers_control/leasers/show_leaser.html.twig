@@ -18,61 +18,82 @@
                         </a>
                     </div>
                 {% endblock %}
-
+    
                 <h1 class="page-header">Просмотр информации об арендаторе</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
         <!-- /.row -->
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-10">
             <div class="panel panel-default">
                 <div class="panel-body">			
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table table-striped table-bordered table-hover">
                             <tbody>
-                                <tr class="col-lg-8">
-                                    <th>
-                                        Название компании - арендатора
-                                    </th>
-
-                                    <td>
-                                        {{ qvUser.leaser.name }}
-                                    </td>
-                                </tr>
-
-                                <tr class="col-lg-8">
-                                    <th>
-                                        Bin
-                                    </th>
-                                    <td>
-                                     {{ qvUser.leaser.bin }}
-                                 </td>
-                             </tr>
-                             <tr class="text-left col-lg-8">
-                            <td><br>
-                            <a href="{{ path('company_edit', { 'id': qvUser.leaser.id }) }}" class="btn btn-default"> Изменить информацию о компании
-                                    </a></td>
-                                    <td>    <br>
-                            <a href="{{ path('leaser_change', {'id': qvUser.leaser.id }) }}" class="btn btn-default">Изменить информацию об арендаторе 
-                                    </a>
+        <tr>                   
+        <td rowspan="4">
+            <img src="{{asset('uploads/images/' ~ qvUserPassport.lastname ~ '.jpeg' ) }}" alt="Фото профиля" width="220px" height="180px">
+        </td>                        
+                                <td>
+                                    <b>Название компании - арендатора</b>
+                                </td>    
+                                <td>
+                                   {{ qvUser.leaser.name }}
                                 </td>
-                                <td><br>
-                                    {{form_start(delete_form)}}
-                                        <button type="submit" class="btn btn-default">Удалить арендатора</button>
-                                    {{form_end(delete_form) }}
-                                     {#<a href="{{ path('leasers_delete', {'qvUser':qvUser.id, 'qvUP':qvUserPassport.id,'qvLeaser': qvUser.leaser.id }) }}" class="btn btn-default">Удалить арендатора 
-                                    
-                                    </a>#}
+                                </tr>
+                            <tr>
+                            <td>
+                                   <b> Bin</b>
+                                </td>
+                                <td>
+                                  {{ qvUser.leaser.bin }}
                                 </td>
                             </tr>
-                        </tbody>
+                            <tr>
+                            <td>
+                                   <b>Имя владельца компании</b>
+                                </td>
+                                <td>
+                                  {{ qvUserPassport.lastname }} {{qvUserPassport.firstname}}
+                                </td>
+                            </tr>
+                            <tr>
+                            <td>
+                                   <b>Login арендатора</b>
+                                </td>
+                                <td>
+                                  {{ qvUser.login }}
+                                </td>
+                            </tr>
+    <tr>
+    <td colspan="3">
+    </td>
+    </tr>
+    <tr>
+                <td>
+                    <a href="{{ path('company_edit', { 'id': qvUser.leaser.id }) }}" class="btn btn-default"> Изменить информацию о компании
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('leaser_change', {'id': qvUser.leaser.id }) }}" class="btn btn-default">Изменить информацию об арендаторе 
+                    </a>
+                </td>
+                <td>
+                    {{form_start(delete_form)}}
+                        <button type="submit" id="delLeaser" class="confirmLinkbtn  btn-default">Удалить арендатора</button>
+                    {{form_end(delete_form) }}
+                </td>
+    </tr>
+        </tbody>
                     </table>							
                 </div>
             </div>
         </div>
     </div>
-        <div class="col-lg-8">
+</div>
+<div class="row">
+        <div class="col-lg-10">
             <div class="panel panel-info">
                 <div class="panel-heading">
                     Информация о контрактах данного арендатора
@@ -101,7 +122,7 @@
 
                                             <td>
                                                 <button data-title="Просмотр" onclick="$('#myModal .modal-dialog').load('{{ path('contracts_modal', { 'id':contracts.id }) }}');" class="btn btn-sm btn-default btn-infotext" data-toggle="modal" data-target="#myModal">
-                                                    {{  contracts.name }}
+                                                    Контракт № {{  contracts.name }}
                                                 </button>
                                             </td>
 
@@ -132,10 +153,49 @@
     </div>
 </div>
 </div>
-
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog"></div>  
         </div>
 
+<div id="dialog-message" title="Вы действительно хотите удалить данного пользователя?">
+  <p>
+    <span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+   Пользователь будет удален!
+  </p>
+  <p>
+    Нажмите "Да", для подтверждения.
+  </p>
+</div>
+ 
         <!-- /#page-wrapper --> 
+    {% endblock %}
+    {% block js %}
+    <script>
+     $(document).ready(function() {
+    $('#delLeaser').on('click', function(){
+        alert("DELETE");
+    $('#delLeaser').dialog({
+        autoOpen: false,
+      modal: true,
+});
+});
+  $(".confirmLink").click(function(e) {
+    e.preventDefault();
+    var targetUrl = $(this).attr("href");
+
+    $("#dialog").dialog({
+      buttons : {
+        "Confirm" : function() {
+          window.location.href = targetUrl;
+        },
+        "Cancel" : function() {
+          $(this).dialog("close");
+        }
+      }
+    });
+
+    $("#dialog").dialog("open");
+});
+});
+    </script>
     {% endblock %}

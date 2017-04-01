@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -30,8 +31,8 @@ use AppBundle\Entity\qvBuilding;
 use AppBundle\Entity\qvUserPassport;
 use AppBundle\Entity\qvUser;
 use AppBundle\Entity\qvRole;
-
-
+use AppBundle\Entity\qvUserPhoto;
+use AppBundle\Form\qvUserPhotoType;
 /**
  * LeasersController 
  * 
@@ -72,9 +73,11 @@ class LeasersController extends Controller
     {
        $qvLeaser = new qvLeaser();
        $qvUser = new qvUser();
-        $qvUserPassport = new qvUserPassport();
-        $em = $this->getDoctrine()->getManager();
-        $em->getConnection()->beginTransaction(); 
+       $qvUserPassport = new qvUserPassport();
+       $qvUserPhoto = new qvUserPhoto();
+       $em = $this->getDoctrine()->getManager();
+       
+       $em->getConnection()->beginTransaction(); 
 try {
          $data = array();
 
@@ -115,15 +118,22 @@ try {
                 'class' => 'AppBundle\Entity\qvGender',
                 'attr' => array('class'=>'form-control form-input')
             ))
+            ->add('photo', FileType::class, array('label' => 'Ваше фото'))
+            ->add('photodate', DateTimeType::class, array(
+    'placeholder' => array(
+        'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+        'hour' => 'Hour', 'minute' => 'Minute', 'second' => 'Second',
+    )
+))
             ->getForm()
         ;
         $form->handleRequest($request);
 
        if ($form->isSubmitted() && $form->isValid()) {
           
-           $em = $this->getDoctrine()->getManager();
-
-             $myrole = $em->createQuery('SELECT role from AppBundle:qvRole role WHERE role.code = :name')->setParameter('name', 'ROLE_LEASER')->getSingleResult();
+           $em = $this->getDoctrine()->getManager();   
+           
+           $myrole = $em->createQuery('SELECT role from AppBundle:qvRole role WHERE role.code = :name')->setParameter('name', 'ROLE_LEASER')->getSingleResult();
            $encoder = $this->container->get('security.password_encoder');
            $data = $form->getData();
             
@@ -152,6 +162,27 @@ try {
             
             $em->persist($qvUserPassport);
             $em->flush();
+
+            // $file stores the uploaded jpeg file
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+            $file = $data['photo'];
+
+            // Generate a unique name for the file before saving it
+            $fileName = $data['lastname'].'.'.$file->guessExtension();
+
+               // Move the file to the directory where brochures are stored
+                $file->move(
+                $this->getParameter('images_directory'),
+                $fileName
+            );
+            // Update the 'brochure' property to store the PDF file name
+            // instead of its contents
+            $qvUserPhoto->setPhoto($fileName);//($data['photo']);
+            $qvUserPhoto->setPhotodate($data['photodate']);
+            $qvUserPhoto->setUser($qvUser);
+            $em->persist($qvUserPhoto);
+            $em->flush();
+
              $em->getConnection()->commit();
             return $this->redirectToRoute('leasers_list', array());
         }
@@ -163,7 +194,8 @@ try {
         return $this->render('AppBundle:AdminBC:leasers_control/leasers/create_leaser.html.twig', array(
             'qvLeaser' => $qvLeaser,
             'qvUser' => $qvUser,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'qvUserPhoto' => $qvUserPhoto,
         ));
     }
     /**
@@ -183,6 +215,9 @@ try {
         $qvUserPassport = $pquery->getSingleResult();
 
         $qvUser = $em->getRepository('AppBundle:qvUser')->findLeaser($qvLeaser);
+
+        $userPassport=$em->getRepository('AppBundle:qvUserPassport')->findOneById($qvLeaser);
+       
 
         $deleteForm = $this->createDeleteLeaserForm($qvUser, $qvUserPassport, $qvLeaser);
         

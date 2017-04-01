@@ -116,7 +116,8 @@ try {
         $id = $em->getRepository('AppBundle:qvUser')->find($user);
 
 		$userPassport=$em->getRepository('AppBundle:qvUserPassport')->findOneBy(array('user'=>$user->getId()));
-        $userPhoto=$em->getRepository('AppBundle:qvUserPhoto')->findOneById($id);
+        
+        $userPhoto=$em->getRepository('AppBundle:qvUserPhoto')->findOneBy(array('user'=>$user->getId()));
         
         return $this->render('AppBundle:UserProfile:user_profile.html.twig', array(
         'userPassport'=>$userPassport,

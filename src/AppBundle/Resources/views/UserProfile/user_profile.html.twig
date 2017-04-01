@@ -36,7 +36,7 @@
 						<tbody>
 							<tr>
 								<td class="td-bkground">Фамилия</td>
-								<td>{{userPassport.lastname}} + {{userPhoto.photo}}</td>
+								<td>{{userPassport.lastname}}</td>
 							</tr>
 							<tr>
 								<td class="td-bkground">Имя</td>
@@ -54,7 +54,7 @@
 					</table>
 		</div>
 		<div class="col-lg-4">
-		<a href="{{ asset('uploads/images/' ~ userPhoto.photo) }}">Посмотреть фото</a>
+		<img src="{{asset('uploads/images/' ~ userPassport.lastname ~ '.jpeg' ) }}" alt="Фото профиля" width="220px" height="180px">
 		</div>
 	</div>
 </div>
