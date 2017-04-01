@@ -17,6 +17,7 @@ class qvUserPassportRepository extends \Doctrine\ORM\EntityRepository
                 'SELECT passport, urole FROM AppBundle:qvUserPassport passport JOIN passport.user user JOIN user.role urole WHERE urole.code = :name'
                     )->setParameter('name', 'ROLE_CHECKPOINT')->getResult();
 	}
+
 	public function findUserpassportByEntrance($qvEntrance)
 	{
 		$conn = $this->getEntityManager()->getConnection();
@@ -29,6 +30,15 @@ class qvUserPassportRepository extends \Doctrine\ORM\EntityRepository
 		$statement->execute();
 		$result = $statement->fetchAll();
 		return $result;
+	}
+	public function findUserpassportByOrder($qvOrder)
+	{
+		$conn = $this->getEntityManager()->getConnection();
+		$statement = $conn->prepare('SELECT qvuserpassport.id, qvuserpassport.userid,qvuserpassport.lastname, qvuserpassport.firstname, qvuserpassport.patronimic from 							qvuserpassport 
+									left join qvuser on qvuser.id = qvuserpassport.userid
+									left join qvorder on qvorder.userid = qvuser.id
+									where qvorder.id = ?');
+		$statement->bindValue(1, $qvOrder->getId());
 	}
 	public function findUserpassportByLeaser($qvLeaser)
 	{
@@ -43,6 +53,7 @@ class qvUserPassportRepository extends \Doctrine\ORM\EntityRepository
 		return $result;
 	}
 
+
 		public function findUserByPassport($passport) {
 		return $this->getEntityManager()
 		            ->createQuery(
@@ -51,5 +62,4 @@ class qvUserPassportRepository extends \Doctrine\ORM\EntityRepository
     					WHERE passport.id = :id'
 		)->setParameter('id', $passport)->getSingleResult();
 	}
-
 }

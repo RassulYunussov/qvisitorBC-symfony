@@ -6,7 +6,11 @@
    {{ include('AppBundle:Checkpoint:pagemenu.html.twig') }}
  {% endblock %}
 
+{% block stylesheets %}
+{{parent()}}
 
+  <link href="{{ asset('bootstrap1/dist/css/select2.min.css')}}" rel="stylesheet" type="text/css">
+{% endblock %}
 
  {% block body %}
 
@@ -113,6 +117,7 @@
      </div>
    {% endblock %}
    {% block js %}
+    <script src="{{asset('bootstrap1/dist/js/select2.min.js')}}"></script>
     <script type="text/javascript">
       $(document).ready(function() {
         $("#form_leaser").select2();

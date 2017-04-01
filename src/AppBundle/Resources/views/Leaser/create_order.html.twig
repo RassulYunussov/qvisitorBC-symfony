@@ -27,7 +27,7 @@
             <!-- /.row -->
             
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                 
                     <div class="panel panel-default">
                     <div class="panel-heading">
@@ -65,39 +65,40 @@
                                     {{ form_label(form.ordertype) }}
                                      {{ form_errors(form.ordertype) }}
                                      {{ form_widget(form.ordertype, {'attr': {'class':'form-control'}}) }}</div>
-
-                                <div style="display:block">{{ form_label(form.visitors) }}
+                                <div style="display:none">{{ form_label(form.visitors) }}
                                      {{ form_errors(form.visitors) }}
                                      {{ form_widget(form.visitors) }}</div>
-                                <div  class="td-padding" id='visitors-input'>
-                                    <label>Посетители</label>
+                                <div  class="td-padding">
+                                    <label for="visitors-input">Выбранные посетители</label>
+                                    <div id='visitors-input'></div>
+
+                                    <label for="new_visitors">Новые посетители</label>
+                                    <div id="new_visitors">
+                                        <table class="col-lg-6 form-margin">
+                                            <tbody id="new_visitors_tb">
+
+                                                
+                                            </tbody>
+                                        </table>
+                                        {{ form_widget(form.lastnames) }}
+                                        {{ form_widget(form.firstnames) }}
+                                        {{ form_widget(form.patronimics) }}
+                                        {{ form_widget(form.birthdates) }}
+                                        {{ form_widget(form.genders) }}
+                                     </div>
                                 </div>
-                                <div class="text-right">{{ form_label(form.select) }}
-                                     {{ form_widget(form.select) }}
-                                 {{form_widget(form._token)}}</div>
+                                <div class="text-right">
+                                    {{ form_widget(form.select) }}
+                                </div>
+                                
+                                    
+                                    {{form_widget(form._token)}}
                                      <div class="td-padding">
                                 <input type="submit" class="btn btn-primary" value="Создать" />
                                 <a class="btn btn-default" href="{{path('show_orders')}}">Отмена</a></div>
                                     {{form_end(form)}}
-<!--                                      <h3>Информация о посетителе</h3>
-                                  <form role="form">
-                                        <div class="form-group has-success">
-                                            <label class="control-label" for="inputSuccess">Фамилия посетителя</label>
-                                            <input type="text" class="form-control" id="inputSuccess" name="first_name" required>
-                                        </div>
-                                        <div class="form-group has-warning">
-                                            <label class="control-label" for="inputWarning">Имя посетителя</label>
-                                            <input type="text" class="form-control" id="inputWarning" name = "last_name" required>
-                                        </div>
-                                        <div class="form-group has-error">
-                                            <label class="control-label" for="inputError">Отчество посетителя</label>
-                                            <input type="text" class="form-control" id="inputError" name="patronymic">
-                                        </div>
-                                           <button type="submit" class="btn btn-default">Создать заявку</button>                                                                                            
-                                           <button type="reset" class="btn btn-default">Очистить форму</button>
-                                    </form>-->
-                                   
                                 </div>
+
                                 <!-- /.col-lg-6 (nested) -->
                             </div>
                             <!-- /.row (nested) -->
@@ -123,7 +124,7 @@
                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                     <h4 class="modal-title" id="myModalLabel">Список Ваших посетителей</h4>
                                                 </div>
-                                                <div class="modal-body">
+                                                <div class="modal-body" id = "bd_visitors" style="display:block">
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                                 <div class="form-group input-group">
@@ -143,7 +144,7 @@
                                                             </thead>
                                                             <tbody id="visitors">
                                                                 {%for visitor in visitors%}
-                                                                <tr value="{{visitor.id}}" data-dismiss="modal" name="{{visitor.firstname}}">
+                                                                <tr value="{{visitor.id}}" data-dismiss="modal" name="{{visitor.lastname}} {{visitor.firstname}} {{visitor.patronimic}}">
                                                                 <td >{{visitor.lastname}}</td>
                                                                 <td >{{visitor.firstname}}</td>
                                                                 <td  >{{visitor.patronimic}}</td>
@@ -152,13 +153,48 @@
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <a  class="btn btn-sm btn-default" href="{{path('new_visitor')}}">111</a>
-
-                                                    <button onclick="$('#newVisitorModal .modal-dialog').load('{{path('new_visitor')}}');" class="btn btn-sm btn-default" data-toggle="modal" data-target="#newVisitorModal" data-dismiss="modal">Создать</button>
-
+                                                    <div class="modal-footer">
+                                                <button class="btn btn-default" id="visitor-button">Добавить нового посетителя</button>
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                                                </div>
+                                                </div>
+                                                <div class="modal-body" id = "new_visitor" style="display:none">
+                                                    <div id="visitor-form">
+                                                        <form name="form" method="post">
+                                                            <div id="form">
+                                                                <div>
+                                                                    <label for="lastname" class="required">Фамилия</label>
+                                                                    <input type="text" id="lastname" name="form[lastname]" required="required" class="form-margin form-control">
+                                                                </div>
+                                                                <div>
+                                                                    <label for="firstname" class="required">Имя</label>
+                                                                    <input type="text" id="firstname" name="form[firstname]" required="required" class="form-margin form-control">
+                                                                </div>
+                                                                <div>
+                                                                    <label for="patronimic" class="required">Отчество</label>
+                                                                    <input type="text" id="patronimic" name="form[patronimic]" required="required" class="form-margin form-control">
+                                                                </div>
+                                                                <div>
+                                                                    <label for="birthdate" class="required">Дата рождения</label>
+                                                                    <input type="date" id="birthdate" name="form[birthdate]" required="required" class="form-margin type_date-inline form-control">
+                                                                </div>
+                                                                <div>
+                                                                    <label for="gender" class="required">Пол</label>
+                                                                    <select id="gender" name="form[gender]" class="form-control form-margin form-control">
+                                                                        <option value="2">Ж</option>
+                                                                        <option value="1">М</option>
+                                                                    </select>
+                                                                </div>
+                    
+
+                                                        </div>
+                                                        </form>
+                                                    </div>
+                                                <div class="modal-footer">                                                            
+                                                    <input type="button"  data-dismiss="modal"  id="create-visitor-btn" class="btn btn-primary" value="Добавить">
+                                                <button class="btn btn-default" id="back_btn">Назад</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                                                </div>
                                                 </div>
                                             </div>
                                         <!-- /.modal-content -->
@@ -166,40 +202,8 @@
                                     <!-- /.modal-dialog -->
                                     </div>
 
-                                <div class="modal fade" id="newVisitorModal" tabindex="-1" role="dialog" aria-labelledby="newVisitorModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog"></div></div>
-
             {% endblock %}
-            {% block js %}
-                <script> 
-$(function (){
+{% block js %}
+    <script src="{{asset('bootstrap1/dist/js/createOrder.js')}}"></script>
 
-   
-    var array = [];
-    $('#visitors tr').click(function(event){
-        var name = $(this).attr('name');
-        var i=0;
-        $('#visitors-input').find('input:text').each(function(){
-              if(  $(this).attr('value') == name){
-                i++;
-              }
-        })
-        if (i == 0){
-        $('#visitors-input').append('<div class="visitor  form-margin2 form-group input-group"><input id="'+$(this).attr('value')+'" type="text" disabled="true" class="form-control" value="'+$(this).attr('name')+'"/><span class="input-group-btn"  id="'+$(this).attr('value')+'"><button onclick="a();" class="btn btn-default" id="delete" type="button"><i class="fa fa-times"></i></button></span></div>');
-
-            $("#form_visitors option[value='" + $(this).attr('value') + "']").prop("selected", true);
-            console.log($(this).attr('value'));
-            array.push($(this).attr('value'));}
-    console.log(array);
-    });  
-
-    
-       
-});
-
-</script><script>function a(){
-        $("#form_visitors option[value='" + $('#delete').parent().attr('id') + "']").prop("selected", false);
-    console.log($('#delete').parent().attr('id'));
-    $('#delete').parent().parent().remove();};
-</script>
 {% endblock %}

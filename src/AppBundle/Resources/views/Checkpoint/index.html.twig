@@ -45,7 +45,10 @@
         </div>
     </div>
 </div>
-<script> 
+
+{% endblock %}
+	{% block js %}
+	    <script> 
 function loadCheckpoints(buildingId){
 	$('#form_checkpoint').empty();
 	$.ajax({
@@ -65,4 +68,4 @@ $(function (){
 				});
 });
 </script>
-{% endblock %}
+	{% endblock %}

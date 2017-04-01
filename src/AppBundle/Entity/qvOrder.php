@@ -23,30 +23,30 @@ class qvOrder
     private $id;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="sdate", type="datetime", nullable=false)
+     * @ORM\Column(name="sdate", type="date", nullable=false)
      */
     private $sdate;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="edate", type="datetime", nullable=false)
+     * @ORM\Column(name="edate", type="date", nullable=false)
      */
     private $edate;
 
     /**
-     * @var \DateTime
+     * @var \Time
      *
-     * @ORM\Column(name="opentime", type="datetime", nullable=false)
+     * @ORM\Column(name="opentime", type="time", nullable=false)
      */
     private $opentime;
 
     /**
-     * @var \DateTime
+     * @var \Time
      *
-     * @ORM\Column(name="closetime", type="datetime", nullable=false)
+     * @ORM\Column(name="closetime", type="time", nullable=false)
      */
     private $closetime;
 

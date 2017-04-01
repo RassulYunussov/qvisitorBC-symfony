@@ -29,19 +29,33 @@ class UserProfileController extends Controller
 	public function profileMenuAction(Request $request)
 	{
 		$username = $this->get('security.token_storage')->getToken()->getUsername();
-        
         $qvUser = $this->get('security.token_storage')->getToken()->getUser();
 
-        if($this->get('security.authorization_checker')->isGranted('ROLE_CHECKPOINT')){
+        if($this->get('security.authorization_checker')->isGranted('ROLE_CHECKPOINT'))
+        {
             $session = $this->get("session");
-        $checkpoint = $session->get('checkpoint');
-        $building = $session->get('building');
-        return $this->render('AppBundle:UserProfile:profileMenuCheckpoint.html.twig', array(
-            'username'=>$username,
-            'checkpoint'=> $checkpoint,
-            'building'=>$building,
-            'qvUser' =>$qvUser,
-        ));}
+            $checkpoint = $session->get('checkpoint');
+            $building = $session->get('building');
+            return $this->render('AppBundle:UserProfile:profileMenuCheckpoint.html.twig', array(
+                'username'=>$username,
+                'checkpoint'=> $checkpoint,
+                'building'=>$building,
+                'qvUser' =>$qvUser,
+            ));
+        }
+
+        if($this->get('security.authorization_checker')->isGranted('ROLE_LEASER'))
+        {
+            $em = $this->getDoctrine()->getManager();
+            $qvLeaser = $qvUser->getLeaser();
+
+            return $this->render('AppBundle:UserProfile:profileMenuLeaser.html.twig', array(
+                'username'=>$username,
+                'qvLeaser'=> $qvLeaser,
+                'qvUser' =>$qvUser,
+            ));
+        }
+
 		return $this->render('AppBundle:UserProfile:profilemenu.html.twig', array(
 				'username'=>$username,
                 'qvUser'=>$qvUser,

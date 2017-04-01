@@ -10,4 +10,21 @@ namespace AppBundle\Repository;
  */
 class qvOrderRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function findActiveOrdersForCheckpoint()
+	{
+		return $this->getEntityManager()
+        ->createQuery(
+          'SELECT c from AppBundle:qvOrder c 
+          WHERE c.edate > CURRENT_DATE() AND c.closetime > CURRENT_TIME()'
+            )->getResult();
+	}
+
+	public function findActiveOrdersForLeaser()
+	{
+		return $this->getEntityManager()
+        ->createQuery(
+          'SELECT c from AppBundle:qvOrder c 
+          WHERE c.edate > CURRENT_DATE()'
+            )->getResult();
+	}
 }

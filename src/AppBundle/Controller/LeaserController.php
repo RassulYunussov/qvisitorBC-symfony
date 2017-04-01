@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use AppBundle\Entity\qvOrder;
 use AppBundle\Entity\qvLeaser;
 use AppBundle\Entity\qvUser;
@@ -64,11 +66,18 @@ class LeaserController extends Controller
     public function showOrdersAction()
     {
     	$em = $this->getDoctrine()->getManager();
-        $qvOrders=$em->getRepository('AppBundle:qvOrder')->findAll();
+        $qvOrders = $em->getRepository('AppBundle:qvOrder')->findActiveOrdersForLeaser();
         return $this->render('AppBundle:Leaser:orders_list.html.twig', array(
         		'qvOrders'=>$qvOrders,
         ));
     }
+
+
+
+
+
+
+
 
     /**
      * @Route("/orders/create-order", name="create_order")
@@ -76,6 +85,7 @@ class LeaserController extends Controller
      */
     public function createOrderAction(Request $request)
     {
+
         $em = $this->getDoctrine()->getManager();
         $data = array();
 
@@ -126,14 +136,76 @@ class LeaserController extends Controller
                 'multiple'  => true
             ])
            ->add('select', ButtonType::class, array(
-                    'label'=>'Выбрать', 
+                    'label'=>'Добавить', 
                 'attr' =>array(
                     'class'=> 'btn btn-default',
                     'data-toggle'=> 'modal',
-                    'data-target'=>'#myModal'), ))
+                    'data-target'=>'#myModal',
+                    'onclick'=>"$('#myModal .modal-dialog').load('{{path('new_visitor')}}');"), ))
+           ->add('lastnames', CollectionType::class, array(
+                'entry_type' => TextType::class,
+                'allow_add' => true,
+                'prototype'=>true,
+            ))
+           ->add('firstnames', CollectionType::class, array(
+                'entry_type' => TextType::class,
+                'allow_add' => true,
+                'prototype'=>true,
+            ))
+           ->add('patronimics', CollectionType::class, array(
+                'entry_type' => TextType::class,
+                'allow_add' => true,
+                'prototype'=>true,
+            ))
+           ->add('birthdates', CollectionType::class, array(
+                'entry_type' => BirthdayType::class,
+                'allow_add' => true,
+                'prototype'=>true,
+                'entry_options'=>array(
+                    'widget'=>'single_text',)
+            ))
+           ->add('genders', CollectionType::class, array(
+                'entry_type' => TextType::class,
+                'allow_add' => true,
+                'prototype'=>true,
+            ))
             ->getForm()
         ;
-    
+        
+        $arr = array();
+        $visitorform = $this->createFormBuilder($arr)
+            ->add('lastname', TextType::class,array(
+                'label'=>'Фамилия',
+                'attr'   =>  array(
+                'class'   => 'form-margin form-control')))
+            ->add('firstname', TextType::class,array(
+                'label'=>'Имя',
+                'attr'   =>  array(
+                'class'   => 'form-margin form-control')))
+            ->add('patronimic', TextType::class,array(
+                'label'=>'Отчество',
+                'attr'   =>  array(
+                'class'   => 'form-margin form-control')))
+            ->add('birthdate', BirthdayType::class, array(
+                'label'=>'Дата рождения',
+                'widget'=>'single_text',
+                'attr'   =>  array(
+                'class'   => 'form-margin type_date-inline form-control')))
+            ->add('gender',EntityType::class, array(
+                'class' => 'AppBundle:qvGender',
+                'query_builder' => function (qvGenderRepository $er) {
+                        return $er->createQueryBuilder('u')
+                        ->orderBy('u.name', 'ASC');
+                },
+                'choice_label' => 'name',
+                'label'=>'Пол',
+                'attr'   =>  array(
+                'class'   => 'form-control form-margin form-control')))
+            ->getForm()
+            ;
+
+
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -157,15 +229,66 @@ class LeaserController extends Controller
                $qvOrder->addVisitors($visitor);
                 }
 
+            $lastnames = array();
+            $firstnames = array();
+            $patronimics = array();
+            $birthdates = array();
+            $genders = array();
+
+
+
+            $j=0;
+            foreach ($data['lastnames'] as $i) {
+                $lastnames[$j] = $i;
+                $j=$j+1;
+            }
+            $j=0;
+            foreach ($data['firstnames'] as $i) {
+                $firstnames[$j] = $i;
+                $j=$j+1;
+            }
+            $j=0;
+            foreach ($data['patronimics'] as $i) {
+                $patronimics[$j] = $i;
+                $j=$j+1;
+            }
+            $j=0;
+            foreach ($data['birthdates'] as $i) {
+                $birthdates[$j] = $i;
+                $j=$j+1;
+            }
+            $j=0;
+            foreach ($data['genders'] as $i) {
+                $genders[$j] = $i;
+                $j=$j+1;
+            }
+
+            for($i = 0; $i<count($data['lastnames']); $i++)
+            {
+                $newVisitor = new qvVisitor();
+
+                $newVisitor->setLastname($lastnames[$i]);
+                $newVisitor->setFirstname($firstnames[$i]);
+                $newVisitor->setPatronimic($patronimics[$i]);
+                $newVisitor->setBirthdate($birthdates[$i]);
+                $qvGender = $em->getRepository('AppBundle:qvGender')->findOneBy(array('id'=>$genders[$i]));
+                $newVisitor->setGender($qvGender);
+                $em->persist($newVisitor);
+                $em->flush();
+                $qvOrder->addVisitors($newVisitor);
+
+            }
+            
             $em->persist($qvOrder);
             $em->flush();
 
-    return $this->redirectToRoute('show_orders');
+    return new Response("hello"); //$this->redirectToRoute('show_orders');
 }
         
         return $this->render('AppBundle:Leaser:create_order.html.twig', array(
             'form' => $form->createView(),
-            'visitors'=>$qvVisitors
+            'visitors'=>$qvVisitors,
+            'visitorform'=>$visitorform->createView()
         ));
     }
 
@@ -229,7 +352,8 @@ class LeaserController extends Controller
                 'attr' =>array(
                     'class'=> 'btn btn-default',
                     'data-toggle'=> 'modal',
-                    'data-target'=>'#myModal'), ))
+                    'data-target'=>'#myModal'
+                    ), ))
             ->getForm()
         ;
     
@@ -357,5 +481,6 @@ class LeaserController extends Controller
 
     	}
     }
+
 
 }
