@@ -7,7 +7,7 @@
 
 <div id="page-wrapper">
 	<div class="row">
-		<div class="col-lg-12">
+		<div class="col-lg-10">
 			{% block breadcrumb %}
 				 <div id="breadcrumbs" class="btn-group btn-breadcrumb">
                         <br>
@@ -24,7 +24,20 @@
                     <br>
 			{% endblock %}
 	<!-- /.col-lg-12 -->
-	<h2 class="page-header">Этаж {{ qvFloor.name }}</h2>
+	<h2 class="page-header">
+<table class="text">
+							<tbody>
+						<tr>
+						<td>
+						Этаж {{ qvFloor.name }}
+						</td>
+						<td class="rightcol">
+						<a data-title="Редактировать этаж" href="{{ path('floors_edit', { 'qvBuilding': qvBuilding.id,'id': qvFloor.id }) }}" style="color:0a290a; text-align:right" class="btn-infotext text-right"><i class="text-right fa fa-cog"></i></a>
+						</td>
+						</tr>
+					</tbody>
+					</table>
+	</h2>
 </div>
 	</div>
 
@@ -75,9 +88,9 @@
     </tbody>
 </table>
 <br>
-<div class="text-right">
+<div class="text-right">{#
 	<a href="{{ path('floors_edit', { 'qvBuilding': qvBuilding.id,'id': qvFloor.id }) }}" align="right" class="btn btn-default">Редактировать этаж
-	</a>
+	</a>#}
 		<a class="btn btn-success" href="{{ path('sectors_create', {'qvBuilding':qvBuilding.id, 'qvFloor':qvFloor.id}) }}">
 			Добавить сектор
 		</a>
@@ -99,6 +112,19 @@
 	</div>
 </div>
 </div>
+ <style>
+   table.text  {
+    width:  100%; /* Ширина таблицы */
+    border-spacing: 0; /* Расстояние между ячейками */
+   }
+   table.text td {
+    width: 50%; /* Ширина ячеек */
+    vertical-align: top; /* Выравнивание по верхнему краю */
+   }
+   td.rightcol { /* Правая ячейка */ 
+    text-align: right; /* Выравнивание по правому краю */
+   }
+  </style>
 {% endblock %}
 
 {% block js %}

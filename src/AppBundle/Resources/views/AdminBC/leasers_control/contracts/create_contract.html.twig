@@ -381,6 +381,12 @@
                 cancelBuildingChange();
                 return false;
               });
+      $('.close').on('click', function(){
+        $('#myModal').modal('hide');
+        $('input:checkbox').removeAttr('checked');
+        cancelFloorChange();
+        cancelBuildingChange();
+      });
             });
 </script>
 {% endblock %}
