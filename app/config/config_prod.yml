@@ -19,3 +19,13 @@ monolog:
             level: debug
         console:
             type:  console
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   pdo_pgsql
+        host:     "ec2-54-83-49-44.compute-1.amazonaws.com"
+        port:     "5432"
+        dbname:   "ddd2cvgnfb2d3q"
+        user:     "omrzpirbokqdiu"
+        password: "f08f2c4be69b3287abb9fda6a7f2a6196c73d6ca4425e1cf39ce76c4924b2049"
+        charset:  UTF8
