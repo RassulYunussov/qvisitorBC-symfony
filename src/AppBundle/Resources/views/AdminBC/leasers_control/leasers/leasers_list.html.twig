@@ -6,8 +6,8 @@
 {% block body %}
 
 <div id="page-wrapper">
-<div class="row">
-<div class="col-lg-12">
+<div class="row" >
+<div class="col-lg-11">
 {% block breadcrumb %}
  <div id="breadcrumbs" class="btn-group btn-breadcrumb">
              	<br>
@@ -24,27 +24,27 @@
 <!-- /.row -->
 </div>
 
-<div class="row">
-	<div class="col-lg-12">
+<div class="row"  style="margin-left:0px;">
+	<div class="col-lg-11">
         <div class="panel panel-default">
             <div class="panel-body">
 
 		<table class="table  table-bordered table-hover dataTable no-footer" id="LeaserdataTables" role="grid" aria-describedby="dataTables-example_info">
             <thead>
             <tr role="row">
-            	<th  tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 172px;">		
+            	<th  tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: auto;" align="center">		
             		№ 
             	</th>
-            	<th  tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 204px;">
-            		BIN
+            	<th  tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: auto;" align="center">
+                    Название компании и BIN
             	</th>
-            	<th  tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 185px;">
+            	{#<th  tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 185px;">
             		Название компании
+            	</th>#}
+            	<th  tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: auto;" align="center">
+            		Статус
             	</th>
-            	<th  tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 185px;">
-            		Статус пользоваетеля
-            	</th>
-            	<th tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" style="width: 120px;">
+            	<th tabindex="0" aria-controls="LeaserdataTables" rowspan="1" colspan="1" style="width: auto;" align="center">
             		Действия:
             	</th>
             </tr>
@@ -55,24 +55,24 @@
                 {% if qvUser.disabled != 1 %} 
             <tr role="row" id="tr_user">
             	<td >{{ loop.index }}</td>
-                <td class="center">
+                <td align="center">
                     <a href="{{ path('leasers_show', {'id':qvUser.leaser.id})}}">
-                	{{ qvUser.leaser.bin }}
+                	Компания - {{ qvUser.leaser.name }}<br>
+                    BIN - {{ qvUser.leaser.bin }}
+                    
                     </a>
                  </td>
-                <td class="center">
-                    <a href="{{ path('leasers_show', {'id':qvUser.leaser.id})}}">
-                	{{ qvUser.leaser.name }}
-                    </a>
-                </td>
-                <td class="center">
+                {#<td class="center">
+                  
+                </td>#}
+                <td align="center">
                     <div class="btn btn-xs btn-infotext" data-title="Активен">
                     <a class="btn btn-success btn-xs enabled" href="{{ path('user_disabled', { 'qvUser':qvUser.id }) }}">
-                        <i class="fa fa-check"></i>
+                        <i class="fa fa-unlock"></i>
                     </a>
                     </div>
                 </td>
-                <td>
+                <td align="center">
                     <div class="btn-group">
 	                   <a class="btn btn-default btn-infotext" href="{{ path('leasers_show', { 'id': qvUser.leaser.id }) }}" data-title="Информация об учетной записи пользователя">
                         <i class="fa fa-eye"></i>
@@ -86,21 +86,22 @@
         {% else %}
            <tr role="row" class="disabled">
                 <td>{{ loop.index }}</td>
-                <td class="center"><a href="{{ path('leasers_show', {'id':qvUser.leaser.id})}}">
-                    {{ qvUser.leaser.bin }}
+                <td align="center"><a href="{{ path('leasers_show', {'id':qvUser.leaser.id})}}">
+                   Компания - {{ qvUser.leaser.name }}<br>
+                    BIN - {{ qvUser.leaser.bin }}     
                 </a>
                 </td>
-                <td class="center"><a href="{{ path('leasers_show', {'id':qvUser.leaser.id})}}">
-                    {{ qvUser.leaser.name }}
-                </a></td>
-                <td class="center">
+                {#<td class="center"><a href="{{ path('leasers_show', {'id':qvUser.leaser.id})}}">
+                    
+                </a></td>#}
+                <td align="center">
                      <div class="btn btn-xs btn-infotext" data-title="Отключен">
                           <a class="btn btn-danger btn-xs enabled" href="{{ path('user_enabled', { 'qvUser':qvUser.id }) }}">
                         <i class="fa fa-lock"></i>
                     </a>
                     </div>
                 </td>
-                <td>
+                <td align="center">
                     <div class="btn-group">
                    <a class="btn btn-default btn-infotext" href="{{ path('leasers_show', { 'id': qvUser.leaser.id }) }}" data-title="Информация об учетной записи пользователя">
                         <i class="fa fa-eye"></i>

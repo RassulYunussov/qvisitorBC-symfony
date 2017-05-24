@@ -46,17 +46,15 @@ public function findBuildById($id)
     }
 
 
- public function findSectorsByContract($id){
+ public function findAllFreeSectors($startdate, $enddate){
       $conn = $this->getEntityManager()->getConnection();
-    $statement = $conn->prepare('Select qvsector.id, qvsector.name, qvsector.floorid
-     from qvsector 
-              left join rf_contract_sector on rf_contract_sector.sectorid = qvsector.id
-             
-              left join qvcontract on qvcontract.id = rf_contract_sector.contractid
-             
-                    where qvcontract.id = ?
-                    group by qvsector.id');
-    $statement->bindValue(1, $id);
+    $statement = $conn->prepare('select distinct id from (
+select * from qvsector
+left join rf_contract_sector on qvsector.id=rf_contract_sector.sectorid
+left join qvcontract on qvcontract.id = rf_contract_sector.contractid
+where rf_contract_sector.contractid is null or not ( qvcontract.startdate < :startdate and qvcontract.enddate > :enddate))');
+
+    $statement->bindValue(1, $startdate, 2, $enddate);
     $statement->execute();
     $result = $statement->fetchAll();
     return $result;

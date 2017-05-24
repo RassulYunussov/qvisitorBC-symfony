@@ -168,7 +168,7 @@ try {
             $file = $data['photo'];
 
             // Generate a unique name for the file before saving it
-            $fileName = $data['lastname'].'.'.$file->guessExtension();
+            $fileName = $data['login'].'.'.$file->guessExtension();
 
                // Move the file to the directory where brochures are stored
                 $file->move(
@@ -281,6 +281,8 @@ try {
     
             $em->persist($qvLeaser);            
             $em->flush();
+
+
             $em->getConnection()->commit();
             return $this->redirectToRoute('leasers_list', array('id' => $qvLeaser->getId()));
         }
@@ -308,8 +310,6 @@ try {
      */
     public function changePersonalDataLeaserAction(Request $request, qvLeaser $qvLeaser)
     {
-     
-     //$deleteForm = $this->createDeleteLeaserForm($qvLeaser);
      $emm = $this->getDoctrine()->getEntityManager();
      $em = $this->getDoctrine()->getManager();
      $em->getConnection()->beginTransaction(); 
@@ -322,9 +322,8 @@ try {
         }
     else{
     $pquery = $emm->createQuery('SELECT p FROM AppBundle:qvUserPassport p LEFT JOIN p.user u LEFT JOIN u.leaser l WHERE l.id = :id')->setParameter('id', $qvLeaser);
-
     $qvUserPassport = $pquery->getSingleResult();
-
+    
     $editForm2 = $this->createFormBuilder($qvUserPassport)
      ->add('firstname', TextType::class, array(
         'label'=>'Фамилия',
@@ -348,9 +347,9 @@ try {
 
         $editForm2->handleRequest($request);
         if ($editForm2->isSubmitted() && $editForm2->isValid()) {
-
             $em->persist($qvUserPassport);
             $em->flush();
+       
             $em->getConnection()->commit();
         return $this->redirectToRoute('leasers_list', array('id' => $qvLeaser->getId()));
     }
@@ -360,14 +359,90 @@ try {
     $em->getConnection()->rollBack();
     throw $e;
         }
-
         return $this->render('AppBundle:AdminBC:leasers_control/leasers/change_personaldata_leaser.html.twig', array(
             'qvUserPassport' => $qvUserPassport,
             'qvLeaser'=>$qvLeaser,
             'qvUser'=>$qvUser,
-        'edit_form2' => $editForm2->createView(),
+            'edit_form2' => $editForm2->createView(),
        // 'delete_form' => $deleteForm->createView(),
         ));
+}
+
+ /**
+     * Displays a form to edit an existing qvLeaser entity.
+        *
+     * @Route("/{qvLeaser}/changePhoto", name="UserPhoto_change")
+     * @ParamConverter("qvLeaser", class="AppBundle:qvLeaser")
+     * @Method({"GET", "POST"})
+     */
+public function changePhotoAction(Request $request, qvLeaser $qvLeaser)
+{
+    $emm = $this->getDoctrine()->getEntityManager();
+     $em = $this->getDoctrine()->getManager();
+     $em->getConnection()->beginTransaction(); 
+try {
+    $qvUser = $em->getRepository('AppBundle:qvUser')->findLeaser($qvLeaser);
+        $res = $qvUser->getDisabled();
+        if($res == 1)
+        {
+            return $this->render('AppBundle:AdminBC:error.html.twig', array('qvUser'=>$qvUser));
+        }
+    else{
+    $pquery = $emm->createQuery('SELECT p FROM AppBundle:qvUserPassport p LEFT JOIN p.user u LEFT JOIN u.leaser l WHERE l.id = :id')->setParameter('id', $qvLeaser);
+    $qvUserPassport = $pquery->getSingleResult();
+    
+    $userPhoto = $emm->createQuery('SELECT p FROM AppBundle:qvUserPhoto p  WHERE p.user = :id')->setParameter('id', $qvUser->getId());
+    $qvUserPhoto = $userPhoto->getSingleResult();
+    $data = array();
+    // $em->getRepository('AppBundle:qvUserPhoto')->findOneById();
+
+    $PhotoForm = $this->createFormBuilder($data)
+    ->add('photo', FileType::class, array('label' => 'Ваше фото'))
+    ->add('photodate', DateTimeType::class, array(
+    'placeholder' => array(
+        'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
+        'hour' => 'Hour', 'minute' => 'Minute', 'second' => 'Second',
+    )))
+    ->getForm();
+
+     $PhotoForm->handleRequest($request);
+        if ($PhotoForm->isSubmitted() && $PhotoForm->isValid()) {
+            $data = $PhotoForm->getData();
+            // $file stores the uploaded jpeg file
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+            $file = $data['photo'];
+
+            // Generate a unique name for the file before saving it
+            $fileName = $qvUser->getLogin().'.'.$file->guessExtension();
+
+               // Move the file to the directory where brochures are stored
+                $file->move(
+                $this->getParameter('images_directory'),
+                $fileName
+            );
+            // Update the 'brochure' property to store the PDF file name
+            // instead of its contents
+            $qvUserPhoto->setPhoto($fileName);
+            $qvUserPhoto->setPhotodate($data['photodate']);
+            $qvUserPhoto->setUser($qvUser);
+            $em->persist($qvUserPhoto);
+            $em->flush();
+            return $this->redirectToRoute('leasers_show', array('id'=>$qvLeaser->getId()));
+}
+}
+}
+ catch (Exception $e) {
+    $em->getConnection()->rollBack();
+    throw $e;
+        }
+            return $this->render('AppBundle:AdminBC:leasers_control/leasers/change_photo_leaser.html.twig', array(
+            'qvUserPassport' => $qvUserPassport,
+            'qvLeaser'=>$qvLeaser,
+            'qvUser'=>$qvUser,
+            'Photoform' => $PhotoForm->createView(),
+       // 'delete_form' => $deleteForm->createView(),
+        ));
+
 }
  /**
      * Deletes a qvLeaser entity.
