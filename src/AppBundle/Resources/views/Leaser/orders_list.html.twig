@@ -35,12 +35,23 @@
 								<div class="col-lg-8">
                                     <div class="form-group">
                                             <label></label>
+                                            {% if temp == 1 %}
                                             <label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1" checked="">Только активные
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1" onclick="window.location='{{path('show_orders')}}';" checked="">Только активные
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2">Все
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2" onclick="window.location='{{path('show_orders_all')}}';">Все
                                             </label>
+                                        {% endif %}
+                                        {% if temp == 2 %}
+                                            <label class="radio-inline">
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1" onclick="window.location='{{path('show_orders')}}';" >Только активные
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2" onclick="window.location='{{path('show_orders_all')}}';" checked="">Все
+                                            </label>
+                                        {% endif %}
+
                                         </div>
 									
 								</div>
@@ -66,7 +77,7 @@
 										<tr>
                                         <td>{{qvOrder.sdate|date('Y-m-d')}}</td>
                                         <td>{{qvOrder.opentime|date('H:i')}}</td>
-										<td>{{qvOrder.edate|date('Y-m-d')}}</td>
+										<td id="endDate">{{qvOrder.edate|date('Y-m-d')}}</td>
                                         <td>{{qvOrder.closetime|date('H:i')}}</td>
                                         <td> <ul class="list-unstyled">{% for qvVisitor in qvOrder.visitors %}<li>
                                             {{qvVisitor.lastname}} {{qvVisitor.firstname}} {{qvVisitor.patronimic}}
@@ -101,13 +112,13 @@
             </div>
 		</div>
 {% endblock %}
-{% block js %}
-    
+{% block javascripts %}
+{{parent()}}
     <script>
     $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-                responsive: true,
-        });
-    });
+                $('#dataTables-example').DataTable({
+                        responsive: true,
+                });
+                    });
     </script>
 {% endblock %}

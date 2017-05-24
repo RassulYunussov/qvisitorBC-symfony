@@ -77,24 +77,6 @@
                                 <input type="submit" class="btn btn-primary" value="Создать" />
                                 <a class="btn btn-default" href="{{path('show_orders')}}">Отмена</a></div>
                                     {{form_end(edit_form)}}
-<!--                                      <h3>Информация о посетителе</h3>
-                                  <form role="form">
-                                        <div class="form-group has-success">
-                                            <label class="control-label" for="inputSuccess">Фамилия посетителя</label>
-                                            <input type="text" class="form-control" id="inputSuccess" name="first_name" required>
-                                        </div>
-                                        <div class="form-group has-warning">
-                                            <label class="control-label" for="inputWarning">Имя посетителя</label>
-                                            <input type="text" class="form-control" id="inputWarning" name = "last_name" required>
-                                        </div>
-                                        <div class="form-group has-error">
-                                            <label class="control-label" for="inputError">Отчество посетителя</label>
-                                            <input type="text" class="form-control" id="inputError" name="patronymic">
-                                        </div>
-                                           <button type="submit" class="btn btn-default">Создать заявку</button>                                                                                            
-                                           <button type="reset" class="btn btn-default">Очистить форму</button>
-                                    </form>-->
-                                   
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->
                             </div>
@@ -116,7 +98,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                    <h4 class="modal-title" id="myModalLabel">Выбрать к кому посетитель</h4>
+                                                    <h4 class="modal-title" id="myModalLabel">Список Ваших посетителей</h4>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="row">
@@ -128,16 +110,20 @@
                                                         </div>
                                                     </div>
                                                     <div class="dataTable_wrapper">
-                                                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                                        <table class="table table-striped table-bordered table-hover" id="visitors-table">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Название организации</th>
+                                                                    <th>Фамилия</th>
+                                                                    <th>Имя</th>
+                                                                    <th>Отчество</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="visitors">
                                                                 {%for visitor in visitors%}
-                                                                <tr value="{{visitor.id}}" name="{{visitor.firstname}}">
-                                                                <td  name"tdf" data-dismiss="modal">{{visitor.firstname}}</td>
+                                                                <tr value="{{visitor.id}}" data-dismiss="modal" name="{{visitor.lastname}} {{visitor.firstname}} {{visitor.patronimic}}">
+                                                                <td >{{visitor.lastname}}</td>
+                                                                <td >{{visitor.firstname}}</td>
+                                                                <td >{{visitor.patronimic}}</td>
                                                                 </tr>
                                                                 {%endfor%}
                                                             </tbody>
@@ -154,11 +140,24 @@
                                     </div>
             {% endblock %}            
 {% block js %}
+
+    <script src="{{asset('bootstrap1/dist/js/createOrder.js')}}"></script>
+<script src="{{asset('bootstrap1/js/jquery.searchable-1.0.0.min.js')}}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+        <script src="{{asset('bootstrap1/js/paging.js')}}"></script>
 <script> 
 $(function (){
 
     $('#form_visitors option:selected').each(function(){
-        $('#visitors-input').append('<div class="visitor form-margin2 form-group input-group"><input id="'+$(this).attr('value')+'" type="text" disabled="true" class="form-control" value="'+$(this).text()+'"/><span class="input-group-btn"  id="'+$(this).attr('value')+'"><button onclick="a();" class="btn btn-default" id="delete" type="button"><i class="fa fa-times"></i></button></span></div>');    
+        var n;
+        var vID = $(this).attr('value');
+        $('#visitors').find('tr').each(function(){
+
+        if(vID == $(this).attr('value')){
+            n = $(this).attr('name');
+        }
+        });
+        $('#visitors-input').append('<div class="visitor form-margin2 form-group input-group"><input id="'+$(this).attr('value')+'" type="text" disabled="true" class="form-control" value="'+n+'"/><span class="input-group-btn"  id="'+$(this).attr('value')+'"><button onclick="a(this);" class="btn btn-default" id="delete" type="button"><i class="fa fa-times"></i></button></span></div>');    
     });
 
 
@@ -172,7 +171,7 @@ $(function (){
               }
         })
         if (i == 0){
-        $('#visitors-input').append('<div class="visitor form-margin2 form-group input-group"><input id="'+$(this).attr('value')+'" type="text" disabled="true" class="form-control" value="'+$(this).attr('name')+'"/><span class="input-group-btn"  id="'+$(this).attr('value')+'"><button onclick="a();" class="btn btn-default" id="delete" type="button"><i class="fa fa-times"></i></button></span></div>');
+        $('#visitors-input').append('<div class="visitor form-margin2 form-group input-group"><input id="'+$(this).attr('value')+'" type="text" disabled="true" class="form-control" value="'+$(this).attr('name')+'"/><span class="input-group-btn"  id="'+$(this).attr('value')+'"><button onclick="a(this);" class="btn btn-default" id="delete" type="button"><i class="fa fa-times"></i></button></span></div>');
 
             $("#form_visitors option[value='" + $(this).attr('value') + "']").prop("selected", true);
             console.log($(this).attr('value'));
@@ -188,9 +187,22 @@ $(function (){
 });
 
 
-</script><script>function a(){
+</script>
+<script>function a(object){
         $("#form_visitors option[value='" + $('#delete').parent().attr('id') + "']").prop("selected", false);
     console.log($('#delete').parent().attr('id'));
-    $('#delete').parent().parent().remove();};
+    $(object).parent().parent().remove();};
 </script>
+
+        <script>
+            $(document).ready(function() {
+    $( '#visitors-table' ).searchable({
+        striped: true,
+        oddRow: { 'background-color': '#f5f5f5' },
+        evenRow: { 'background-color': '#fff' },
+        searchType: 'fuzzy'
+    });
+    $('#visitors-table').paging({limit:5});
+});
+        </script>
 {% endblock %}

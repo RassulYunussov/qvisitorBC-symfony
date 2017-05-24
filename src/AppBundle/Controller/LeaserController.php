@@ -13,6 +13,8 @@ use AppBundle\Entity\qvLeaser;
 use AppBundle\Entity\qvUser;
 use AppBundle\Entity\qvUserPassport;
 use AppBundle\Entity\qvVisitor;
+use AppBundle\Entity\qvVisitorDoc;
+use AppBundle\Entity\qvVisitorPhoto;
 use AppBundle\Entity\qvContract;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -24,6 +26,7 @@ use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use AppBundle\Repository\qvOrderTypeRepository;
 use AppBundle\Repository\qvGenderRepository;
@@ -46,18 +49,76 @@ class LeaserController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $em1 = $this->getDoctrine()->getEntityManager();
-    	$user = $this->get('security.token_storage')->getToken()->getUser();
-        $userPassport=$em->getRepository('AppBundle:qvUserPassport')->findOneBy(array('user'=>$user->getId()));
-        $qvContracts = $em->getRepository('AppBundle:qvContract')->findBy(array('leaser'=>$user->getLeaser()));
-        $count = $em1->createQuery('SELECT count(contract) from AppBundle:qvContract contract where contract.leaser = :leaser')->setParameter('leaser',$user->getLeaser())->getSingleScalarResult();
+        $data = array();
+        $form = $this->createFormBuilder($data)
+            ->add('eSelectdate', DateType::class, array(
+                'label' => 'Выберите год',
+            'years' => range(date('Y'), date('Y')-2)
+            ))
+            ->add('heSelectdate', DateType::class, array(
+                'label' => 'Выберите год',
+            'years' => range(date('Y'), date('Y')-2)
+            ))
+            ->getForm()
+        ;
         return $this->render('AppBundle:Leaser:index.html.twig', array(
-        	'userPassport'=>$userPassport,
-            'qvContracts'=>$qvContracts,
-            'count' => $count
+            'form'=>$form->createView()
         ));
     }
+
+    /**
+     * @Route("/index/byyear", name="by-year")
+     *@Method({"GET", "POST"})
+     */
+    public function byYearAction(Request $request)
+    { 
+        if($request->isXmlHttpRequest()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em1 = $this->getDoctrine()->getEntityManager();
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+            $year = $request->request->get('year');
+            $flag = $request->request->get('flag');
+
+            $data = array();
+            $temp = array();
+            $result = array();
+            $cat = array();
+            $em = $this->getDoctrine()->getEntityManager();
+            if ($flag == 1) {
+                $query=$em->createQuery('SELECT count(e) AS rank, SUBSTRING(e.entrancedate, 6, 2) as month, SUBSTRING(e.entrancedate, 0, 12) as d, COUNT(e.visitor) AS visitorscount FROM AppBundle:qvEntrance e WHERE SUBSTRING(e.entrancedate, 1,4) = :year GROUP BY d order by d')->setParameter('year', $year);
+                $data = $query->getResult();
+                foreach ($data as $i) {
+                $UTC = new \DateTimeZone("UTC");
+                $newTZ = new \DateTimeZone("Asia/Almaty");
+                $d = new \DateTime($i['d'], $UTC);
+                $d->setTimezone( $newTZ );
+                $d = $d->format('Y-m-d');
+                $a = array($d, intval($i['visitorscount']));
+                array_push($temp, $a);
+                }
+            } elseif ($flag == 2) {
+                $query=$em->createQuery('SELECT count(e) AS rank, SUBSTRING(e.entrancedate, 6, 2) as month, SUBSTRING(e.entrancedate, 0, 12) as d, COUNT(e.id) AS hvisitorscount FROM AppBundle:qvHotEntrance e WHERE SUBSTRING(e.entrancedate, 1,4) = :year GROUP BY d order by d')->setParameter('year', $year);
+                $data = $query->getResult();
+                foreach ($data as $i) {
+                $UTC = new \DateTimeZone("UTC");
+                $newTZ = new \DateTimeZone("Asia/Almaty");
+                $d = new \DateTime($i['d'], $UTC);
+                $d->setTimezone( $newTZ );
+                $d = $d->format('Y-m-d');
+                $a = array($d, intval($i['hvisitorscount']));
+                array_push($temp, $a);
+                }
+            }
+            
+            array_push($result, $flag);
+            array_push($result, $temp);
+            $serializer = $this->get('serializer');
+            $checkpoints = $serializer->serialize($result, 'json');
+            return new Response($checkpoints);
+        }
+    }
+
     
 	 /**
      * @Route("/orders", name="show_orders")
@@ -69,14 +130,23 @@ class LeaserController extends Controller
         $qvOrders = $em->getRepository('AppBundle:qvOrder')->findActiveOrdersForLeaser();
         return $this->render('AppBundle:Leaser:orders_list.html.twig', array(
         		'qvOrders'=>$qvOrders,
+                'temp'=>1
         ));
     }
 
-
-
-
-
-
+     /**
+     * @Route("/allorders", name="show_orders_all")
+     * @Method("GET")
+     */
+    public function showAllOrdersAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $qvOrders = $em->getRepository('AppBundle:qvOrder')->findAll();
+        return $this->render('AppBundle:Leaser:orders_list.html.twig', array(
+                'qvOrders'=>$qvOrders,
+                'temp'=>2
+        ));
+    }
 
 
     /**
@@ -135,76 +205,62 @@ class LeaserController extends Controller
                 },
                 'multiple'  => true
             ])
-           ->add('select', ButtonType::class, array(
+            ->add('select', ButtonType::class, array(
                     'label'=>'Добавить', 
                 'attr' =>array(
                     'class'=> 'btn btn-default',
                     'data-toggle'=> 'modal',
                     'data-target'=>'#myModal',
                     'onclick'=>"$('#myModal .modal-dialog').load('{{path('new_visitor')}}');"), ))
-           ->add('lastnames', CollectionType::class, array(
+            ->add('lastnames', CollectionType::class, array(
                 'entry_type' => TextType::class,
                 'allow_add' => true,
                 'prototype'=>true,
             ))
-           ->add('firstnames', CollectionType::class, array(
+            ->add('firstnames', CollectionType::class, array(
                 'entry_type' => TextType::class,
                 'allow_add' => true,
                 'prototype'=>true,
             ))
-           ->add('patronimics', CollectionType::class, array(
+            ->add('patronimics', CollectionType::class, array(
                 'entry_type' => TextType::class,
                 'allow_add' => true,
                 'prototype'=>true,
             ))
-           ->add('birthdates', CollectionType::class, array(
+            ->add('birthdates', CollectionType::class, array(
                 'entry_type' => BirthdayType::class,
                 'allow_add' => true,
                 'prototype'=>true,
                 'entry_options'=>array(
                     'widget'=>'single_text',)
             ))
-           ->add('genders', CollectionType::class, array(
+            ->add('genders', CollectionType::class, array(
                 'entry_type' => TextType::class,
                 'allow_add' => true,
                 'prototype'=>true,
             ))
+            ->add('passport_numbers', CollectionType::class, array(
+                'entry_type' => NumberType::class,
+                'allow_add' => true,
+                'prototype'=>true,
+            ))
+            ->add('passport_issuedates', CollectionType::class, array(
+                'entry_type' => DateTimeType::class,
+                'allow_add' => true,
+                'prototype'=>true,
+                'entry_options'=>array(
+                    'widget'=>'single_text',)
+            ))
+            ->add('passport_expiredates', CollectionType::class, array(
+                'entry_type' => DateTimeType::class,
+                'allow_add' => true,
+                'prototype'=>true,
+                'entry_options'=>array(
+                    'widget'=>'single_text',)
+            ))
             ->getForm()
         ;
         
-        $arr = array();
-        $visitorform = $this->createFormBuilder($arr)
-            ->add('lastname', TextType::class,array(
-                'label'=>'Фамилия',
-                'attr'   =>  array(
-                'class'   => 'form-margin form-control')))
-            ->add('firstname', TextType::class,array(
-                'label'=>'Имя',
-                'attr'   =>  array(
-                'class'   => 'form-margin form-control')))
-            ->add('patronimic', TextType::class,array(
-                'label'=>'Отчество',
-                'attr'   =>  array(
-                'class'   => 'form-margin form-control')))
-            ->add('birthdate', BirthdayType::class, array(
-                'label'=>'Дата рождения',
-                'widget'=>'single_text',
-                'attr'   =>  array(
-                'class'   => 'form-margin type_date-inline form-control')))
-            ->add('gender',EntityType::class, array(
-                'class' => 'AppBundle:qvGender',
-                'query_builder' => function (qvGenderRepository $er) {
-                        return $er->createQueryBuilder('u')
-                        ->orderBy('u.name', 'ASC');
-                },
-                'choice_label' => 'name',
-                'label'=>'Пол',
-                'attr'   =>  array(
-                'class'   => 'form-control form-margin form-control')))
-            ->getForm()
-            ;
-
-
 
         $form->handleRequest($request);
 
@@ -234,6 +290,9 @@ class LeaserController extends Controller
             $patronimics = array();
             $birthdates = array();
             $genders = array();
+            $passport_numbers = array();
+            $passport_issuedates = array();
+            $passport_expiredates = array();
 
 
 
@@ -263,9 +322,29 @@ class LeaserController extends Controller
                 $j=$j+1;
             }
 
+            $j=0;
+            foreach ($data['passport_numbers'] as $i) {
+                $passport_numbers[$j] = $i;
+                $j=$j+1;
+            }
+
+            $j=0;
+            foreach ($data['passport_issuedates'] as $i) {
+                $passport_issuedates[$j] = $i;
+                $j=$j+1;
+            }
+
+            $j=0;
+            foreach ($data['passport_expiredates'] as $i) {
+                $passport_expiredates[$j] = $i;
+                $j=$j+1;
+            }
+
+
             for($i = 0; $i<count($data['lastnames']); $i++)
             {
                 $newVisitor = new qvVisitor();
+                $visitorPassport = new qvVisitorDoc();
 
                 $newVisitor->setLastname($lastnames[$i]);
                 $newVisitor->setFirstname($firstnames[$i]);
@@ -273,7 +352,15 @@ class LeaserController extends Controller
                 $newVisitor->setBirthdate($birthdates[$i]);
                 $qvGender = $em->getRepository('AppBundle:qvGender')->findOneBy(array('id'=>$genders[$i]));
                 $newVisitor->setGender($qvGender);
+                $visitorPassport->setNumber($passport_numbers[$i]);
+                $visitorPassport->setIssuedate($passport_issuedates[$i]);
+                $visitorPassport->setExpiredate($passport_expiredates[$i]);
+                $visitorPassport->setFirstname($firstnames[$i]);
+                $visitorPassport->setLastname($lastnames[$i]);
+                $visitorPassport->setVisitor($newVisitor);
                 $em->persist($newVisitor);
+                $em->flush();
+                $em->persist($visitorPassport);
                 $em->flush();
                 $qvOrder->addVisitors($newVisitor);
 
@@ -282,13 +369,12 @@ class LeaserController extends Controller
             $em->persist($qvOrder);
             $em->flush();
 
-    return new Response("hello"); //$this->redirectToRoute('show_orders');
+    return $this->redirectToRoute('show_orders');
 }
         
         return $this->render('AppBundle:Leaser:create_order.html.twig', array(
             'form' => $form->createView(),
-            'visitors'=>$qvVisitors,
-            'visitorform'=>$visitorform->createView()
+            'visitors'=>$qvVisitors
         ));
     }
 
@@ -302,7 +388,7 @@ class LeaserController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $user = $this->get('security.token_storage')->getToken()->getUser()->getId();
-        $qvVisitors=$em->getRepository('AppBundle:qvVisitor')->find($user);
+        $qvVisitors=$em->getRepository('AppBundle:qvVisitor')->findVisitorByUser($user);
         $editForm = $this->createFormBuilder($qvOrder)
             ->add('sdate', DateType::class, array(
                 'label'=>'Дата открытия заявки',
@@ -397,89 +483,44 @@ class LeaserController extends Controller
 
 
 
-    /**
-     * @Route("/new_visitor", name="new_visitor")
-     * @Method({"GET","POST"})
-     */
-    public function newVisitorAction(Request $request)
-    {
-        if($request->isXmlHttpRequest()) {
-
-        $em = $this->getDoctrine()->getManager();
-
-        $arr = array();
-        $visitorform = $this->createFormBuilder($arr)
-            ->add('lastname', TextType::class,array(
-                'label'=>'Фамилия',
-                'attr'   =>  array(
-                'class'   => 'form-margin form-control')))
-            ->add('firstname', TextType::class,array(
-                'label'=>'Имя',
-                'attr'   =>  array(
-                'class'   => 'form-margin form-control')))
-            ->add('patronimic', TextType::class,array(
-                'label'=>'Отчество',
-                'attr'   =>  array(
-                'class'   => 'form-margin form-control')))
-            ->add('birthdate', BirthdayType::class, array(
-                'label'=>'Дата рождения',
-                'widget'=>'single_text',
-                'attr'   =>  array(
-                'class'   => 'form-margin type_date-inline form-control')))
-            ->add('gender',EntityType::class, array(
-                'class' => 'AppBundle:qvGender',
-                'query_builder' => function (qvGenderRepository $er) {
-                        return $er->createQueryBuilder('u')
-                        ->orderBy('u.name', 'ASC');
-                },
-                'choice_label' => 'name',
-                'label'=>'Пол',
-                'attr'   =>  array(
-                'class'   => 'form-control form-margin form-control')))
-            ->getForm()
-            ;
-
-    
-        $visitorform->handleRequest($request);
-
-        if ($visitorform->isSubmitted() && $visitorform->isValid()) {
-            $qvVisitor = new qvVisitor();
-
-            $arr = $visitorform->getData();
-            $qvVisitor->setLastname($arr['lastname']);
-            $qvVisitor->setFirstname($arr['firstname']);
-            $qvVisitor->setPatronimic($arr['patronimic']);
-            $qvVisitor->setBirthdate($arr['birthdate']);
-            $qvVisitor->setGender($arr['gender']);
-            $em->persist($qvVisitor);
-            $em->flush();
-
-            return $this->redirectToRoute('show_orders');
-        }
-
-            return $this->render('AppBundle:Leaser:new_visitor.html.twig', array(
-                    'visitorform'=>$visitorform->createView()
-            ));
-       }
-    }
-
 
     /**
-    * @Route("/modal/visitors", name="visitor_modal")
+    * @Route("/leaser_info", name="leaser_info")
     * @Method("GET")
     */
-    public function visitorModalAction(Request $request)
+    public function showLeaserInfoAction()
     {
-    	if($request->isXmlHttpRequest()){
-    		$em=$this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
+        $em1 = $this->getDoctrine()->getEntityManager();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $userPassport=$em->getRepository('AppBundle:qvUserPassport')->findOneBy(array('user'=>$user->getId()));
+        $qvContracts = $em->getRepository('AppBundle:qvContract')->findBy(array('leaser'=>$user->getLeaser()));
+        $count1 = $em1->createQuery('SELECT count(contract) from AppBundle:qvContract contract where contract.leaser = :leaser')->setParameter('leaser',$user->getLeaser())->getSingleScalarResult();
 
-        	$user = $this->get('security.token_storage')->getToken()->getUser()->getId();
-        	$qvVisitors=$em->getRepository('AppBundle:qvVisitor')->findVisitorByUser($user);
-    		
-    		return $this->render('AppBundle:Leaser:visitor_modal.html.twig', array(
-    			'visitors'=>$qvVisitors));
+        $visitors = $em->getRepository('AppBundle:qvVisitor')->findVisitorByUser($user->getId());
+        $entrances = $em->getRepository('AppBundle:qvEntrance')->findBy(array('visitor'=>$visitors));
+        $t = array();
+        $j=0;
+        foreach ($visitors as $v) {
 
-    	}
+        $count2 = $em1->createQuery('SELECT count(entrance) from AppBundle:qvEntrance entrance where entrance.visitor = :visitor')->setParameter('visitor',$v['id'])->getSingleScalarResult();
+        $t[$j]['id'] = $v['id'];
+        $t[$j]['entrance'] = $count2;
+
+        $j = $j+1;
+
+        }
+
+
+        return $this->render('AppBundle:Leaser:leaser_info.html.twig', array(
+            'userPassport'=>$userPassport,
+            'user'=>$user,
+            'qvContracts'=>$qvContracts,
+            'countContract' => $count1,
+            'visitors'=>$visitors,
+            'countVisitor'=>count($visitors),
+            'count'=>$t
+        ));
     }
 
 

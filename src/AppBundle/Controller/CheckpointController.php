@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -110,10 +111,21 @@ class CheckpointController extends Controller
 	 */
 	public function homeAction()
 	{
-	
-		return $this->render('AppBundle:Checkpoint:home.html.twig', array(
-	
-		));
+        $data = array();
+        $form = $this->createFormBuilder($data)
+            ->add('eSelectdate', DateType::class, array(
+                'label' => 'Выберите год',
+            'years' => range(date('Y'), date('Y')-2)
+            ))
+            ->add('heSelectdate', DateType::class, array(
+                'label' => 'Выберите год',
+            'years' => range(date('Y'), date('Y')-2)
+            ))
+            ->getForm()
+        ;
+        return $this->render('AppBundle:Checkpoint:home.html.twig', array(
+            'form'=>$form->createView()
+        ));
 	}
 	
 	
@@ -144,7 +156,7 @@ class CheckpointController extends Controller
             
             $qvEntrance = $em->getRepository('AppBundle:qvEntrance')->findOneBy(array('id'=>$id));
             
-            $visitorDoc = $em->getRepository('AppBundle:qvVisitorDoc')->findOneBy(array('id'=>$qvEntrance->getVisitor()->getId()));
+            $visitorDoc = $em->getRepository('AppBundle:qvVisitorDoc')->findOneBy(array('visitor'=>$qvEntrance->getVisitor()->getId()));
             return $this->render('AppBundle:Checkpoint:entrance/entrance_info.html.twig', array(
                     'qvEntrance' => $qvEntrance,
                     'visitorDoc' => $visitorDoc

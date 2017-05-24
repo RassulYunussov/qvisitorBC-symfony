@@ -7,7 +7,7 @@
 		<ul class="dropdown-menu dropdown-user">
 			<li><a href="{{ path('userprofile') }}"><i class="fa fa-user fa-fw"></i>Информация</a>
 			</li>
-			<li><a href="{{path('changepassword', {'qvUser':qvUser.id})}}"><i class="fa fa-gear fa-fw"></i>Сменить пароль</a>
+			<li><a href="{{path('changepassword', {'id':qvUser.id})}}"><i class="fa fa-gear fa-fw"></i>Сменить пароль</a>
 			</li>
 			<li class="divider"></li>
 			<li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i>Выход</a>

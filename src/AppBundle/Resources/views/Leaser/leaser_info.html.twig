@@ -1,0 +1,136 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}Список посетителей{% endblock %}
+
+{% block body %}
+
+        <div id="page-wrapper">
+            <!-- Page Heading -->
+                    {% block breadcrumb %}
+                    <div id="bc2" class="btn-group btn-breadcrumb">
+                        <br>
+                        <a class="btn btn-default" href="{{path('index')}}"><i class="fa fa-home"></i></a>
+                        <a class="btn btn-default" href="{{path('leaser_info')}}">Информация</a>
+                    </div>
+                    {% endblock %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">{{userPassport.lastname}} {{userPassport.firstname}} {{userPassport.patronimic}}</h1>
+                </div>
+            </div>
+
+<div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#contracts" data-toggle="tab">Контракты</a>
+                                </li>
+                                <li><a href="#profile" data-toggle="tab">Посетители</a>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="contracts">
+                                    <h3> Название организации {{user.leaser.name}}</h3>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            Контракты организации: {{countContract}} 
+                                        </div>
+                                        <!-- /.panel-heading -->
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped" id="contracts-table">
+                                                    <thead>
+                                                        <th>Контракт</th>
+                                                        <th>Здание</th>
+                                                        <th>Этаж</th>
+                                                        <th>Сектор</th>
+                                                        <th>Дата заключения</th>
+                                                        <th>Дата окончания</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for qvContract in qvContracts %}
+                                                           {% for sector in qvContract.sectors %}
+                                                            <tr>
+                                                                <td>{{qvContract.name}}</td>
+                                                                <td>{{sector.name}}</td><td>{{sector.floor}}</td>
+                                                                <td>{{sector.floor.building.name}}</td>
+                                                                <td>{{qvContract.startdate|date('Y-m-d')}}</td>
+                                                                <td>{{qvContract.enddate|date('Y-m-d')}}</td>
+                                                            </tr> {% endfor %}
+                                                       {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="profile">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            Количество посетителей: {{countVisitor}} 
+                                        </div>
+                                        <!-- /.panel-heading -->
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped" id="visitors-table">
+                                                    <thead>
+                                                        <th>Фамилия</th>
+                                                        <th>Имя</th>
+                                                        <th>Отчество</th>
+                                                        <th>Дата рождения</th>
+                                                        <th>Количество посещений</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for visitor in visitors %}
+                                                                
+                                                            <tr>
+                                                                <td>{{visitor.lastname}}</td>
+                                                                <td>{{visitor.firstname}}</td>
+                                                                <td>{{visitor.patronimic}}</td>
+                                                                <td>{{visitor.birthdate|date('Y-m-d')}}</td>
+                                                                <td>
+                                                            {% for c in count %}{% if c.id == visitor.id %}{{c.entrance}}
+                                                                {% endif %}
+                                                        {% endfor %}</td>
+                                                            </tr> 
+                                                            {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+            </div>
+
+
+
+           
+              
+
+
+
+        </div>
+{% endblock %}
+{% block js %}
+
+
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+        <script src="{{asset('bootstrap1/js/paging.js')}}"></script>
+
+        <script>
+            $(document).ready(function() {
+    $('#visitors-table').paging({limit:10});
+    $('#contracts-table').paging({limit:10});
+});
+        </script>
+{% endblock %}

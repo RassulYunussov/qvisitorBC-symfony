@@ -24,6 +24,31 @@
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
+.paging-nav {
+  text-align: right;
+  padding-top: 2px;
+  margin-right: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+.paging-nav a {
+  margin: auto 1px;
+  text-decoration: none;
+  display: inline-block;
+  padding: 1px 7px;
+  background: #fff;
+  color: #333;
+  border-radius: 3px;
+
+}
+
+.paging-nav .selected-page {
+  background: #DCDCDC;
+  font-weight: bold;
+}
+
+
+
 .td-bkground{
   background-color: #F5F5F5;
 }
